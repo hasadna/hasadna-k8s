@@ -1,0 +1,9 @@
+cluster-admin:
+  enabled: true
+
+nfs:
+  enabled: true
+
+traefik:
+  enabled: true
+  dnsProvider: ""

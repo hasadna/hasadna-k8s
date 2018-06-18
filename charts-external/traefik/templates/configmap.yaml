@@ -1,0 +1,51 @@
+{{ if .Values.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: etc-traefik
+data:
+  traefik.toml: |
+    # https://docs.traefik.io/configuration/commons/
+
+    debug = false
+
+    defaultEntryPoints = ["http"{{ if .Values.acmeEmail }}, "https"{{ end }}]
+    
+    [entryPoints]
+        [entryPoints.http]
+          address = ":80"
+
+        {{ if .Values.acmeEmail }}
+        [entryPoints.https]
+          address = ":443"
+            [entryPoints.https.tls]
+        {{ end }}
+
+    {{ if .Values.acmeEmail }}
+    # let's encrypt automatic ssl certificate issue and renewal
+    [acme]
+      email = {{ .Values.acmeEmail | quote }}
+      dnsProvider = {{ .Values.dnsProvider | quote }}
+      storage = "/traefik-acme/acme.json"
+      entryPoint = "https"
+{{ .Values.acmeDomains | indent 6 }}
+    {{ end }}
+
+    [file]
+    
+    [backends]
+      {{ if .Values.enableBudgetkey }}
+      [backends.budgetkeynginx]
+        [backends.budgetkeynginx.servers.server1]
+          url = "http://nginx.budgetkey:80"
+      {{ end }}
+
+    [frontends]
+      {{ if .Values.enableBudgetkey }}
+      [frontends.budgetkeynginx]
+        backend="budgetkeynginx"
+        passHostHeader = true
+        rule = "Host:next.obudget.org,data.obudget.org,socialmap.org.il,www.socialmap.org.il,kibana.obudget.org"
+      {{ end }}
+
+{{ end }}

@@ -1,0 +1,2 @@
+# Hasadna Kubernetes Environment
+

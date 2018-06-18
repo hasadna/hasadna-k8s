@@ -1,0 +1,11 @@
+traefik:
+  # gcloud --project=hasadna-general compute disks create --size=5GB --zone=europe-west1-b hasadna-traefik-acme
+  # gcePersistentDiskName: hasadna-traefik-acme
+  enableBudgetkey: true
+  # nfs needs an ip, be sure to update it in case of changes to the nfs service
+  nfsServer: 10.23.253.67
+  replicas: 3
+  enableLoadBalancer: true
+  # gcloud --project=hasadna-general compute addresses create hasadna-k8s-traefik --region=europe-west1
+  # gcloud --project=hasadna-general compute addresses describe hasadna-k8s-traefik --region=europe-west1 | grep ^address:
+  loadBalancerIP: 35.233.114.242
