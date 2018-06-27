@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 
-if [ "${1}" == "script" ]; then
+HELM_VERSION=v2.8.2
+
+if [ "${1}" == "install_helm" ]; then
+    if ! helm version --client --short | grep "Client: ${HELM_VERSION}+"; then
+        curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh &&\
+        chmod 700 get_helm.sh &&\
+        ./get_helm.sh --version "${HELM_VERSION}" &&\
+        helm version --client --short | grep "Client: ${HELM_VERSION}+"
+        [ "$?" != "0" ] && echo failed helm client installation && exit 1
+    fi
+
+elif [ "${1}" == "script" ]; then
     docker pull "${DOCKER_IMAGE}:latest"
     docker build --cache-from "${DOCKER_IMAGE}:latest" -t "${DOCKER_IMAGE}:latest" .
     [ "$?" != "0" ] && echo failed script && exit 1
@@ -32,13 +43,14 @@ elif [ "${1}" == "setup" ]; then
     read -p "K8S repo branch: " K8S_OPS_REPO_BRANCH
     read -p "App's chart name: " DEPLOY_VALUES_CHART_NAME
     read -p "App's image property name: " DEPLOY_VALUES_IMAGE_PROP
+    read -p "App's repo slug" APP_REPO_SLUG
     read -p "Relative path to values.auto-updated.yaml in the K8S repo: " DEPLOY_YAML_UPDATE_FILE
     read -p "Git user email: " DEPLOY_GIT_EMAIL
     read -p "Git user name: " DEPLOY_GIT_USER
     read -p "Github token: " GITHUB_TOKEN
-    ENCRYPTED_DOCKER_USER=$(travis encrypt --repo "${K8S_OPS_REPO_SLUG}" "DOCKER_USER=${DOCKER_USER}" --no-interactive)
-    ENCRYPTED_DOCKER_PASS=$(travis encrypt --repo "${K8S_OPS_REPO_SLUG}" "DOCKER_PASS=${DOCKER_PASS}" --no-interactive)
-    ENCRYPTED_GITHUB_TOKEN=$(travis encrypt --repo "${K8S_OPS_REPO_SLUG}" "GITHUB_TOKEN=${GITHUB_TOKEN}" --no-interactive)
+    ENCRYPTED_DOCKER_USER=$(travis encrypt --repo "${APP_REPO_SLUG}" "DOCKER_USER=${DOCKER_USER}" --no-interactive)
+    ENCRYPTED_DOCKER_PASS=$(travis encrypt --repo "${APP_REPO_SLUG}" "DOCKER_PASS=${DOCKER_PASS}" --no-interactive)
+    ENCRYPTED_GITHUB_TOKEN=$(travis encrypt --repo "${APP_REPO_SLUG}" "GITHUB_TOKEN=${GITHUB_TOKEN}" --no-interactive)
     echo "Use the following .travis.yml directly or integrate with existing .travis.yml"
     echo "--"
     echo "language: bash
