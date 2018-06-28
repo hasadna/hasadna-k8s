@@ -1,3 +1,6 @@
+migdar:
+  enabled: true
+
 traefik:
   # gcloud --project=hasadna-general compute disks create --size=5GB --zone=europe-west1-b hasadna-traefik-acme
   # gcePersistentDiskName: hasadna-traefik-acme

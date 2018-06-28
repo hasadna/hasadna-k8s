@@ -1,0 +1,63 @@
+{{ if .Values.enabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: migdar
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: migdar
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: backend
+        image: orihoch/nli-z3950:v0.0.6
+        resources: {"requests": {"cpu": "50m", "memory": "300Mi"}, "limits": {"memory": "800Mi"}}
+        args:
+        - "serve_search_app"
+        ports:
+        - containerPort: 5000
+          hostPort: 5501
+        volumeMounts:
+        - mountPath: /data
+          name: data
+      - name: cron
+        image: orihoch/nli-z3950:v0.0.6
+        resources: {"requests": {"cpu": "25m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}
+        command:
+        - bash
+        - "-c"
+        - |
+          mkdir -p data/search_import
+          while true; do
+            ! /entrypoint.sh gdrive_download && exit 1
+            sleep 60
+          done
+        env:
+          - name: SERVICE_ACCOUNT_FILE
+            value: /migdar-gdrive/secret-g-service-account.json
+        volumeMounts:
+        - mountPath: /data
+          name: data
+        - name: gdrive
+          mountPath: /migdar-gdrive
+          readOnly: true
+      - name: frontend
+        image: orihoch/migdar-search-ui:v0.0.2-hasadna-k8s
+        resources: {"requests": {"cpu": "10m", "memory": "50Mi"}, "limits": {"memory": "200Mi"}}
+        ports:
+        - containerPort: 3000
+          hostPort: 5502
+      volumes:
+      - name: data
+        gcePersistentDisk:
+          pdName: oknesset-migdar-data
+      - name: gdrive
+        secret:
+          secretName: migdar-drive
+{{ end }}
