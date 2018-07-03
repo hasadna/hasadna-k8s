@@ -9,6 +9,7 @@ if [ "${1}" == "install_helm" ]; then
         ./get_helm.sh --version "${HELM_VERSION}" &&\
         helm version --client --short | grep "Client: ${HELM_VERSION}+"
         [ "$?" != "0" ] && echo failed helm client installation && exit 1
+        rm get_helm.sh
     fi
 
 elif [ "${1}" == "script" ]; then
