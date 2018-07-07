@@ -4,10 +4,9 @@ migdar:
 traefik:
   # nfs needs an ip, be sure to update it in case of changes to the nfs service
   nfsServer: 10.23.253.67
+  replicas: 1
   enableLoadBalancer: true
-  # gcloud --project=hasadna-general compute addresses create hasadna-k8s-traefik --region=europe-west1
-  # gcloud --project=hasadna-general compute addresses describe hasadna-k8s-traefik --region=europe-west1 | grep ^address:
-  loadBalancerIP: 35.233.114.242
+  acmeVolumeMountSubPath: test-traefik-acme
 
   letsencrypt:
     enabled: true
@@ -24,14 +23,8 @@ traefik:
 
   oknesset:
     enabled: true
-    frontendRule: "Host:oknesset.org,www.oknesset.org,committees-next.oknesset.org,production.oknesset.org"
+    frontendRule: "Host:test.oknesset.org"
     backendUrl: "http://nginx.oknesset:80"
     acmeDomains: |
       [[acme.domains]]
-        main = "production.oknesset.org"
-      [[acme.domains]]
-        main = "committees-next.oknesset.org"
-      [[acme.domains]]
-        main = "oknesset.org"
-      [[acme.domains]]
-        main = "www.oknesset.org"
+        main = "test.oknesset.org"

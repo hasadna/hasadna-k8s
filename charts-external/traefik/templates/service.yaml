@@ -6,7 +6,7 @@ metadata:
 spec:
   ports:
   - {name: '80', port: 80}
-  {{ if .Values.acmeEmail }}
+  {{ if .Values.letsencrypt.enabled }}
   - {name: '443', port: 443}
   {{ end }}
   selector:
