@@ -29,6 +29,9 @@ data:
       {{ if .Values.oknesset.enabled }}
 {{ .Values.oknesset.acmeDomains | indent 6 }}
       {{ end }}
+      {{ if .Values.anyway.enabled }}
+{{ .Values.anyway.acmeDomains | indent 6 }}
+      {{ end }}
       [acme.dnsChallenge]
         provider = {{ .Values.letsencrypt.dnsProvider | quote }}
     {{ end }}
@@ -48,6 +51,12 @@ data:
           url = {{ .Values.oknesset.backendUrl | quote }}
       {{ end }}
 
+      {{ if .Values.anyway.enabled }}
+      [backends.anyway]
+        [backends.anyway.servers.server1]
+          url = {{ .Values.anyway.backendUrl | quote }}
+      {{ end }}
+
     [frontends]
       {{ if .Values.budgetkey.enabled }}
       [frontends.budgetkeynginx]
@@ -61,8 +70,20 @@ data:
       [frontends.oknessetnginx]
         backend="oknessetnginx"
         passHostHeader = true
+        [frontends.oknessetnginx.headers]
+          SSLRedirect = true
         [frontends.oknessetnginx.routes.route1]
           rule = {{ .Values.oknesset.frontendRule | quote }}
+      {{ end }}
+
+      {{ if .Values.anyway.enabled }}
+      [frontends.anyway]
+        backend="anyway"
+        passHostHeader = true
+        [frontends.anyway.headers]
+          SSLRedirect = true
+        [frontends.anyway.routes.route1]
+          rule = {{ .Values.anyway.frontendRule | quote }}
       {{ end }}
 
 {{ end }}

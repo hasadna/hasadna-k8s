@@ -1,0 +1,6 @@
+anyway:
+  automatic-update:
+    commit-message: automatic update of anyway
+    namespace-name: anyway
+    deployment-name: anyway
+    container-name: anyway

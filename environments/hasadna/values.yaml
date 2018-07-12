@@ -35,3 +35,11 @@ traefik:
         main = "oknesset.org"
       [[acme.domains]]
         main = "www.oknesset.org"
+
+  anyway:
+    enabled: true
+    frontendRule: "Host:test.anyway.co.il"
+    backendUrl: "http://anyway.anyway:8000"
+    acmeDomains: |
+      [[acme.domains]]
+        main = "test.anyway.co.il"
