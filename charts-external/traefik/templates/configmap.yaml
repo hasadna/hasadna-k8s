@@ -32,9 +32,6 @@ data:
       {{ if .Values.anyway.enabled }}
 {{ .Values.anyway.acmeDomains | indent 6 }}
       {{ end }}
-      {{ if .Values.odata.enabled }}
-{{ .Values.odata.acmeDomains | indent 6 }}
-      {{ end }}
       [acme.dnsChallenge]
         provider = {{ .Values.letsencrypt.dnsProvider | quote }}
     {{ end }}
@@ -99,8 +96,6 @@ data:
       [frontends.odata]
         backend="odata"
         passHostHeader = true
-        [frontends.odata.headers]
-          SSLRedirect = true
         [frontends.odata.routes.route1]
           rule = {{ .Values.odata.frontendRule | quote }}
       {{ end }}
