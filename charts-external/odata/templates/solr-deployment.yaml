@@ -1,0 +1,22 @@
+{{ if .Values.enabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: solr
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: solr
+    spec:
+      containers:
+      - image: orihoch/data4dappl-solr
+        name: solr
+        ports:
+        - containerPort: 8983
+        resources: {{ .Values.solrResources }}
+{{ end }}

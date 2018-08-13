@@ -43,3 +43,11 @@ traefik:
     acmeDomains: |
       [[acme.domains]]
         main = "test.anyway.co.il"
+
+  odata:
+    enabled: false
+    frontendRule: "Host:test-odata.oknesset.org"
+    backendUrl: "http://ckan.odata:5000"
+    acmeDomains: |
+      [[acme.domains]]
+        main = "test-odata.oknesset.org"

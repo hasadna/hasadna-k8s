@@ -1,0 +1,37 @@
+{{ if .Values.enabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: db
+        env:
+        - {name: POSTGRES_PASSWORD, valueFrom: {secretKeyRef: {name: "env-vars", key: "POSTGRES_PASSWORD"}}}
+        image: postgres:9.6.3-alpine
+        ports:
+        - containerPort: 5432
+        resources: {{ .Values.dbResources }}
+        volumeMounts:
+        - name: db
+          mountPath: /var/lib/postgresql/data
+          # postgresql doesn't like being on root of device
+          subPath: data
+      volumes:
+      - name: db
+        {{ if .Values.ckanDbPersistentDiskName }}
+        gcePersistentDisk:
+          pdName: {{ .Values.ckanDbPersistentDiskName | quote }}
+        {{ else }}
+        emptyDir: {}
+        {{ end }}
+{{ end }}
