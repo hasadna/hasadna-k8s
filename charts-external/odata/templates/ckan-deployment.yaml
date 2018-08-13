@@ -1,0 +1,33 @@
+{{ if and .Values.enabled .Values.ckanDeploymentEnabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata: {name: ckan}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels: {app: ckan}
+    spec:
+      containers:
+      - name: ckan
+        image: gcr.io/uumpa-public/data4dappl-ckan@sha256:c6f9c390f26da7b907aa54394224c04a191c11e1f36b694f1bc58e7eb95cf7b5
+        ports:
+        - {containerPort: 5000}
+        resources: {{ .Values.ckanResources }}
+        volumeMounts:
+        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
+        - {mountPath: /etc/ckan/default, name: etc-ckan-default, readOnly: true}
+      volumes:
+      - name: etc-ckan-default
+        secret: {secretName: etc-ckan-default}
+      - name: ckan-data
+        {{ if .Values.ckanDataPersistentDiskName }}
+        gcePersistentDisk:
+          pdName: {{ .Values.ckanDataPersistentDiskName | quote }}
+        {{ else }}
+        emptyDir: {}
+        {{ end }}
+{{ end }}

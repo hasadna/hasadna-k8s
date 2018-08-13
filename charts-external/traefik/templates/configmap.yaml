@@ -32,6 +32,9 @@ data:
       {{ if .Values.anyway.enabled }}
 {{ .Values.anyway.acmeDomains | indent 6 }}
       {{ end }}
+      {{ if .Values.odata.enabled }}
+{{ .Values.odata.acmeDomains | indent 6 }}
+      {{ end }}
       [acme.dnsChallenge]
         provider = {{ .Values.letsencrypt.dnsProvider | quote }}
     {{ end }}
@@ -55,6 +58,12 @@ data:
       [backends.anyway]
         [backends.anyway.servers.server1]
           url = {{ .Values.anyway.backendUrl | quote }}
+      {{ end }}
+
+      {{ if .Values.odata.enabled }}
+      [backends.odata]
+        [backends.odata.servers.server1]
+          url = {{ .Values.odata.backendUrl | quote }}
       {{ end }}
 
     [frontends]
@@ -84,6 +93,16 @@ data:
           SSLRedirect = true
         [frontends.anyway.routes.route1]
           rule = {{ .Values.anyway.frontendRule | quote }}
+      {{ end }}
+
+      {{ if .Values.odata.enabled }}
+      [frontends.odata]
+        backend="odata"
+        passHostHeader = true
+        [frontends.odata.headers]
+          SSLRedirect = true
+        [frontends.odata.routes.route1]
+          rule = {{ .Values.odata.frontendRule | quote }}
       {{ end }}
 
 {{ end }}

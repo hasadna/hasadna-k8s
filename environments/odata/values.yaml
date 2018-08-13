@@ -1,0 +1,8 @@
+odata:
+  enabled: true
+  ckanDeploymentEnabled: true
+  ckanResources: '{"requests": {"cpu": "400m", "memory": "1200Mi"}, "limits": {"memory": "2Gi"}}'
+  dbResources: '{"requests": {"cpu": "100m", "memory": "300Mi"}, "limits": {"memory": "600Mi"}}'
+  solrResources: '{"requests": {"cpu": "60m", "memory": "600Mi"}, "limits": {"memory": "1Gi"}}'
+  ckanDataPersistentDiskName: odata-ckan-data
+  ckanDbPersistentDiskName: odata-db

@@ -1,0 +1,6 @@
+odata:
+  enabled: true
+  ckanDeploymentEnabled: true
+  ckanResources: '{}'
+  dbResources: '{"requests": {"cpu": "50m", "memory": "150Mi"}, "limits": {"memory": "400Mi"}}'
+  solrResources: '{}'
