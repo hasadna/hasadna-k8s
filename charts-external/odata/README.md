@@ -1,8 +1,10 @@
-# odata minikube environment
+# Odata (ckan) chart
 
-Allows to test odata kubernetes environment locally
+## Installation
 
-## Install
+### Setup
+
+#### Minikube environment for local development
 
 * [Install Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
 * Switch to the odata-minikube environment
@@ -21,7 +23,22 @@ Allows to test odata kubernetes environment locally
 * Verify helm installation
   * `helm version`
 
-## Create secrets
+#### Production environment on hasadna cluster
+
+* Switch to the odata environment
+  * `source switch_environment.sh odata`
+* Make sure you are connected to the correct cluster
+  * `kubectl get nodes`
+* Create the odata namespace
+  * `kubectl create ns odata`
+* Install the helm client
+  * To make sure you get corret version you should use the script in this repo
+  * `bash apps_travis_script.sh install_helm`
+  * if you have problems, refer to helm docs - [helm client](https://docs.helm.sh/using_helm/#installing-the-helm-client)
+* Verify helm installation
+  * `helm version`
+
+### Create Secrets
 
 ```
 export POSTGRES_PASSWORD=123456
@@ -46,13 +63,49 @@ kubectl create secret generic etc-ckan-default --from-file $TEMP_DIR/
 rm -rf $TEMP_DIR
 ```
 
-## Deploy infrastructure components
+### Copy Google disk snapshots
+
+Skip this step for Minikube environment
+
+For the production environment on Google cloud you can copy existing disk snapshots to restore from backup
+
+Create snapshots
+
+```
+gcloud compute disks snapshot gke-data4dappl-092038f-pvc-95731349-9b0d-11e7-855b-42010a80019d \
+  --snapshot-names="odata-db" \
+  --project=hasadna-odata --zone=us-central1-a
+gcloud compute disks snapshot gke-data4dappl-092038f-pvc-9bd4aae7-9a25-11e7-855b-42010a80019d \
+  --snapshot-names="odata-ckan-data" \
+  --project=hasadna-odata --zone=us-central1-a
+```
+
+Create disks from the snapshots
+
+```
+gcloud compute disks create odata-db \
+  --source-snapshot=$(gcloud compute snapshots describe odata-db --project=hasadna-odata --format json | jq -r .selfLink) \
+  --project=hasadna-general --zone=europe-west1-b
+gcloud compute disks create odata-ckan-data \
+  --source-snapshot=$(gcloud compute snapshots describe odata-ckan-data --project=hasadna-odata --format json | jq -r .selfLink) \
+  --project=hasadna-general --zone=europe-west1-b
+```
+
+Update the relevant values: `ckanDataPersistentDiskName` / `ckanDbPersistentDiskName`
+
+### Deploy infrastructure components
 
 ```
 ./helm_upgrade_external_chart.sh odata --install --debug --set ckanDeploymentEnabled=false
 ```
 
-## Initiate the DB from backup
+Check that all the pods started
+
+### Initiate the DB from backup
+
+For minikube environment you must restore the DB from backup
+
+For GKE environment - you can skip this step, if you created from existing disk / snapshot
 
 The backup is private, you should have permissions to the relevant google storage
 
@@ -60,15 +113,15 @@ The backup is private, you should have permissions to the relevant google storag
 charts-external/odata/utils/initiate_db_from_backup.sh gs://odata-k8s-backups/production/ckan-db-dump-2018-08-06.gz
 ```
 
-## Deploy all the components
+### Deploy all the remaining components
 
 ```
 ./helm_upgrade_external_chart.sh odata --debug
 ```
 
-### Post deployment tasks
+## Common Tasks
 
-#### Access the ckan web app
+### Access the ckan web app directly
 
 ```
 charts-external/odata/utils/ckan-port-forward.sh
@@ -76,22 +129,22 @@ charts-external/odata/utils/ckan-port-forward.sh
 
 Ckan will be available at http://localhost:5000/
 
-#### Create an admin user
+### Create an admin user
 
 ```
 charts-external/odata/utils/ckan-sysadmin.sh add minikube-admin email=minikube-admin@odata.org.il
 ```
 
-#### Initiate the data from backup
+### Rebuild the search index
+
+```
+charts-external/odata/utils/ckan-search-index.sh rebuild
+```
+
+### Initiate the data from backup
 
 You should have permissions to the relevant google storage and enough local free disk space
 
 ```
 charts-external/odata/utils/initiate_data_from_backup.sh gs://odata-k8s-backups/production/ckan-data-2018-08-13.tar.bz2
-```
-
-#### Rebuild the search index
-
-```
-charts-external/odata/utils/ckan-search-index.sh rebuild
 ```
