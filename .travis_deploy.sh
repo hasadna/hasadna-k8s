@@ -8,19 +8,24 @@ K8S_ENVIRONMENT_NAME="hasadna"
 OPS_REPO_SLUG="hasadna/hasadna-k8s"
 OPS_REPO_BRANCH="${TRAVIS_BRANCH}"
 ./run_docker_ops.sh "${K8S_ENVIRONMENT_NAME}" '
-    RES=0;
     curl -L https://raw.githubusercontent.com/hasadna/hasadna-k8s/master/apps_travis_script.sh | bash /dev/stdin install_helm;
+    ./kubectl_hot_reload.sh "'"${TRAVIS_COMMIT_MESSAGE}"'"
+    HOT_RELOAD_RES=$?
+    [ "${HOT_RELOAD_RES}" == "1" ] && echo hot reload failed && exit 1
+    [ "${HOT_RELOAD_RES}" == "0" ] && echo hot reload success && exit 0
+    [ "${HOT_RELOAD_RES}" != "2" ] && echo invalid hot reload exit code $HOT_RELOAD_RES && exit 1
     ./kubectl_patch_charts.py "'"${TRAVIS_COMMIT_MESSAGE}"'" --dry-run
     PATCH_RES=$?
-    if [ "${PATCH_RES}" != "2" ]; then
-        echo detected patches based on commit message
-        if [ "${PATCH_RES}" == "0" ]; then
-            ! ./kubectl_patch_charts.py "'"${TRAVIS_COMMIT_MESSAGE}"'" && echo failed patches && RES=1
-        else
-            echo patches dry run failed && RES=1
-        fi
+    [ "${PATCH_RES}" == "1" ] && echo patches dry run failed && exit 1
+    if [ "${PATCH_RES}" == "0" ]; then
+        echo performing patches
+        ! ./kubectl_patch_charts.py "'"${TRAVIS_COMMIT_MESSAGE}"'" && echo failed patches && exit 1
+        echo patches successful
+        exit 0
     fi
-    exit $RES
+    [ "${PATCH_RES}" != "2" ] && echo invalid patches exit code $PATCH_RES && exit 1
+    echo nothing to do...
+    exit 0
 ' "orihoch/sk8s-ops" "${OPS_REPO_SLUG}" "${OPS_REPO_BRANCH}" "secret-k8s-ops.json"
 if [ "$?" == "0" ]; then
     echo travis deployment success
