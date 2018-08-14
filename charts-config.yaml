@@ -11,3 +11,4 @@ odata:
     namespace-name: odata
     deployment-name: ckan
     container-name: ckan
+    image-prop: ckanImage
