@@ -1,2 +1,4 @@
 anyway:
   image: orihoch/anyway:aaee6bec2a9e8968a365e891cbb2f5f088ffe500
+odata:
+  ckanImage: orihoch/odata-ckan:659db70a5eae1cd50b4bcb387588e0ea90585c5c
