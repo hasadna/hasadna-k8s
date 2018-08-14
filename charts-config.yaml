@@ -4,3 +4,10 @@ anyway:
     namespace-name: anyway
     deployment-name: anyway
     container-name: anyway
+
+odata:
+  automatic-update:
+    commit-message: automatic update of odata-ckan
+    namespace-name: odata
+    deployment-name: ckan
+    container-name: ckan
