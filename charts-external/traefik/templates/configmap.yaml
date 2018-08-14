@@ -98,6 +98,12 @@ data:
         passHostHeader = true
         [frontends.odata.routes.route1]
           rule = {{ .Values.odata.frontendRule | quote }}
+        {{ if .Values.odata.canonicalDomainRedirect }}
+        [frontends.odata.redirect]
+          regex = "(http|https)://({{ .Values.odata.canonicalDomainRedirect.matchDomains }})/(.*)"
+          replacement = "https://{{ .Values.odata.canonicalDomainRedirect.canonicalDomain }}/$3"
+          permanent = true
+        {{ end }}
       {{ end }}
 
 {{ end }}

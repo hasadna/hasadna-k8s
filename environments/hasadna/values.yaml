@@ -46,5 +46,8 @@ traefik:
 
   odata:
     enabled: true
-    frontendRule: "Host:www.odata.org.il,odata.org.il,test-odata.oknesset.org"
+    frontendRule: "Host:www.odata.org.il,test-odata.oknesset.org,new.odata.org.il,odata.org.il"
     backendUrl: "http://ckan.odata:5000"
+    canonicalDomainRedirect:
+      matchDomains: new.odata.org.il|odata.org.il
+      canonicalDomain: www.odata.org.il
