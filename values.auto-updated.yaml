@@ -1,5 +1,5 @@
 anyway:
   image: uumpa/anyway:267f7419d02e00e6e74e9e57e2a217cf33b7d57c
-  productionImage: uumpa/anyway:testing-k8s-continuous-deployment
+  productionImage: uumpa/anyway:ef99d85b586a94d9e3b98a3e7dad195334318311
 odata:
   ckanImage: orihoch/odata-ckan:4bd05adc9c124409537e47c8f18d1bcf2b0aa5b1
