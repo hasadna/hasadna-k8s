@@ -11,6 +11,7 @@ exit_code = 2
 
 if commit_message:
     for chart_name, chart_values in values.items():
+        chart_name = chart_values.get('chart-name', chart_name)
         if os.path.exists('charts-external/{}'.format(chart_name)):
             if chart_values.get('automatic-update'):
                 auto_update_values = chart_values['automatic-update']

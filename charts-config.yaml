@@ -1,7 +1,15 @@
 anyway:
   automatic-update:
-    commit-message: automatic update of anyway
+    commit-message: automatic update of anyway testing environment
     namespace-name: anyway
+    deployment-name: anyway
+    container-name: anyway
+
+anyway-production:
+  chart-name: anyway
+  automatic-update:
+    commit-message: automatic update of anyway production environment
+    namespace-name: anyway-production
     deployment-name: anyway
     container-name: anyway
 

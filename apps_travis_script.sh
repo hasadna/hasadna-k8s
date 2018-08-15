@@ -15,16 +15,32 @@ if [ "${1}" == "install_helm" ]; then
     fi
 
 elif [ "${1}" == "script" ]; then
-    docker pull "${DOCKER_IMAGE}:latest"
-    docker build --cache-from "${DOCKER_IMAGE}:latest" -t "${DOCKER_IMAGE}:latest" .
+    latest_tag=`eval 'echo $LATEST_IMAGE_TAG_'${TRAVIS_BRANCH}`
+    [ "${latest_tag}" == "" ] \
+        && latest_tag="${LATEST_IMAGE_TAG}"
+    [ "${latest_tag}" == "" ] \
+        && latest_tag=latest
+    docker pull "${DOCKER_IMAGE}:${latest_tag}"
+    docker build --cache-from "${DOCKER_IMAGE}:latest" -t "${DOCKER_IMAGE}:${latest_tag}" .
     [ "$?" != "0" ] && echo failed script && exit 1
 
 elif [ "${1}" == "deploy" ]; then
     tag="${TRAVIS_COMMIT}"
     [ "${tag}" == "" ] && echo empty tag && exit 1
+    latest_tag=`eval 'echo $LATEST_IMAGE_TAG_'${TRAVIS_BRANCH}`
+    [ "${latest_tag}" == "" ] && latest_tag="${LATEST_IMAGE_TAG}"
+    [ "${latest_tag}" == "" ] && latest_tag=latest
+    chart_name=`eval 'echo $DEPLOY_VALUES_CHART_NAME_'${TRAVIS_BRANCH}`
+    [ "${chart_name}" == "" ] && chart_name="${DEPLOY_VALUES_CHART_NAME}"
+    image_prop=`eval 'echo $DEPLOY_VALUES_IMAGE_PROP_'${TRAVIS_BRANCH}`
+    [ "${image_prop}" == "" ] && image_prop="${DEPLOY_VALUES_IMAGE_PROP}"
+    yaml_update_file=`eval 'echo $DEPLOY_YAML_UPDATE_FILE_'${TRAVIS_BRANCH}`
+    [ "${yaml_update_file}" == "" ] && yaml_update_file="${DEPLOY_YAML_UPDATE_FILE}"
+    deploy_commit_message=`eval 'echo $DEPLOY_COMMIT_MESSAGE_'${TRAVIS_BRANCH}`
+    [ "${deploy_commit_message}" == "" ] && deploy_commit_message="${DEPLOY_COMMIT_MESSAGE}"
     docker login -u "${DOCKER_USER:-$DOCKER_USERNAME}" -p "${DOCKER_PASS:-$DOCKER_PASSWORD}" &&\
-    docker push "${DOCKER_IMAGE}:latest" &&\
-    docker tag "${DOCKER_IMAGE}:latest" "${DOCKER_IMAGE}:${tag}" &&\
+    docker push "${DOCKER_IMAGE}:${latest_tag}" &&\
+    docker tag "${DOCKER_IMAGE}:${latest_tag}" "${DOCKER_IMAGE}:${tag}" &&\
     docker push "${DOCKER_IMAGE}:${tag}"
     [ "$?" != "0" ] && echo failed docker push && exit 1
     if [ "${SSH_DEPLOY_KEY_OPENSSL_CMD}" != "" ]; then
@@ -36,11 +52,11 @@ elif [ "${1}" == "deploy" ]; then
         PUSH_PARAMS="https://${GITHUB_TOKEN}@github.com/${K8S_OPS_REPO_SLUG}.git ${K8S_OPS_REPO_BRANCH}"
     fi
     docker run -e CLONE_PARAMS="--branch ${K8S_OPS_REPO_BRANCH} https://github.com/${K8S_OPS_REPO_SLUG}.git" \
-               -e YAML_UPDATE_JSON='{"'"${DEPLOY_VALUES_CHART_NAME}"'":{"'"${DEPLOY_VALUES_IMAGE_PROP}"'":"'"${DOCKER_IMAGE}:${tag}"'"}}' \
-               -e YAML_UPDATE_FILE="${DEPLOY_YAML_UPDATE_FILE}" \
+               -e YAML_UPDATE_JSON='{"'"${chart_name}"'":{"'"${image_prop}"'":"'"${DOCKER_IMAGE}:${tag}"'"}}' \
+               -e YAML_UPDATE_FILE="${yaml_update_file}" \
                -e GIT_USER_EMAIL="${DEPLOY_GIT_EMAIL}" \
                -e GIT_USER_NAME="${DEPLOY_GIT_USER}" \
-               -e GIT_COMMIT_MESSAGE="${DEPLOY_COMMIT_MESSAGE}" \
+               -e GIT_COMMIT_MESSAGE="${deploy_commit_message}" \
                -e PUSH_PARAMS="${PUSH_PARAMS}" \
                $SSH_DEPLOY_KEY_VOLUME_ARG $SSH_DEPLOY_KEY_ENV_ARG \
                orihoch/github_yaml_updater
