@@ -2,6 +2,8 @@
 
 HELM_VERSION=v2.8.2
 
+[ -f .travis.env ] && source .travis.env
+
 if [ "${1}" == "install_helm" ]; then
     if ! helm version --client --short | grep "Client: ${HELM_VERSION}+"; then
         curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh &&\
@@ -27,7 +29,7 @@ elif [ "${1}" == "deploy" ]; then
     [ "$?" != "0" ] && echo failed docker push && exit 1
     if [ "${SSH_DEPLOY_KEY_OPENSSL_CMD}" != "" ]; then
         PUSH_PARAMS="git@github.com:${K8S_OPS_REPO_SLUG}.git ${K8S_OPS_REPO_BRANCH}"
-        ! "${SSH_DEPLOY_KEY_OPENSSL_CMD}" && echo failed to decrypt github deploy key && exit 1
+        ! eval "${SSH_DEPLOY_KEY_OPENSSL_CMD}" && echo failed to decrypt github deploy key && exit 1
         SSH_DEPLOY_KEY_VOLUME_ARG='-v "'"`pwd`/${DEPLOY_VALUES_CHART_NAME}_github_deploy_key.id_rsa:/${DEPLOY_VALUES_CHART_NAME}_github_deploy_key.id_rsa"'"'
         SSH_DEPLOY_KEY_ENV_ARG="-e SSH_DEPLOY_KEY_FILE=/${DEPLOY_VALUES_CHART_NAME}_github_deploy_key.id_rsa"
     else
