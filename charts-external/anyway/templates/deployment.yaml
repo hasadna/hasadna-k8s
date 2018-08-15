@@ -13,7 +13,7 @@ spec:
       labels:
         app: anyway
     spec:
-      terminationGracePeriodSeconds: 10
+      terminationGracePeriodSeconds: 1
       containers:
       - name: anyway
         image: {{ .Values.image }}

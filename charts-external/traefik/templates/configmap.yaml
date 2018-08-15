@@ -32,6 +32,9 @@ data:
       {{ if .Values.anyway.enabled }}
 {{ .Values.anyway.acmeDomains | indent 6 }}
       {{ end }}
+      {{ if .Values.anywayProduction.enabled }}
+{{ .Values.anywayProduction.acmeDomains | indent 6 }}
+      {{ end }}
       [acme.dnsChallenge]
         provider = {{ .Values.letsencrypt.dnsProvider | quote }}
     {{ end }}
@@ -55,6 +58,12 @@ data:
       [backends.anyway]
         [backends.anyway.servers.server1]
           url = {{ .Values.anyway.backendUrl | quote }}
+      {{ end }}
+
+      {{ if .Values.anywayProduction.enabled }}
+      [backends.anywayProduction]
+        [backends.anywayProduction.servers.server1]
+          url = {{ .Values.anywayProduction.backendUrl | quote }}
       {{ end }}
 
       {{ if .Values.odata.enabled }}
@@ -90,6 +99,16 @@ data:
           SSLRedirect = true
         [frontends.anyway.routes.route1]
           rule = {{ .Values.anyway.frontendRule | quote }}
+      {{ end }}
+
+      {{ if .Values.anywayProduction.enabled }}
+      [frontends.anywayProduction]
+        backend="anywayProduction"
+        passHostHeader = true
+        [frontends.anywayProduction.headers]
+          SSLRedirect = true
+        [frontends.anywayProduction.routes.route1]
+          rule = {{ .Values.anywayProduction.frontendRule | quote }}
       {{ end }}
 
       {{ if .Values.odata.enabled }}

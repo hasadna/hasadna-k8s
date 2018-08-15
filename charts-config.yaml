@@ -12,6 +12,7 @@ anyway-production:
     namespace-name: anyway-production
     deployment-name: anyway
     container-name: anyway
+    image-prop: productionImage
 
 odata:
   automatic-update:

@@ -44,6 +44,14 @@ traefik:
       [[acme.domains]]
         main = "test.anyway.co.il"
 
+  anywayProduction:
+    enabled: true
+    frontendRule: "Host:production.anyway.co.il"
+    backendUrl: "http://anyway.anyway-production:8000"
+    acmeDomains: |
+      [[acme.domains]]
+        main = "production.anyway.co.il"
+
   odata:
     enabled: true
     frontendRule: "Host:www.odata.org.il,test-odata.oknesset.org,new.odata.org.il,odata.org.il"

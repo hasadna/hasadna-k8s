@@ -1,13 +1,13 @@
-# anyway staging environment
+# anyway production environment
 
-This environment is continuously updated from hasadna/anyway dev branch.
+This environment is continuously updated from hasadna/anyway master branch.
 
-It can also be used to test infrastructure changes.
+Infrastructure changes should be tested on the staging environment (`anyway` environment)
 
 ## Install
 
-* Switch to the anyway environment
-  * `source switch_environment.sh anyway`
+* Switch to the anyway-production environment
+  * `source switch_environment.sh anyway-production`
 * Make sure you are connected to the correct cluster
   * `kubectl get nodes`
 * Create the anyway namespace
@@ -19,13 +19,13 @@ It can also be used to test infrastructure changes.
 * Verify helm installation
   * `helm version`
 * Create the DB secret
-  * `kubectl create secret generic -n anyway db --from-literal=POSTGRES_PASSWORD=*******`
+  * `kubectl create secret generic -n anyway-production db --from-literal=POSTGRES_PASSWORD=*******`
 * Create the persistent disk for the DB
-  * `gcloud compute disks create --size=100GB --zone=europe-west1-b anyway-db`
+  * `gcloud compute disks create --size=100GB --zone=europe-west1-b anyway-production-db`
 * Enable initialization and set persistent disk in values
   * Edit `environments/anyway/values.yaml` under `anyway:`
   * Set `initialize: true`
-  * Set `dbPersistentDiskName: anyway-db`
+  * Set `dbPersistentDiskName: anyway-production-db`
 * Dry run and debug the anyway chart installation
   * `./helm_upgrade_external_chart.sh anyway --install --debug --dry-run`
 * Install the anyway chart
@@ -35,6 +35,9 @@ It can also be used to test infrastructure changes.
   * Comment the line `initialize: true`
 * Redeploy
   * `./helm_upgrade_external_chart.sh anyway`
-* Deploy hasadna cluster load balancer to route to anyway
+* Test with port forward
+  * `kubectl port-forward ANYWAY_POD_NAME 8000`
+  * http://localhost:8000/
+* Deploy hasadna cluster load balancer to route to anyway-production
   * `source switch_environment.sh hasadna`
   * `./helm_upgrade_external_chart.sh traefik`

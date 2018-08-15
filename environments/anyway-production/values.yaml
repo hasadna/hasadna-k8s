@@ -1,0 +1,4 @@
+anyway:
+  enabled: true
+  # initialize: true
+  dbPersistentDiskName: anyway-production-db
