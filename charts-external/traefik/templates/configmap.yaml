@@ -9,6 +9,8 @@ data:
 
     debug = false
 
+    [accessLog]
+
     defaultEntryPoints = ["http"{{ if .Values.letsencrypt.enabled }}, "https"{{ end }}]
     
     [entryPoints]
