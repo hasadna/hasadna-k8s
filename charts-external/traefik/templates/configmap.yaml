@@ -9,8 +9,6 @@ data:
 
     debug = false
 
-    [accessLog]
-
     defaultEntryPoints = ["http"{{ if .Values.letsencrypt.enabled }}, "https"{{ end }}]
     
     [entryPoints]
@@ -40,6 +38,8 @@ data:
       [acme.dnsChallenge]
         provider = {{ .Values.letsencrypt.dnsProvider | quote }}
     {{ end }}
+
+    [accessLog]
 
     [file]
     

@@ -3,10 +3,14 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata: {name: ckan}
 spec:
+  {{ if .Values.ckanDataNfsServer }}
+  replicas: 2
+  {{ else }}
   replicas: 1
-  revisionHistoryLimit: 2
   strategy:
     type: Recreate
+  {{ end }}
+  revisionHistoryLimit: 2
   template:
     metadata:
       labels: {app: ckan}
@@ -22,9 +26,14 @@ spec:
         - {mountPath: /etc/ckan/default, name: etc-ckan-default, readOnly: true}
       volumes:
       - name: etc-ckan-default
-        secret: {secretName: etc-ckan-default}
+        secret:
+          secretName: {{ .Values.etcCkanDefaultSecretName | default "etc-ckan-default" }}
       - name: ckan-data
-        {{ if .Values.ckanDataPersistentDiskName }}
+        {{ if .Values.ckanDataNfsServer }}
+        nfs:
+          server: {{ .Values.ckanDataNfsServer }}
+          path: "/"
+        {{ else if .Values.ckanDataPersistentDiskName }}
         gcePersistentDisk:
           pdName: {{ .Values.ckanDataPersistentDiskName | quote }}
         {{ else }}

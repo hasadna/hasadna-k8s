@@ -14,10 +14,10 @@ anyway-production:
     container-name: anyway
     image-prop: productionImage
 
-odata:
-  automatic-update:
-    commit-message: automatic update of odata-ckan
-    namespace-name: odata
-    deployment-name: ckan
-    container-name: ckan
-    image-prop: ckanImage
+#odata:
+#  automatic-update:
+#    commit-message: automatic update of odata-ckan
+#    namespace-name: odata
+#    deployment-name: ckan
+#    container-name: ckan
+#    image-prop: ckanImage

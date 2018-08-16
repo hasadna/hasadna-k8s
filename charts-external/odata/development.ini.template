@@ -161,9 +161,8 @@ ckan.display_timezone = Asia/Jerusalem
 
 ## Internationalisation Settings
 ckan.locale_default = he
-ckan.locale_order = he en pt_BR ja it cs_CZ ca es fr el sv sr sr@latin no sk fi ru de pl nl bg ko_KR hu sa sl lv
-ckan.locales_offered =
-ckan.locales_filtered_out = en_GB
+ckan.locale_order = he en ar
+ckan.locales_offered = he en ar
 
 ## Feeds Settings
 

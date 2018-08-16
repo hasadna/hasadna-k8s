@@ -6,3 +6,7 @@ odata:
   solrResources: '{"requests": {"cpu": "60m", "memory": "600Mi"}, "limits": {"memory": "1Gi"}}'
   ckanDataPersistentDiskName: odata-ckan-data
   ckanDbPersistentDiskName: odata-db
+  nfsEnabled: true
+  nfsGcePersistentDiskName: odata-ckan-data-nfs
+  ckanDataNfsServer: 10.23.252.189
+  etcCkanDefaultSecretName: etc-ckan-default-2

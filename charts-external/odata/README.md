@@ -56,7 +56,6 @@ export CKAN_MAX_RESOURCE_SIZE="500"
 export CKAN_DEBUG=false
 export COMMENT="-- This file contains secrets, do not commit / expose publicly! --"
 TEMP_DIR=`mktemp -d`
-mkdir -p $TEMP_DIR/etc-ckan-default
 ./templater.sh charts-external/odata/who.ini.template > $TEMP_DIR/who.ini
 ./templater.sh charts-external/odata/development.ini.template > $TEMP_DIR/development.ini
 kubectl create secret generic etc-ckan-default --from-file $TEMP_DIR/
@@ -148,3 +147,21 @@ You should have permissions to the relevant google storage and enough local free
 ```
 charts-external/odata/utils/initiate_data_from_backup.sh gs://odata-k8s-backups/production/ckan-data-2018-08-13.tar.bz2
 ```
+
+## Updating ckan configuration
+
+Edit `charts-external/odata/development.ini.template` - make the required changes
+
+Extract the required secrets from env-vars secret
+
+```
+export CKAN_APP_INSTANCE_UUID=`kubectl get secret env-vars -o json | jq -r .data.CKAN_APP_INSTANCE_UUID | base64 -d`
+export CKAN_BEAKER_SESSION_SECRET=`kubectl get secret env-vars -o json | jq -r .data.CKAN_BEAKER_SESSION_SECRET | base64 -d`
+export POSTGRES_PASSWORD=`kubectl get secret env-vars -o json | jq -r .data.POSTGRES_PASSWORD | base64 -d`
+```
+
+Proceed with create secrets procedure from initial installation but use a different name e.g. etc-ckan-default-2
+
+Update the values file etcCkanDefaultSecretName attribute to the new name
+
+Deploy
