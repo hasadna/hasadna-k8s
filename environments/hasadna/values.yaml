@@ -59,3 +59,11 @@ traefik:
     canonicalDomainRedirect:
       matchDomains: new.odata.org.il|odata.org.il
       canonicalDomain: www.odata.org.il
+
+  monitoring:
+    enabled: true
+    frontendRule: "Host:monitoring.oknesset.org"
+    backendUrl: "http://grafana.monitoring:3000"
+    acmeDomains: |
+      [[acme.domains]]
+        main = "monitoring.oknesset.org"

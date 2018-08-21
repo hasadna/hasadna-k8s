@@ -35,6 +35,9 @@ data:
       {{ if .Values.anywayProduction.enabled }}
 {{ .Values.anywayProduction.acmeDomains | indent 6 }}
       {{ end }}
+      {{ if .Values.monitoring.enabled }}
+{{ .Values.monitoring.acmeDomains | indent 6 }}
+      {{ end }}
       [acme.dnsChallenge]
         provider = {{ .Values.letsencrypt.dnsProvider | quote }}
     {{ end }}
@@ -72,6 +75,12 @@ data:
       [backends.odata]
         [backends.odata.servers.server1]
           url = {{ .Values.odata.backendUrl | quote }}
+      {{ end }}
+
+      {{ if .Values.monitoring.enabled }}
+      [backends.monitoring]
+        [backends.monitoring.servers.server1]
+          url = {{ .Values.monitoring.backendUrl | quote }}
       {{ end }}
 
     [frontends]
@@ -125,6 +134,16 @@ data:
           replacement = "https://{{ .Values.odata.canonicalDomainRedirect.canonicalDomain }}/$3"
           permanent = true
         {{ end }}
+      {{ end }}
+
+      {{ if .Values.monitoring.enabled }}
+      [frontends.monitoring]
+        backend="monitoring"
+        passHostHeader = true
+        [frontends.monitoring.headers]
+          SSLRedirect = true
+        [frontends.monitoring.routes.route1]
+          rule = {{ .Values.monitoring.frontendRule | quote }}
       {{ end }}
 
 {{ end }}
