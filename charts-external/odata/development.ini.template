@@ -29,7 +29,7 @@ host = 0.0.0.0
 port = 5000
 
 [app:main]
-use = egg:ckan
+use = call:ckanext.odata_org_il.middleware:make_app
 full_stack = true
 cache_dir = /tmp/%(ckan.site_id)s/
 beaker.session.key = ckan
