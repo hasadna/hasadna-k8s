@@ -165,3 +165,14 @@ Proceed with create secrets procedure from initial installation but use a differ
 Update the values file etcCkanDefaultSecretName attribute to the new name
 
 Deploy
+
+## Backups
+
+Backups are generated daily and uploaded to google storage
+
+You can also run a backup manually:
+
+```
+./kubectl.sh exec db -c db -- bash /db-scripts/backup.sh &&\
+./kubectl.sh logs db -c db-ops -f
+```

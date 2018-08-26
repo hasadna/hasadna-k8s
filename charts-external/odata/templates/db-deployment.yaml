@@ -13,25 +13,85 @@ spec:
       labels:
         app: db
     spec:
+      terminationGracePeriodSeconds: {{ .Values.db.terminationGracePeriodSeconds }}
       containers:
       - name: db
-        env:
-        - {name: POSTGRES_PASSWORD, valueFrom: {secretKeyRef: {name: "env-vars", key: "POSTGRES_PASSWORD"}}}
-        image: postgres:9.6.3-alpine
+        image: {{ .Values.db.image | quote }}
         ports:
         - containerPort: 5432
         resources: {{ .Values.dbResources }}
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom: {secretKeyRef: {name: "env-vars", key: "POSTGRES_PASSWORD"}}
+        {{ if .Values.dbOps.enabled }}
+        - name: BACKUP_DATABASE_NAME
+          value: ckan
+        - name: BACKUP_DATABASE_FILE
+          value: "/db-backup/ckan.dump"
+        - name: BACKUP_CRONLINE
+          #      minute hour day_of_month month day_of_week
+          value: "0     2    *            *     *"
+        {{ end }}
+        {{ if .Values.dbOps.enabled }}
+        {{ if .Values.dbOps.backup }}
+        command: [bash, "-c", "bash /db-scripts/backup-cron.sh BACKUP_DATABASE_NAME& exec docker-entrypoint.sh postgres"]
+        {{ else if .Values.dbOps.restore }}
+        command: [bash, "-c", "bash /db-scripts/restore.sh"]
+        {{ end }}
+        {{ end }}
         volumeMounts:
         - name: db
           mountPath: /var/lib/postgresql/data
           # postgresql doesn't like being on root of device
           subPath: data
+        {{ if .Values.dbOps.enabled }}
+        - name: backups
+          mountPath: /db-backup
+        {{ end }}
+      {{ if .Values.dbOps.enabled }}
+      - name: db-ops
+        image: {{ .Values.db.opsImage | quote }}
+        {{ if .Values.dbOps.backup }}
+        args: ["bash", "/db-scripts/upload-cron.sh"]
+        {{ else if .Values.dbOps.restore }}
+        args: ["bash", "/db-scripts/download.sh", {{ .Values.dbOps.restore | quote }}]
+        {{ else }}
+        args: ["bash", "-c", "while true; do sleep 86400; done"]
+        {{ end }}
+        resources: {"requests": {"cpu": "5m", "memory": "10Mi"}}
+        env:
+        - name: SECRET_SERVICE_KEY_FILE
+          value: /secret_k8s_ops/secret.json
+        - name: DB_BACKUP_FILE
+          value: /db-backup/ckan.dump
+        - name: BACKUP_TARGET_PREFIX
+          value: {{ .Values.dbOps.backup | quote }}
+        - name: BACKUP_TARGET_SUFFIX
+          value: ".ckan.dump"
+        volumeMounts:
+        - name: backups
+          mountPath: /db-backup
+        - name: k8s-ops
+          mountPath: /secret_k8s_ops
+          readOnly: true
+      {{ end }}
       volumes:
       - name: db
-        {{ if .Values.ckanDbPersistentDiskName }}
+        {{ if .Values.ckanDbNfsServer }}
+        nfs:
+          server: {{ .Values.ckanDbNfsServer }}
+          path: "/"
+        {{ else if .Values.ckanDbPersistentDiskName }}
         gcePersistentDisk:
           pdName: {{ .Values.ckanDbPersistentDiskName | quote }}
         {{ else }}
         emptyDir: {}
         {{ end }}
+      {{ if .Values.dbOps.enabled }}
+      - name: backups
+        emptyDir: {}
+      - name: k8s-ops
+        secret:
+          secretName: ops
+      {{ end }}
 {{ end }}

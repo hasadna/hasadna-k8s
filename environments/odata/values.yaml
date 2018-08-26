@@ -10,3 +10,15 @@ odata:
   nfsGcePersistentDiskName: odata-ckan-data-nfs
   ckanDataNfsServer: 10.23.252.189
   etcCkanDefaultSecretName: etc-ckan-default-3
+#  dbNfsEnabled: true
+#  ckanDbNfsServer: 10.104.143.63
+
+  db:
+    terminationGracePeriodSeconds: 30
+    image: orihoch/hasadna-k8s-odata-db:11
+    opsImage: orihoch/hasadna-k8s-odata-db-ops:11
+
+  dbOps:
+    enabled: true
+    backup: "gs://odata-k8s-backups/production/ckan-db-dump-"
+#    restore: "gs://odata-k8s-backups/production/ckan-db-dump-2018-08-26.ckan.dump"
