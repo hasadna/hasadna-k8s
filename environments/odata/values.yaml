@@ -9,7 +9,7 @@ odata:
   nfsEnabled: true
   nfsGcePersistentDiskName: odata-ckan-data-nfs
   ckanDataNfsServer: 10.23.252.189
-  etcCkanDefaultSecretName: etc-ckan-default-4
+  etcCkanDefaultSecretName: etc-ckan-default-7
 #  dbNfsEnabled: true
 #  ckanDbNfsServer: 10.104.143.63
 
@@ -24,4 +24,3 @@ odata:
 #    restore: "gs://odata-k8s-backups/production/ckan-db-dump-2018-08-26.ckan.dump"
 
   solrImage: orihoch/solr-ckan-2.8.1:3
-#  ckanImage: orihoch/data4dappl-ckan-2.8.1:3

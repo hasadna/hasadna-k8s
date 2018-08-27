@@ -24,9 +24,12 @@
 debug = {{CKAN_DEBUG}}
 
 [server:main]
-use = egg:Paste#http
+use = egg:gunicorn#main
+;use = egg:Paste#http
 host = 0.0.0.0
 port = 5000
+workers = 2
+proc_name = ckan
 
 [app:main]
 use = egg:ckan
