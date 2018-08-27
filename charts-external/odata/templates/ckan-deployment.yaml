@@ -18,6 +18,9 @@ spec:
       containers:
       - name: ckan
         image: {{ .Values.ckanImage | default "gcr.io/uumpa-public/data4dappl-ckan@sha256:c6f9c390f26da7b907aa54394224c04a191c11e1f36b694f1bc58e7eb95cf7b5" | quote }}
+        env:
+        - name: CKAN_STORAGE_PATH
+          value: /var/lib/ckan/data
         ports:
         - {containerPort: 5000}
         resources: {{ .Values.ckanResources }}
