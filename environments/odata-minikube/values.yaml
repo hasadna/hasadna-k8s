@@ -1,6 +1,6 @@
 odata:
   enabled: true
-#  ckanDeploymentEnabled: true
+  ckanDeploymentEnabled: true
   ckanResources: '{}'
   dbResources: '{"requests": {"cpu": "50m", "memory": "150Mi"}, "limits": {"memory": "400Mi"}}'
   solrResources: '{}'
@@ -9,7 +9,7 @@ odata:
 #  nfsEnabled: true
 #  nfsGcePersistentDiskName: odata-ckan-data-nfs
 #  ckanDataNfsServer: 10.23.252.189
-#  etcCkanDefaultSecretName: etc-ckan-default-3
+  etcCkanDefaultSecretName: etc-ckan-default-2
   dbNfsEnabled: true
   ckanDbNfsServer: 10.104.143.63
 
@@ -22,3 +22,6 @@ odata:
     enabled: true
 #    backup: "gs://odata-k8s-backups/testing/ckan-db-dump-"
     restore: "gs://odata-k8s-backups/production/ckan-db-dump-2018-08-26.ckan.dump"
+
+  solrImage: orihoch/solr-ckan-2.8.1:3
+  ckanImage: orihoch/data4dappl-ckan-2.8.1:3

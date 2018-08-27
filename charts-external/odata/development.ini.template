@@ -29,7 +29,7 @@ host = 0.0.0.0
 port = 5000
 
 [app:main]
-use = call:ckanext.odata_org_il.middleware:make_app
+use = egg:ckan
 full_stack = true
 cache_dir = /tmp/%(ckan.site_id)s/
 beaker.session.key = ckan
@@ -140,6 +140,11 @@ ckan.views.default_views = image_view text_view recline_view
 #ckan.preview.image_formats = png jpeg jpg gif
 
 ## Front-End Settings
+
+# Uncomment following configuration to enable using of Bootstrap 2
+# ckan.base_public_folder = public-bs2
+# ckan.base_templates_folder = templates-bs2
+
 ckan.site_title = מידע ממשלתי לעם
 ckan.site_logo = /base/images/ckan-logo.png
 ckan.site_description = אתר זה מרכז מידע ממקורות ממשלתיים וציבוריים

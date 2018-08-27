@@ -14,7 +14,7 @@ spec:
         app: solr
     spec:
       containers:
-      - image: orihoch/data4dappl-solr
+      - image: {{ .Values.solrImage | quote }}
         name: solr
         ports:
         - containerPort: 8983

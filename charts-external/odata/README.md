@@ -49,7 +49,7 @@ kubectl create secret generic env-vars --from-literal=CKAN_APP_INSTANCE_UUID=$CK
                                        --from-literal=POSTGRES_PASSWORD=$POSTGRES_PASSWORD
 export CKAN_SQLALCHEMY_URL="postgresql://postgres:${POSTGRES_PASSWORD}@db/ckan"
 export CKAN_SITE_URL="https://www.odata.org.il/"
-export CKAN_SOLR_URL="http://solr:8983/solr/"
+export CKAN_SOLR_URL="http://solr:8983/solr/ckan"
 export CKAN_REDIS_URL="redis://redis:6379/0"
 export CKAN_STORAGE_PATH="/var/lib/ckan/data"
 export CKAN_MAX_RESOURCE_SIZE="500"

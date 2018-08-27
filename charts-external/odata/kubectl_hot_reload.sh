@@ -3,6 +3,10 @@
 COMMIT_MESSAGE="${1}"
 
 if echo "${COMMIT_MESSAGE}" | grep 'automatic update of odata-ckan' >/dev/null 2>&1; then
+
+    echo odata ckan hot reload temporarily disabled
+    exit 2
+
     echo hot reloading odata ckan
     CKAN_PODS=`kubectl -n odata get pods -l app=ckan -o 'jsonpath={.items[*].metadata.name}'`
     echo CKAN_PODS: $CKAN_PODS
