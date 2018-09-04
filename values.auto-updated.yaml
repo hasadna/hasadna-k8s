@@ -2,4 +2,4 @@ anyway:
   image: uumpa/anyway:267f7419d02e00e6e74e9e57e2a217cf33b7d57c
   productionImage: uumpa/anyway:ef99d85b586a94d9e3b98a3e7dad195334318311
 odata:
-  ckanImage: orihoch/odata-ckan:2e2e87a9c58bdb87af52844ce28572b4546162ad
+  ckanImage: orihoch/odata-ckan:c755fe30866b17794c06408168d1babc41abeb9f
