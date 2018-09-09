@@ -9,7 +9,7 @@ odata:
   nfsEnabled: true
   nfsGcePersistentDiskName: odata-ckan-data-nfs
   ckanDataNfsServer: 10.23.252.189
-  etcCkanDefaultSecretName: etc-ckan-default-7
+  etcCkanDefaultSecretName: etc-ckan-default-8
 #  dbNfsEnabled: true
 #  ckanDbNfsServer: 10.104.143.63
 

@@ -128,7 +128,13 @@ ckan.redis.url = {{CKAN_REDIS_URL}}
 #       Add ``datapusher`` to enable DataPusher
 #		Add ``resource_proxy`` to enable resorce proxying and get around the
 #		same origin policy
-ckan.plugins = stats text_view image_view recline_view odata_org_il
+ckan.plugins =
+    stats
+    text_view
+    image_view
+    recline_view
+    odata_org_il
+    file_uploader_ui
 
 # Define which views should be created by default
 # (plugins must be loaded in ckan.plugins)

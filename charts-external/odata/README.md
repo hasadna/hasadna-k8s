@@ -41,25 +41,7 @@
 ### Create Secrets
 
 ```
-export POSTGRES_PASSWORD=123456
-export CKAN_BEAKER_SESSION_SECRET=`python -c "import binascii,os;print(binascii.hexlify(os.urandom(25)))"`
-export CKAN_APP_INSTANCE_UUID=`python -c "import uuid;print(uuid.uuid1())"`
-kubectl create secret generic env-vars --from-literal=CKAN_APP_INSTANCE_UUID=$CKAN_APP_INSTANCE_UUID \
-                                       --from-literal=CKAN_BEAKER_SESSION_SECRET=$CKAN_BEAKER_SESSION_SECRET \
-                                       --from-literal=POSTGRES_PASSWORD=$POSTGRES_PASSWORD
-export CKAN_SQLALCHEMY_URL="postgresql://postgres:${POSTGRES_PASSWORD}@db/ckan"
-export CKAN_SITE_URL="https://www.odata.org.il/"
-export CKAN_SOLR_URL="http://solr:8983/solr/ckan"
-export CKAN_REDIS_URL="redis://redis:6379/0"
-export CKAN_STORAGE_PATH="/var/lib/ckan/data"
-export CKAN_MAX_RESOURCE_SIZE="500"
-export CKAN_DEBUG=false
-export COMMENT="-- This file contains secrets, do not commit / expose publicly! --"
-TEMP_DIR=`mktemp -d`
-./templater.sh charts-external/odata/who.ini.template > $TEMP_DIR/who.ini
-./templater.sh charts-external/odata/development.ini.template > $TEMP_DIR/development.ini
-kubectl create secret generic etc-ckan-default --from-file $TEMP_DIR/
-rm -rf $TEMP_DIR
+charts-external/odata/update-ckan-configuration.sh
 ```
 
 ### Copy Google disk snapshots
@@ -152,19 +134,21 @@ charts-external/odata/utils/initiate_data_from_backup.sh gs://odata-k8s-backups/
 
 Edit `charts-external/odata/development.ini.template` - make the required changes
 
-Extract the required secrets from env-vars secret
+Create new updated secret
 
 ```
-export CKAN_APP_INSTANCE_UUID=`kubectl get secret env-vars -o json | jq -r .data.CKAN_APP_INSTANCE_UUID | base64 -d`
-export CKAN_BEAKER_SESSION_SECRET=`kubectl get secret env-vars -o json | jq -r .data.CKAN_BEAKER_SESSION_SECRET | base64 -d`
-export POSTGRES_PASSWORD=`kubectl get secret env-vars -o json | jq -r .data.POSTGRES_PASSWORD | base64 -d`
+charts-external/odata/update-ckan-configuration.sh
 ```
-
-Proceed with create secrets procedure from initial installation but use a different name e.g. etc-ckan-default-2
 
 Update the values file etcCkanDefaultSecretName attribute to the new name
 
 Deploy
+
+You should delete old secrets once you are certain they won't be needed for rollback
+
+```
+charts-external/odata/delete-old-ckan-configurations.sh
+```
 
 ## Backups
 
