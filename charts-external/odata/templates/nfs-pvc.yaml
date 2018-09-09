@@ -1,0 +1,27 @@
+{{ if .Values.nfsGcePersistentDiskName }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-gcepd
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 100G
+  accessModes:
+    - ReadWriteOnce
+  gcePersistentDisk:
+    pdName: {{ .Values.nfsGcePersistentDiskName | quote }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-gcepd
+spec:
+  storageClassName: ""
+  volumeName: nfs-gcepd
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100G
+{{ end }}

@@ -32,8 +32,8 @@ spec:
       volumes:
         - name: exports
           {{ if .Values.nfsGcePersistentDiskName }}
-          gcePersistentDisk:
-            pdName: {{ .Values.nfsGcePersistentDiskName | quote }}
+          persistentVolumeClaim:
+            claimName: nfs-gcepd
           {{ else }}
           emptyDir: {}
           {{ end }}
