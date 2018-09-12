@@ -2,7 +2,8 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-gcepd
+  # must be unique for the entire cluster
+  name: odata-nfs-gcepd
 spec:
   storageClassName: ""
   capacity:
@@ -15,10 +16,10 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-gcepd
+  name: odata-nfs-gcepd
 spec:
   storageClassName: ""
-  volumeName: nfs-gcepd
+  volumeName: odata-nfs-gcepd
   accessModes:
     - ReadWriteOnce
   resources:

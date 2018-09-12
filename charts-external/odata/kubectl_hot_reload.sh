@@ -4,7 +4,7 @@ COMMIT_MESSAGE="${1}"
 
 if echo "${COMMIT_MESSAGE}" | grep 'automatic update of odata-ckan' >/dev/null 2>&1; then
 
-    echo odata ckan hot reload temporarily disabled
+    # echo odata ckan hot reload is disabled - it causes some problems
     exit 2
 
     echo hot reloading odata ckan

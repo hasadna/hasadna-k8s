@@ -33,7 +33,7 @@ spec:
         - name: exports
           {{ if .Values.nfsGcePersistentDiskName }}
           persistentVolumeClaim:
-            claimName: nfs-gcepd
+            claimName: odata-nfs-gcepd
           {{ else }}
           emptyDir: {}
           {{ end }}
