@@ -24,3 +24,9 @@ odata:
     restore: "gs://odata-k8s-backups/production/ckan-db-dump-2018-08-26.ckan.dump"
 
   solrImage: orihoch/solr-ckan-2.8.1:3
+
+  pipelines:
+    # pipelines require a shared directory with the ckan server
+    # this requires ckanDataNfsServer to be set as well
+    enabled: false
+    # resources: '{"requests": {"cpu": "100m", "memory": "100Mi"}, "limits": {"memory": "300Mi"}}'

@@ -15,6 +15,7 @@ anyway-production:
     image-prop: productionImage
 
 odata:
+  lint-environments: odata odata-minikube
   automatic-update:
     commit-message: automatic update of odata-ckan
     namespace-name: odata
