@@ -9,8 +9,7 @@ odata:
   nfsEnabled: true
   nfsGcePersistentDiskName: odata-ckan-data-nfs
   ckanDataNfsServer: 10.23.252.189
-  # etcCkanDefaultSecretName: etc-ckan-default-10
-  etcCkanDefaultSecretName: etc-ckan-default-8
+  etcCkanDefaultSecretName: etc-ckan-default-10
 #  dbNfsEnabled: true
 #  ckanDbNfsServer: 10.104.143.63
 
@@ -30,4 +29,4 @@ odata:
     # pipelines require a shared directory with the ckan server
     # this requires ckanDataNfsServer to be set as well
     enabled: true
-    resources: '{"requests": {"cpu": "100m", "memory": "100Mi"}, "limits": {"memory": "300Mi"}}'
+    resources: '{"requests": {"cpu": "400m", "memory": "400Mi"}, "limits": {"memory": "800Mi"}}'

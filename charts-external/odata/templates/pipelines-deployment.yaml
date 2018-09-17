@@ -29,6 +29,7 @@ spec:
         resources: {{ .Values.pipelines.resources }}
         volumeMounts:
         - {mountPath: /pipelines, name: ckan-data, subPath: pipelines}
+        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
       volumes:
       - name: ckan-data
         nfs:
