@@ -135,6 +135,8 @@ ckan.plugins =
     recline_view
     odata_org_il
     file_uploader_ui
+    datapackage_pipelines
+    upload_via_email
 
 # Define which views should be created by default
 # (plugins must be loaded in ckan.plugins)
@@ -225,6 +227,11 @@ ckan.hide_activity_from_users = %(ckan.site_id)s
 #smtp.password = your_password
 #smtp.mail_from =
 
+ckanext.upload_via_email.gmail_token = {{GMAIL_TOKEN}}
+ckanext.upload_via_email.allowed_senders_resource_id = {{ALLOWED_SENDERS_RESOURCE_ID}}
+ckanext.upload_via_email.success_message = The dataset is available at {dataset_url}
+ckanext.upload_via_email.success_message_from_email = odata.org.il@gmail.com
+ckanext.upload_via_email.success_message_subject = Your dataset was created successfully
 
 ## Logging configuration
 [loggers]

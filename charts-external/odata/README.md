@@ -44,6 +44,21 @@
 charts-external/odata/update-ckan-configuration.sh
 ```
 
+To run the CKAN pipelines server you will also need to provide a CKAN api key with sysadmin privileges.
+
+Each user has an API key which is displayed in the user's profile page
+
+```
+kubectl create secret generic pipelines --from-literal=CKAN_API_KEY=***
+```
+
+Upload via email requires the following secret - after creating it you should re-run update-ckan-configuration.sh script
+
+```
+kubectl create secret generic env-vars-upload-via-email --from-literal=GMAIL_TOKEN=*** \
+                                                        --from-literal=ALLOWED_SENDERS_RESOURCE_ID=***
+```
+
 ### Copy Google disk snapshots
 
 Skip this step for Minikube environment

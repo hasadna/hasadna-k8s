@@ -1,0 +1,37 @@
+{{ if and .Values.enabled .Values.pipelines.enabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata: {name: pipelines}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels: {app: pipelines}
+    spec:
+      containers:
+      - name: pipelines
+        image: orihoch/datapackage-pipelines-ckanext:v0.0.1
+        args:
+        - "server"
+        env:
+        - name: CKAN_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: pipelines
+              key: CKAN_API_KEY
+        - name: CKAN_URL
+          value: https://www.odata.org.il
+        ports:
+        - {containerPort: 5050}
+        resources: {{ .Values.pipelines.resources }}
+        volumeMounts:
+        - {mountPath: /pipelines, name: ckan-data, subPath: pipelines}
+      volumes:
+      - name: ckan-data
+        nfs:
+          server: {{ .Values.ckanDataNfsServer }}
+          path: "/"
+{{ end }}

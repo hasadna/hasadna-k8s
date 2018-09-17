@@ -4,6 +4,10 @@ get_env_var_secret() {
     kubectl get secret env-vars -o json | jq -r ".data.${1}" | base64 -d
 }
 
+get_env_var_email_secret() {
+    kubectl get secret env-vars-upload-via-email -o json | jq -r ".data.${1}" | base64 -d
+}
+
 if ! kubectl get secret env-vars; then
     [ -z "${CKAN_BEAKER_SESSION_SECRET}" ] && echo "Generating CKAN_BEAKER_SESSION_SECRET" &&\
         export CKAN_BEAKER_SESSION_SECRET=`python -c "import binascii,os;print(binascii.hexlify(os.urandom(25)))"`
@@ -23,6 +27,16 @@ else
     export CKAN_APP_INSTANCE_UUID=`get_env_var_secret CKAN_APP_INSTANCE_UUID`
     export CKAN_BEAKER_SESSION_SECRET=`get_env_var_secret CKAN_BEAKER_SESSION_SECRET`
     export POSTGRES_PASSWORD=`get_env_var_secret POSTGRES_PASSWORD`
+fi
+
+if ! kubectl get secret env-vars-upload-via-email; then
+    echo WARNING: No env-vars-upload-via-email secret
+    echo Upload via email feature will not work
+    export GMAIL_TOKEN="--"
+    export ALLOWED_SENDERS_RESOURCE_ID="--"
+else
+    export GMAIL_TOKEN=`get_env_var_email_secret GMAIL_TOKEN`
+    export ALLOWED_SENDERS_RESOURCE_ID=`get_env_var_email_secret ALLOWED_SENDERS_RESOURCE_ID`
 fi
 
 ( [ -z "${CKAN_BEAKER_SESSION_SECRET}" ] || [ -z "${CKAN_APP_INSTANCE_UUID}" ] || [ -z "${POSTGRES_PASSWORD}" ] )\
