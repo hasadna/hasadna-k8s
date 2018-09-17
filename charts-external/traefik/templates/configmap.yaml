@@ -38,6 +38,9 @@ data:
       {{ if .Values.monitoring.enabled }}
 {{ .Values.monitoring.acmeDomains | indent 6 }}
       {{ end }}
+      {{ if .Values.mysadna.enabled }}
+{{ .Values.mysadna.acmeDomains | indent 6 }}
+      {{ end }}
       [acme.dnsChallenge]
         provider = {{ .Values.letsencrypt.dnsProvider | quote }}
     {{ end }}
@@ -81,6 +84,12 @@ data:
       [backends.monitoring]
         [backends.monitoring.servers.server1]
           url = {{ .Values.monitoring.backendUrl | quote }}
+      {{ end }}
+
+      {{ if .Values.mysadna.enabled }}
+      [backends.mysadna]
+        [backends.mysadna.servers.server1]
+          url = {{ .Values.mysadna.backendUrl | quote }}
       {{ end }}
 
     [frontends]
@@ -144,6 +153,16 @@ data:
           SSLRedirect = true
         [frontends.monitoring.routes.route1]
           rule = {{ .Values.monitoring.frontendRule | quote }}
+      {{ end }}
+
+      {{ if .Values.mysadna.enabled }}
+      [frontends.mysadna]
+        backend="mysadna"
+        passHostHeader = true
+        [frontends.mysadna.headers]
+          SSLRedirect = true
+        [frontends.mysadna.routes.route1]
+          rule = {{ .Values.mysadna.frontendRule | quote }}
       {{ end }}
 
 {{ end }}

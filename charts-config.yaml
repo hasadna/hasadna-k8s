@@ -22,3 +22,10 @@ odata:
     deployment-name: ckan
     container-name: ckan
     image-prop: ckanImage
+
+mysadna:
+  automatic-update:
+    commit-message: automatic update of mysadna
+    namespace-name: mysadna
+    deployment-name: mysadna
+    container-name: mysadna

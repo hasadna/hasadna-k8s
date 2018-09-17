@@ -67,3 +67,11 @@ traefik:
     acmeDomains: |
       [[acme.domains]]
         main = "monitoring.oknesset.org"
+
+  mysadna:
+    enabled: true
+    frontendRule: "Host:mysadna.oknesset.org"
+    backendUrl: "http://mysadna.mysadna:80"
+    acmeDomains: |
+      [[acme.domains]]
+        main = "mysadna.oknesset.org"
