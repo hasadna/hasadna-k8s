@@ -23,7 +23,7 @@ spec:
               name: pipelines
               key: CKAN_API_KEY
         - name: CKAN_URL
-          value: https://www.odata.org.il
+          value: http://ckan:5000
         ports:
         - {containerPort: 5050}
         resources: {{ .Values.pipelines.resources }}

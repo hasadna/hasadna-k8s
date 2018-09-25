@@ -1,0 +1,12 @@
+{{ if and .Values.enabled .Values.datastore.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: datapusher
+spec:
+  selector:
+    app: datapusher
+  ports:
+  - name: "8800"
+    port: 8800
+{{ end }}

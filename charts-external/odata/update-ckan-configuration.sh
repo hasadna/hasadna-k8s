@@ -18,11 +18,21 @@ if ! kubectl get secret ${2:-env-vars}; then
         export CKAN_APP_INSTANCE_UUID=`python -c "import uuid;print(uuid.uuid1())"`
     [ -z "${POSTGRES_PASSWORD}" ] && echo "Generating POSTGRES_PASSWORD" &&\
         export POSTGRES_PASSWORD=`python -c "import binascii,os;print(binascii.hexlify(os.urandom(12)))"`
+    [ -z "${DATASTORE_POSTGRES_PASSWORD}" ] && echo "Generating DATASTORE_POSTGRES_PASSWORD" &&\
+        export DATASTORE_POSTGRES_PASSWORD=`python -c "import binascii,os;print(binascii.hexlify(os.urandom(12)))"`
+    [ -z "${DATASTORE_RO_PASSWORD}" ] && echo "Generating DATASTORE_RO_PASSWORD" &&\
+        export DATASTORE_RO_PASSWORD=`python -c "import binascii,os;print(binascii.hexlify(os.urandom(12)))"`
     [ -z "${POSTGRES_USER}" ] && export POSTGRES_USER=postgres
+    [ -z "${DATASTORE_POSTGRES_USER}" ] && export DATASTORE_POSTGRES_USER=postgres
+    [ -z "${DATASTORE_RO_USER}" ] && export DATASTORE_RO_USER=readonly
     kubectl create secret generic ${2:-env-vars} --from-literal=CKAN_APP_INSTANCE_UUID=$CKAN_APP_INSTANCE_UUID \
                                                  --from-literal=CKAN_BEAKER_SESSION_SECRET=$CKAN_BEAKER_SESSION_SECRET \
                                                  --from-literal=POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
-                                                 --from-literal=POSTGRES_USER=$POSTGRES_USER
+                                                 --from-literal=POSTGRES_USER=$POSTGRES_USER \
+                                                 --from-literal=DATASTORE_POSTGRES_PASSWORD=$DATASTORE_POSTGRES_PASSWORD \
+                                                 --from-literal=DATASTORE_POSTGRES_USER=$DATASTORE_POSTGRES_USER \
+                                                 --from-literal=DATASTORE_RO_USER=$DATASTORE_RO_USER \
+                                                 --from-literal=DATASTORE_RO_PASSWORD=$DATASTORE_RO_PASSWORD
     ETC_CKAN_DEFAULT_SECRET_NAME="${1:-ckan-default}"
     CKAN_SECRETS_DEFAULT_SECRET_NAME="${1:-ckan-default}-secrets"
 else
@@ -34,8 +44,14 @@ else
     export CKAN_APP_INSTANCE_UUID=`get_env_var_secret CKAN_APP_INSTANCE_UUID`
     export CKAN_BEAKER_SESSION_SECRET=`get_env_var_secret CKAN_BEAKER_SESSION_SECRET`
     export POSTGRES_PASSWORD=`get_env_var_secret POSTGRES_PASSWORD`
+    export DATASTORE_POSTGRES_PASSWORD=`get_env_var_secret DATASTORE_POSTGRES_PASSWORD`
+    export DATASTORE_RO_PASSWORD=`get_env_var_secret DATASTORE_RO_PASSWORD`
     POSTGRES_USER=`get_env_var_secret POSTGRES_USER`
-    export POSTGRES_USER="${POSTGRES_UESR:-postgres}"
+    export POSTGRES_USER="${POSTGRES_USER:-postgres}"
+    DATASTORE_POSTGRES_USER=`get_env_var_secret DATASTORE_POSTGRES_USER`
+    export DATASTORE_POSTGRES_USER="${DATASTORE_POSTGRES_USER:-postgres}"
+    DATASTORE_RO_USER=`get_env_var_secret DATASTORE_RO_USER`
+    export DATASTORE_RO_USER="${DATASTORE_RO_USER:-readonly}"
 fi
 
 if ! kubectl get secret env-vars-upload-via-email; then
@@ -48,35 +64,16 @@ else
     export ALLOWED_SENDERS_RESOURCE_ID=`get_env_var_email_secret ALLOWED_SENDERS_RESOURCE_ID`
 fi
 
-( [ -z "${CKAN_BEAKER_SESSION_SECRET}" ] || [ -z "${CKAN_APP_INSTANCE_UUID}" ] || [ -z "${POSTGRES_PASSWORD}" ] )\
-    && echo missing env vars && exit 1
-
-export CKAN_SQLALCHEMY_URL="postgresql://postgres:${POSTGRES_PASSWORD}@db/ckan"
-if [ "${K8S_ENVIRONMENT_NAME}" == "odata-minikube" ]; then
-    export CKAN_SITE_URL="http://localhost:5000/"
-    echo Configuring CKAN_SITE_URL for local development on $CKAN_SITE_URL
-else
-    export CKAN_SITE_URL="https://www.odata.org.il/"
-fi
-export CKAN_SOLR_URL="http://solr:8983/solr/ckan"
-export CKAN_REDIS_URL="redis://redis:6379/0"
-export CKAN_STORAGE_PATH="/var/lib/ckan/data"
-export CKAN_MAX_RESOURCE_SIZE="500"
-export CKAN_DEBUG=false
-export COMMENT="-- This file contains secrets, do not commit / expose publicly! --"
-TEMP_DIR=`mktemp -d`
-./templater.sh charts-external/odata/who.ini.template > $TEMP_DIR/who.ini
-./templater.sh charts-external/odata/development.ini.template > $TEMP_DIR/development.ini
-kubectl create secret generic "${ETC_CKAN_DEFAULT_SECRET_NAME}" --from-file $TEMP_DIR/
-rm -rf $TEMP_DIR
-
+( [ -z "${CKAN_BEAKER_SESSION_SECRET}" ] || [ -z "${CKAN_APP_INSTANCE_UUID}" ] || [ -z "${POSTGRES_PASSWORD}" ] || \
+  [ -z "${DATASTORE_POSTGRES_PASSWORD}" ] || [ -z "${POSTGRES_USER}" ] || [ -z "${DATASTORE_POSTGRES_USER}" ] \
+) && echo missing env vars && exit 1
 
 TEMPFILE=`mktemp`
 echo "export BEAKER_SESSION_SECRET=${CKAN_BEAKER_SESSION_SECRET}
 export APP_INSTANCE_UUID=${CKAN_APP_INSTANCE_UUID}
 export SQLALCHEMY_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/ckan
-export CKAN_DATASTORE_WRITE_URL=
-export CKAN_DATASTORE_READ_URL=
+export CKAN_DATASTORE_WRITE_URL=postgresql://${DATASTORE_POSTGRES_USER}:${DATASTORE_POSTGRES_PASSWORD}@datastore-db/datastore
+export CKAN_DATASTORE_READ_URL=postgresql://${DATASTORE_RO_USER}:${DATASTORE_RO_PASSWORD}@datastore-db/datastore
 export SOLR_URL=http://solr:8983/solr/ckan
 export CKAN_REDIS_URL=redis://redis:6379/1
 export CKAN_DATAPUSHER_URL=

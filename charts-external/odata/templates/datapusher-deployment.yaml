@@ -1,0 +1,22 @@
+{{ if and .Values.enabled .Values.datastore.enabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: datapusher
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: datapusher
+    spec:
+      containers:
+      - name: datapusher
+        image: orihoch/odata-datapusher:5
+        ports:
+        - containerPort: 8800
+        resources: {"requests": {"cpu": "50m", "memory": "200Mi"}, "limits": {"memory": "500Mi"}}
+{{ end }}

@@ -1,0 +1,105 @@
+{{ if and .Values.enabled .Values.datastore.enabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: datastore-db
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: datastore-db
+    spec:
+      terminationGracePeriodSeconds: {{ .Values.datastore.terminationGracePeriodSeconds }}
+      containers:
+      - name: db
+        image: {{ .Values.datastore.image | quote }}
+        ports:
+        - containerPort: 5432
+        resources: {{ .Values.datastore.resources }}
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom: {secretKeyRef: {name: {{ .Values.envVarsSecretName | default "env-vars" | quote }}, key: "DATASTORE_POSTGRES_PASSWORD"}}
+        - name: DATASTORE_RO_PASSWORD
+          valueFrom: {secretKeyRef: {name: {{ .Values.envVarsSecretName | default "env-vars" | quote }}, key: "DATASTORE_RO_PASSWORD"}}
+        - name: DATASTORE_RO_USER
+          valueFrom: {secretKeyRef: {name: {{ .Values.envVarsSecretName | default "env-vars" | quote }}, key: "DATASTORE_RO_USER"}}
+        {{ if .Values.datastore.dbOps.enabled }}
+        - name: BACKUP_DATABASE_NAME
+          value: datastore
+        - name: BACKUP_DATABASE_FILE
+          value: "/db-backup/datastore.dump"
+        - name: BACKUP_CRONLINE
+          #      minute hour day_of_month month day_of_week
+          value: "0     3    *            *     *"
+        {{ end }}
+        {{ if .Values.datastore.initialize }}
+        command:
+        - bash
+        - "-c"
+        - |
+          docker-entrypoint.sh postgres &
+          ! bash /db-scripts/initialize-datastore.sh && exit 1
+          wait
+        {{ else if .Values.datastore.dbOps.enabled }}
+        {{ if .Values.datastore.dbOps.backup }}
+        command: [bash, "-c", "bash /db-scripts/backup-cron.sh & exec docker-entrypoint.sh postgres"]
+        {{ else if .Values.datastore.dbOps.restore }}
+        command: [bash, "-c", "bash /db-scripts/restore-datastore.sh"]
+        {{ end }}
+        {{ end }}
+        volumeMounts:
+        - name: db
+          mountPath: /var/lib/postgresql/data
+          # postgresql doesn't like being on root of device
+          subPath: data
+        {{ if .Values.datastore.dbOps.enabled }}
+        - name: backups
+          mountPath: /db-backup
+        {{ end }}
+      {{ if .Values.datastore.dbOps.enabled }}
+      - name: db-ops
+        image: {{ .Values.datastore.opsImage | quote }}
+        {{ if .Values.datastore.dbOps.backup }}
+        args: ["bash", "/db-scripts/upload-cron.sh"]
+        {{ else if .Values.datastore.dbOps.restore }}
+        args: ["bash", "/db-scripts/download.sh", {{ .Values.datastore.dbOps.restore | quote }}]
+        {{ else }}
+        args: ["bash", "-c", "while true; do sleep 86400; done"]
+        {{ end }}
+        resources: {"requests": {"cpu": "5m", "memory": "10Mi"}}
+        env:
+        - name: SECRET_SERVICE_KEY_FILE
+          value: /secret_k8s_ops/secret.json
+        - name: DB_BACKUP_FILE
+          value: /db-backup/datastore.dump
+        - name: BACKUP_TARGET_PREFIX
+          value: {{ .Values.datastore.dbOps.backup | quote }}
+        - name: BACKUP_TARGET_SUFFIX
+          value: ".datastore.dump"
+        volumeMounts:
+        - name: backups
+          mountPath: /db-backup
+        - name: k8s-ops
+          mountPath: /secret_k8s_ops
+          readOnly: true
+      {{ end }}
+      volumes:
+      - name: db
+        {{ if .Values.datastore.persistentDiskName }}
+        gcePersistentDisk:
+          pdName: {{ .Values.datastore.persistentDiskName | quote }}
+        {{ else }}
+        emptyDir: {}
+        {{ end }}
+      {{ if .Values.datastore.dbOps.enabled }}
+      - name: backups
+        emptyDir: {}
+      - name: k8s-ops
+        secret:
+          secretName: ops
+      {{ end }}
+{{ end }}
