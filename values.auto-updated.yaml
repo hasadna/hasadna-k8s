@@ -4,4 +4,4 @@ anyway:
 mysadna:
   image: uumpa/hasadna-mysadna:d88c4c83238c23ff5e5499525d6193003c1b277c
 odata:
-  ckanImage: orihoch/odata-ckan:0f1b6056f8a7c73fab6e413f75c8843b8b8b8ad9
+  ckanImage: orihoch/odata-ckan:41f071cf4396bd46fdb2aed09de7ea1fceba1785
