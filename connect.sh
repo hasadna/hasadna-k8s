@@ -7,6 +7,9 @@
 # thanks for your understanding and cooperation
 
 k8s_connect_gke() {
+    if [ "${K8S_ENVIRONMENT_NAMESPACE_SUFFIX}" != "" ]; then
+        K8S_NAMESPACE="${K8S_NAMESPACE}-${K8S_ENVIRONMENT_NAMESPACE_SUFFIX}"
+    fi
 	export CLOUDSDK_CORE_PROJECT
 	export CLOUDSDK_CONTAINER_CLUSTER
 	export CLOUDSDK_COMPUTE_ZONE
@@ -23,6 +26,9 @@ k8s_connect_gke() {
 }
 
 k8s_connect_custom() {
+    if [ "${K8S_ENVIRONMENT_NAMESPACE_SUFFIX}" != "" ]; then
+        K8S_NAMESPACE="${K8S_NAMESPACE}-${K8S_ENVIRONMENT_NAMESPACE_SUFFIX}"
+    fi
 	export K8S_NAMESPACE
 	export K8S_HELM_RELEASE_NAME
 	export K8S_ENVIRONMENT_NAME

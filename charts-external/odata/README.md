@@ -101,12 +101,12 @@ Check that all the pods started
 
 For minikube environment you must restore the DB from backup
 
-For GKE environment - you can skip this step, if you created from existing disk / snapshot
+For GKE environment - you can skip this step if you created from existing disk / snapshot
 
 The backup is private, you should have permissions to the relevant google storage
 
 ```
-charts-external/odata/utils/initiate_db_from_backup.sh gs://odata-k8s-backups/production/ckan-db-dump-2018-08-06.gz
+charts-external/odata/utils/initiate_db_from_backup.sh gs://odata-k8s-backups/production/ckan-db-dump-2018-09-24.ckan.dump
 ```
 
 ### Deploy all the remaining components
@@ -175,3 +175,63 @@ You can also run a backup manually:
 ./kubectl.sh exec db -c db -- bash /db-scripts/backup.sh &&\
 ./kubectl.sh logs db -c db-ops -f
 ```
+
+## Blue/Green deployment
+
+* Switch to environment with a namespace suffix
+  ```source switch_environment.sh odata green```
+* Create the namespace
+  * ```kubectl create ns odata-green```
+* Override values for the namespace suffix in `environments/odata/values.green.yaml`
+  * Set empty strings for the persistent disk names - to prevent collision with existing persistent disks
+* Create secrets and continue deployment normally (follow steps above)
+* When new deployment is stable, create new persistent disks:
+  * `gcloud compute disks create odata-green-db --size=20`
+* Switch to current live environment:
+  * `source switch_environment.sh odata`
+* Take snapshot of data volume (which will be discarded but will speed up snapshot later):
+  * ```gcloud compute disks snapshot $(eval echo `./read_env_yaml.sh odata nfsGcePersistentDiskName`)```
+* Deploy without the ckan deployment (causing down-time):
+  * `./helm_upgrade_external_chart.sh odata --install --debug --set ckanDeploymentEnabled=false`
+* Take snapshot of data volume and create disk from it:
+  * ```gcloud compute disks snapshot $(eval echo `./read_env_yaml.sh odata nfsGcePersistentDiskName`) --snapshot-names odata-before-green-nfs```
+  * ```gcloud compute disks create odata-green-nfs --size=100 --source-snapshot=odata-before-green-nfs```
+* Create and upload a DB backup:
+```
+kubectl exec -it $(kubectl get pods -l app=db -o 'jsonpath={.items[0].metadata.name}') -- \
+    bash -c "BACKUP_DATABASE_NAME=ckan BACKUP_DATABASE_FILE=/ckan.dump bash /db-scripts/backup.sh" &&\
+kubectl cp $(kubectl get pods -l app=db -o 'jsonpath={.items[0].metadata.name}'):/ckan.dump ./ckan.dump &&\
+gsutil cp ./ckan.dump gs://odata-k8s-backups/production/ckan-before-green-`date +%Y%m%d`.dump
+```
+* Switch to the new environment
+  * ```source switch_environment.sh odata green```
+* Update relevant environment's `values.yaml` persistent disk names and db restore
+  * ```ckanDbPersistentDiskName: odata-green-db```
+  * ```nfsGcePersistentDiskName: odata-green-nfs```
+  * ```nfsPersistentVolumeName: odata-green-nfs-gcepd```
+* Enable db-ops, disable backup and enable restore from created backup:
+```
+  dbOps:
+    enabled: true
+#    backup: "gs://odata-k8s-backups/production/ckan-db-dump-"
+    restore: "gs://odata-k8s-backups/production/ckan-before-green-20180925.dump"
+```
+* Deploy new environment
+  * ```./helm_upgrade_external_chart.sh odata```
+* update the load balancer backend target to the new namespace
+  * Edit `environments/hasadna/values.yaml`
+  * Set odata backend rule to `backendUrl: "http://ckan.odata-green:5000"`
+* Deploy traefik
+  * `source switch_environment.sh hasadna`
+  * `./helm_upgrade_external_chart.sh traefik`
+* update main environment's .env file (`environments/odata/.env`) to the new namespace
+  * `K8S_NAMESPACE=odata-green`
+* merge `values.green.yaml` with `values.yaml`
+* update `charts-config.yaml` to point to the new namespace for the continuous deployment
+* Enable DB backup
+  * Edit `environments/odata/values.yaml`, under dbOps: disable restore and enable backup
+  * `source switch_environment.sh odata`
+  * `./helm_upgrade_external_chart.sh odata`
+* Delete helm release of previous environment
+  * helm delete --purge odata-odata-odata
+* Delete persistent disks of previous environment

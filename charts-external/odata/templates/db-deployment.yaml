@@ -22,7 +22,7 @@ spec:
         resources: {{ .Values.dbResources }}
         env:
         - name: POSTGRES_PASSWORD
-          valueFrom: {secretKeyRef: {name: "env-vars", key: "POSTGRES_PASSWORD"}}
+          valueFrom: {secretKeyRef: {name: {{ .Values.envVarsSecretName | default "env-vars" | quote }}, key: "POSTGRES_PASSWORD"}}
         {{ if .Values.dbOps.enabled }}
         - name: BACKUP_DATABASE_NAME
           value: ckan

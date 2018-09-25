@@ -4,7 +4,7 @@ kind: Deployment
 metadata: {name: ckan}
 spec:
   {{ if .Values.ckanDataNfsServer }}
-  replicas: 2
+  replicas: {{ .Values.replicas | default "2" }}
   {{ else }}
   replicas: 1
   strategy:
@@ -14,28 +14,58 @@ spec:
   template:
     metadata:
       labels: {app: ckan}
+      annotations:
+        checksum/configmap: {{ include (print $.Template.BasePath "/ckan-configmap.yaml") . | sha256sum }}
     spec:
+      initContainers:
+      - name: permissions
+        image: alpine
+        command:
+        - sh
+        - "-c"
+        - |
+          chown -R 900:900 /var/lib/ckan &&\
+          chown -R 900:900 /var/ckan &&\
+          ls -lah /var/lib/ckan &&\
+          ls -lah /var/ckan
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
+        - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
       containers:
       - name: ckan
-        image: {{ .Values.ckanImage | default "gcr.io/uumpa-public/data4dappl-ckan@sha256:c6f9c390f26da7b907aa54394224c04a191c11e1f36b694f1bc58e7eb95cf7b5" | quote }}
-        command:
-        - "../../bin/gunicorn"
-        - "--paste"
-        - "/etc/ckan/default/development.ini"
-        - "--workers"
-        - "4"
+#        image: {{ .Values.ckanImage | default "gcr.io/uumpa-public/data4dappl-ckan@sha256:c6f9c390f26da7b907aa54394224c04a191c11e1f36b694f1bc58e7eb95cf7b5" | quote }}
+#        command:
+#        - "../../bin/gunicorn"
+#        - "--paste"
+#        - "/etc/ckan/default/development.ini"
+#        - "--workers"
+#        - "4"
+        image: orihoch/odata-ckan:2.8.1.5.8
+#        command:
+#        - sleep
+#        - "86400"
         env:
         - name: CKAN_STORAGE_PATH
           value: /var/lib/ckan/data
+        - name: CKAN_K8S_SECRETS
+          value: /etc/ckan-conf/secrets/secrets.sh
+        - name: CKAN_K8S_TEMPLATES
+          value: /etc/ckan-conf/templates
         ports:
         - {containerPort: 5000}
         resources: {{ .Values.ckanResources }}
         volumeMounts:
+#        - {mountPath: /etc/ckan/default, name: etc-ckan-default, readOnly: true}
         - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
-        - {mountPath: /etc/ckan/default, name: etc-ckan-default, readOnly: true}
-        {{ if .Values.pipelines.enabled }}
+        - name: ckan-conf-secrets
+          mountPath: /etc/ckan-conf/secrets
+          readOnly: true
+        - name: ckan-conf-templates
+          mountPath: /etc/ckan-conf/templates
+          readOnly: true
         - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
-        {{ end }}
         readinessProbe:
           httpGet:
             path: /
@@ -53,9 +83,15 @@ spec:
           timeoutSeconds: 8
           failureThreshold: 3
       volumes:
-      - name: etc-ckan-default
+      - name: ckan-conf-secrets
         secret:
-          secretName: {{ .Values.etcCkanDefaultSecretName | default "etc-ckan-default" }}
+          secretName: {{ .Values.ckanSecretName }}
+      - name: ckan-conf-templates
+        configMap:
+          name: ckan
+#      - name: etc-ckan-default
+#        secret:
+#          secretName: {{ .Values.etcCkanDefaultSecretName | default "etc-ckan-default" }}
       - name: ckan-data
         {{ if .Values.ckanDataNfsServer }}
         nfs:

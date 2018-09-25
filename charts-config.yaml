@@ -18,7 +18,7 @@ odata:
   lint-environments: odata odata-minikube
   automatic-update:
     commit-message: automatic update of odata-ckan
-    namespace-name: odata
+    namespace-name: odata-green
     deployment-name: ckan
     container-name: ckan
     image-prop: ckanImage

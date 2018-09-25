@@ -6,7 +6,14 @@ CHART_NAME="${1}"
 
 [ -z "${CHART_NAME}" ] && echo "usage:" && echo "./helm_upgrade_external_chart.sh <EXTERNAL_CHART_NAME>" && exit 1
 
-RELEASE_NAME="${K8S_HELM_RELEASE_NAME}-${CHART_NAME}-${K8S_ENVIRONMENT_NAME}"
+if [ "${K8S_OVERRIDE_HELM_RELEASE_NAME}" != "" ]; then
+    RELEASE_NAME="${K8S_OVERRIDE_HELM_RELEASE_NAME}"
+else
+    RELEASE_NAME="${K8S_HELM_RELEASE_NAME}-${CHART_NAME}-${K8S_ENVIRONMENT_NAME}"
+    if [ "${K8S_ENVIRONMENT_NAMESPACE_SUFFIX}" != "" ]; then
+        RELEASE_NAME="${RELEASE_NAME}-${K8S_ENVIRONMENT_NAMESPACE_SUFFIX}"
+    fi
+fi
 EXTERNAL_CHARTS_DIRECTORY="charts-external"
 CHART_DIRECTORY="${EXTERNAL_CHARTS_DIRECTORY}/${CHART_NAME}"
 
@@ -18,7 +25,11 @@ echo "CHART_DIRECTORY=${CHART_DIRECTORY}"
 TEMPDIR=`mktemp -d`
 echo '{}' > "${TEMPDIR}/values.yaml"
 
-for VALUES_FILE in values.yaml values.auto-updated.yaml environments/${K8S_ENVIRONMENT_NAME}/values.yaml environments/${K8S_ENVIRONMENT_NAME}/values.auto-updated.yaml
+for VALUES_FILE in values.yaml \
+                   values.auto-updated.yaml \
+                   environments/${K8S_ENVIRONMENT_NAME}/values.yaml \
+                   environments/${K8S_ENVIRONMENT_NAME}/values.auto-updated.yaml \
+                   environments/${K8S_ENVIRONMENT_NAME}/values.${K8S_ENVIRONMENT_NAMESPACE_SUFFIX}.yaml
 do
     if [ -f "${VALUES_FILE}" ]; then
         GLOBAL_VALUES=`./read_yaml.py "${VALUES_FILE}" global 2>/dev/null`

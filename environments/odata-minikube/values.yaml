@@ -1,6 +1,6 @@
 odata:
   enabled: true
-#  ckanDeploymentEnabled: true
+  ckanDeploymentEnabled: true
   ckanResources: '{}'
   dbResources: '{"requests": {"cpu": "50m", "memory": "150Mi"}, "limits": {"memory": "400Mi"}}'
   solrResources: '{}'
@@ -9,9 +9,12 @@ odata:
 #  nfsEnabled: true
 #  nfsGcePersistentDiskName: odata-ckan-data-nfs
 #  ckanDataNfsServer: 10.23.252.189
-  etcCkanDefaultSecretName: etc-ckan-default-5
-  dbNfsEnabled: true
-  ckanDbNfsServer: 10.104.143.63
+#  etcCkanDefaultSecretName: ckan-default-3
+  ckanSecretName: ckan-default-4-secrets
+  envVarsSecretName: env-vars-4
+#  dbNfsEnabled: true
+#  ckanDbNfsServer: 10.100.195.176
+  replicas: 1
 
   db:
     terminationGracePeriodSeconds: 1
@@ -19,14 +22,38 @@ odata:
     opsImage: orihoch/hasadna-k8s-odata-db-ops:11
 
   dbOps:
-    enabled: true
+#    enabled: true
 #    backup: "gs://odata-k8s-backups/testing/ckan-db-dump-"
-    restore: "gs://odata-k8s-backups/production/ckan-db-dump-2018-08-26.ckan.dump"
+    restore: "gs://odata-k8s-backups/production/ckan-db-dump-2018-09-24.ckan.dump"
 
   solrImage: orihoch/solr-ckan-2.8.1:3
 
   pipelines:
     # pipelines require a shared directory with the ckan server
     # this requires ckanDataNfsServer to be set as well
-    enabled: false
-    # resources: '{"requests": {"cpu": "100m", "memory": "100Mi"}, "limits": {"memory": "300Mi"}}'
+#    enabled: true
+    resources: '{}'
+
+  siteUrl: http://localhost:5000
+  siteTitle: מידע ממשלתי לעם - סביבת פיתוח מקומית
+  siteLogo: /base/images/ckan-logo.png
+  siteDescription: סביבת פיתוח מקומית - נתוני בדיקות
+  displayTimezone: Asia/Jerusalem
+  favIcon: /base/images/ckan.ico
+  localeDefault: he
+  localeOrder: he en ar
+  localesOffered: he en ar
+  localesFilteredOut: ""
+  ckanPlugins: stats text_view image_view recline_view odata_org_il file_uploader_ui datapackage_pipelines upload_via_email
+
+  auth:
+    anon_create_dataset: "false"
+    create_unowned_dataset: "false"
+    create_dataset_if_not_in_organization: "true"
+    user_create_groups: "false"
+    user_create_organizations: "false"
+    user_delete_groups: "false"
+    user_delete_organizations: "false"
+    create_user_via_api: "false"
+    create_user_via_web: "true"
+    roles_that_cascade_to_sub_groups: "admin"

@@ -13,9 +13,10 @@
 
 if which dotenv >/dev/null && which helm >/dev/null && which kubectl >/dev/null && which jq >/dev/null; then
   if [ "${1}" == "" ]; then
-      echo "source switch_environment.sh <ENVIRONMENT_NAME>"
+      echo "source switch_environment.sh <ENVIRONMENT_NAME> [environment_namespace_suffix]"
   else
-  	ENVIRONMENT_NAME="${1}"	
+  	ENVIRONMENT_NAME="${1}"
+  	export K8S_ENVIRONMENT_NAMESPACE_SUFFIX="${2}"
   	if [ ! -f "environments/${ENVIRONMENT_NAME}/.env" ]; then
   		echo "missing environments/${ENVIRONMENT_NAME}/.env"
   	else
