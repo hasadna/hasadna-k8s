@@ -32,18 +32,20 @@ spec:
           #      minute hour day_of_month month day_of_week
           value: "0     2    *            *     *"
         {{ end }}
-        {{ if .Values.dbOps.enabled }}
+#        command: [sleep, "86400"]
+        {{ if .Values.db.initialize }}
+        command: [bash, /db-scripts/initialize.sh]
+        {{ else if .Values.dbOps.enabled }}
         {{ if .Values.dbOps.backup }}
         command: [bash, "-c", "bash /db-scripts/backup-cron.sh BACKUP_DATABASE_NAME& exec docker-entrypoint.sh postgres"]
         {{ else if .Values.dbOps.restore }}
-        command: [bash, "-c", "bash /db-scripts/restore.sh"]
+        command: [bash, /db-scripts/restore.sh]
         {{ end }}
         {{ end }}
         volumeMounts:
         - name: db
           mountPath: /var/lib/postgresql/data
-          # postgresql doesn't like being on root of device
-          subPath: data
+          subPath: postgresql-data
         {{ if .Values.dbOps.enabled }}
         - name: backups
           mountPath: /db-backup
@@ -76,22 +78,20 @@ spec:
           readOnly: true
       {{ end }}
       volumes:
-      - name: db
-        {{ if .Values.ckanDbNfsServer }}
-        nfs:
-          server: {{ .Values.ckanDbNfsServer }}
-          path: "/"
-        {{ else if .Values.ckanDbPersistentDiskName }}
-        gcePersistentDisk:
-          pdName: {{ .Values.ckanDbPersistentDiskName | quote }}
-        {{ else }}
-        emptyDir: {}
-        {{ end }}
       {{ if .Values.dbOps.enabled }}
       - name: backups
         emptyDir: {}
       - name: k8s-ops
         secret:
-          secretName: ops
+          secretName: {{ .Values.dbOps.secretName | default "ckan-db-backups" | quote }}
       {{ end }}
+      - name: db
+        {{ if .Values.ckanDbPersistentDiskName }}
+        gcePersistentDisk:
+          pdName: {{ .Values.ckanDbPersistentDiskName | quote }}
+        {{ else }}
+        nfs:
+          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
+          path: "/"
+        {{ end }}
 {{ end }}

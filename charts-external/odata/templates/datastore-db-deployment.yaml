@@ -37,25 +37,18 @@ spec:
           value: "0     3    *            *     *"
         {{ end }}
         {{ if .Values.datastore.initialize }}
-        command:
-        - bash
-        - "-c"
-        - |
-          docker-entrypoint.sh postgres &
-          ! bash /db-scripts/initialize-datastore.sh && exit 1
-          wait
+        command: [bash, /db-scripts/initialize-datastore.sh]
         {{ else if .Values.datastore.dbOps.enabled }}
         {{ if .Values.datastore.dbOps.backup }}
         command: [bash, "-c", "bash /db-scripts/backup-cron.sh & exec docker-entrypoint.sh postgres"]
         {{ else if .Values.datastore.dbOps.restore }}
-        command: [bash, "-c", "bash /db-scripts/restore-datastore.sh"]
+        command: [bash, /db-scripts/restore-datastore.sh]
         {{ end }}
         {{ end }}
         volumeMounts:
         - name: db
           mountPath: /var/lib/postgresql/data
-          # postgresql doesn't like being on root of device
-          subPath: data
+          subPath: datastore-db-postgresql-data
         {{ if .Values.datastore.dbOps.enabled }}
         - name: backups
           mountPath: /db-backup
@@ -93,13 +86,15 @@ spec:
         gcePersistentDisk:
           pdName: {{ .Values.datastore.persistentDiskName | quote }}
         {{ else }}
-        emptyDir: {}
+        nfs:
+          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
+          path: "/"
         {{ end }}
       {{ if .Values.datastore.dbOps.enabled }}
       - name: backups
         emptyDir: {}
       - name: k8s-ops
         secret:
-          secretName: ops
+          secretName: {{ .Values.dbOps.secretName | default "ckan-db-backups" | quote }}
       {{ end }}
 {{ end }}

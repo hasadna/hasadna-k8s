@@ -2,9 +2,7 @@
 
 ## Installation
 
-### Setup
-
-#### Minikube environment for local development
+### Install Minikube environment for local development
 
 * [Install Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
 * Switch to the odata-minikube environment
@@ -22,80 +20,105 @@
   * `helm init --history-max 2 --upgrade --wait`
 * Verify helm installation
   * `helm version`
+* Install the data storage server using emptyDir volume (will be cleared on restart)
+  * `kubectl apply -f charts-external/odata/manifests/nfs-service.yaml`
+  * `kubectl apply -f charts-external/odata/manifests/nfs-deployment.yaml`
 
-#### Production environment on hasadna cluster
+### Install Production environment on hasadna cluster
 
-* Switch to the odata environment
-  * `source switch_environment.sh odata`
-* Make sure you are connected to the correct cluster
-  * `kubectl get nodes`
-* Create the odata namespace
-  * `kubectl create ns odata`
-* Install the helm client
+* Install Helm client
   * To make sure you get corret version you should use the script in this repo
   * `bash apps_travis_script.sh install_helm`
   * if you have problems, refer to helm docs - [helm client](https://docs.helm.sh/using_helm/#installing-the-helm-client)
 * Verify helm installation
   * `helm version`
-
-### Create Secrets
-
+* Switch to the odata environment with label for the new deployment
+  * `source switch_environment.sh odata test1`
+* Give cluster role binding to the default service account
+  * `kubectl create rolebinding odata-test1-default-binding --clusterrole=admin --user=system:serviceaccount:odata-test1:default --namespace=odata-test1`
+* (Optional) migrate from existing environment
+  * Make the data storage read-only
+    * `./kubectl.sh exec nfs -- chmod -R a-w /exports`
+  * Take a snapshot of current nfs disk
+    * `gcloud --project=hasadna-general compute disks snapshot odata-green-nfs --snapshot-names=odata-green-20180930 --zone=europe-west1-b`
+* Add the installation configuration in `environments/odata/values.test1.yaml`:
 ```
-charts-external/odata/update-ckan-configuration.sh
+odataInstallGke:
+  nfsSourceSnapshot: odata-data-20180930
+  nfsSize: 100
+  dbSize: 20
+  datastoreSize: 50
 ```
+* Run the installation script which creates persistent disks and sets up the data storage server
+  * `charts-external/odata/deploy.sh --install-gke`
 
-To run the CKAN pipelines server you will also need to provide a CKAN api key with sysadmin privileges.
+## Deploy a new environment
 
-Each user has an API key which is displayed in the user's profile page
-
-```
-kubectl create secret generic pipelines --from-literal=CKAN_API_KEY=***
-```
-
-Upload via email requires the following secret - after creating it you should re-run update-ckan-configuration.sh script
-
-```
-kubectl create secret generic env-vars-upload-via-email --from-literal=GMAIL_TOKEN=*** \
-                                                        --from-literal=ALLOWED_SENDERS_RESOURCE_ID=***
-```
-
-### Copy Google disk snapshots
-
-Skip this step for Minikube environment
-
-For the production environment on Google cloud you can copy existing disk snapshots to restore from backup
-
-Create snapshots
-
-```
-gcloud compute disks snapshot gke-data4dappl-092038f-pvc-95731349-9b0d-11e7-855b-42010a80019d \
-  --snapshot-names="odata-db" \
-  --project=hasadna-odata --zone=us-central1-a
-gcloud compute disks snapshot gke-data4dappl-092038f-pvc-9bd4aae7-9a25-11e7-855b-42010a80019d \
-  --snapshot-names="odata-ckan-data" \
-  --project=hasadna-odata --zone=us-central1-a
-```
-
-Create disks from the snapshots
-
-```
-gcloud compute disks create odata-db \
-  --source-snapshot=$(gcloud compute snapshots describe odata-db --project=hasadna-odata --format json | jq -r .selfLink) \
-  --project=hasadna-general --zone=europe-west1-b
-gcloud compute disks create odata-ckan-data \
-  --source-snapshot=$(gcloud compute snapshots describe odata-ckan-data --project=hasadna-odata --format json | jq -r .selfLink) \
-  --project=hasadna-general --zone=europe-west1-b
-```
-
-Update the relevant values: `ckanDataPersistentDiskName` / `ckanDbPersistentDiskName`
-
-### Deploy infrastructure components
-
-```
-./helm_upgrade_external_chart.sh odata --install --debug --set ckanDeploymentEnabled=false
-```
-
-Check that all the pods started
+* Connect to the relevant environment
+  * `source switch_environment.sh odata-minikube`
+* Wait for NFS pod to be in running state
+  * `./kubectl.sh loop get pods`
+* Get the NFS service cluster IP
+  * `kubectl get service nfs`
+* Update the relevant values:
+  * Set the NFS service cluster IP in `ckanDataNfsServer`
+  * If installed using production setup on GKE, set persistent disk names:
+    * ckanDbPersistentDiskName: `odata-test1-db`
+    * datastore.persistentDiskName: `odata-test1-datastore`
+* Deploy
+  * You can either initialize a new, empty environment or restore from backup
+  * Initialize a new, empty environment
+    * `./deploy.sh --install`
+  * Restore from backup
+    * To restore from live environment
+      * Switch to previous environment
+        * `source switch_environment.sh odata`
+      * Stop the ckan pod - to prevent writes to DB
+        * `kubectl delete deployment ckan`
+      * Create the backups
+        * `./kubectl.sh exec db -c db -- bash /db-scripts/backup.sh`
+        * `./kubectl.sh exec datastore-db -c db -- bash /db-scripts/backup.sh`
+      * Wait ~1 minute for files to be available on google storage (for today's date)
+        * `source switch_environment.sh odata test1`
+    * Create a Google Cloud service account file with permissions to read the backup files
+    * You should have the Google Cloud Storage urls to the db and datastore-db backup files.
+    * `charts-external/odata/deploy.sh --restore /path/to/google/cloud/service_account.json gs://backups-bucket-name/path/to/db-backup gs://backups-bucket-name/path/to/datastore-db-backup`
+* Wait for all pods to be in Running state
+  * `./kubectl.sh loop get pods`
+  * If a pod has problems try to force recreate
+    * `./force_recreate.sh DEPLOYMENT_NAME`
+* Verify by making a call to ckan api
+  * `echo $(./kubectl.sh exec ckan -- wget -qO - http://127.0.0.1:5000/api/3)`
+  * Should return `{"version": 3}`
+* (Optional) for GKE environment - enable backup
+  * `charts-external/odata/dtkubectl.sh initialize-backups /path/to/google/cloud/service_account.json gs://backups-bucket/path/to/db-backups/db-backup-prefix- gs://backups-bucket/path/to/datastore-db-backups/datastore-db-prefix-`
+  * Add the output values to the releavnt environment values file
+* When infrastructure is Running, deploy without initialization
+    * `charts-external/odata/deploy.sh`
+* Wait for all pods to be in Running state
+  * `./kubectl.sh loop get pods`
+* Port forward to the ckan pod
+  * `./kubectl.sh port-forward ckan 5000`
+  * For full support using port forward, modify the environment's `values.yaml`:
+    * set `siteUrl` to `http://localhost:5000`
+    * set `datastore.datapusherPortForward` to `true`
+  * When connecting to ckan using port-forward, you should restart the datapusher after every restart of the ckan pod:
+    * `./force_update.sh datapusher`
+* Site should be accessible at http://localhost:5000
+* Create a sysadmin user
+  * `charts-external/odata/utils/ckan-sysadmin.sh add USERNAME`
+* Setup upload via email
+  * Create a Gmail account to be used only for receiving uploads for this CKAN instance
+  * go to: https://developers.google.com/gmail/api/quickstart/python
+    * make sure your are logged-in to this Gmail account
+    * Follow step 1 to get the credentials.json file
+  * Update the upload via email secret
+    * `charts-external/odata/dtkubectl.sh initialize-upload-via-email /path/to/credentials.json ALLOWED_SENDERS_RESOUREC_ID`
+  * Configure upload via email in the environment's `values.yaml` under `uploadViaEmail`
+  * Change the name of the ckan secrets secret (add an increment suffix) in `values.yaml` under `ckanSecretName`
+    * This causes the secret to be recreated with the updated email configuration
+  * Deploy: `charts-external/odata/deploy.sh`
+  * Restart the pipelines: `./force_update.sh pipelines`
 
 ### Initiate the DB from backup
 
@@ -107,12 +130,6 @@ The backup is private, you should have permissions to the relevant google storag
 
 ```
 charts-external/odata/utils/initiate_db_from_backup.sh gs://odata-k8s-backups/production/ckan-db-dump-2018-09-24.ckan.dump
-```
-
-### Deploy all the remaining components
-
-```
-./helm_upgrade_external_chart.sh odata --debug
 ```
 
 ## Common Tasks
@@ -147,23 +164,7 @@ charts-external/odata/utils/initiate_data_from_backup.sh gs://odata-k8s-backups/
 
 ## Updating ckan configuration
 
-Edit `charts-external/odata/development.ini.template` - make the required changes
-
-Create new updated secret
-
-```
-charts-external/odata/update-ckan-configuration.sh
-```
-
-Update the values file etcCkanDefaultSecretName attribute to the new name
-
-Deploy
-
-You should delete old secrets once you are certain they won't be needed for rollback
-
-```
-charts-external/odata/delete-old-ckan-configurations.sh
-```
+Ckan configuration is created from the ckan configmap: charts-external/odata/templates/ckan-configmap.yaml
 
 ## Backups
 
@@ -175,63 +176,3 @@ You can also run a backup manually:
 ./kubectl.sh exec db -c db -- bash /db-scripts/backup.sh &&\
 ./kubectl.sh logs db -c db-ops -f
 ```
-
-## Blue/Green deployment
-
-* Switch to environment with a namespace suffix
-  ```source switch_environment.sh odata green```
-* Create the namespace
-  * ```kubectl create ns odata-green```
-* Override values for the namespace suffix in `environments/odata/values.green.yaml`
-  * Set empty strings for the persistent disk names - to prevent collision with existing persistent disks
-* Create secrets and continue deployment normally (follow steps above)
-* When new deployment is stable, create new persistent disks:
-  * `gcloud compute disks create odata-green-db --size=20`
-* Switch to current live environment:
-  * `source switch_environment.sh odata`
-* Take snapshot of data volume (which will be discarded but will speed up snapshot later):
-  * ```gcloud compute disks snapshot $(eval echo `./read_env_yaml.sh odata nfsGcePersistentDiskName`)```
-* Deploy without the ckan deployment (causing down-time):
-  * `./helm_upgrade_external_chart.sh odata --install --debug --set ckanDeploymentEnabled=false`
-* Take snapshot of data volume and create disk from it:
-  * ```gcloud compute disks snapshot $(eval echo `./read_env_yaml.sh odata nfsGcePersistentDiskName`) --snapshot-names odata-before-green-nfs```
-  * ```gcloud compute disks create odata-green-nfs --size=100 --source-snapshot=odata-before-green-nfs```
-* Create and upload a DB backup:
-```
-kubectl exec -it $(kubectl get pods -l app=db -o 'jsonpath={.items[0].metadata.name}') -- \
-    bash -c "BACKUP_DATABASE_NAME=ckan BACKUP_DATABASE_FILE=/ckan.dump bash /db-scripts/backup.sh" &&\
-kubectl cp $(kubectl get pods -l app=db -o 'jsonpath={.items[0].metadata.name}'):/ckan.dump ./ckan.dump &&\
-gsutil cp ./ckan.dump gs://odata-k8s-backups/production/ckan-before-green-`date +%Y%m%d`.dump
-```
-* Switch to the new environment
-  * ```source switch_environment.sh odata green```
-* Update relevant environment's `values.yaml` persistent disk names and db restore
-  * ```ckanDbPersistentDiskName: odata-green-db```
-  * ```nfsGcePersistentDiskName: odata-green-nfs```
-  * ```nfsPersistentVolumeName: odata-green-nfs-gcepd```
-* Enable db-ops, disable backup and enable restore from created backup:
-```
-  dbOps:
-    enabled: true
-#    backup: "gs://odata-k8s-backups/production/ckan-db-dump-"
-    restore: "gs://odata-k8s-backups/production/ckan-before-green-20180925.dump"
-```
-* Deploy new environment
-  * ```./helm_upgrade_external_chart.sh odata```
-* update the load balancer backend target to the new namespace
-  * Edit `environments/hasadna/values.yaml`
-  * Set odata backend rule to `backendUrl: "http://ckan.odata-green:5000"`
-* Deploy traefik
-  * `source switch_environment.sh hasadna`
-  * `./helm_upgrade_external_chart.sh traefik`
-* update main environment's .env file (`environments/odata/.env`) to the new namespace
-  * `K8S_NAMESPACE=odata-green`
-* merge `values.green.yaml` with `values.yaml`
-* update `charts-config.yaml` to point to the new namespace for the continuous deployment
-* Enable DB backup
-  * Edit `environments/odata/values.yaml`, under dbOps: disable restore and enable backup
-  * `source switch_environment.sh odata`
-  * `./helm_upgrade_external_chart.sh odata`
-* Delete helm release of previous environment
-  * helm delete --purge odata-odata-odata
-* Delete persistent disks of previous environment

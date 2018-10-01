@@ -11,28 +11,60 @@ spec:
     metadata:
       labels: {app: pipelines}
     spec:
+      {{ if .Values.pipelines.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.pipelines.terminationGracePeriodSeconds }}
+      {{ end }}
+      initContainers:
+      - name: initialize
+        image: orihoch/dataportal-kubectl:6
+        command: [bash, "-c", "./kubectl.sh initialize-pipelines $USER $EMAIL $SECRET"]
+        env:
+        - name: USER
+          value: {{ .Values.pipelines.sysadminUser | default "pipelines-sysadmin" | quote }}
+        - name: EMAIL
+          value: {{ .Values.pipelines.sysadminEmail | default "pipelines-sysadmin@ckan" | quote }}
+        - name: SECRET
+          value: {{ .Values.pipelines.secretName | default "pipelines" | quote }}
       containers:
       - name: pipelines
         image: orihoch/datapackage-pipelines-ckanext:v0.0.1
+        {{ if .Values.pipelines.manual }}
+        command:
+        - bash
+        - "-c"
+        - |
+          echo '#!/usr/bin/env bash
+          redis-server /etc/redis.conf --daemonize yes --dir /var/redis
+          until [ `redis-cli ping | grep -c PONG` = 1 ]; do echo "Waiting 1s for Redis to load"; sleep 1; done
+          dpp init
+          while kill -0 $(cat /var/run/redis/redis.pid); do sleep 86400; done' > /dpp/docker/run.sh
+          exec /entrypoint.sh
+        {{ else }}
         args:
         - "server"
+        {{ end }}
         env:
         - name: CKAN_API_KEY
           valueFrom:
             secretKeyRef:
-              name: pipelines
-              key: CKAN_API_KEY
+              name: {{ .Values.pipelines.secretName | default "pipelines" | quote }}
+              key: apikey
         - name: CKAN_URL
           value: http://ckan:5000
+        - name: DPP_REDIS_HOST
+          value: "127.0.0.1"
+        - name: DPP_CELERY_BROKER
+          value: "redis://localhost:6379/6"
         ports:
         - {containerPort: 5050}
         resources: {{ .Values.pipelines.resources }}
         volumeMounts:
         - {mountPath: /pipelines, name: ckan-data, subPath: pipelines}
         - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
+        - {mountPath: /var/redis, name: ckan-data, subPath: pipelines-redis}
       volumes:
       - name: ckan-data
         nfs:
-          server: {{ .Values.ckanDataNfsServer }}
+          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
           path: "/"
 {{ end }}

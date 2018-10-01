@@ -15,10 +15,10 @@ anyway-production:
     image-prop: productionImage
 
 odata:
-  lint-environments: odata odata-minikube
+  lint-environments: odata
   automatic-update:
     commit-message: automatic update of odata-ckan
-    namespace-name: odata-green
+    namespace-name: odata-blue
     deployment-name: ckan
     container-name: ckan
     image-prop: ckanImage

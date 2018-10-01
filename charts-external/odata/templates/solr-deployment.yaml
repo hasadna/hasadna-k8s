@@ -14,6 +14,21 @@ spec:
         app: solr
     spec:
       initContainers:
+      {{ if .Values.solrInitialize }}
+      - name: initialize
+        image: alpine
+        command:
+        - sh
+        - "-c"
+        - |
+          rm -rf /opt/solr/server/solr/ckan/data/*
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+        - name: data
+          mountPath: /opt/solr/server/solr/ckan/data
+          subPath: solr
+      {{ end }}
       - name: permissions
         image: alpine
         command:
@@ -40,14 +55,7 @@ spec:
           subPath: solr
       volumes:
       - name: data
-        {{ if .Values.ckanDataNfsServer }}
         nfs:
-          server: {{ .Values.ckanDataNfsServer }}
+          server: {{ .Values.ckanDataNfsServer | default "nfs.ckan-green.svc.cluster.local" | quote }}
           path: "/"
-        {{ else if .Values.ckanSolrPersistentDiskName }}
-        gcePersistentDisk:
-          pdName: {{ .Values.ckanSolrPersistentDiskName | quote }}
-        {{ else }}
-        emptyDir: {}
-        {{ end }}
 {{ end }}

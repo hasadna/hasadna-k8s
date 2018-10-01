@@ -1,4 +1,5 @@
 {{ if and .Values.enabled .Values.datastore.enabled }}
+{{ if .Values.datastore.datapusherEnabled }}
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -13,10 +14,23 @@ spec:
       labels:
         app: datapusher
     spec:
+      {{ if .Values.datastore.dataPusherTerminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.dataPusherTerminationGracePeriodSeconds }}
+      {{ end }}
       containers:
       - name: datapusher
-        image: orihoch/odata-datapusher:5
+        image: orihoch/odata-datapusher:v0.1.1
         ports:
         - containerPort: 8800
-        resources: {"requests": {"cpu": "50m", "memory": "200Mi"}, "limits": {"memory": "500Mi"}}
+        resources: {{ .Values.datastore.dataPusherResources }}
+        env:
+        - name: DATAPUSHER_MAX_CONTENT_LENGTH
+          value: {{ .Values.datapusherMaxContentLength | default "102400000" | quote }}
+      {{ if .Values.datastore.datapusherPortForward }}
+      - name: port-forward
+        image: orihoch/dataportal-kubectl:2
+        resources: {"requests": {"cpu": "10m", "memory": "50Mi"}, "limits": {"memory": "200Mi"}}
+        command: [./kubectl.sh, port-forward, ckan, "5000"]
+      {{ end }}
+{{ end }}
 {{ end }}

@@ -24,7 +24,7 @@ odata:
     enabled: true
 #    initialize: true
     terminationGracePeriodSeconds: 30
-    image: orihoch/hasadna-k8s-odata-db:datastore9
+    image: orihoch/hasadna-k8s-odata-db:12
     opsImage: orihoch/hasadna-k8s-odata-db-ops:11
     resources: '{"requests": {"cpu": "100m", "memory": "300Mi"}, "limits": {"memory": "600Mi"}}'
     persistentDiskName: odata-green-datastore-db

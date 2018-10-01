@@ -1,9 +1,8 @@
-{{ if .Values.nfsGcePersistentDiskName }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   # must be unique for the entire cluster
-  name: {{ .Values.nfsPersistentVolumeName }}
+  name: odata-nfs-gcepd
 spec:
   storageClassName: ""
   capacity:
@@ -11,18 +10,17 @@ spec:
   accessModes:
     - ReadWriteOnce
   gcePersistentDisk:
-    pdName: {{ .Values.nfsGcePersistentDiskName | quote }}
+    pdName: odata-nfs
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.nfsPersistentVolumeName }}
+  name: odata-nfs-gcepd
 spec:
   storageClassName: ""
-  volumeName: {{ .Values.nfsPersistentVolumeName }}
+  volumeName: odata-nfs-gcepd
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 100G
-{{ end }}

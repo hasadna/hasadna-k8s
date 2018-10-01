@@ -18,5 +18,5 @@ spec:
         image: redis:alpine
         ports:
         - containerPort: 6379
-        resources: {"requests": {"cpu": "20m", "memory": "50Mi"}, "limits": {"memory": "200Mi"}}
+        resources: {{ .Values.redisResources }}
 {{ end }}

@@ -2,6 +2,12 @@
 
 source connect.sh >/dev/null
 
+ENV_LBL_VALUE="`./read_yaml.py environments/${K8S_ENVIRONMENT_NAME}/values.${K8S_ENVIRONMENT_LABEL}.yaml "$@" 2>/dev/null`"
+if [ "${ENV_LBL_VALUE}" != "" ] && [ "${ENV_LBL_VALUE}" != "{}" ]; then
+    echo "${ENV_LBL_VALUE}"
+    exit 0
+fi
+
 ENV_MAN_VALUE="`./read_yaml.py environments/${K8S_ENVIRONMENT_NAME}/values.yaml "$@" 2>/dev/null`"
 if [ "${ENV_MAN_VALUE}" != "" ] && [ "${ENV_MAN_VALUE}" != "{}" ]; then
     echo "${ENV_MAN_VALUE}"

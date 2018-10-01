@@ -13,15 +13,16 @@
 
 if which dotenv >/dev/null && which helm >/dev/null && which kubectl >/dev/null && which jq >/dev/null; then
   if [ "${1}" == "" ]; then
-      echo "source switch_environment.sh <ENVIRONMENT_NAME> [environment_namespace_suffix]"
+      echo "source switch_environment.sh <ENVIRONMENT_NAME> [environment_label]"
   else
   	ENVIRONMENT_NAME="${1}"
-  	export K8S_ENVIRONMENT_NAMESPACE_SUFFIX="${2}"
+  	export K8S_ENVIRONMENT_LABEL="${2}"
   	if [ ! -f "environments/${ENVIRONMENT_NAME}/.env" ]; then
   		echo "missing environments/${ENVIRONMENT_NAME}/.env"
   	else
   		[ -f .env ] && eval `dotenv -f ".env" list`
-  		echo "Switching to ${ENVIRONMENT_NAME} environment"
+  		[ "${K8S_ENVIRONMENT_LABEL}" == "" ] && export K8S_ENVIRONMENT_LABEL="${K8S_DEFAULT_ENVIRONMENT_LABEL}"
+  		echo "Switching to ${ENVIRONMENT_NAME}-${K8S_ENVIRONMENT_LABEL} environment"
   		rm -f .env
   		if ! ln -s "`pwd`/environments/${ENVIRONMENT_NAME}/.env" ".env"; then
   			echo "Failed to symlink .env file"

@@ -1,8 +1,7 @@
-{{ if .Values.dbNfsEnabled }}
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: db-nfs
+  name: nfs
 spec:
   replicas: 1
   revisionHistoryLimit: 5
@@ -11,12 +10,12 @@ spec:
   template:
     metadata:
       labels:
-        app: dbNfs
+        app: nfs
     spec:
       containers:
       - name: nfs
         image: k8s.gcr.io/volume-nfs:0.8
-        resources: {"requests": {"cpu": "60m", "memory": "100Mi"}}
+        resources: {}
         ports:
           - name: nfs
             containerPort: 2049
@@ -31,10 +30,6 @@ spec:
             name: exports
       volumes:
         - name: exports
-          {{ if .Values.nfsGcePersistentDiskName }}
-          gcePersistentDisk:
-            pdName: {{ .Values.nfsGcePersistentDiskName | quote }}
-          {{ else }}
           emptyDir: {}
-          {{ end }}
-{{ end }}
+#          persistentVolumeClaim:
+#            claimName: odata-nfs-gcepd

@@ -116,7 +116,11 @@ data:
     #       Add ``datapusher`` to enable DataPusher
     #		Add ``resource_proxy`` to enable resorce proxying and get around the
     #		same origin policy
+    {{ if .Values.minimalPlugins }}
+    ckan.plugins = stats text_view image_view recline_view
+    {{ else }}
     ckan.plugins = {{ .Values.ckanPlugins }}
+    {{ end }}
 
     # Define which views should be created by default
     # (plugins must be loaded in ckan.plugins)
@@ -159,6 +163,10 @@ data:
     ckan.locale_order = {{ .Values.localeOrder }}
     ckan.locales_offered = {{ .Values.localesOffered }}
     ckan.locales_filtered_out = {{ .Values.localesFilteredOut }}
+    # Couldn't get the extra translations to work, we are copying directly to ckan source instead
+    # ckan.i18n.extra_directory = /opt/ckan/extra-translations/
+    # ckan.i18n.extra_gettext_domain = ckan
+    # ckan.i18n.extra_locales = he ar
 
     ## Feeds Settings
 
@@ -210,6 +218,15 @@ data:
     smtp.password = {{ "{{" }}SMTP_PASSWORD{{ "}}" }}
     smtp.mail_from = {{ "{{" }}SMTP_MAIL_FROM{{ "}}" }}
 
+    {{ if .Values.uploadViaEmail }}
+    ckanext.upload_via_email.gmail_token = {{ "{{" }}GMAIL_TOKEN{{ "}}" }}
+    ckanext.upload_via_email.allowed_senders_resource_id = {{ "{{" }}ALLOWED_SENDERS_RESOURCE_ID{{ "}}" }}
+    ckanext.upload_via_email.default_sender_to_address =  {{ .Values.uploadViaEmail.default_sender_to_address }}
+    ckanext.upload_via_email.default_sender_organization_id =  {{ .Values.uploadViaEmail.default_sender_organization_id }}
+    ckanext.upload_via_email.success_message = {{ .Values.uploadViaEmail.success_message }}
+    ckanext.upload_via_email.success_message_from_email = {{ .Values.uploadViaEmail.success_message_from_email }}
+    ckanext.upload_via_email.success_message_subject = {{ .Values.uploadViaEmail.success_message_subject }}
+    {{ end }}
 
     ## Logging configuration
     [loggers]

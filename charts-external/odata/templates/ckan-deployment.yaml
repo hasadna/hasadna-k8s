@@ -3,13 +3,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata: {name: ckan}
 spec:
-  {{ if .Values.ckanDataNfsServer }}
   replicas: {{ .Values.replicas | default "2" }}
-  {{ else }}
-  replicas: 1
-  strategy:
-    type: Recreate
-  {{ end }}
   revisionHistoryLimit: 2
   template:
     metadata:
@@ -17,7 +11,24 @@ spec:
       annotations:
         checksum/configmap: {{ include (print $.Template.BasePath "/ckan-configmap.yaml") . | sha256sum }}
     spec:
+      {{ if .Values.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{ end }}
       initContainers:
+      - name: secrets
+        image: orihoch/dataportal-kubectl:18
+        command:
+        - bash
+        - "-c"
+        - |
+          ./kubectl.sh initialize-ckan-env-vars {{ .Values.envVarsSecretName | default "ckan-env-vars" | quote }} &&\
+          ./kubectl.sh initialize-ckan-secrets {{ .Values.envVarsSecretName | default "ckan-env-vars" | quote }} \
+                                               "ckan-upload-via-email-env-vars" \
+                                               {{ .Values.ckanSecretName | default "ckan-secrets" | quote }} &&\
+          ./kubectl.sh get-ckan-secrets {{ .Values.ckanSecretName | default "ckan-secrets" | quote }} /etc/ckan-conf/secrets/secrets.sh
+        volumeMounts:
+        - name: ckan-conf-secrets
+          mountPath: /etc/ckan-conf/secrets
       - name: permissions
         image: alpine
         command:
@@ -26,26 +37,22 @@ spec:
         - |
           chown -R 900:900 /var/lib/ckan &&\
           chown -R 900:900 /var/ckan &&\
+          chmod -R ug+w /var/lib/ckan && chmod -R ug+w /var/ckan &&\
+          chown -R 900:900 /etc/ckan-conf/secrets &&\
           ls -lah /var/lib/ckan &&\
-          ls -lah /var/ckan
+          ls -lah /var/ckan &&\
+          ls -lah /etc/ckan-conf/secrets
         securityContext:
           runAsUser: 0
         volumeMounts:
         - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
         - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
-      containers:
-      - name: ckan
-#        image: {{ .Values.ckanImage | default "gcr.io/uumpa-public/data4dappl-ckan@sha256:c6f9c390f26da7b907aa54394224c04a191c11e1f36b694f1bc58e7eb95cf7b5" | quote }}
-#        command:
-#        - "../../bin/gunicorn"
-#        - "--paste"
-#        - "/etc/ckan/default/development.ini"
-#        - "--workers"
-#        - "4"
-        image: orihoch/odata-ckan:2.8.1.5.8
-#        command:
-#        - sleep
-#        - "86400"
+        - name: ckan-conf-secrets
+          mountPath: /etc/ckan-conf/secrets
+      {{ if .Values.ckanSolrRebuild }}
+      - name: ckan-solr-rebuild
+        image: {{ .Values.ckanImage | quote }}
+        command: [/ckan-entrypoint.sh, ckan-paster, --plugin=ckan, search-index, rebuild, -c, /etc/ckan/production.ini]
         env:
         - name: CKAN_STORAGE_PATH
           value: /var/lib/ckan/data
@@ -53,11 +60,34 @@ spec:
           value: /etc/ckan-conf/secrets/secrets.sh
         - name: CKAN_K8S_TEMPLATES
           value: /etc/ckan-conf/templates
+        - name: GUNICORN_WORKERS
+          value: {{ .Values.ckanGunicornWorkers | default "2" | quote }}
+        volumeMounts:
+        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
+        - name: ckan-conf-secrets
+          mountPath: /etc/ckan-conf/secrets
+          readOnly: true
+        - name: ckan-conf-templates
+          mountPath: /etc/ckan-conf/templates
+          readOnly: true
+        - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
+      {{ end }}
+      containers:
+      - name: ckan
+        image: {{ .Values.ckanImage | quote }}
+        env:
+        - name: CKAN_STORAGE_PATH
+          value: /var/lib/ckan/data
+        - name: CKAN_K8S_SECRETS
+          value: /etc/ckan-conf/secrets/secrets.sh
+        - name: CKAN_K8S_TEMPLATES
+          value: /etc/ckan-conf/templates
+        - name: GUNICORN_WORKERS
+          value: {{ .Values.ckanGunicornWorkers | default "2" | quote }}
         ports:
-        - {containerPort: 5000}
+        - containerPort: 5000
         resources: {{ .Values.ckanResources }}
         volumeMounts:
-#        - {mountPath: /etc/ckan/default, name: etc-ckan-default, readOnly: true}
         - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
         - name: ckan-conf-secrets
           mountPath: /etc/ckan-conf/secrets
@@ -84,23 +114,12 @@ spec:
           failureThreshold: 3
       volumes:
       - name: ckan-conf-secrets
-        secret:
-          secretName: {{ .Values.ckanSecretName }}
+        emptyDir: {}
       - name: ckan-conf-templates
         configMap:
           name: ckan
-#      - name: etc-ckan-default
-#        secret:
-#          secretName: {{ .Values.etcCkanDefaultSecretName | default "etc-ckan-default" }}
       - name: ckan-data
-        {{ if .Values.ckanDataNfsServer }}
         nfs:
-          server: {{ .Values.ckanDataNfsServer }}
+          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
           path: "/"
-        {{ else if .Values.ckanDataPersistentDiskName }}
-        gcePersistentDisk:
-          pdName: {{ .Values.ckanDataPersistentDiskName | quote }}
-        {{ else }}
-        emptyDir: {}
-        {{ end }}
 {{ end }}
