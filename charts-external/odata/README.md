@@ -82,7 +82,7 @@ odataInstallGke:
         * `source switch_environment.sh odata test1`
     * Create a Google Cloud service account file with permissions to read the backup files
     * You should have the Google Cloud Storage urls to the db and datastore-db backup files.
-    * `charts-external/odata/deploy.sh --restore /path/to/google/cloud/service_account.json gs://backups-bucket-name/path/to/db-backup gs://backups-bucket-name/path/to/datastore-db-backup`
+    * `charts-external/odata/deploy.sh --restore /path/to/google/cloud/service_account.json gs://odata-k8s-backups/production/blue/ckan-db-dump-$(date +%Y-%m-%d).ckan.dump gs://odata-k8s-backups/production/blue/datastore-db-dump-$(date +%Y-%m-%d).datastore.dump`
 * Wait for all pods to be in Running state
   * `./kubectl.sh loop get pods`
   * If a pod has problems try to force recreate
@@ -120,18 +120,6 @@ odataInstallGke:
   * Deploy: `charts-external/odata/deploy.sh`
   * Restart the pipelines: `./force_update.sh pipelines`
 
-### Initiate the DB from backup
-
-For minikube environment you must restore the DB from backup
-
-For GKE environment - you can skip this step if you created from existing disk / snapshot
-
-The backup is private, you should have permissions to the relevant google storage
-
-```
-charts-external/odata/utils/initiate_db_from_backup.sh gs://odata-k8s-backups/production/ckan-db-dump-2018-09-24.ckan.dump
-```
-
 ## Common Tasks
 
 ### Access the ckan web app directly
@@ -152,14 +140,6 @@ charts-external/odata/utils/ckan-sysadmin.sh add minikube-admin email=minikube-a
 
 ```
 charts-external/odata/utils/ckan-search-index.sh rebuild
-```
-
-### Initiate the data from backup
-
-You should have permissions to the relevant google storage and enough local free disk space
-
-```
-charts-external/odata/utils/initiate_data_from_backup.sh gs://odata-k8s-backups/production/ckan-data-2018-08-13.tar.bz2
 ```
 
 ## Updating ckan configuration

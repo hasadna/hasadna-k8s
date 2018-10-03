@@ -19,7 +19,7 @@ spec:
         image: orihoch/anyway-db:postgres9.6-postgis2.5
         ports:
         - containerPort: 5432
-        resources: {"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "2Gi"}}
+        resources: {{ .Values.dbResources }}
         env:
         - name: POSTGRES_PASSWORD
           valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_PASSWORD"}}

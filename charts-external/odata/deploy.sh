@@ -24,6 +24,7 @@ elif [ "${1}" == "--restore" ]; then
                 --set datastore.dbOps.backup= \
                 --set datastore.datapusherEnabled=false --set pipelines.enabled=false \
                 --set solrInitialize=true --set ckanSolrRebuild=true \
+                --set ckanJobsEnabled=false \
                 --set replicas=1 ${@:5}
 
 elif [ "${1}" == "--install-gke" ]; then

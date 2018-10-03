@@ -1,0 +1,37 @@
+{{ if and .Values.enabled .Values.ckanDeploymentEnabled }}
+{{ if .Values.ckanJobsEnabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata: {name: ckan-jobs-db}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels: {app: ckan-jobs-db}
+    spec:
+      {{ if .Values.ckanJobsDbTerminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.ckanJobsDbTerminationGracePeriodSeconds }}
+      {{ end }}
+      containers:
+      - name: postgres
+        image: postgres
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_PASSWORD
+          value: "123456"
+        resources: {{ .Values.ckanJobsDbResources }}
+        volumeMounts:
+        - mountPath: /var/lib/ckan
+          name: data
+          subPath: ckan-jobs-db
+      volumes:
+      - name: data
+        nfs:
+          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
+          path: "/"
+{{ end }}
+{{ end }}

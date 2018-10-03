@@ -193,6 +193,10 @@ data:
     {{ end }}
     #ckan.datapusher.assume_task_stale_after = 3600
 
+    {{ if .Values.datastore.xloaderEnabled }}
+    ckanext.xloader.jobs_db.uri = postgresql://postgres:123456@ckan-jobs-db/postgres
+    {{ end }}
+
     # Resource Proxy settings
     # Preview size limit, default: 1MB
     #ckan.resource_proxy.max_file_size = 1048576

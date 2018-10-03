@@ -17,7 +17,7 @@ spec:
       containers:
       - name: anyway
         image: {{ .Values.image }}
-        resources: {"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "1Gi"}}
+        resources: {{ .Values.resources }}
         ports:
         - containerPort: 8000
         env:
@@ -54,7 +54,7 @@ spec:
           done
       - name: rabbitmq
         image: rabbitmq
-        resources: {"requests": {"cpu": "10m", "memory": "100Mi"}, "limits": {"memory": "300Mi"}}
+        resources: {{ .Values.rabbitmqResources }}
         ports:
         - containerPort: 5672
 {{ end }}

@@ -1,4 +1,7 @@
 anyway:
   enabled: true
   # initialize: true
+  resources: '{"requests": {"cpu": "50m", "memory": "250Mi"}, "limits": {"memory": "500Mi"}}'
+  rabbitmqResources: '{"requests": {"cpu": "10m", "memory": "100Mi"}, "limits": {"memory": "300Mi"}}'
   dbPersistentDiskName: anyway-production-db
+  dbResources: '{"requests": {"cpu": "20m", "memory": "50Mi"}, "limits": {"memory": "300Mi"}}'

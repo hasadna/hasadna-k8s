@@ -21,8 +21,7 @@ if which dotenv >/dev/null && which helm >/dev/null && which kubectl >/dev/null 
   		echo "missing environments/${ENVIRONMENT_NAME}/.env"
   	else
   		[ -f .env ] && eval `dotenv -f ".env" list`
-  		[ "${K8S_ENVIRONMENT_LABEL}" == "" ] && export K8S_ENVIRONMENT_LABEL="${K8S_DEFAULT_ENVIRONMENT_LABEL}"
-  		echo "Switching to ${ENVIRONMENT_NAME}-${K8S_ENVIRONMENT_LABEL} environment"
+  		echo "Switching to ${ENVIRONMENT_NAME} ${K8S_ENVIRONMENT_LABEL} environment"
   		rm -f .env
   		if ! ln -s "`pwd`/environments/${ENVIRONMENT_NAME}/.env" ".env"; then
   			echo "Failed to symlink .env file"

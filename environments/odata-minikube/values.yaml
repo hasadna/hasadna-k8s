@@ -2,29 +2,53 @@ odata:
   enabled: true
   ckanDeploymentEnabled: true
   ckanResources: '{}'
-  dbResources: '{"requests": {"cpu": "50m", "memory": "150Mi"}, "limits": {"memory": "400Mi"}}'
+  dbResources: '{}'
   solrResources: '{}'
 #  ckanDataPersistentDiskName: odata-ckan-data
 #  ckanDbPersistentDiskName: odata-db
 #  nfsEnabled: true
 #  nfsGcePersistentDiskName: odata-ckan-data-nfs
-#  ckanDataNfsServer: 10.23.252.189
+  ckanDataNfsServer: 10.100.17.164
 #  etcCkanDefaultSecretName: ckan-default-3
-  ckanSecretName: ckan-default-4-secrets
-  envVarsSecretName: env-vars-4
+  ckanSecretName: ckan-secrets
+  envVarsSecretName: env-vars
 #  dbNfsEnabled: true
 #  ckanDbNfsServer: 10.100.195.176
   replicas: 1
+  redisResources: '{}'
+  ckanJobsEnabled: true
+  ckanJobsPortForward: true
+  ckanJobsDbResources: '{}'
+  ckanJobsDbTerminationGracePeriodSeconds: 1
 
   db:
     terminationGracePeriodSeconds: 1
-    image: orihoch/hasadna-k8s-odata-db:11
-    opsImage: orihoch/hasadna-k8s-odata-db-ops:11
+    image: orihoch/data4dappl-db:v0.2.16
+    opsImage: orihoch/data4dappl-db-ops:v0.2.15
+
+  datastore:
+    enabled: true
+#    initialize: true
+    terminationGracePeriodSeconds: 1
+    datapusherEnabled: false
+    xloaderEnabled: true
+    image: orihoch/data4dappl-db:v0.2.15
+    opsImage: orihoch/data4dappl-db-ops:v0.2.15
+    resources: '{}'
+    dbOps:
+      enabled: false
+#      backup: "gs://odata-k8s-backups/production/blue/datastore-db-dump-"
+  #    restore: "gs://odata-k8s-backups/production/datastore-db-dump-2018-09-27.datastore.dump"
+    # this is needed when connecing to ckan using port-forward
+    datapusherPortForward: true
+    dataPusherTerminationGracePeriodSeconds: 1
+    dataPusherResources: '{}'
+#    persistentDiskName: odata-blue-datastore
 
   dbOps:
-#    enabled: true
+    enabled: false
 #    backup: "gs://odata-k8s-backups/testing/ckan-db-dump-"
-    restore: "gs://odata-k8s-backups/production/ckan-db-dump-2018-09-24.ckan.dump"
+#    restore: "gs://odata-k8s-backups/production/ckan-db-dump-2018-09-24.ckan.dump"
 
   solrImage: orihoch/solr-ckan-2.8.1:3
 
@@ -33,6 +57,11 @@ odata:
     # this requires ckanDataNfsServer to be set as well
 #    enabled: true
     resources: '{}'
+    terminationGracePeriodSeconds: 1
+    sysadminUser: pipelines-sysadmin
+    sysadminEmail: pipelines-sysadmin@localhost
+    secretName: pipelines-sysadmin
+    manual: true
 
   siteUrl: http://localhost:5000
   siteTitle: מידע ממשלתי לעם - סביבת פיתוח מקומית
@@ -44,7 +73,18 @@ odata:
   localeOrder: he en ar
   localesOffered: he en ar
   localesFilteredOut: ""
-  ckanPlugins: stats text_view image_view recline_view odata_org_il file_uploader_ui datapackage_pipelines upload_via_email
+
+  ckanPlugins: >
+    stats text_view image_view recline_view
+    odata_org_il file_uploader_ui datapackage_pipelines upload_via_email
+    datastore xloader
+
+  uploadViaEmail:
+#    default_sender_to_address: ckan.co.il@gmail.com
+#    default_sender_organization_id: anonymous-email-senders
+    success_message: The dataset is available at {dataset_url}
+#    success_message_from_email: odata.org.il+donotreply@gmail.com
+    success_message_subject: Your dataset was created successfully
 
   auth:
     anon_create_dataset: "false"

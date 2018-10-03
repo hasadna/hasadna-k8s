@@ -17,7 +17,8 @@ odata:
     opsImage: orihoch/data4dappl-db-ops:v0.2.15
 
   datastore:
-    datapusherEnabled: true
+    datapusherEnabled: false
+    xloaderEnabled: true
     image: orihoch/data4dappl-db:v0.2.15
     opsImage: orihoch/data4dappl-db-ops:v0.2.15
     dbOps:
@@ -25,7 +26,7 @@ odata:
       backup: "gs://odata-k8s-backups/production/blue/datastore-db-dump-"
   #    restore: "gs://odata-k8s-backups/production/datastore-db-dump-2018-09-27.datastore.dump"
     # this is needed when connecing to ckan using port-forward
-    datapusherPortForward: true
+#    datapusherPortForward: true
     # dataPusherTerminationGracePeriodSeconds: 2
     dataPusherResources: '{"requests": {"cpu": "50m", "memory": "200Mi"}, "limits": {"memory": "500Mi"}}'
     persistentDiskName: odata-blue-datastore
@@ -47,6 +48,11 @@ odata:
     sysadminEmail: pipelines-sysadmin@odata.org.il
     secretName: pipelines-sysadmin
     manual: false
+
+  ckanPlugins: >
+    stats text_view image_view recline_view
+    odata_org_il file_uploader_ui datapackage_pipelines upload_via_email
+    datastore xloader
 
   uploadViaEmail:
 #    default_sender_to_address: ckan.co.il@gmail.com

@@ -1,6 +1,9 @@
 migdar:
   enabled: true
 
+nfs:
+  gcePersistentDiskName: hasadna-nfs
+
 traefik:
   # nfs needs an ip, be sure to update it in case of changes to the nfs service
   nfsServer: 10.23.253.67

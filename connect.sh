@@ -7,6 +7,7 @@
 # thanks for your understanding and cooperation
 
 k8s_connect_gke() {
+    [ "${K8S_ENVIRONMENT_LABEL}" == "" ] && K8S_ENVIRONMENT_LABEL="${K8S_DEFAULT_ENVIRONMENT_LABEL}"
     if [ "${K8S_ENVIRONMENT_LABEL}" != "" ]; then
         K8S_NAMESPACE="${K8S_NAMESPACE}-${K8S_ENVIRONMENT_LABEL}"
     fi
@@ -29,6 +30,7 @@ k8s_connect_gke() {
 }
 
 k8s_connect_custom() {
+    [ "${K8S_ENVIRONMENT_LABEL}" == "" ] && K8S_ENVIRONMENT_LABEL="${K8S_DEFAULT_ENVIRONMENT_LABEL}"
     if [ "${K8S_ENVIRONMENT_LABEL}" != "" ]; then
         K8S_NAMESPACE="${K8S_NAMESPACE}-${K8S_ENVIRONMENT_LABEL}"
     fi

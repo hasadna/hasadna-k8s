@@ -19,18 +19,25 @@ spec:
       {{ end }}
       containers:
       - name: datapusher
-        image: orihoch/odata-datapusher:v0.1.1
+        image: orihoch/data4dappl-datapusher:v0.1.3
         ports:
         - containerPort: 8800
         resources: {{ .Values.datastore.dataPusherResources }}
         env:
         - name: DATAPUSHER_MAX_CONTENT_LENGTH
           value: {{ .Values.datapusherMaxContentLength | default "102400000" | quote }}
+        - name: DATAPUSHER_SQLALCHEMY_URI
+          value: postgresql://postgres:123456@localhost/postgres
       {{ if .Values.datastore.datapusherPortForward }}
       - name: port-forward
         image: orihoch/dataportal-kubectl:2
         resources: {"requests": {"cpu": "10m", "memory": "50Mi"}, "limits": {"memory": "200Mi"}}
         command: [./kubectl.sh, port-forward, ckan, "5000"]
       {{ end }}
+      - name: postgres
+        image: postgres
+        env:
+        - name: POSTGRES_PASSWORD
+          value: "123456"
 {{ end }}
 {{ end }}
