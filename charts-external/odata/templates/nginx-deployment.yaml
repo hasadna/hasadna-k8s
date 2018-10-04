@@ -29,7 +29,7 @@ spec:
           {{ if .Values.ckanHostPort }}
           hostPort: {{ .Values.ckanHostPort }}
           {{ end }}
-        resources: {}
+        resources: {{ .Values.nginxResources }}
         volumeMounts:
         - name: nginx-conf
           mountPath: /etc/nginx/conf.d

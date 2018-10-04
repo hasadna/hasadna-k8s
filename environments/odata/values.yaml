@@ -4,6 +4,8 @@ odata:
   ckanResources: '{"requests": {"cpu": "400m", "memory": "1200Mi"}, "limits": {"memory": "2Gi"}}'
   dbResources: '{"requests": {"cpu": "100m", "memory": "300Mi"}, "limits": {"memory": "600Mi"}}'
   solrResources: '{"requests": {"cpu": "60m", "memory": "600Mi"}, "limits": {"memory": "1Gi"}}'
+  redisResources: '{"requests": {"cpu": "15m", "memory": "100Mi"}, "limits": {"memory": "300Mi"}}'
+  nginxResources: '{"requests": {"cpu": "60m", "memory": "300Mi"}, "limits": {"memory": "800Mi"}}'
 #  ckanDbPersistentDiskName: odata-db
 #  ckanDataNfsServer: "10.23.243.110"
   ckanSecretName: ckan-secrets
@@ -82,10 +84,6 @@ odata:
   localeOrder: he en ar
   localesOffered: he en ar
   localesFilteredOut: ""
-  ckanPlugins: >
-    stats text_view image_view recline_view
-    odata_org_il file_uploader_ui datapackage_pipelines upload_via_email
-    datastore datapusher
 
   auth:
     anon_create_dataset: "false"
