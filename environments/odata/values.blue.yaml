@@ -8,55 +8,19 @@ odata:
   ckanDbPersistentDiskName: odata-blue-db
   ckanDataNfsServer: "10.23.242.160"
   ckanSecretName: ckan-secrets-2
-  envVarsSecretName: env-vars
-  replicas: 2
-  redisResources: '{"requests": {"cpu": "20m", "memory": "50Mi"}, "limits": {"memory": "200Mi"}}'
-
-  db:
-    image: orihoch/data4dappl-db:v0.2.15
-    opsImage: orihoch/data4dappl-db-ops:v0.2.15
 
   datastore:
-    datapusherEnabled: false
-    xloaderEnabled: true
-    image: orihoch/data4dappl-db:v0.2.15
-    opsImage: orihoch/data4dappl-db-ops:v0.2.15
     dbOps:
-      enabled: true
       backup: "gs://odata-k8s-backups/production/blue/datastore-db-dump-"
-  #    restore: "gs://odata-k8s-backups/production/datastore-db-dump-2018-09-27.datastore.dump"
-    # this is needed when connecing to ckan using port-forward
-#    datapusherPortForward: true
-    # dataPusherTerminationGracePeriodSeconds: 2
-    dataPusherResources: '{"requests": {"cpu": "50m", "memory": "200Mi"}, "limits": {"memory": "500Mi"}}'
     persistentDiskName: odata-blue-datastore
+    dbNodeSelector: 'kubernetes.io/hostname: gke-hasadna-cluster-more-cpu-da25b37e-1dmn'
+    # see https://github.com/OriHoch/kube-ip-dns-updater
+    dbKubeIpDnsUpdaterSecret: odata-datastore-db-kube-ip-dns-updater
+    # see odata-blue-datastore-db-kube-ip-dns-updater-rbac.yaml
+    dbKubeIpDnsUpdaterServiceAccountName: odata-blue-datastore-db-kube-ip-dns-updater
+    dbEnableHostPort: true
+    # kubectl create secret generic datastore-db-public-readonly-user --from-literal=DATASTORE_PUBLIC_RO_PASSWORD=***
+    publicreadonlyDbUserPasswordSecretName: datastore-db-public-readonly-user
 
   dbOps:
-    enabled: true
     backup: "gs://odata-k8s-backups/production/blue/ckan-db-dump-"
-  #  restore: "gs://odata-k8s-backups/production/ckan-db-dump-2018-09-27.ckan.dump"
-
-  solrImage: orihoch/data4dappl-solr:v0.3.1
-
-  pipelines:
-    # pipelines require a shared directory with the ckan server
-    # this requires ckanDataNfsServer to be set as well
-    enabled: true
-    resources: '{"requests": {"cpu": "400m", "memory": "400Mi"}, "limits": {"memory": "800Mi"}}'
-    # terminationGracePeriodSeconds: 2
-    sysadminUser: pipelines-sysadmin
-    sysadminEmail: pipelines-sysadmin@odata.org.il
-    secretName: pipelines-sysadmin
-    manual: false
-
-  ckanPlugins: >
-    stats text_view image_view recline_view
-    odata_org_il file_uploader_ui datapackage_pipelines upload_via_email
-    datastore xloader
-
-  uploadViaEmail:
-#    default_sender_to_address: ckan.co.il@gmail.com
-#    default_sender_organization_id: anonymous-email-senders
-    success_message: The dataset is available at {dataset_url}
-    success_message_from_email: odata.org.il+donotreply@gmail.com
-    success_message_subject: Your dataset was created successfully

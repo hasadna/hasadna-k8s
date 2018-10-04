@@ -4,47 +4,73 @@ odata:
   ckanResources: '{"requests": {"cpu": "400m", "memory": "1200Mi"}, "limits": {"memory": "2Gi"}}'
   dbResources: '{"requests": {"cpu": "100m", "memory": "300Mi"}, "limits": {"memory": "600Mi"}}'
   solrResources: '{"requests": {"cpu": "60m", "memory": "600Mi"}, "limits": {"memory": "1Gi"}}'
-  ckanDbPersistentDiskName: odata-green-db
-  nfsEnabled: true
-  nfsGcePersistentDiskName: odata-green-nfs
-  ckanDataNfsServer: "10.23.243.110"
-  ckanSecretName: ckan-default-5-secrets
+#  ckanDbPersistentDiskName: odata-db
+#  ckanDataNfsServer: "10.23.243.110"
+  ckanSecretName: ckan-secrets
   envVarsSecretName: env-vars
 #  dbNfsEnabled: true
 #  ckanDbNfsServer: 10.104.143.63
   replicas: 2
-  nfsPersistentVolumeName: odata-green-nfs-gcepd
+  ckanJobsEnabled: true
+  # ckanJobsPortForward: true
+  ckanJobsDbResources: '{"requests": {"cpu": "20m", "memory": "50Mi"}, "limits": {"memory": "200Mi"}}'
+  # ckanJobsDbTerminationGracePeriodSeconds: 1
+  ckanJobsResources: '{"requests": {"cpu": "150m", "memory": "600Mi"}, "limits": {"memory": "1500Mi"}}'
 
   db:
+    image: orihoch/data4dappl-db:v0.2.15
+    opsImage: orihoch/data4dappl-db-ops:v0.2.15
     terminationGracePeriodSeconds: 30
-    image: orihoch/hasadna-k8s-odata-db:11
-    opsImage: orihoch/hasadna-k8s-odata-db-ops:11
 
   datastore:
     enabled: true
 #    initialize: true
+    datapusherEnabled: false
+    xloaderEnabled: true
     terminationGracePeriodSeconds: 30
-    image: orihoch/hasadna-k8s-odata-db:12
-    opsImage: orihoch/hasadna-k8s-odata-db-ops:11
+    image: orihoch/data4dappl-db:v0.2.19
+    opsImage: orihoch/data4dappl-db-ops:v0.2.15
+    # image: orihoch/hasadna-k8s-odata-db:12
+    # opsImage: orihoch/hasadna-k8s-odata-db-ops:11
     resources: '{"requests": {"cpu": "100m", "memory": "300Mi"}, "limits": {"memory": "600Mi"}}'
-    persistentDiskName: odata-green-datastore-db
+#    persistentDiskName: odata-datastore-db
+#    dbNodeSelector: 'kubernetes.io/hostname: gke-hasadna-cluster-more-cpu-da25b37e-1dmn'
+    # see https://github.com/OriHoch/kube-ip-dns-updater
+#    dbKubeIpDnsUpdaterSecret: odata-datastore-db-kube-ip-dns-updater
+    # see odata-blue-datastore-db-kube-ip-dns-updater-rbac.yaml
+#    dbKubeIpDnsUpdaterServiceAccountName: odata-blue-datastore-db-kube-ip-dns-updater
+#    dbEnableHostPort: true
+    # kubectl create secret generic datastore-db-public-readonly-user --from-literal=DATASTORE_PUBLIC_RO_PASSWORD=***
+#    publicreadonlyDbUserPasswordSecretName: datastore-db-public-readonly-user
+
     dbOps:
       enabled: true
-      backup: "gs://odata-k8s-backups/production/datastore-db-dump-"
+#      backup: "gs://odata-k8s-backups/production/datastore-db-dump-"
 #      restore: "gs://odata-k8s-backups/production/datastore-db-dump-2018-09-25.datastore.dump"
+
 
   dbOps:
     enabled: true
-    backup: "gs://odata-k8s-backups/production/ckan-db-dump-"
+#    backup: "gs://odata-k8s-backups/production/ckan-db-dump-"
 #    restore: "gs://odata-k8s-backups/production/ckan-db-dump-2018-08-26.ckan.dump"
 
-  solrImage: orihoch/solr-ckan-2.8.1:3
+  solrImage: orihoch/data4dappl-solr:v0.3.1
 
   pipelines:
     # pipelines require a shared directory with the ckan server
     # this requires ckanDataNfsServer to be set as well
     enabled: true
     resources: '{"requests": {"cpu": "400m", "memory": "400Mi"}, "limits": {"memory": "800Mi"}}'
+    # terminationGracePeriodSeconds: 2
+    sysadminUser: pipelines-sysadmin
+    sysadminEmail: pipelines-sysadmin@odata.org.il
+    secretName: pipelines-sysadmin
+    manual: false
+
+  ckanPlugins: >
+    stats text_view image_view recline_view
+    odata_org_il file_uploader_ui datapackage_pipelines upload_via_email
+    datastore xloader
 
   siteUrl: https://www.odata.org.il
   siteTitle: מידע ממשלתי לעם
@@ -72,3 +98,8 @@ odata:
     create_user_via_api: "false"
     create_user_via_web: "true"
     roles_that_cascade_to_sub_groups: "admin"
+
+  uploadViaEmail:
+    success_message: The dataset is available at {dataset_url}
+    success_message_from_email: odata.org.il+donotreply@gmail.com
+    success_message_subject: Your dataset was created successfully

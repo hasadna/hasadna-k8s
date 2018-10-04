@@ -13,12 +13,31 @@ spec:
       labels:
         app: datastore-db
     spec:
+      {{ if .Values.datastore.dbNodeSelector }}
+      nodeSelector:
+        {{ .Values.datastore.dbNodeSelector }}
+      {{ end }}
+      {{ if .Values.datastore.dbKubeIpDnsUpdaterSecret }}
+      serviceAccountName: {{ .Values.datastore.dbKubeIpDnsUpdaterServiceAccountName | quote }}
+      initContainers:
+      - name: dns
+        image: orihoch/kube-ip-dns-updater:v0.0.9
+        envFrom:
+        - secretRef:
+            name: {{ .Values.datastore.dbKubeIpDnsUpdaterSecret | quote }}
+        env:
+        - name: K8S_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+      {{ end }}
       terminationGracePeriodSeconds: {{ .Values.datastore.terminationGracePeriodSeconds }}
       containers:
       - name: db
         image: {{ .Values.datastore.image | quote }}
         ports:
         - containerPort: 5432
+          {{ if .Values.datastore.dbEnableHostPort }}hostPort: 5432{{ end }}
         resources: {{ .Values.datastore.resources }}
         env:
         - name: POSTGRES_PASSWORD
@@ -27,6 +46,10 @@ spec:
           valueFrom: {secretKeyRef: {name: {{ .Values.envVarsSecretName | default "env-vars" | quote }}, key: "DATASTORE_RO_PASSWORD"}}
         - name: DATASTORE_RO_USER
           valueFrom: {secretKeyRef: {name: {{ .Values.envVarsSecretName | default "env-vars" | quote }}, key: "DATASTORE_RO_USER"}}
+        {{ if .Values.datastore.publicreadonlyDbUserPasswordSecretName }}
+        - name: DATASTORE_PUBLIC_RO_PASSWORD
+          valueFrom: {secretKeyRef: {name: {{ .Values.datastore.publicreadonlyDbUserPasswordSecretName | quote }}, key: "DATASTORE_PUBLIC_RO_PASSWORD"}}
+        {{ end }}
         {{ if .Values.datastore.dbOps.enabled }}
         - name: BACKUP_DATABASE_NAME
           value: datastore
@@ -40,7 +63,15 @@ spec:
         command: [bash, /db-scripts/initialize-datastore.sh]
         {{ else if .Values.datastore.dbOps.enabled }}
         {{ if .Values.datastore.dbOps.backup }}
-        command: [bash, "-c", "bash /db-scripts/backup-cron.sh & exec docker-entrypoint.sh postgres"]
+        command:
+        - bash
+        - "-c"
+        - |
+          bash /db-scripts/backup-cron.sh &
+          {{ if .Values.datastore.publicreadonlyDbUserPasswordSecretName }}
+          bash /db-scripts/datastore-permissions-cron.sh &
+          {{ end }}
+          exec docker-entrypoint.sh postgres
         {{ else if .Values.datastore.dbOps.restore }}
         command: [bash, /db-scripts/restore-datastore.sh]
         {{ end }}

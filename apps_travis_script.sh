@@ -43,6 +43,7 @@ elif [ "${1}" == "deploy" ]; then
     docker tag "${DOCKER_IMAGE}:${latest_tag}" "${DOCKER_IMAGE}:${tag}" &&\
     docker push "${DOCKER_IMAGE}:${tag}"
     [ "$?" != "0" ] && echo failed docker push && exit 1
+    echo "${TRAVIS_COMMIT_MESSAGE}" | grep -- --no-deploy && echo skipping deployment && exit 0
     if [ "${SSH_DEPLOY_KEY_OPENSSL_CMD}" != "" ]; then
         PUSH_PARAMS="git@github.com:${K8S_OPS_REPO_SLUG}.git ${K8S_OPS_REPO_BRANCH}"
         ! eval "${SSH_DEPLOY_KEY_OPENSSL_CMD}" && echo failed to decrypt github deploy key && exit 1

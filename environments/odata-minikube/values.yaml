@@ -20,6 +20,7 @@ odata:
   ckanJobsPortForward: true
   ckanJobsDbResources: '{}'
   ckanJobsDbTerminationGracePeriodSeconds: 1
+  ckanJobsResources: '{}'
 
   db:
     terminationGracePeriodSeconds: 1
