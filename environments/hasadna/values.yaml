@@ -73,8 +73,9 @@ traefik:
 
   mysadna:
     enabled: true
-    frontendRule: "Host:mysadna.oknesset.org"
+    frontendRule: "Host:my.hasadna.org.il"
     backendUrl: "http://mysadna.mysadna:80"
-    acmeDomains: |
-      [[acme.domains]]
-        main = "mysadna.oknesset.org"
+    enableSSL: false
+#    acmeDomains: |
+#      [[acme.domains]]
+#        main = "mysadna.oknesset.org"

@@ -38,7 +38,7 @@ data:
       {{ if .Values.monitoring.enabled }}
 {{ .Values.monitoring.acmeDomains | indent 6 }}
       {{ end }}
-      {{ if .Values.mysadna.enabled }}
+      {{ if and .Values.mysadna.enableSSL .Values.mysadna.enabled }}
 {{ .Values.mysadna.acmeDomains | indent 6 }}
       {{ end }}
       [acme.dnsChallenge]
@@ -159,8 +159,10 @@ data:
       [frontends.mysadna]
         backend="mysadna"
         passHostHeader = true
+        {{ if .Values.mysadna.enableSSL }}
         [frontends.mysadna.headers]
           SSLRedirect = true
+        {{ end }}
         [frontends.mysadna.routes.route1]
           rule = {{ .Values.mysadna.frontendRule | quote }}
       {{ end }}

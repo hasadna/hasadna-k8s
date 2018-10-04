@@ -50,7 +50,7 @@ spec:
               name: {{ .Values.pipelines.secretName | default "pipelines" | quote }}
               key: apikey
         - name: CKAN_URL
-          value: http://ckan:5000
+          value: {{ .Values.pipelines.ckanUrl | default "http://ckan:5000" | quote }}
         - name: DPP_REDIS_HOST
           value: "127.0.0.1"
         - name: DPP_CELERY_BROKER

@@ -68,6 +68,7 @@ odata:
     sysadminEmail: pipelines-sysadmin@odata.org.il
     secretName: pipelines-sysadmin
     manual: false
+    ckanUrl: https://www.odata.org.il
 
   ckanPlugins: >
     stats text_view image_view recline_view
