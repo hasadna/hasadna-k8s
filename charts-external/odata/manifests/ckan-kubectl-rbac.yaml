@@ -1,0 +1,31 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: odata-minikube-ckan-kubectl
+  namespace: odata-minikube
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources:
+  - secrets
+  verbs:
+  - get
+  - create
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: odata-minikube-ckan-kubectl
+  namespace: odata-minikube
+subjects:
+- kind: ServiceAccount
+  name: odata-minikube-ckan-kubectl
+roleRef:
+  kind: Role
+  name: odata-minikube-ckan-kubectl
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: odata-minikube-ckan-kubectl
+  namespace: odata-minikube

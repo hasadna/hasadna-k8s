@@ -5,24 +5,12 @@
 ### Install Minikube environment for local development
 
 * [Install Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
-* Switch to the odata-minikube environment
+* (Optional) To ensure clean setup, delete any existing Minikube clusters and configuration
+  * `minikube delete; rm -rf ~/.minikube`
+* Switch to the Minikube environment
   * `source switch_environment.sh odata-minikube`
-* Make sure you are connected to your local minikube environment
-  * `kubectl get nodes`
-  * Should see a single `minikube` node
-* Create the odata-minikube namespace
-  * `kubectl create ns odata-minikube`
-* Install the helm client
-  * To make sure you get corret version you should use the script in this repo
-  * `bash apps_travis_script.sh install_helm`
-  * if you have problems, refer to helm docs - [helm client](https://docs.helm.sh/using_helm/#installing-the-helm-client)
-* Install the helm server-side component on your minikube cluster
-  * `helm init --history-max 2 --upgrade --wait`
-* Verify helm installation
-  * `helm version`
-* Install the data storage server using emptyDir volume (will be cleared on restart)
-  * `kubectl apply -f charts-external/odata/manifests/nfs-service.yaml`
-  * `kubectl apply -f charts-external/odata/manifests/nfs-deployment.yaml`
+* Initialize the Minikube environment
+  * `charts-external/odata/deploy.sh --install-minikube`
 
 ### Install Production environment on hasadna cluster
 
@@ -51,11 +39,10 @@ odataInstallGke:
 ```
 * Run the installation script which creates persistent disks and sets up the data storage server
   * `charts-external/odata/deploy.sh --install-gke`
-
-## Deploy a new environment
-
-* Connect to the relevant environment
-  * `source switch_environment.sh odata-minikube`
+* Create rbac role
+  * Copy rbac manifest from `charts-external/odata/manifests/ckan-kubectl-rbac.yaml` to environment directory
+  * Modify names and namespaces
+  * Apply: `kubectl apply -f environments/odata/odata-blue-ckan-kubectl-rbac.yaml`
 * Wait for NFS pod to be in running state
   * `./kubectl.sh loop get pods`
 * Get the NFS service cluster IP
@@ -65,24 +52,21 @@ odataInstallGke:
   * If installed using production setup on GKE, set persistent disk names:
     * ckanDbPersistentDiskName: `odata-test1-db`
     * datastore.persistentDiskName: `odata-test1-datastore`
+
+## Deploy a new environment
+
+* Connect to the relevant environment
+  * `source switch_environment.sh odata-minikube`
 * Deploy
   * You can either initialize a new, empty environment or restore from backup
   * Initialize a new, empty environment
     * `./deploy.sh --install`
-  * Restore from backup
-    * To restore from live environment
-      * Switch to previous environment
-        * `source switch_environment.sh odata`
-      * Stop the ckan pod - to prevent writes to DB
-        * `kubectl delete deployment ckan`
-      * Create the backups
-        * `./kubectl.sh exec db -c db -- bash /db-scripts/backup.sh`
-        * `./kubectl.sh exec datastore-db -c db -- bash /db-scripts/backup.sh`
-      * Wait ~1 minute for files to be available on google storage (for today's date)
-        * `source switch_environment.sh odata test1`
     * Create a Google Cloud service account file with permissions to read the backup files
     * You should have the Google Cloud Storage urls to the db and datastore-db backup files.
-    * `charts-external/odata/deploy.sh --restore /path/to/google/cloud/service_account.json gs://odata-k8s-backups/production/blue/ckan-db-dump-$(date +%Y-%m-%d).ckan.dump gs://odata-k8s-backups/production/blue/datastore-db-dump-$(date +%Y-%m-%d).datastore.dump`
+    * For Minikube environment - restore only the DB
+      * `charts-external/odata/deploy.sh --restore /path/to/google/cloud/service_account.json gs://odata-k8s-backups/production/blue/ckan-db-dump-$(date +%Y-%m-%d).ckan.dump`
+    * For production environment - restore the datastore DB as well
+      * `charts-external/odata/deploy.sh --restore /path/to/google/cloud/service_account.json gs://odata-k8s-backups/production/blue/ckan-db-dump-$(date +%Y-%m-%d).ckan.dump gs://odata-k8s-backups/production/blue/datastore-db-dump-$(date +%Y-%m-%d).datastore.dump`
 * Wait for all pods to be in Running state
   * `./kubectl.sh loop get pods`
   * If a pod has problems try to force recreate
@@ -156,3 +140,14 @@ You can also run a backup manually:
 ./kubectl.sh exec db -c db -- bash /db-scripts/backup.sh &&\
 ./kubectl.sh logs db -c db-ops -f
 ```
+
+## Restoring from live environment
+
+* Switch to previous environment
+  * `source switch_environment.sh odata`
+* Stop the ckan pod - to prevent writes to DB
+  * `kubectl delete deployment ckan`
+* Create the backups
+  * `./kubectl.sh exec db -c db -- bash /db-scripts/backup.sh`
+  * `./kubectl.sh exec datastore-db -c db -- bash /db-scripts/backup.sh`
+* Wait ~1 minute for files to be available on google storage (for today's date)

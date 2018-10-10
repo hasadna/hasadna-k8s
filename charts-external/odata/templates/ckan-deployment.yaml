@@ -14,6 +14,7 @@ spec:
       {{ if .Values.terminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       {{ end }}
+      serviceAccountName: {{ .Values.ckanServiceAccountName | quote }}
       initContainers:
       - name: secrets
         image: orihoch/dataportal-kubectl:18
@@ -29,18 +30,19 @@ spec:
         volumeMounts:
         - name: ckan-conf-secrets
           mountPath: /etc/ckan-conf/secrets
-      - name: permissions
+      - name: files
         image: alpine
         command:
         - sh
         - "-c"
         - |
+          rm -rf /var/ckan/pipelines/ckanext-*;
           chown -R 900:900 /var/lib/ckan &&\
           chown -R 900:900 /var/ckan &&\
           chmod -R ug+w /var/lib/ckan && chmod -R ug+w /var/ckan &&\
           chown -R 900:900 /etc/ckan-conf/secrets &&\
           ls -lah /var/lib/ckan &&\
-          ls -lah /var/ckan &&\
+          ls -lah /var/ckan/pipelines &&\
           ls -lah /etc/ckan-conf/secrets
         securityContext:
           runAsUser: 0
@@ -119,7 +121,13 @@ spec:
         configMap:
           name: ckan
       - name: ckan-data
+        {{ if .Values.hostPath }}
+        hostPath:
+          path: {{ .Values.hostPath | quote }}
+          type: DirectoryOrCreate
+        {{ else }}
         nfs:
           server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
           path: "/"
+        {{ end }}
 {{ end }}

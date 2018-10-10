@@ -84,8 +84,14 @@ spec:
         configMap:
           name: ckan
       - name: ckan-data
+        {{ if .Values.hostPath }}
+        hostPath:
+          path: {{ .Values.hostPath | quote }}
+          type: DirectoryOrCreate
+        {{ else }}
         nfs:
           server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
           path: "/"
+        {{ end }}
 {{ end }}
 {{ end }}

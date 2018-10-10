@@ -1,30 +1,33 @@
 odata:
   enabled: true
   ckanDeploymentEnabled: true
-  ckanResources: '{}'
-  dbResources: '{}'
-  solrResources: '{}'
+  ckanResources: '{"requests": {"cpu": "200m", "memory": "200Mi"}, "limits": {"memory": "500Mi"}}'
+  dbResources: '{"requests": {"cpu": "20m", "memory": "200Mi"}, "limits": {"memory": "300Mi"}}'
+  solrResources: '{"requests": {"cpu": "100m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}'
 #  ckanDataPersistentDiskName: odata-ckan-data
 #  ckanDbPersistentDiskName: odata-db
 #  nfsEnabled: true
 #  nfsGcePersistentDiskName: odata-ckan-data-nfs
-  ckanDataNfsServer: 10.100.17.164
+  ckanDataNfsServer: 10.98.10.247
 #  etcCkanDefaultSecretName: ckan-default-3
   ckanSecretName: ckan-secrets
   envVarsSecretName: env-vars
 #  dbNfsEnabled: true
 #  ckanDbNfsServer: 10.100.195.176
   replicas: 1
-  redisResources: '{}'
+  redisResources: '{"requests": {"cpu": "10m", "memory": "50Mi"}, "limits": {"memory": "100Mi"}}'
   ckanJobsEnabled: true
   ckanJobsPortForward: true
-  ckanJobsDbResources: '{}'
+  ckanJobsDbResources: '{"requests": {"cpu": "10m", "memory": "200Mi"}, "limits": {"memory": "100Mi"}}'
   ckanJobsDbTerminationGracePeriodSeconds: 1
-  ckanJobsResources: '{}'
+  ckanJobsResources: '{"requests": {"cpu": "100m", "memory": "200Mi"}, "limits": {"memory": "400Mi"}}'
+  ckanServiceAccountName: odata-minikube-ckan-kubectl
+  hostPath: /var/odata-minikube-storage
+  nginxResources: '{"requests": {"cpu": "10m", "memory": "10Mi"}, "limits": {"memory": "50Mi"}}'
 
   db:
     terminationGracePeriodSeconds: 1
-    image: orihoch/data4dappl-db:v0.2.16
+    image: orihoch/data4dappl-db:v0.2.19
     opsImage: orihoch/data4dappl-db-ops:v0.2.15
 
   datastore:
@@ -33,9 +36,9 @@ odata:
     terminationGracePeriodSeconds: 1
     datapusherEnabled: false
     xloaderEnabled: true
-    image: orihoch/data4dappl-db:v0.2.15
+    image: orihoch/data4dappl-db:v0.2.20
     opsImage: orihoch/data4dappl-db-ops:v0.2.15
-    resources: '{}'
+    resources: '{"requests": {"cpu": "20m", "memory": "200Mi"}, "limits": {"memory": "300Mi"}}'
     dbOps:
       enabled: false
 #      backup: "gs://odata-k8s-backups/production/blue/datastore-db-dump-"
@@ -43,7 +46,7 @@ odata:
     # this is needed when connecing to ckan using port-forward
     datapusherPortForward: true
     dataPusherTerminationGracePeriodSeconds: 1
-    dataPusherResources: '{}'
+    dataPusherResources: '{"requests": {"cpu": "10m", "memory": "10Mi"}, "limits": {"memory": "50Mi"}}'
 #    persistentDiskName: odata-blue-datastore
 
   dbOps:
@@ -51,13 +54,13 @@ odata:
 #    backup: "gs://odata-k8s-backups/testing/ckan-db-dump-"
 #    restore: "gs://odata-k8s-backups/production/ckan-db-dump-2018-09-24.ckan.dump"
 
-  solrImage: orihoch/solr-ckan-2.8.1:3
+  solrImage: orihoch/data4dappl-solr:v0.3.1
 
   pipelines:
     # pipelines require a shared directory with the ckan server
     # this requires ckanDataNfsServer to be set as well
 #    enabled: true
-    resources: '{}'
+    resources: '{"requests": {"cpu": "150m", "memory": "300Mi"}, "limits": {"memory": "600Mi"}}'
     terminationGracePeriodSeconds: 1
     sysadminUser: pipelines-sysadmin
     sysadminEmail: pipelines-sysadmin@localhost

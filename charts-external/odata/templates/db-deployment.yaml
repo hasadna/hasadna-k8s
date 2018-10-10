@@ -90,8 +90,14 @@ spec:
         gcePersistentDisk:
           pdName: {{ .Values.ckanDbPersistentDiskName | quote }}
         {{ else }}
+        {{ if .Values.hostPath }}
+        hostPath:
+          path: {{ .Values.hostPath | quote }}
+          type: DirectoryOrCreate
+        {{ else }}
         nfs:
           server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
           path: "/"
+        {{ end }}
         {{ end }}
 {{ end }}

@@ -55,7 +55,13 @@ spec:
           subPath: solr
       volumes:
       - name: data
+        {{ if .Values.hostPath }}
+        hostPath:
+          path: {{ .Values.hostPath | quote }}
+          type: DirectoryOrCreate
+        {{ else }}
         nfs:
-          server: {{ .Values.ckanDataNfsServer | default "nfs.ckan-green.svc.cluster.local" | quote }}
+          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
           path: "/"
+        {{ end }}
 {{ end }}

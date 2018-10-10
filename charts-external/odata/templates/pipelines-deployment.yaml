@@ -27,7 +27,7 @@ spec:
           value: {{ .Values.pipelines.secretName | default "pipelines" | quote }}
       containers:
       - name: pipelines
-        image: orihoch/datapackage-pipelines-ckanext:v0.0.1
+        image: orihoch/datapackage-pipelines-ckanext:v0.0.3
         {{ if .Values.pipelines.manual }}
         command:
         - bash
@@ -64,7 +64,13 @@ spec:
         - {mountPath: /var/redis, name: ckan-data, subPath: pipelines-redis}
       volumes:
       - name: ckan-data
+        {{ if .Values.hostPath }}
+        hostPath:
+          path: {{ .Values.hostPath | quote }}
+          type: DirectoryOrCreate
+        {{ else }}
         nfs:
           server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
           path: "/"
+        {{ end }}
 {{ end }}

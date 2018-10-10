@@ -17,11 +17,15 @@ elif [ "${1}" == "--restore" ]; then
     kubectl delete secret ckan-db-restore >/dev/null 2>&1
     ! kubectl create secret generic ckan-db-restore --from-file=secret.json=$SERVICE_ACCOUNT_FILE \
         && echo Failed to create DB restore secret && exit 1
+    if [ -z "${DATASTORE_DB_BACKUP_GS_URL}" ]; then
+        DATASTORE_ARGS="--set datastore.dbOps.enabled=false --set datastore.initialize=true"
+    else
+        DATASTORE_ARGS="--set datastore.dbOps.enabled=true --set datastore.dbOps.restore=${DATASTORE_DB_BACKUP_GS_URL} --set datastore.dbOps.backup="
+    fi
     ./helm_upgrade_external_chart.sh odata --install \
                 --set dbOps.enabled=true --set "dbOps.restore=${DB_BACKUP_GS_URL}" --set "dbOps.backup=" \
                 --set dbOps.secretName=ckan-db-restore \
-                --set datastore.dbOps.enabled=true --set "datastore.dbOps.restore=${DATASTORE_DB_BACKUP_GS_URL}" \
-                --set datastore.dbOps.backup= \
+                ${DATASTORE_ARGS} \
                 --set datastore.datapusherEnabled=false --set pipelines.enabled=false \
                 --set solrInitialize=true --set ckanSolrRebuild=true \
                 --set ckanJobsEnabled=false \
@@ -131,7 +135,27 @@ spec:
     echo Great Success
     exit 0
 
+elif [ "${1}" == "--install-minikube" ]; then
+    echo Please verify you are connected to the correct cluster and namespace
+    cat environments/${K8S_ENVIRONMENT_NAME}/.env
+    ! kubectl config get-contexts `kubectl config current-context` && exit 1
+    read -p "Press <Enter> to continue..."
 
+    echo Installing and initializing Minikube environment
+    ! minikube status \
+        && ! minikube start --kubernetes-version v1.9.7 \
+            && echo failed to start minikube && exit 1
+
+
+    echo Creating namespace $K8S_NAMESPACE
+    ! kubectl get ns $K8S_NAMESPACE && while ! kubectl create ns $K8S_NAMESPACE; do echo .; sleep 2; done
+    ! bash apps_travis_script.sh install_helm && echo failed to install helm client && exit 1
+    ! helm init --history-max 2 --upgrade --wait && echo failed to install helm server && exit 1
+    helm version
+    sudo mkdir -p /var/odata-minikube-storage
+    ! kubectl apply -f charts-external/odata/manifests/ckan-kubectl-rbac.yaml && echo failed to create rbac && exit 1
+    echo Great Success
+    exit 0
 
 else
     ./helm_upgrade_external_chart.sh odata ${@:1}

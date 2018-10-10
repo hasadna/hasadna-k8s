@@ -117,9 +117,15 @@ spec:
         gcePersistentDisk:
           pdName: {{ .Values.datastore.persistentDiskName | quote }}
         {{ else }}
+        {{ if .Values.hostPath }}
+        hostPath:
+          path: {{ .Values.hostPath | quote }}
+          type: DirectoryOrCreate
+        {{ else }}
         nfs:
           server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
           path: "/"
+        {{ end }}
         {{ end }}
       {{ if .Values.datastore.dbOps.enabled }}
       - name: backups
