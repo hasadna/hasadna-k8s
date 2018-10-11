@@ -69,6 +69,8 @@ odata:
     secretName: pipelines-sysadmin
     manual: false
     ckanUrl: https://www.odata.org.il
+    # this resource is loaded (once) by the pipelines to match groups and entities
+    foiOfficesMatchingResourceId: "daae5361-969c-45da-b697-c3a50e6e9541"
 
   ckanPlugins: >
     stats text_view image_view recline_view

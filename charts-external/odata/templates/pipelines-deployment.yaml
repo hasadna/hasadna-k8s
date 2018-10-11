@@ -11,35 +11,25 @@ spec:
     metadata:
       labels: {app: pipelines}
     spec:
+      serviceAccountName: {{ .Values.ckanServiceAccountName | quote }}
       {{ if .Values.pipelines.terminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ .Values.pipelines.terminationGracePeriodSeconds }}
       {{ end }}
       initContainers:
       - name: initialize
-        image: orihoch/dataportal-kubectl:6
-        command: [bash, "-c", "./kubectl.sh initialize-pipelines $USER $EMAIL $SECRET"]
+        image: orihoch/data4dappl-kubectl:v0.2.2
+        command: [bash, "-c", "./kubectl.sh initialize-pipelines $PIPELINES_SYSTEMIN_USER $PIPELINES_SYSADMIN_EMAIL $PIPELINES_SECRET_NAME"]
         env:
-        - name: USER
+        - name: PIPELINES_SYSTEMIN_USER
           value: {{ .Values.pipelines.sysadminUser | default "pipelines-sysadmin" | quote }}
-        - name: EMAIL
+        - name: PIPELINES_SYSADMIN_EMAIL
           value: {{ .Values.pipelines.sysadminEmail | default "pipelines-sysadmin@ckan" | quote }}
-        - name: SECRET
+        - name: PIPELINES_SECRET_NAME
           value: {{ .Values.pipelines.secretName | default "pipelines" | quote }}
       containers:
       - name: pipelines
-        image: orihoch/datapackage-pipelines-ckanext:v0.0.3
-        {{ if .Values.pipelines.manual }}
-        command:
-        - bash
-        - "-c"
-        - |
-          echo '#!/usr/bin/env bash
-          redis-server /etc/redis.conf --daemonize yes --dir /var/redis
-          until [ `redis-cli ping | grep -c PONG` = 1 ]; do echo "Waiting 1s for Redis to load"; sleep 1; done
-          dpp init
-          while kill -0 $(cat /var/run/redis/redis.pid); do sleep 86400; done' > /dpp/docker/run.sh
-          exec /entrypoint.sh
-        {{ else }}
+        image: orihoch/datapackage-pipelines-ckanext:v0.0.4
+        {{ if not .Values.pipelines.manual }}
         args:
         - "server"
         {{ end }}
@@ -53,8 +43,14 @@ spec:
           value: {{ .Values.pipelines.ckanUrl | default "http://ckan:5000" | quote }}
         - name: DPP_REDIS_HOST
           value: "127.0.0.1"
+        
+        {{ if .Values.pipelines.manual }}
+        - name: MANUAL_PIPELINES
+          value: "yes"
+        {{ else }}
         - name: DPP_CELERY_BROKER
           value: "redis://localhost:6379/6"
+        {{ end }}
         ports:
         - {containerPort: 5050}
         resources: {{ .Values.pipelines.resources }}

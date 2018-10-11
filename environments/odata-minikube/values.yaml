@@ -18,9 +18,10 @@ odata:
   redisResources: '{"requests": {"cpu": "10m", "memory": "50Mi"}, "limits": {"memory": "100Mi"}}'
   ckanJobsEnabled: true
   ckanJobsPortForward: true
-  ckanJobsDbResources: '{"requests": {"cpu": "10m", "memory": "200Mi"}, "limits": {"memory": "100Mi"}}'
+  ckanJobsDbResources: '{"requests": {"cpu": "10m", "memory": "50Mi"}, "limits": {"memory": "100Mi"}}'
   ckanJobsDbTerminationGracePeriodSeconds: 1
   ckanJobsResources: '{"requests": {"cpu": "100m", "memory": "200Mi"}, "limits": {"memory": "400Mi"}}'
+  ckanJobsTerminationGracePeriodSeconds: 1
   ckanServiceAccountName: odata-minikube-ckan-kubectl
   hostPath: /var/odata-minikube-storage
   nginxResources: '{"requests": {"cpu": "10m", "memory": "10Mi"}, "limits": {"memory": "50Mi"}}'
@@ -62,8 +63,8 @@ odata:
 #    enabled: true
     resources: '{"requests": {"cpu": "150m", "memory": "300Mi"}, "limits": {"memory": "600Mi"}}'
     terminationGracePeriodSeconds: 1
-    sysadminUser: pipelines-sysadmin
-    sysadminEmail: pipelines-sysadmin@localhost
+    sysadminUser: pipelines-sysadmin22
+    sysadminEmail: pipelines-sysadmin22@localhost
     secretName: pipelines-sysadmin
     manual: true
 

@@ -4,12 +4,18 @@ metadata:
   name: odata-minikube-ckan-kubectl
   namespace: odata-minikube
 rules:
-- apiGroups: [""] # "" indicates the core API group
-  resources:
-  - secrets
-  verbs:
-  - get
-  - create
+- apiGroups: [""]
+  resources: [secrets]
+  verbs: [get, create]
+- apiGroups: [""]
+  resources: [pods]
+  verbs: [list, get]
+- apiGroups: [""]
+  resources: [pods/exec]
+  verbs: [create]
+- apiGroups: [""]
+  resources: [pods/portforward]
+  verbs: [create]
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1

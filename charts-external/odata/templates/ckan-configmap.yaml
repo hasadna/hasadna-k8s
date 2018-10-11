@@ -231,6 +231,10 @@ data:
     ckanext.upload_via_email.success_message_from_email = {{ .Values.uploadViaEmail.success_message_from_email }}
     ckanext.upload_via_email.success_message_subject = {{ .Values.uploadViaEmail.success_message_subject }}
     {{ end }}
+    
+    {{ if .Values.pipelines.foiOfficesMatchingResourceId }}
+    ckanext.odata_org_il.foi_groups_matching_resource_id = {{ .Values.pipelines.foiOfficesMatchingResourceId | quote }}
+    {{ end }}
 
     ## Logging configuration
     [loggers]

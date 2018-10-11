@@ -14,6 +14,7 @@ spec:
       annotations:
         checksum/configmap: {{ include (print $.Template.BasePath "/ckan-configmap.yaml") . | sha256sum }}
     spec:
+      serviceAccountName: {{ .Values.ckanServiceAccountName | quote }}
       {{ if .Values.ckanJobsTerminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ .Values.ckanJobsTerminationGracePeriodSeconds }}
       {{ end }}
