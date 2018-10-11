@@ -67,6 +67,8 @@ odata:
     sysadminEmail: pipelines-sysadmin22@localhost
     secretName: pipelines-sysadmin
     manual: true
+    # this resource is loaded (once) by the pipelines to match groups and entities
+    foiOfficesMatchingResourceId: "daae5361-969c-45da-b697-c3a50e6e9541"
 
   siteUrl: http://localhost:5000
   siteTitle: מידע ממשלתי לעם - סביבת פיתוח מקומית
