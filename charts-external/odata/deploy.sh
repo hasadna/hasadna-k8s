@@ -136,10 +136,12 @@ spec:
     exit 0
 
 elif [ "${1}" == "--install-minikube" ]; then
-    echo Please verify you are connected to the correct cluster and namespace
-    cat environments/${K8S_ENVIRONMENT_NAME}/.env
-    ! kubectl config get-contexts `kubectl config current-context` && exit 1
-    read -p "Press <Enter> to continue..."
+    if [ "${2}" != "-y" ]; then
+        echo Please verify you are connected to the correct cluster and namespace
+        cat environments/${K8S_ENVIRONMENT_NAME}/.env
+        ! kubectl config get-contexts `kubectl config current-context` && exit 1
+        read -p "Press <Enter> to continue..."
+    fi
 
     echo Installing and initializing Minikube environment
     ! minikube status \
@@ -152,12 +154,12 @@ elif [ "${1}" == "--install-minikube" ]; then
     ! bash apps_travis_script.sh install_helm && echo failed to install helm client && exit 1
     ! helm init --history-max 2 --upgrade --wait && echo failed to install helm server && exit 1
     helm version
-    sudo mkdir -p /var/odata-minikube-storage
+    [ "${2}" != "-y" ] && sudo mkdir -p /var/odata-minikube-storage
     ! kubectl apply -f charts-external/odata/manifests/ckan-kubectl-rbac.yaml && echo failed to create rbac && exit 1
     echo Great Success
     exit 0
 
 else
-    ./helm_upgrade_external_chart.sh odata ${@:1}
+    ./helm_upgrade_external_chart.sh odata $@
 
 fi

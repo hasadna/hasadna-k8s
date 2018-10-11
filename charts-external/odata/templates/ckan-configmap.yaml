@@ -233,7 +233,7 @@ data:
     {{ end }}
     
     {{ if .Values.pipelines.foiOfficesMatchingResourceId }}
-    ckanext.odata_org_il.foi_groups_matching_resource_id = {{ .Values.pipelines.foiOfficesMatchingResourceId | quote }}
+    ckanext.odata_org_il.foi_groups_matching_resource_id = {{ .Values.pipelines.foiOfficesMatchingResourceId }}
     {{ end }}
 
     ## Logging configuration

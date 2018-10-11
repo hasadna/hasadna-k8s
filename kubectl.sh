@@ -9,6 +9,14 @@ if [ "${1}" == "loop" ]; then
         sleep 1
     done
 
+elif [ "${1}" == "jloop" ]; then
+    # jloop should be used instead of loop when running inside Jupyter notebook
+    while true; do
+        python -c "from IPython.display import clear_output; clear_output()"
+        kubectl "${@:2}"
+        sleep 2
+    done
+
 elif [ "${1}" == "port-forward" ]; then
     # port-forward based on app label
     if [ "${3}" == "" ]; then
@@ -19,8 +27,7 @@ elif [ "${1}" == "port-forward" ]; then
     else
         ARGS="${@:3}"
     fi
-    kubectl port-forward $(./kubectl.sh get-pod-name "${2}") $ARGS
-
+    exec kubectl port-forward $(./kubectl.sh get-pod-name "${2}") $ARGS
 
 elif [ "${1}" == "get-pod-name" ]; then
     # get pod name based on app label
@@ -46,5 +53,13 @@ elif [ "${1}" == "logs" ]; then
         ARGS="${@:3}"
     fi
     kubectl logs $(./kubectl.sh get-pod-name "${2}") $ARGS
+
+elif [ "${1}" == "describe" ]; then
+    ARGS="${@:3}"
+    kubectl describe pod $(./kubectl.sh get-pod-name "${2}") $ARGS
+
+elif [ "${1}" == "get" ]; then
+    ARGS="${@:3}"
+    kubectl get pod $(./kubectl.sh get-pod-name "${2}") $ARGS
 
 fi
