@@ -1,6 +1,3 @@
-migdar:
-  enabled: true
-
 nfs:
   gcePersistentDiskName: hasadna-nfs
 
