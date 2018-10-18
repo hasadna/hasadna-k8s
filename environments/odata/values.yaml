@@ -72,6 +72,11 @@ odata:
     # this resource is loaded (once) by the pipelines to match groups and entities
     foiOfficesMatchingResourceId: "daae5361-969c-45da-b697-c3a50e6e9541"
 
+  ckanJupyterDeployments: []
+#  - name: oritest123
+#    resources: '{"requests": {"cpu": "400m", "memory": "400Mi"}, "limits": {"memory": "800Mi"}}'
+#    image: orihoch/odata-ckan-jupyter:v0.0.9-a
+
   ckanPlugins: >
     stats text_view image_view recline_view
     odata_org_il file_uploader_ui datapackage_pipelines upload_via_email

@@ -1,0 +1,133 @@
+{{ range .Values.ckanJupyterDeployments }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata: {name: ckan-jupyter-{{ .name }}}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels: {app: ckan-jupyter-{{ .name }}}
+#      annotations:
+#        checksum/configmap: -- include (print $.Template.BasePath "/ckan-configmap.yaml") . | sha256sum --
+    spec:
+      terminationGracePeriodSeconds: 1
+      serviceAccountName: {{ $.Values.ckanServiceAccountName | quote }}
+      initContainers:
+      - name: secrets
+        image: orihoch/dataportal-kubectl:18
+        command:
+        - bash
+        - "-c"
+        - |
+          ./kubectl.sh initialize-ckan-env-vars {{ $.Values.envVarsSecretName | default "ckan-env-vars" | quote }} &&\
+          ./kubectl.sh initialize-ckan-secrets {{ $.Values.envVarsSecretName | default "ckan-env-vars" | quote }} \
+                                               "ckan-upload-via-email-env-vars" \
+                                               {{ $.Values.ckanSecretName | default "ckan-secrets" | quote }} &&\
+          ./kubectl.sh get-ckan-secrets {{ $.Values.ckanSecretName | default "ckan-secrets" | quote }} /etc/ckan-conf/secrets/secrets.sh
+        volumeMounts:
+        - name: ckan-conf-secrets
+          mountPath: /etc/ckan-conf/secrets
+#      - name: files
+#        image: alpine
+#        command:
+#        - sh
+#        - "-c"
+#        - |
+#          rm -rf /var/ckan/pipelines/ckanext-*;
+#          chown -R 900:900 /var/lib/ckan &&\
+#          chown -R 900:900 /var/ckan &&\
+#          chmod -R ug+w /var/lib/ckan && chmod -R ug+w /var/ckan &&\
+#          chown -R 900:900 /etc/ckan-conf/secrets &&\
+#          ls -lah /var/lib/ckan &&\
+#          ls -lah /var/ckan/pipelines &&\
+#          ls -lah /etc/ckan-conf/secrets
+#        securityContext:
+#          runAsUser: 0
+#        volumeMounts:
+#        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
+#        - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
+#        - name: ckan-conf-secrets
+#          mountPath: /etc/ckan-conf/secrets
+#      {{ if $.Values.ckanSolrRebuild }}
+#      - name: ckan-solr-rebuild
+#        image: {{ $.Values.ckanImage | quote }}
+#        command: [/ckan-entrypoint.sh, ckan-paster, --plugin=ckan, search-index, rebuild, -c, /etc/ckan/production.ini]
+#        env:
+#        - name: CKAN_STORAGE_PATH
+#          value: /var/lib/ckan/data
+#        - name: CKAN_K8S_SECRETS
+#          value: /etc/ckan-conf/secrets/secrets.sh
+#        - name: CKAN_K8S_TEMPLATES
+#          value: /etc/ckan-conf/templates
+#        - name: GUNICORN_WORKERS
+#          value: {{ $.Values.ckanGunicornWorkers | default "2" | quote }}
+#        volumeMounts:
+#        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
+#        - name: ckan-conf-secrets
+#          mountPath: /etc/ckan-conf/secrets
+#          readOnly: true
+#        - name: ckan-conf-templates
+#          mountPath: /etc/ckan-conf/templates
+#          readOnly: true
+#        - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
+#      {{ end }}
+      containers:
+      - name: ckan
+        image: {{ .image | quote }}
+        workingDir: /usr/lib/ckan/venv/src
+        args: ["/usr/lib/ckan/venv/bin/jupyter", "lab", "--ip", "0.0.0.0", "--port", "8888", "--no-browser"]
+        env:
+        - name: CKAN_STORAGE_PATH
+          value: /var/lib/ckan/data
+        - name: CKAN_K8S_SECRETS
+          value: /etc/ckan-conf/secrets/secrets.sh
+        - name: CKAN_K8S_TEMPLATES
+          value: /etc/ckan-conf/templates
+#        - name: GUNICORN_WORKERS
+#          value: {{ $.Values.ckanGunicornWorkers | default "2" | quote }}
+        ports:
+        - containerPort: 8888
+        resources: {{ .resources }}
+        volumeMounts:
+        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
+        - name: ckan-conf-secrets
+          mountPath: /etc/ckan-conf/secrets
+          readOnly: true
+        - name: ckan-conf-templates
+          mountPath: /etc/ckan-conf/templates
+          readOnly: true
+        - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
+#        readinessProbe:
+#          httpGet:
+#            path: /
+#            port: 5000
+#          initialDelaySeconds: 3
+#          periodSeconds: 5
+#          timeoutSeconds: 8
+#          failureThreshold: 2
+#        livenessProbe:
+#          httpGet:
+#            path: /
+#            port: 5000
+#          initialDelaySeconds: 20
+#          periodSeconds: 60
+#          timeoutSeconds: 8
+#          failureThreshold: 3
+      volumes:
+      - name: ckan-conf-secrets
+        emptyDir: {}
+      - name: ckan-conf-templates
+        configMap:
+          name: ckan
+      - name: ckan-data
+        {{ if $.Values.hostPath }}
+        hostPath:
+          path: {{ $.Values.hostPath | quote }}
+          type: DirectoryOrCreate
+        {{ else }}
+        nfs:
+          server: {{ $.Values.ckanDataNfsServer | default "nfs" | quote }}
+          path: "/"
+        {{ end }}
+{{ end }}
