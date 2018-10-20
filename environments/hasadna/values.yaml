@@ -76,3 +76,8 @@ traefik:
 #    acmeDomains: |
 #      [[acme.domains]]
 #        main = "mysadna.oknesset.org"
+
+  migdarInternalSearch:
+    enabled: true
+    frontendRule: "Host:migdar-internal-search.odata.org.il"
+    backendUrl: "http://internal-search-ui.migdar:8000"

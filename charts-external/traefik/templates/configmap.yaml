@@ -92,6 +92,12 @@ data:
           url = {{ .Values.mysadna.backendUrl | quote }}
       {{ end }}
 
+      {{ if .Values.migdarInternalSearch.enabled }}
+      [backends.migdarInternalSearch]
+        [backends.migdarInternalSearch.servers.server1]
+          url = {{ .Values.migdarInternalSearch.backendUrl | quote }}
+      {{ end }}
+
     [frontends]
       {{ if .Values.budgetkey.enabled }}
       [frontends.budgetkeynginx]
@@ -165,6 +171,14 @@ data:
         {{ end }}
         [frontends.mysadna.routes.route1]
           rule = {{ .Values.mysadna.frontendRule | quote }}
+      {{ end }}
+
+      {{ if .Values.migdarInternalSearch.enabled }}
+      [frontends.migdarInternalSearch]
+        backend="migdarInternalSearch"
+        passHostHeader = true
+        [frontends.migdarInternalSearch.routes.route1]
+          rule = {{ .Values.migdarInternalSearch.frontendRule | quote }}
       {{ end }}
 
 {{ end }}
