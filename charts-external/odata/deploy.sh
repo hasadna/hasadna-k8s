@@ -146,8 +146,8 @@ elif [ "${1}" == "--install-minikube" ]; then
     echo Installing and initializing Minikube environment
     ! minikube status \
         && ! minikube start --kubernetes-version v1.9.7 \
+                            --memory 2048 --cpus 2 --disk-size 15g \
             && echo failed to start minikube && exit 1
-
 
     echo Creating namespace $K8S_NAMESPACE
     ! kubectl get ns $K8S_NAMESPACE && while ! kubectl create ns $K8S_NAMESPACE; do echo .; sleep 2; done
