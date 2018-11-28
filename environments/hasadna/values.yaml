@@ -54,7 +54,7 @@ traefik:
 
   odata:
     enabled: true
-    frontendRule: "Host:www.odata.org.il,test-odata.oknesset.org,new.odata.org.il,odata.org.il"
+    frontendRule: "Host:www.odata.org.il,test-odata.oknesset.org,new.odata.org.il,odata.org.il,pipelines.odata.org.il"
     backendUrl: "http://nginx.odata-blue:80"
     canonicalDomainRedirect:
       matchDomains: new.odata.org.il|odata.org.il

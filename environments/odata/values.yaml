@@ -18,6 +18,9 @@ odata:
   ckanJobsDbResources: '{"requests": {"cpu": "20m", "memory": "50Mi"}, "limits": {"memory": "200Mi"}}'
   # ckanJobsDbTerminationGracePeriodSeconds: 1
   ckanJobsResources: '{"requests": {"cpu": "150m", "memory": "600Mi"}, "limits": {"memory": "1500Mi"}}'
+  # kubectl create secret generic --from-literal=secret-nginx-htpasswd="$(htpasswd -nb username password)"
+  nginxHtpasswdSecretName: nginx-htpasswd
+  fixPermissions: false
 
   db:
     image: orihoch/data4dappl-db:v0.2.15

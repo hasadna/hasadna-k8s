@@ -23,3 +23,24 @@ data:
             # proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
         }
     }
+
+    server {
+      listen 80;
+      server_name pipelines.odata.org.il;
+      location = / {
+          return 200 'it works!';
+          add_header Content-Type text/plain;
+      }
+      location /ckan/ {
+        index null;
+        root /var/lib/;
+        autoindex on;
+        auth_basic "Restricted Content";
+        auth_basic_user_file /etc/htpasswd/secret-nginx-htpasswd;
+      }
+      location /pipelines/ {
+        proxy_pass http://pipelines:5050/;
+        auth_basic "Restricted Content";
+        auth_basic_user_file /etc/htpasswd/secret-nginx-htpasswd;
+      }
+    }

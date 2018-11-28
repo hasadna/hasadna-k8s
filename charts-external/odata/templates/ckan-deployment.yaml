@@ -30,13 +30,15 @@ spec:
         volumeMounts:
         - name: ckan-conf-secrets
           mountPath: /etc/ckan-conf/secrets
+
       - name: files
         image: alpine
         command:
         - sh
         - "-c"
         - |
-          rm -rf /var/ckan/pipelines/ckanext-*;
+          rm -rf /var/ckan/pipelines/ckanext-*
+          {{ if .Values.fixPermissions }}
           chown -R 900:900 /var/lib/ckan &&\
           chown -R 900:900 /var/ckan &&\
           chmod -R ug+w /var/lib/ckan && chmod -R ug+w /var/ckan &&\
@@ -44,6 +46,9 @@ spec:
           ls -lah /var/lib/ckan &&\
           ls -lah /var/ckan/pipelines &&\
           ls -lah /etc/ckan-conf/secrets
+          {{ else }}
+          true
+          {{ end }}
         securityContext:
           runAsUser: 0
         volumeMounts:

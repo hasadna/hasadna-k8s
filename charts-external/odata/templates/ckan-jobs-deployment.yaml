@@ -29,6 +29,7 @@ spec:
         volumeMounts:
         - name: ckan-conf-secrets
           mountPath: /etc/ckan-conf/secrets
+      {{ if .Values.fixPermissions }}
       - name: permissions
         image: alpine
         command:
@@ -49,6 +50,7 @@ spec:
         - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
         - name: ckan-conf-secrets
           mountPath: /etc/ckan-conf/secrets
+      {{ end }}
       containers:
       - name: ckan-jobs
         image: {{ .Values.ckanImage | quote }}

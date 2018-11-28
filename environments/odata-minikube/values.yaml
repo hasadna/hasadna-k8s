@@ -25,6 +25,8 @@ odata:
   ckanServiceAccountName: odata-minikube-ckan-kubectl
   hostPath: /var/odata-minikube-storage
   nginxResources: '{"requests": {"cpu": "10m", "memory": "10Mi"}, "limits": {"memory": "50Mi"}}'
+  # nginxHtpasswdSecretName: nginx-htpasswd
+  fixPermissions: true
 
   db:
     terminationGracePeriodSeconds: 1
