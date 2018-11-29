@@ -114,7 +114,7 @@ spec:
               payload.update(text=payload_message)
               print(json.dumps(payload))
             exit(0)
-          elif p_message == "Running":
+          elif p_message in ["Running", "Queued"]:
             exit(0)
           else:
             error_file = f"/var/lib/ckan/data/pipelines/upload_via_email/errors/error_{error_id}.json"
