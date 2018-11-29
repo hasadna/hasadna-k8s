@@ -63,6 +63,80 @@ spec:
           timeoutSeconds: 2
           exec:
             command: [sh, -c, "redis-cli ping && exit 0; rm -rf /var/redis/* && redis-server /etc/redis.conf --daemonize yes --dir /var/redis && exit 0; exit 1"]
+      - name: monitor
+        image: python:alpine
+        env:
+        - name: SLEEP_SECONDS
+          value: "5"
+        - name: SLACK_NOTIFICATIONS_URL
+          {{ if .Values.pipelines.monitorSecretName }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.pipelines.monitorSecretName | quote }}
+              key: SLACK_NOTIFICATIONS_URL
+          {{ else }}
+          value: ""
+          {{ end }}
+        command:
+        - sh
+        - -c
+        - |
+          adduser -S -u 900 ckan ckan
+          su ckan -c "mkdir -p /var/lib/ckan/data/pipelines/upload_via_email/errors"
+          chmod -R +w /var/lib/ckan/data/pipelines/upload_via_email/errors
+          if ! which curl; then apk add curl; fi
+          while sleep $SLEEP_SECONDS; do
+            SLACK_PAYLOAD=$(curl -s http://localhost:5050/api/raw/ckanext-upload_via_email/upload_via_email \
+            | python -c '
+          import json, sys, secrets, os
+          p = json.load(sys.stdin)
+          payload = {
+            "channel": "#odata-notifications",
+            "username": "odata-pipelines",
+            "icon_emoji": ":ghost:"
+          }
+          p_message = p["message"]
+          error_id = str(p["last_success"])
+          if p_message == "Succeeded":
+            success_file = f"/var/lib/ckan/data/pipelines/upload_via_email/errors/success_{error_id}.json"
+            if os.path.exists(success_file):
+              exit(0)
+            payload_message = None
+            if "downloaded_messages" in str(p) or "unauthorized" in str(p) or "sent emails" in str(p):
+              payload_message = f"upload via email: processed messages https://pipelines.odata.org.il/ckan/data/pipelines/upload_via_email/errors/success_{error_id}.json"
+            if os.path.exists("/var/lib/ckan/data/pipelines/upload_via_email/errors/active_error"):
+              os.unlink("/var/lib/ckan/data/pipelines/upload_via_email/errors/active_error")
+              if not payload_message:
+                payload_message = f"upload via email: {p_message} https://pipelines.odata.org.il/ckan/data/pipelines/upload_via_email/errors/success_{error_id}.json"
+            if payload_message:
+              with open(success_file, "w") as f:
+                json.dump(p, f, indent=2)
+              payload.update(text=payload_message)
+              print(json.dumps(payload))
+            exit(0)
+          elif p_message == "Running":
+            exit(0)
+          else:
+            error_file = f"/var/lib/ckan/data/pipelines/upload_via_email/errors/error_{error_id}.json"
+            with open("/var/lib/ckan/data/pipelines/upload_via_email/errors/active_error", "w") as f:
+              f.write(error_file)
+            if os.path.exists(error_file):
+              exit(0)
+            payload.update(text=f"Error in upload_via_email pipeline: https://pipelines.odata.org.il/ckan/data/pipelines/upload_via_email/errors/error_{error_id}.json")
+            with open(error_file, "w") as f:
+              json.dump(p, f, indent=2)
+            print(json.dumps(payload))
+            exit(0)
+          ')
+            [ "$?" != "0" ] && exit 1
+            if [ "${SLACK_PAYLOAD}" != "" ]; then
+              echo sending slack notification
+              echo "${SLACK_PAYLOAD}"
+              ! curl -X POST --data-urlencode "payload=${SLACK_PAYLOAD}" $SLACK_NOTIFICATIONS_URL && exit 1
+            fi
+          done
+        volumeMounts:
+        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
       volumes:
       - name: ckan-data
         {{ if .Values.hostPath }}
