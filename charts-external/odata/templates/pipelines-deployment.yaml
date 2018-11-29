@@ -58,6 +58,11 @@ spec:
         - {mountPath: /pipelines, name: ckan-data, subPath: pipelines}
         - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
         - {mountPath: /var/redis, name: ckan-data, subPath: pipelines-redis}
+        livenessProbe:
+          initialDelaySeconds: 15
+          timeoutSeconds: 2
+          exec:
+            command: [sh, -c, "redis-cli ping && exit 0; rm -rf /var/redis/* && redis-server /etc/redis.conf --daemonize yes --dir /var/redis && exit 0; exit 1"]
       volumes:
       - name: ckan-data
         {{ if .Values.hostPath }}
