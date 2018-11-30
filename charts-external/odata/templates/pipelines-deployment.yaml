@@ -97,12 +97,15 @@ spec:
           }
           p_message = p["message"]
           error_id = str(p["last_success"])
-          if p_message == "Succeeded":
+          if p_message == "Succeeded" or p.get("success"):
             success_file = f"/var/lib/ckan/data/pipelines/upload_via_email/errors/success_{error_id}.json"
             if os.path.exists(success_file):
               exit(0)
             payload_message = None
-            if "downloaded_messages" in str(p) or "unauthorized" in str(p) or "sent emails" in str(p):
+            last_created_datasets = p.get("stats", {}).get("last created datasets", [])
+            if len(last_created_datasets) > 0:
+              payload_message = f"upload via email: created datasets: {last_created_datasets} https://pipelines.odata.org.il/ckan/data/pipelines/upload_via_email/errors/success_{error_id}.json"
+            elif "downloaded_messages" in str(p) or "unauthorized" in str(p) or "sent emails" in str(p):
               payload_message = f"upload via email: processed messages https://pipelines.odata.org.il/ckan/data/pipelines/upload_via_email/errors/success_{error_id}.json"
             if os.path.exists("/var/lib/ckan/data/pipelines/upload_via_email/errors/active_error"):
               os.unlink("/var/lib/ckan/data/pipelines/upload_via_email/errors/active_error")
