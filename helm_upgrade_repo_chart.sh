@@ -3,12 +3,12 @@
 
 ## Running this will use install an helm chart from helm repository (e.g, prometheus)
 
-source connect.sh
 CHART_NAME="${1}"
+RELEASE_NAME="${2}"
 
-[ -z "${CHART_NAME}" ] && echo "usage:" && echo "./helm_upgrade_repo_chart.sh <CHART_NAME>" && exit 1
+[ -z "${CHART_NAME}" ] && echo "usage:" && echo "./helm_upgrade_repo_chart.sh <CHART_NAME> <RELEASE_NAME>" && exit 1
 
-RELEASE_NAME="${K8S_ENVIRONMENT_NAME}"
+# RELEASE_NAME="${K8S_ENVIRONMENT_NAME}"
 echo "RELEASE_NAME=${RELEASE_NAME}"
 
 TEMPDIR=`mktemp -d`
@@ -29,7 +29,7 @@ done
 
 VALUES=`cat "${TEMPDIR}/values.yaml"`
 
-CMD="helm upgrade -f ${TEMPDIR}/values.yaml ${RELEASE_NAME} ${CHART_NAME} ${@:2}"
+CMD="helm upgrade -f ${TEMPDIR}/values.yaml ${RELEASE_NAME} ${CHART_NAME} ${@:3}"
 if ! $CMD; then
     echo
     echo "${TEMPDIR}/values.yaml"
