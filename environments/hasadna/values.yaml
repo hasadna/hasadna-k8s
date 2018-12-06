@@ -81,3 +81,8 @@ traefik:
     enabled: true
     frontendRule: "Host:migdar-internal-search.odata.org.il"
     backendUrl: "http://internal-search-ui.migdar:8000"
+  
+  migdarWebUi:
+    enabled: true
+    frontendRule: "Host:yodaat.org"
+    backendUrl: "http://nginx.migdar:80"
