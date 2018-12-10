@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-HELM_VERSION=v2.8.2
+HELM_VERSION=v2.12.0
 
 [ -f .travis.env ] && source .travis.env
 
