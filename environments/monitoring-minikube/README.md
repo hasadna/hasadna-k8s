@@ -22,9 +22,9 @@ Main difference is non persistance
   * `helm version`
 
 * Dry run and debug deployment
- * `source helm_upgrade_repo_chart.sh stable/prometheus --install --dry-run --debug`
+ * `source helm_upgrade_repo_chart.sh stable/prometheus-operator prometheus --install --force --dry-run --debug`
 * If successful install it
- * `source helm_upgrade_repo_chart.sh stable/prometheus`
+ * `source helm_upgrade_repo_chart.sh stable/prometheus-operator prometheus --install --force`
 
 ## Entering your prometheus deployment
 * Run the following commands to make prometheus available from your computer
