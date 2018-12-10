@@ -98,6 +98,12 @@ data:
           url = {{ .Values.migdarInternalSearch.backendUrl | quote }}
       {{ end }}
 
+      {{ if .Values.migdarWebUi.enabled }}
+      [backends.migdarWebUi]
+        [backends.migdarWebUi.servers.server1]
+          url = {{ .Values.migdarWebUi.backendUrl | quote }}
+      {{ end }}
+
     [frontends]
       {{ if .Values.budgetkey.enabled }}
       [frontends.budgetkeynginx]
@@ -179,6 +185,14 @@ data:
         passHostHeader = true
         [frontends.migdarInternalSearch.routes.route1]
           rule = {{ .Values.migdarInternalSearch.frontendRule | quote }}
+      {{ end }}
+
+      {{ if .Values.migdarWebUi.enabled }}
+      [frontends.migdarWebUi]
+        backend="migdarWebUi"
+        passHostHeader = true
+        [frontends.migdarWebUi.routes.route1]
+          rule = {{ .Values.migdarWebUi.frontendRule | quote }}
       {{ end }}
 
 {{ end }}
