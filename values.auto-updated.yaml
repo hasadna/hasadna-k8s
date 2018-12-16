@@ -2,6 +2,6 @@ anyway:
   image: uumpa/anyway:267f7419d02e00e6e74e9e57e2a217cf33b7d57c
   productionImage: uumpa/anyway:ef99d85b586a94d9e3b98a3e7dad195334318311
 mysadna:
-  image: uumpa/hasadna-mysadna:308a2c3d32af304fc598c77ea1397dec815d176d
+  image: uumpa/hasadna-mysadna:091c652ff15d288c0d910047c7321b5b1bfadc26
 odata:
   ckanImage: orihoch/odata-ckan:e921261f0a849cf5887208424e9162b97b4e3fe2
