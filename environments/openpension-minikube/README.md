@@ -1,17 +1,17 @@
-# anyway minikube environment
+# openpension minikube environment
 
-Allows to test anyway kubernetes environment locally
+Allows to test openpension kubernetes environment locally
 
 ## Install
 
 * [Install Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
-* Switch to the anyway-minikube environment
-  * `source switch_environment.sh anyway-minikube`
+* Switch to the openpension-minikube environment
+  * `source switch_environment.sh openpension-minikube`
 * Make sure you are connected to your local minikube environment
   * `kubectl get nodes`
   * Should see a single `minikube` node
-* Create the anyway-minikube namespace
-  * `kubectl create ns anyway-minikube`
+* Create the openpension-minikube namespace
+  * `kubectl create ns openpension-minikube`
 * Install the helm client
   * To make sure you get corret version you should use the script in this repo
   * `bash apps_travis_script.sh install_helm`
@@ -21,13 +21,13 @@ Allows to test anyway kubernetes environment locally
 * Verify helm installation
   * `helm version`
 * Create DB secret
-  * `kubectl create secret generic -n anyway-minikube db --from-literal=POSTGRES_PASSWORD=123456`
-* Dry run and debug the anyway chart installation
-  * `./helm_upgrade_external_chart.sh anyway --install --debug --dry-run`
-* Install the anyway chart
-  * `./helm_upgrade_external_chart.sh anyway --install`
-* Port forward to the anyway pod to access with the browser
-  * `kubectl port-forward $(kubectl get pod -l "app=anyway" -o 'jsonpath={.items[0].metadata.name}') 8000`
+  * `kubectl create secret generic -n openpension-minikube db --from-literal=POSTGRES_PASSWORD=123456`
+* Dry run and debug the openpension chart installation
+  * `./helm_upgrade_external_chart.sh openpension --install --debug --dry-run`
+* Install the openpension chart
+  * `./helm_upgrade_external_chart.sh openpension --install`
+* Port forward to the openpension pod to access with the browser
+  * `kubectl port-forward $(kubectl get pod -l "app=openpension" -o 'jsonpath={.items[0].metadata.name}') 8000`
   * site should be available at http://localhost:8000
-* edit `environments/anyway-minikube/values.yaml`
+* edit `environments/openpension-minikube/values.yaml`
   * comment the line `initialize: true` to prevent initialization from running on next upgrade

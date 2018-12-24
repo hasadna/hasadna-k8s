@@ -1,17 +1,17 @@
-# anyway staging environment
+# openpension staging environment
 
-This environment is continuously updated from hasadna/anyway dev branch.
+This environment is continuously updated from hasadna/openpension dev branch.
 
 It can also be used to test infrastructure changes.
 
 ## Install
 
-* Switch to the anyway environment
-  * `source switch_environment.sh anyway`
+* Switch to the openpension environment
+  * `source switch_environment.sh openpension`
 * Make sure you are connected to the correct cluster
   * `kubectl get nodes`
-* Create the anyway namespace
-  * `kubectl create ns anyway`
+* Create the openpension namespace
+  * `kubectl create ns openpension`
 * Install the helm client
   * To make sure you get corret version you should use the script in this repo
   * `bash apps_travis_script.sh install_helm`
@@ -19,22 +19,22 @@ It can also be used to test infrastructure changes.
 * Verify helm installation
   * `helm version`
 * Create the DB secret
-  * `kubectl create secret generic -n anyway db --from-literal=POSTGRES_PASSWORD=*******`
+  * `kubectl create secret generic -n openpension db --from-literal=POSTGRES_PASSWORD=*******`
 * Create the persistent disk for the DB
-  * `gcloud compute disks create --size=100GB --zone=europe-west1-b anyway-db`
+  * `gcloud compute disks create --size=100GB --zone=europe-west1-b openpension-db`
 * Enable initialization and set persistent disk in values
-  * Edit `environments/anyway/values.yaml` under `anyway:`
+  * Edit `environments/openpension/values.yaml` under `openpension:`
   * Set `initialize: true`
-  * Set `dbPersistentDiskName: anyway-db`
-* Dry run and debug the anyway chart installation
-  * `./helm_upgrade_external_chart.sh anyway --install --debug --dry-run`
-* Install the anyway chart
-  * `./helm_upgrade_external_chart.sh anyway --install`
-* Check the anyway pod logs, verify it initialized correctly
+  * Set `dbPersistentDiskName: openpension-db`
+* Dry run and debug the openpension chart installation
+  * `./helm_upgrade_external_chart.sh openpension --install --debug --dry-run`
+* Install the openpension chart
+  * `./helm_upgrade_external_chart.sh openpension --install`
+* Check the openpension pod logs, verify it initialized correctly
 * Disable initialization
   * Comment the line `initialize: true`
 * Redeploy
-  * `./helm_upgrade_external_chart.sh anyway`
-* Deploy hasadna cluster load balancer to route to anyway
+  * `./helm_upgrade_external_chart.sh openpension`
+* Deploy hasadna cluster load balancer to route to openpension
   * `source switch_environment.sh hasadna`
   * `./helm_upgrade_external_chart.sh traefik`
