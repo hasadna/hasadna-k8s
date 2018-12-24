@@ -7,6 +7,6 @@ spec:
   selector:
     app: openpension
   ports:
-  - name: "8000"
-    port: 8000
+  - name: "80"
+    port: 80
 {{ end }}
