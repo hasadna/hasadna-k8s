@@ -84,5 +84,5 @@ traefik:
   
   migdarWebUi:
     enabled: true
-    frontendRule: "Host:yodaat.org"
+    frontendRule: "Host:yodaat.org,www.yodaat.org,api.yodaat.org"
     backendUrl: "http://nginx.migdar:80"
