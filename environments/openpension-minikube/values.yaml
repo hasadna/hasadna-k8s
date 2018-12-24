@@ -1,0 +1,3 @@
+openpension:
+  enabled: true
+  initialize: true
