@@ -1,0 +1,60 @@
+{{ if .Values.enabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: openpension
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: openpension
+    spec:
+      terminationGracePeriodSeconds: 1
+      containers:
+      - name: openpension
+        image: {{ .Values.image }}
+        resources: {{ .Values.resources }}
+        ports:
+        - containerPort: 8000
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_PASSWORD"}}
+        - name: DATABASE_URL
+          value: "postgresql://openpension:$(POSTGRES_PASSWORD)@db/openpension"
+        - name: GUNICORN_CMD_ARGS
+          value: "--bind=0.0.0.0"
+        {{ if .Values.initialize }}
+        - name: INITIALIZE
+          value: "yes"
+        {{ end }}
+        command:
+        - bash
+        - "-c"
+        - |
+          if [ "${INITIALIZE}" == "yes" ]; then
+            alembic upgrade 3c0d35fdbe2e &&\
+            alembic upgrade head &&\
+            python main.py process cbs &&\
+            python main.py process united --light
+            [ "$?" != "0" ] && echo failed to initialize && exit 1
+          else
+            ! alembic upgrade head && echo failed alembic upgrade && exit 1
+          fi
+          gunicorn openpension:app &
+          GUNICORN_PID=$!
+          celery worker -A openpension.clusters_calculator &
+          CELERY_PID=$!
+          while ( ps $GUNICORN_PID && ps $CELERY_PID ) >/dev/null 2>&1
+          do
+            sleep 2
+          done
+      - name: rabbitmq
+        image: rabbitmq
+        resources: {{ .Values.rabbitmqResources }}
+        ports:
+        - containerPort: 5672
+{{ end }}

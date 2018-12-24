@@ -1,0 +1,41 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: db
+        image: orihoch/openpension-db:postgres9.6-postgis2.5
+        ports:
+        - containerPort: 5432
+        resources: {{ .Values.dbResources }}
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_PASSWORD"}}
+        - name: POSTGRES_USER
+          value: openpension
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+          # postgres doesn't let you use the root of a disk (it complaints about having lost+found directory)
+          subPath: dbdata
+      volumes:
+      - name: data
+      {{ if .Values.dbPersistentDiskName }}
+        gcePersistentDisk:
+          pdName: {{ .Values.dbPersistentDiskName | quote }}
+      {{ else }}
+        emptyDir: {}
+      {{ end }}
+{{ end }}
