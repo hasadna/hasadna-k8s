@@ -20,15 +20,4 @@ spec:
         resources: {{ .Values.client.resources }}
         ports:
         - containerPort: 80
-        env:
-        - name: POSTGRES_PASSWORD
-          valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_PASSWORD"}}
-        - name: DATABASE_URL
-          value: "postgresql://openpension:$(POSTGRES_PASSWORD)@db/openpension"
-        - name: GUNICORN_CMD_ARGS
-          value: "--bind=0.0.0.0"
-        {{ if .Values.initialize }}
-        - name: INITIALIZE
-          value: "yes"
-        {{ end }}
 {{ end }}
