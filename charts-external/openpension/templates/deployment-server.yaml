@@ -1,0 +1,21 @@
+{{ if .Values.enabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: server
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      terminationGracePeriodSeconds: 1
+      containers:
+      - name: server
+        image: "hasadna/open-pension-server"
+        resources: {{ .Values.server.resources }}
+        ports:
+        - containerPort: 80
+{{ end }}
