@@ -1,9 +1,5 @@
 # openpension staging environment
 
-This environment is continuously updated from hasadna/openpension dev branch.
-
-It can also be used to test infrastructure changes.
-
 ## Install
 
 * Switch to the openpension environment
