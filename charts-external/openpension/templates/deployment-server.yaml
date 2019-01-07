@@ -14,7 +14,7 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
       - name: server
-        image: "hasadna/open-pension-server"
+        image: {{ .Values.server.image }}
         resources: {{ .Values.server.resources }}
         ports:
         - containerPort: 80
