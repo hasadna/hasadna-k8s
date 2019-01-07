@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: db
-        image: orihoch/openpension-db:postgres9.6-postgis2.5
+        image: postgres
         ports:
         - containerPort: 5432
         resources: {{ .Values.dbResources }}
