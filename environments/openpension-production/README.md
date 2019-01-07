@@ -1,6 +1,6 @@
 # openpension production environment
 
-This environment is continuously updated from hasadna/openpension master branch.
+<!-- TODO: This environment is continuously updated from hasadna/openpension master branch. -->
 
 Infrastructure changes should be tested on the staging environment (`openpension` environment)
 
@@ -36,8 +36,8 @@ Infrastructure changes should be tested on the staging environment (`openpension
 * Redeploy
   * `./helm_upgrade_external_chart.sh openpension`
 * Test with port forward
-  * `kubectl port-forward openpension_POD_NAME 8000`
-  * http://localhost:8000/
+  * `kubectl port-forward openpension_client_POD_NAME 8080`
+  * http://localhost:8080/
 * Deploy hasadna cluster load balancer to route to openpension-production
   * `source switch_environment.sh hasadna`
   * `./helm_upgrade_external_chart.sh traefik`
