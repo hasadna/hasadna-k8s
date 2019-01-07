@@ -26,8 +26,8 @@ Allows to test openpension kubernetes environment locally
   * `./helm_upgrade_external_chart.sh openpension --install --debug --dry-run`
 * Install the openpension chart
   * `./helm_upgrade_external_chart.sh openpension --install`
-* Port forward to the openpension pod to access with the browser
-  * `kubectl port-forward $(kubectl get pod -l "app=openpension" -o 'jsonpath={.items[0].metadata.name}') 8000`
-  * site should be available at http://localhost:8000
+* Port forward to the openpension client
+  * `kubectl port-forward $(kubectl get pod -l "app=client" -o 'jsonpath={.items[0].metadata.name}') 8080:80`
+  * site should be available at http://localhost:8080
 * edit `environments/openpension-minikube/values.yaml`
   * comment the line `initialize: true` to prevent initialization from running on next upgrade
