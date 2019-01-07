@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-kubectl rollout status deployment/openpension-client && kubectl rollout status deployment/openpension-server
+kubectl rollout status deployment/client && kubectl rollout status deployment/server
