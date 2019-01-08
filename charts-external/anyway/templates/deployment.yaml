@@ -16,10 +16,12 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
       - name: anyway
-        image: {{ .Values.image }}
+        image: uumpa/hasadna-anyway:fix_docker_test3
         resources: {{ .Values.resources }}
         ports:
         - containerPort: 8000
+        envFrom:
+        - secretRef: {"name": "anyway"}
         env:
         - name: POSTGRES_PASSWORD
           valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_PASSWORD"}}
@@ -36,16 +38,20 @@ spec:
         - "-c"
         - |
           if [ "${INITIALIZE}" == "yes" ]; then
+            sleep 2 && ! alembic upgrade head &&  sleep 2 && ! alembic upgrade head &&\
+            sleep 2 &&  ! alembic upgrade head && echo failed to upgrade head && exit 1\
             alembic upgrade 3c0d35fdbe2e &&\
             alembic upgrade head &&\
-            python main.py process cbs &&\
-            python main.py process united --light
+            python main.py process cbs && echo python main.py process cbs && exit 1\
+            python main.py process united --light && echo python main.py process united --light && exit 1\
             [ "$?" != "0" ] && echo failed to initialize && exit 1
           else
             ! alembic upgrade head && echo failed alembic upgrade && exit 1
           fi
+          echo gunicorn anyway:app 
           gunicorn anyway:app &
           GUNICORN_PID=$!
+          echo celery worker -A anyway.clusters_calculator 
           celery worker -A anyway.clusters_calculator &
           CELERY_PID=$!
           while ( ps $GUNICORN_PID && ps $CELERY_PID ) >/dev/null 2>&1
