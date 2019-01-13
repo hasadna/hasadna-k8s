@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
       - name: anyway
-        image: uumpa/hasadna-anyway:fix_docker_test3
+        image: {{ .Values.image }}
         resources: {{ .Values.resources }}
         ports:
         - containerPort: 8000
