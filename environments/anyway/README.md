@@ -21,8 +21,8 @@ It can also be used to test infrastructure changes.
 * Create the DB secret
   * `kubectl create secret generic -n anyway db --from-literal=POSTGRES_PASSWORD=*******`
 * Create the Anyway secrets
-  * `kubectl create secret generic -n anyway anyway --from-literal=ANYWAY-PASSWORD=*******`
-  * anyway_password, FACEBOOK_KEY , FACEBOOK_SECRET , GOOGLE_LOGIN_CLIENT_ID , GOOGLE_LOGIN_CLIENT_SECRET, GOOGLE_LOGIN_CLIENT_PASS, MAILUSER , MAILPASS , newrelic_key
+  *  .e.g. `kubectl create secret generic -n anyway anyway --from-literal=ANYWAY-PASSWORD=*******`
+  * repeate for all those secret: anyway_password, FACEBOOK_KEY , FACEBOOK_SECRET , GOOGLE_LOGIN_CLIENT_ID , GOOGLE_LOGIN_CLIENT_SECRET, GOOGLE_LOGIN_CLIENT_PASS, MAILUSER , MAILPASS , newrelic_key
      
 * Create the persistent disk for the DB
   * `gcloud compute disks create --size=100GB --zone=europe-west1-b anyway-db`

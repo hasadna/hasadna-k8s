@@ -22,6 +22,9 @@ Allows to test anyway kubernetes environment locally
   * `helm version`
 * Create DB secret
   * `kubectl create secret generic -n anyway-minikube db --from-literal=POSTGRES_PASSWORD=123456`
+* Create the Anyway secrets
+  *  .e.g. `kubectl create secret generic -n anyway anyway --from-literal=ANYWAY-PASSWORD=*******`
+  * repeate for all those secret: anyway_password, FACEBOOK_KEY , FACEBOOK_SECRET , GOOGLE_LOGIN_CLIENT_ID , GOOGLE_LOGIN_CLIENT_SECRET, GOOGLE_LOGIN_CLIENT_PASS, MAILUSER , MAILPASS , newrelic_key  
 * Dry run and debug the anyway chart installation
   * `./helm_upgrade_external_chart.sh anyway --install --debug --dry-run`
 * Install the anyway chart
