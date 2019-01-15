@@ -18,4 +18,25 @@ spec:
         resources: {{ .Values.server.resources }}
         ports:
         - containerPort: 80
+        env:
+        - name: ENV
+          value: DEV
+        - name: POSTGRES_PASSWORD
+          valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_PASSWORD"}}
+        - name: POSTGRES_HOST
+          value: "database"
+        - name: POSTGRES_DB
+          value: openpension
+        - name: DEBUG
+          value: "False"
+        - name: POSTGRES_USER
+          valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_USER"}}
+        - name: SECRET_KEY
+          valueFrom:  {"secretKeyRef":{"name":"server", "key":"SECRET_KEY"}}
+        {{ if .Values.initialize }}
+        - name: INITIALIZE
+          value: "yes"
+        {{ end }}
+        command: 
+        - "/bin/sh entrypoint.sh"
 {{ end }}
