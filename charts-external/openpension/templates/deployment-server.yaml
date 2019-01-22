@@ -24,7 +24,7 @@ spec:
         - name: POSTGRES_PASSWORD
           valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_PASSWORD"}}
         - name: POSTGRES_HOST
-          value: "database"
+          value: "db"
         - name: POSTGRES_DB
           value: openpension
         - name: DEBUG
@@ -37,6 +37,6 @@ spec:
         - name: INITIALIZE
           value: "yes"
         {{ end }}
-        command: 
-        - "/bin/sh entrypoint.sh"
+        command: ["/bin/sh"]
+        args: ["entrypoint.sh"]
 {{ end }}
