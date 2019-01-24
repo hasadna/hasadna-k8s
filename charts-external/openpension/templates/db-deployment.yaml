@@ -24,7 +24,7 @@ spec:
         - name: POSTGRES_PASSWORD
           valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_PASSWORD"}}
         - name: POSTGRES_USER
-          value: openpension
+          valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_USER"}}
         volumeMounts:
         - name: data
           mountPath: /var/lib/postgresql/data
