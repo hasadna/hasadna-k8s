@@ -1,4 +1,4 @@
 anyway:
   enabled: true
-  initialize: true
+  #initialize: true
   image: uumpa/hasadna-anyway:fix_docker_test3

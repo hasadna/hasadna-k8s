@@ -37,13 +37,15 @@ spec:
         - bash
         - "-c"
         - |
+          echo "INITIALIZE: ${INITIALIZE}"
           if [ "${INITIALIZE}" == "yes" ]; then
             sleep 2 && ! alembic upgrade head && exit 1\
             python main.py process cbs && echo python main.py process cbs && exit 1\
             python main.py process united --light && echo python main.py process united --light && exit 1\
             [ "$?" != "0" ] && echo failed to initialize && exit 1
           else
-            ! alembic upgrade head && echo failed alembic upgrade && exit 1
+            echo "else"
+            # ! alembic upgrade head && echo failed alembic upgrade && exit 1
           fi
           echo gunicorn anyway:app 
           gunicorn anyway:app &
