@@ -1,6 +1,10 @@
 openpension:
   enabled: true
   # initialize: true
+  client:
+    image: hasadna/open-pension-client
+  server:
+    image: hasadna/open-pension-server
   resources: '{"requests": {"cpu": "50m", "memory": "250Mi"}, "limits": {"memory": "500Mi"}}'
   rabbitmqResources: '{"requests": {"cpu": "10m", "memory": "100Mi"}, "limits": {"memory": "300Mi"}}'
   dbPersistentDiskName: openpension-db
