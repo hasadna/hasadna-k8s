@@ -10,8 +10,11 @@
   * `kubectl create ns openpension`
 * Install the helm client
   * To make sure you get corret version you should use the script in this repo
+  * Install the helm server-side component on your cluster
   * `bash apps_travis_script.sh install_helm`
   * if you have problems, refer to helm docs - [helm client](https://docs.helm.sh/using_helm/#installing-the-helm-client)
+
+  * `helm init --history-max 2 --upgrade --wait`
 * Verify helm installation
   * `helm version`
 * Create the DB secret
