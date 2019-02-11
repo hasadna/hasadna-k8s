@@ -47,7 +47,7 @@ traefik:
   openpension:
     enabled: true
     frontendRule: "Host:openpension.oknesset.org"
-    backendUrl: "http://client.openpension:8000"
+    backendUrl: "http://client.openpension"
     acmeDomains: |
       [[acme.domains]]
         main = "openpension.oknesset.org"
