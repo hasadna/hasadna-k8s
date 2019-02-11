@@ -44,6 +44,14 @@ traefik:
       [[acme.domains]]
         main = "test.anyway.co.il"
 
+  openpension:
+    enabled: true
+    frontendRule: "Host:openpension.oknesset.org"
+    backendUrl: "http://client.openpension:8000"
+    acmeDomains: |
+      [[acme.domains]]
+        main = "openpension.oknesset.org"
+
   anywayProduction:
     enabled: true
     frontendRule: "Host:production.anyway.co.il"
