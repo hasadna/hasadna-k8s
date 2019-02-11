@@ -93,8 +93,8 @@ odata:
   displayTimezone: Asia/Jerusalem
   favIcon: /base/images/ckan.ico
   localeDefault: he
-  localeOrder: he en ar
-  localesOffered: he en ar
+  localeOrder: he en_US ar
+  localesOffered: he en_US ar
   localesFilteredOut: ""
 
   auth:

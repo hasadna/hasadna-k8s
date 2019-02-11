@@ -1,0 +1,17 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: adminer
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: adminer
+    spec:
+      terminationGracePeriodSeconds: 1
+      containers:
+      - name: adminer
+        image: adminer
+        ports:
+        - containerPort: 8080
