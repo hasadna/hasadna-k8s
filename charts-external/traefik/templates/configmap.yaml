@@ -32,6 +32,9 @@ data:
       {{ if .Values.anyway.enabled }}
 {{ .Values.anyway.acmeDomains | indent 6 }}
       {{ end }}
+      {{ if .Values.openpension.enabled }}
+{{ .Values.openpension.acmeDomains | indent 6 }}
+      {{ end }}
       {{ if .Values.anywayProduction.enabled }}
 {{ .Values.anywayProduction.acmeDomains | indent 6 }}
       {{ end }}
@@ -72,6 +75,12 @@ data:
       [backends.anywayProduction]
         [backends.anywayProduction.servers.server1]
           url = {{ .Values.anywayProduction.backendUrl | quote }}
+      {{ end }}
+
+      {{ if .Values.openpension.enabled }}
+      [backends.openpension]
+        [backends.openpension.servers.server1]
+          url = {{ .Values.openpension.backendUrl | quote }}
       {{ end }}
 
       {{ if .Values.odata.enabled }}
@@ -141,6 +150,16 @@ data:
           SSLRedirect = true
         [frontends.anywayProduction.routes.route1]
           rule = {{ .Values.anywayProduction.frontendRule | quote }}
+      {{ end }}
+
+      {{ if .Values.openpension.enabled }}
+      [frontends.openpension]
+        backend="openpension"
+        passHostHeader = true
+        [frontends.openpension.headers]
+          SSLRedirect = true
+        [frontends.openpension.routes.route1]
+          rule = {{ .Values.openpension.frontendRule | quote }}
       {{ end }}
 
       {{ if .Values.odata.enabled }}
