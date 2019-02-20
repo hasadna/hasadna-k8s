@@ -44,6 +44,9 @@ data:
       {{ if and .Values.mysadna.enableSSL .Values.mysadna.enabled }}
 {{ .Values.mysadna.acmeDomains | indent 6 }}
       {{ end }}
+      {{ if and .Values.reportit.enableSSL .Values.reportit.enabled }}
+{{ .Values.reportit.acmeDomains | indent 6 }}
+      {{ end }}
       [acme.dnsChallenge]
         provider = {{ .Values.letsencrypt.dnsProvider | quote }}
     {{ end }}
@@ -99,6 +102,12 @@ data:
       [backends.mysadna]
         [backends.mysadna.servers.server1]
           url = {{ .Values.mysadna.backendUrl | quote }}
+      {{ end }}
+
+      {{ if .Values.reportit.enabled }}
+      [backends.reportit]
+        [backends.reportit.servers.server1]
+          url = {{ .Values.reportit.backendUrl | quote }}
       {{ end }}
 
       {{ if .Values.migdarInternalSearch.enabled }}
@@ -196,6 +205,18 @@ data:
         {{ end }}
         [frontends.mysadna.routes.route1]
           rule = {{ .Values.mysadna.frontendRule | quote }}
+      {{ end }}
+
+      {{ if .Values.reportit.enabled }}
+      [frontends.reportit]
+        backend="reportit"
+        passHostHeader = true
+        {{ if .Values.reportit.enableSSL }}
+        [frontends.reportit.headers]
+          SSLRedirect = true
+        {{ end }}
+        [frontends.reportit.routes.route1]
+          rule = {{ .Values.reportit.frontendRule | quote }}
       {{ end }}
 
       {{ if .Values.migdarInternalSearch.enabled }}

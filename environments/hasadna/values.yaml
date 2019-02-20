@@ -85,6 +85,12 @@ traefik:
 #      [[acme.domains]]
 #        main = "mysadna.oknesset.org"
 
+  reportit:
+    enabled: true
+    frontendRule: "Host:reportit.obudget.org"
+    backendUrl: "http://reportit.reportit:80"
+    enableSSL: false
+
   migdarInternalSearch:
     enabled: true
     frontendRule: "Host:migdar-internal-search.odata.org.il"
