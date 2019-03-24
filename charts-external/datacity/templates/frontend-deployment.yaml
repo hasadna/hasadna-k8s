@@ -1,0 +1,24 @@
+{{ if .Values.enabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: frontend
+        image: {{ .Values.image | default "akariv/dgp-ui" | quote }}
+        resources: {"requests": {"cpu": "50m", "memory": "50Mi"}, "limits": {"memory": "100Mi"}}
+        env:
+        - name: PORT
+          value: "8000"
+        - name: BACKEND
+          value: backend:8000
+{{ end }}

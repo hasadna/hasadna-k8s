@@ -47,6 +47,9 @@ data:
       {{ if and .Values.reportit.enableSSL .Values.reportit.enabled }}
 {{ .Values.reportit.acmeDomains | indent 6 }}
       {{ end }}
+      {{ if and .Values.datacity.enableSSL .Values.datacity.enabled }}
+{{ .Values.datacity.acmeDomains | indent 6 }}
+      {{ end }}
       [acme.dnsChallenge]
         provider = {{ .Values.letsencrypt.dnsProvider | quote }}
     {{ end }}
@@ -108,6 +111,12 @@ data:
       [backends.reportit]
         [backends.reportit.servers.server1]
           url = {{ .Values.reportit.backendUrl | quote }}
+      {{ end }}
+
+      {{ if .Values.datacity.enabled }}
+      [backends.datacity]
+        [backends.datacity.servers.server1]
+          url = {{ .Values.datacity.backendUrl | quote }}
       {{ end }}
 
       {{ if .Values.migdarInternalSearch.enabled }}
@@ -217,6 +226,18 @@ data:
         {{ end }}
         [frontends.reportit.routes.route1]
           rule = {{ .Values.reportit.frontendRule | quote }}
+      {{ end }}
+
+      {{ if .Values.datacity.enabled }}
+      [frontends.datacity]
+        backend="datacity"
+        passHostHeader = true
+        {{ if .Values.datacity.enableSSL }}
+        [frontends.datacity.headers]
+          SSLRedirect = true
+        {{ end }}
+        [frontends.datacity.routes.route1]
+          rule = {{ .Values.datacity.frontendRule | quote }}
       {{ end }}
 
       {{ if .Values.migdarInternalSearch.enabled }}

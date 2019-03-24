@@ -91,6 +91,12 @@ traefik:
     backendUrl: "http://reportit.reportit:80"
     enableSSL: false
 
+  datacity:
+    enabled: true
+    frontendRule: "Host:app.datacity.org.il"
+    backendUrl: "http://frontend.datacity:8000"
+    enableSSL: false
+
   migdarInternalSearch:
     enabled: true
     frontendRule: "Host:migdar-internal-search.odata.org.il"
