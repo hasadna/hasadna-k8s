@@ -1,0 +1,32 @@
+{{ if .Values.enabled }}
+{{ if and .Values.mongodb .Values.mongodb.enabled }}
+{{ if .Values.mongodb.persistentVolumeClaimName }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  # must be unique for the entire cluster
+  name: {{ .Values.mongodb.persistentVolumeClaimName | quote }}
+spec:
+  storageClassName: ""
+  capacity:
+    storage: {{ .Values.mongodb.persistentVolumeSize | quote }}
+  accessModes:
+    - ReadWriteOnce
+  gcePersistentDisk:
+    pdName: {{ .Values.mongodb.persistentVolumePersistentDiskName | quote }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.mongodb.persistentVolumeClaimName | quote }}
+spec:
+  storageClassName: ""
+  volumeName: {{ .Values.mongodb.persistentVolumeClaimName | quote }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.mongodb.persistentVolumeSize | quote }}
+{{ end }}
+{{ end }}
+{{ end }}
