@@ -29,6 +29,9 @@ data:
       {{ if .Values.oknesset.enabled }}
 {{ .Values.oknesset.acmeDomains | indent 6 }}
       {{ end }}
+      {{ if .Values.knessetdatabackend.enabled }}
+{{ .Values.knessetdatabackend.acmeDomains | indent 6 }}
+      {{ end }}
       {{ if .Values.anyway.enabled }}
 {{ .Values.anyway.acmeDomains | indent 6 }}
       {{ end }}
@@ -69,6 +72,12 @@ data:
       [backends.oknessetnginx]
         [backends.oknessetnginx.servers.server1]
           url = {{ .Values.oknesset.backendUrl | quote }}
+      {{ end }}
+
+      {{ if .Values.knessetdatabackend.enabled }}
+      [backends.knessetdatabackend]
+        [backends.knessetdatabackend.servers.server1]
+          url = {{ .Values.knessetdatabackend.backendUrl | quote }}
       {{ end }}
 
       {{ if .Values.anyway.enabled }}
@@ -148,6 +157,16 @@ data:
           SSLRedirect = true
         [frontends.oknessetnginx.routes.route1]
           rule = {{ .Values.oknesset.frontendRule | quote }}
+      {{ end }}
+
+      {{ if .Values.knessetdatabackend.enabled }}
+      [frontends.knessetdatabackend]
+        backend="knessetdatabackend"
+        passHostHeader = true
+        [frontends.knessetdatabackend.headers]
+          SSLRedirect = true
+        [frontends.knessetdatabackend.routes.route1]
+          rule = {{ .Values.knessetdatabackend.frontendRule | quote }}
       {{ end }}
 
       {{ if .Values.anyway.enabled }}

@@ -36,6 +36,14 @@ traefik:
       [[acme.domains]]
         main = "www.oknesset.org"
 
+  knessetdatabackend:
+    enabled: true
+    frontendRule: "Host:api.oknesset.org"
+    backendUrl: "http://knesset-data-backend.oknesset:4000"
+    acmeDomains: |
+      [[acme.domains]]
+        main = "api.oknesset.org"
+
   anyway:
     enabled: true
     frontendRule: "Host:test.anyway.co.il"
