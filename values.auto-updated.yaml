@@ -6,4 +6,4 @@ mysadna:
 odata:
   ckanImage: orihoch/odata-ckan:e921261f0a849cf5887208424e9162b97b4e3fe2
 oknesset:
-  DataBackendImage: uumpa/knesset-data-backend:f8a362f2d2d53315c3bd817f1c3df694670084e0
+  DataBackendImage: uumpa/knesset-data-backend:9ace6cf8992087afe678001af61b88caa71a0588
