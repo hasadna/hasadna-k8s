@@ -18,6 +18,9 @@ odata:
   ckanJobsDbResources: '{"requests": {"cpu": "20m", "memory": "50Mi"}, "limits": {"memory": "200Mi"}}'
   # ckanJobsDbTerminationGracePeriodSeconds: 1
   ckanJobsResources: '{"requests": {"cpu": "150m", "memory": "600Mi"}, "limits": {"memory": "1500Mi"}}'
+  # kubectl create secret generic --from-literal=secret-nginx-htpasswd="$(htpasswd -nb username password)"
+  nginxHtpasswdSecretName: nginx-htpasswd
+  fixPermissions: false
 
   db:
     image: orihoch/data4dappl-db:v0.2.15
@@ -71,6 +74,7 @@ odata:
     ckanUrl: https://www.odata.org.il
     # this resource is loaded (once) by the pipelines to match groups and entities
     foiOfficesMatchingResourceId: "daae5361-969c-45da-b697-c3a50e6e9541"
+    monitorSecretName: pipelines-monitor
 
   ckanJupyterDeployments: []
 #  - name: oritest123
@@ -89,8 +93,8 @@ odata:
   displayTimezone: Asia/Jerusalem
   favIcon: /base/images/ckan.ico
   localeDefault: he
-  localeOrder: he en ar
-  localesOffered: he en ar
+  localeOrder: he en_US ar
+  localesOffered: he en_US ar
   localesFilteredOut: ""
 
   auth:

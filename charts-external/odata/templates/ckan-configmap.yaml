@@ -236,6 +236,8 @@ data:
     ckanext.odata_org_il.foi_groups_matching_resource_id = {{ .Values.pipelines.foiOfficesMatchingResourceId }}
     {{ end }}
 
+    ckanext.datapackage_pipelines.dashboard_url = https://pipelines.odata.org.il/pipelines/
+
     ## Logging configuration
     [loggers]
     keys = root, ckan, ckanext

@@ -34,7 +34,26 @@ spec:
         - name: nginx-conf
           mountPath: /etc/nginx/conf.d
           readOnly: true
+        - name: nginx-htpasswd
+          mountPath: /etc/htpasswd
+          readOnly: true
+        - name: ckan-data
+          mountPath: /var/lib/ckan
+          subPath: ckan
       volumes:
       - name: nginx-conf
         configMap:
           name: nginx
+      - name: nginx-htpasswd
+        secret:
+          secretName: {{ .Values.nginxHtpasswdSecretName }}
+      - name: ckan-data
+        {{ if .Values.hostPath }}
+        hostPath:
+          path: {{ .Values.hostPath | quote }}
+          type: DirectoryOrCreate
+        {{ else }}
+        nfs:
+          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
+          path: "/"
+        {{ end }}

@@ -25,7 +25,7 @@ spec:
           value: "123456"
         resources: {{ .Values.ckanJobsDbResources }}
         volumeMounts:
-        - mountPath: /var/lib/ckan
+        - mountPath: /var/lib/postgresql/data
           name: data
           subPath: ckan-jobs-db
       volumes:

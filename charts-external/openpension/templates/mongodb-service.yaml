@@ -1,0 +1,15 @@
+{{ if .Values.enabled }}
+{{ if and .Values.mongodb .Values.mongodb.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+spec:
+  type: NodePort
+  selector:
+    app: mongodb
+  ports:
+  - name: "27017"
+    port: 27017
+{{ end }}
+{{ end }}

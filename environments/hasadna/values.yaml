@@ -19,7 +19,7 @@ traefik:
 
   budgetkey:
     enabled: true
-    frontendRule: "Host:next.obudget.org,data.obudget.org,socialmap.org.il,www.socialmap.org.il,kibana.obudget.org,www.obudget.org,obudget.org"
+    frontendRule: "Host:next.obudget.org,data.obudget.org,socialmap.org.il,www.socialmap.org.il,kibana.obudget.org,www.obudget.org,obudget.org,pipelines.obudget.org"
     backendUrl: "http://nginx.budgetkey:80"
 
   oknesset:
@@ -36,6 +36,14 @@ traefik:
       [[acme.domains]]
         main = "www.oknesset.org"
 
+  knessetdatabackend:
+    enabled: true
+    frontendRule: "Host:api.oknesset.org"
+    backendUrl: "http://knesset-data-backend.oknesset:4000"
+    acmeDomains: |
+      [[acme.domains]]
+        main = "api.oknesset.org"
+
   anyway:
     enabled: true
     frontendRule: "Host:test.anyway.co.il"
@@ -43,6 +51,14 @@ traefik:
     acmeDomains: |
       [[acme.domains]]
         main = "test.anyway.co.il"
+
+  openpension:
+    enabled: true
+    frontendRule: "Host:openpension.oknesset.org"
+    backendUrl: "http://client.openpension"
+    acmeDomains: |
+      [[acme.domains]]
+        main = "openpension.oknesset.org"
 
   anywayProduction:
     enabled: true
@@ -54,7 +70,7 @@ traefik:
 
   odata:
     enabled: true
-    frontendRule: "Host:www.odata.org.il,test-odata.oknesset.org,new.odata.org.il,odata.org.il"
+    frontendRule: "Host:www.odata.org.il,test-odata.oknesset.org,new.odata.org.il,odata.org.il,pipelines.odata.org.il"
     backendUrl: "http://nginx.odata-blue:80"
     canonicalDomainRedirect:
       matchDomains: new.odata.org.il|odata.org.il
@@ -77,7 +93,24 @@ traefik:
 #      [[acme.domains]]
 #        main = "mysadna.oknesset.org"
 
+  reportit:
+    enabled: true
+    frontendRule: "Host:reportit.obudget.org"
+    backendUrl: "http://reportit.reportit:80"
+    enableSSL: false
+
+  datacity:
+    enabled: true
+    frontendRule: "Host:app.datacity.org.il"
+    backendUrl: "http://frontend.datacity:8000"
+    enableSSL: false
+
   migdarInternalSearch:
     enabled: true
     frontendRule: "Host:migdar-internal-search.odata.org.il"
     backendUrl: "http://internal-search-ui.migdar:8000"
+  
+  migdarWebUi:
+    enabled: true
+    frontendRule: "Host:yodaat.org,www.yodaat.org,api.yodaat.org"
+    backendUrl: "http://nginx.migdar:80"

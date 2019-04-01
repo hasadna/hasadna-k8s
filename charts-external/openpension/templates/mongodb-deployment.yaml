@@ -1,0 +1,41 @@
+{{ if .Values.enabled }}
+{{ if and .Values.mongodb .Values.mongodb.enabled }}
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mongodb
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: mongodb
+        image: mongo:4.0
+        args: ['--auth']
+        ports:
+        - containerPort: 27017
+        resources: {{ .Values.mongodb.resources }}
+        envFrom:
+          - secretRef:
+              name: {{ .Values.mongodb.envFromSecretName | quote }}
+        volumeMounts:
+        - name: data
+          mountPath: /data/db
+          subPath: mongo_data_db
+      volumes:
+      - name: data
+        {{ if .Values.mongodb.persistentVolumeClaimName }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.mongodb.persistentVolumeClaimName | quote }}
+        {{ else }}
+        emptyDir: {}
+        {{ end }}
+{{ end }}
+{{ end }}
