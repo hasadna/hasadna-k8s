@@ -1,4 +1,5 @@
 anyway:
   enabled: true
+  disbaledDeployment: false
   #initialize: true
-  image: uumpa/hasadna-anyway:fix_docker_test3
+  image: mickeyrouash/anyway_mickeyr

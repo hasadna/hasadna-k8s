@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: db
-        image: mickeyrouash/anyway:db
+        image: mickeyrouash/anyway_db_mickeyr
         ports:
         - containerPort: 5432
         resources: {{ .Values.dbResources }}
@@ -36,6 +36,8 @@ spec:
         gcePersistentDisk:
           pdName: {{ .Values.dbPersistentDiskName | quote }}
       {{ else }}
-        emptyDir: {}
+        hostPath:
+          path: /data
+        #emptyDir: {}
       {{ end }}
 {{ end }}

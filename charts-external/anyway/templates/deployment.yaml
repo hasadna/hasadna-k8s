@@ -1,4 +1,5 @@
 {{ if .Values.enabled }}
+{{ if not .Values.disbaledDeployment }}
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -62,4 +63,5 @@ spec:
         resources: {{ .Values.rabbitmqResources }}
         ports:
         - containerPort: 5672
+{{ end }}
 {{ end }}
