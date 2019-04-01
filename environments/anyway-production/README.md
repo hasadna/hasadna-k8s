@@ -41,3 +41,27 @@ Infrastructure changes should be tested on the staging environment (`anyway` env
 * Deploy hasadna cluster load balancer to route to anyway-production
   * `source switch_environment.sh hasadna`
   * `./helm_upgrade_external_chart.sh traefik`
+
+  ## How to import full DB ( persistent volume) for Kubernetes environment
+* edit file `environments/anyway/values.yaml`
+ * change value `disbaledDeployment: false --> disbaledDeployment: true`
+* Run DB pod only
+  * `source switch_environment.sh anyway`
+  * `kubectl create ns anyway`
+  * `bash apps_travis_script.sh install_helm`
+  * `helm init --history-max 2 --upgrade --wait`
+  * `kubectl create secret generic -n anyway db --from-literal=POSTGRES_PASSWORD=******`
+  * `./helm_upgrade_external_chart.sh anyway --install --debug --dry-run`
+  * `./helm_upgrade_external_chart.sh anyway --install`
+
+* restore DB to DB pod
+  * `kubectl cp ../truncated_dump db-56c45ffdb5-kjj5w:/tmp`
+  * `kubectl exec db-9bc6bf964-tz82r psql -- -U anyway -f /tmp/truncated_dump`
+* edit file `environments/anyway-minikube/values.yaml`
+* change value `disbaledDeployment: true --> disbaledDeployment: false`
+* deploy anyway pod
+  * `kubectl create secret generic -n anyway anyway --from-literal=ANYWAY-PASSWORD=****** --from-literal=anyway_password=****** --from-literal=FACEBOOK_KEY=****** --from-literal=FACEBOOK_SECRET=****** --from-literal=GOOGLE_LOGIN_CLIENT_ID=****** --from-literal=GOOGLE_LOGIN_CLIENT_SECRET=****** --from-literal=MAILUSER=****** --from-literal=MAILPASS=****** --from-literal=newrelic_key=******`
+
+   * `./helm_upgrade_external_chart.sh anyway`
+* port forward
+  * `kubectl port-forward $(kubectl get pod -l "app=anyway" -o 'jsonpath={.items[0].metadata.name}') 8000`
