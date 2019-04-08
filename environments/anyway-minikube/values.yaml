@@ -1,3 +1,5 @@
 anyway:
   enabled: true
-  initialize: true
+  disbaledDeployment: false
+  #initialize: true
+  image: mickeyrouash/anyway_mickeyr
