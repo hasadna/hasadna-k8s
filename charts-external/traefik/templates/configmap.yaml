@@ -50,6 +50,9 @@ data:
       {{ if and .Values.reportit.enableSSL .Values.reportit.enabled }}
 {{ .Values.reportit.acmeDomains | indent 6 }}
       {{ end }}
+      {{ if and .Values.botkit.enableSSL .Values.botkit.enabled }}
+{{ .Values.botkit.acmeDomains | indent 6 }}
+      {{ end }}
       {{ if and .Values.datacity.enableSSL .Values.datacity.enabled }}
 {{ .Values.datacity.acmeDomains | indent 6 }}
       {{ end }}
@@ -120,6 +123,12 @@ data:
       [backends.reportit]
         [backends.reportit.servers.server1]
           url = {{ .Values.reportit.backendUrl | quote }}
+      {{ end }}
+
+      {{ if .Values.botkit.enabled }}
+      [backends.botkit]
+        [backends.botkit.servers.server1]
+          url = {{ .Values.botkit.backendUrl | quote }}
       {{ end }}
 
       {{ if .Values.datacity.enabled }}
@@ -245,6 +254,18 @@ data:
         {{ end }}
         [frontends.reportit.routes.route1]
           rule = {{ .Values.reportit.frontendRule | quote }}
+      {{ end }}
+
+      {{ if .Values.botkit.enabled }}
+      [frontends.botkit]
+        backend="botkit"
+        passHostHeader = true
+        {{ if .Values.botkit.enableSSL }}
+        [frontends.botkit.headers]
+          SSLRedirect = true
+        {{ end }}
+        [frontends.botkit.routes.route1]
+          rule = {{ .Values.botkit.frontendRule | quote }}
       {{ end }}
 
       {{ if .Values.datacity.enabled }}

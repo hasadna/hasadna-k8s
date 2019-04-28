@@ -8,3 +8,6 @@ odata:
 oknesset:
   DataBackendImage: uumpa/knesset-data-backend:bc03d3c1830a856d6bbacf4b2481d83dd1f836c6
   WebUiImage: uumpa/knesset-data-web-ui:191f7f5cea8115d86dcdb20450449a437cfab1f3
+datacity:
+  backendImage: hasadna/datacity-backend@sha256:48faba606b8f84d0021752e9b5454a0e6dbc9b7d58d233000bda7cce28621edc
+  frontendImage: hasadna/datacity-importer@sha256:a0037024d492dbf8295e43d571d185cef328a50e62e784e7f3afc3f5f8140d04

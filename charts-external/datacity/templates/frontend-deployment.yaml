@@ -14,7 +14,7 @@ spec:
       terminationGracePeriodSeconds: 2
       containers:
       - name: frontend
-        image: {{ .Values.image | default "hasadna/datacity-importer" | quote }}
+        image: {{ .Values.frontendImage | default "hasadna/datacity-importer" | quote }}
         resources: {"requests": {"cpu": "50m", "memory": "50Mi"}, "limits": {"memory": "100Mi"}}
         env:
         - name: PORT

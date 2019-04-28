@@ -1,2 +1,10 @@
 reportit:
   enabled: true
+  botkit:
+    enabled: true
+    # persistent volume claim and disk names must be unique across all projects in the cluster
+    persistentVolumeClaimName: reportit-botkit-data
+    # create the disk first:
+    # gcloud compute disks create --size=20GB --zone=europe-west1-b openpension-mongodb-data
+    persistentVolumePersistentDiskName: reportit-botkit-data
+    persistentVolumeSize: 1G
