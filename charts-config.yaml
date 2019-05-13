@@ -51,3 +51,4 @@ openpension:
       deployment-name: client
       container-name: client
       image-prop: client image
+
