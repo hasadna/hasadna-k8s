@@ -1,0 +1,28 @@
+{{ if .Values.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  # must be unique for the entire cluster
+  name: {{ .Values.botkit.persistentVolumeClaimName | quote }}
+spec:
+  storageClassName: ""
+  capacity:
+    storage: {{ .Values.botkit.persistentVolumeSize | quote }}
+  accessModes:
+    - ReadWriteOnce
+  gcePersistentDisk:
+    pdName: {{ .Values.botkit.persistentVolumePersistentDiskName | quote }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.botkit.persistentVolumeClaimName | quote }}
+spec:
+  storageClassName: ""
+  volumeName: {{ .Values.botkit.persistentVolumeClaimName | quote }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.botkit.persistentVolumeSize | quote }}
+{{ end }}

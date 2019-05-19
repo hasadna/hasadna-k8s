@@ -1,0 +1,12 @@
+{{ if .Values.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: botkit
+spec:
+  selector:
+    app: botkit
+  ports:
+  - name: "3000"
+    port: 3000
+{{ end }}

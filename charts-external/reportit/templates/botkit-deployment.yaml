@@ -1,0 +1,31 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: botkit
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: botkit
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: botkit
+        image: hasadna/reportit-botkitcms
+        ports:
+        - containerPort: 3000
+        resources: {{ .Values.botkit.resources }}
+        volumeMounts:
+        - name: data
+          mountPath: /botkit-cms-master/.data
+          subPath: reportit_scripts
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ .Values.botkit.persistentVolumeClaimName | quote }}
+{{ end }}
