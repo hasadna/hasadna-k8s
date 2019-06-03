@@ -18,7 +18,7 @@ traefik:
 
   budgetkey:
     enabled: true
-    frontendRule: "Host:next.obudget.org,data.obudget.org,socialmap.org.il,www.socialmap.org.il,kibana.obudget.org"
+    frontendRule: "Host:next.obudget.org,data.obudget.org,socialmap.org.il,www.socialmap.org.il,kibana.obudget.org,dgp.obudget.org"
     backendUrl: "http://nginx.budgetkey:80"
 
   oknesset:

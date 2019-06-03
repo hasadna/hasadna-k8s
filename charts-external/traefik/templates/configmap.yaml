@@ -53,6 +53,9 @@ data:
       {{ if and .Values.botkit.enableSSL .Values.botkit.enabled }}
 {{ .Values.botkit.acmeDomains | indent 6 }}
       {{ end }}
+      {{ if and .Values.strapi.enableSSL .Values.strapi.enabled }}
+{{ .Values.strapi.acmeDomains | indent 6 }}
+      {{ end }}
       {{ if and .Values.datacity.enableSSL .Values.datacity.enabled }}
 {{ .Values.datacity.acmeDomains | indent 6 }}
       {{ end }}
@@ -129,6 +132,12 @@ data:
       [backends.botkit]
         [backends.botkit.servers.server1]
           url = {{ .Values.botkit.backendUrl | quote }}
+      {{ end }}
+
+      {{ if .Values.strapi.enabled }}
+      [backends.strapi]
+        [backends.strapi.servers.server1]
+          url = {{ .Values.strapi.backendUrl | quote }}
       {{ end }}
 
       {{ if .Values.datacity.enabled }}
@@ -266,6 +275,18 @@ data:
         {{ end }}
         [frontends.botkit.routes.route1]
           rule = {{ .Values.botkit.frontendRule | quote }}
+      {{ end }}
+
+      {{ if .Values.strapi.enabled }}
+      [frontends.strapi]
+        backend="strapi"
+        passHostHeader = true
+        {{ if .Values.strapi.enableSSL }}
+        [frontends.strapi.headers]
+          SSLRedirect = true
+        {{ end }}
+        [frontends.strapi.routes.route1]
+          rule = {{ .Values.strapi.frontendRule | quote }}
       {{ end }}
 
       {{ if .Values.datacity.enabled }}
