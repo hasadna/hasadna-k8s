@@ -2,7 +2,7 @@ odata:
   enabled: true
   ckanDeploymentEnabled: true
   ckanResources: '{"requests": {"cpu": "200m", "memory": "200Mi"}, "limits": {"memory": "500Mi"}}'
-  dbResources: '{"requests": {"cpu": "20m", "memory": "200Mi"}, "limits": {"memory": "300Mi"}}'
+  dbResources: '{"requests": {"cpu": "20m", "memory": "200Mi"}, "limits": {"memory": "500Mi"}}'
   solrResources: '{"requests": {"cpu": "100m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}'
 #  ckanDataPersistentDiskName: odata-ckan-data
 #  ckanDbPersistentDiskName: odata-db

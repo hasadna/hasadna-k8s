@@ -24,6 +24,7 @@ data:
         }
     }
 
+    {{ if .Values.pipelines.enabled }}
     server {
       listen 80;
       server_name pipelines.odata.org.il;
@@ -44,3 +45,4 @@ data:
         auth_basic_user_file /etc/htpasswd/secret-nginx-htpasswd;
       }
     }
+    {{ end }}

@@ -45,8 +45,12 @@ spec:
         configMap:
           name: nginx
       - name: nginx-htpasswd
+        {{ if .Values.nginxHtpasswdSecretName }}
         secret:
           secretName: {{ .Values.nginxHtpasswdSecretName }}
+        {{ else }}
+        emptyDir: {}
+        {{ end }}
       - name: ckan-data
         {{ if .Values.hostPath }}
         hostPath:

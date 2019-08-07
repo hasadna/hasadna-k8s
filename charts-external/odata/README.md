@@ -4,7 +4,7 @@
 
 ### Install Minikube environment for local development
 
-* [Install Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
+* [Install Minikube v0.3.5](https://github.com/kubernetes/minikube/releases/tag/v0.35.0)
 * (Optional) To ensure clean setup, delete any existing Minikube clusters and configuration
   * `minikube delete; rm -rf ~/.minikube`
 * Switch to the Minikube environment
@@ -59,14 +59,15 @@ odataInstallGke:
   * `source switch_environment.sh odata-minikube`
 * Deploy
   * You can either initialize a new, empty environment or restore from backup
-  * Initialize a new, empty environment
-    * `./deploy.sh --install`
-    * Create a Google Cloud service account file with permissions to read the backup files
-    * You should have the Google Cloud Storage urls to the db and datastore-db backup files.
-    * For Minikube environment - restore only the DB
-      * `charts-external/odata/deploy.sh --restore /path/to/google/cloud/service_account.json gs://odata-k8s-backups/production/blue/ckan-db-dump-$(date +%Y-%m-%d).ckan.dump`
-    * For production environment - restore the datastore DB as well
-      * `charts-external/odata/deploy.sh --restore /path/to/google/cloud/service_account.json gs://odata-k8s-backups/production/blue/ckan-db-dump-$(date +%Y-%m-%d).ckan.dump gs://odata-k8s-backups/production/blue/datastore-db-dump-$(date +%Y-%m-%d).datastore.dump`
+    * Initialize a new, empty environment:
+      * `./deploy.sh --install`
+    * Restore from backup:
+      * Create a Google Cloud service account file with permissions to read the backup files
+      * You should have the Google Cloud Storage urls to the db and datastore-db backup files.
+      * For Minikube environment - restore only the DB
+        * `charts-external/odata/deploy.sh --restore /path/to/google/cloud/service_account.json gs://odata-k8s-backups/production/blue/ckan-db-dump-$(date +%Y-%m-%d).ckan.dump`
+      * For production environment - restore the datastore DB as well
+        * `charts-external/odata/deploy.sh --restore /path/to/google/cloud/service_account.json gs://odata-k8s-backups/production/blue/ckan-db-dump-$(date +%Y-%m-%d).ckan.dump gs://odata-k8s-backups/production/blue/datastore-db-dump-$(date +%Y-%m-%d).datastore.dump`
 * Wait for all pods to be in Running state
   * `./kubectl.sh loop get pods`
   * If a pod has problems try to force recreate
@@ -86,12 +87,13 @@ odataInstallGke:
   * For full support using port forward, modify the environment's `values.yaml`:
     * set `siteUrl` to `http://localhost:5000`
     * set `datastore.datapusherPortForward` to `true`
+    * redeploy: `charts-external/odata/deploy.sh`
   * When connecting to ckan using port-forward, you should restart the datapusher after every restart of the ckan pod:
     * `./force_update.sh datapusher`
 * Site should be accessible at http://localhost:5000
-* Create a sysadmin user
+* (Optional) Create a sysadmin user
   * `charts-external/odata/utils/ckan-sysadmin.sh add USERNAME`
-* Setup upload via email
+* (optional) Setup upload via email
   * Create a Gmail account to be used only for receiving uploads for this CKAN instance
   * go to: https://developers.google.com/gmail/api/quickstart/python
     * make sure your are logged-in to this Gmail account
