@@ -107,7 +107,7 @@ traefik:
   
   strapi:
     enabled: true
-    frontendRule: "Host:reportit-cms.obudget.org"
+    frontendRule: "Host:reportit-cms.obudget.org,cms.equality.org.il"
     backendUrl: "http://strapi.reportit:1337"
     enableSSL: false
 
