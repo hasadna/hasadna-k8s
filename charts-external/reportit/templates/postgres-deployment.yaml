@@ -1,0 +1,32 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: postgres
+        image: postgres
+        resources: {{ .Values.postgres.resources }}
+        env:
+        - name: POSTGRES_PASSWORD
+          value: '123456'
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+          subPath: reportit_strapi_db
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ .Values.postgres.persistentVolumeClaimName | quote }}
+{{ end }}

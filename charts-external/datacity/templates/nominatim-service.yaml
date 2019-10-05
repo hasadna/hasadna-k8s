@@ -1,0 +1,12 @@
+{{ if .Values.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: nominatim
+spec:
+  selector:
+    app: nominatim
+  ports:
+  - name: "8080"
+    port: 8080
+{{ end }}

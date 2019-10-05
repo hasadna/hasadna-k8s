@@ -117,6 +117,12 @@ traefik:
     backendUrl: "http://frontend.datacity:8000"
     enableSSL: false
 
+  datacityNominatim:
+    enabled: true
+    frontendRule: "Host:geocode.datacity.org.il"
+    backendUrl: "http://nominatim.datacity:8080"
+    enableSSL: false
+
   migdarInternalSearch:
     enabled: true
     frontendRule: "Host:migdar-internal-search.odata.org.il"

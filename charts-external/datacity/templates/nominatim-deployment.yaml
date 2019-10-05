@@ -1,0 +1,19 @@
+{{ if .Values.enabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nominatim
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: nominatim
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: nominatim
+        image: {{ .Values.nominatimImage | default "akariv/nominatim-israel" | quote }}
+        resources: {"requests": {"cpu": "50m", "memory": "50Mi"}, "limits": {"memory": "2Gi"}}
+{{ end }}

@@ -1,0 +1,34 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: strapi
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: strapi
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: strapi
+        image: hasadna/reportit-cms
+        ports:
+        - containerPort: 1337
+        resources: {{ .Values.strapi.resources }}
+        volumeMounts:
+        - name: data
+          mountPath: /usr/src/api/reportit-cms
+          subPath: reportit_strapi
+        env:
+        - name: DATABASE_HOST
+          value: 'postgres'
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ .Values.strapi.persistentVolumeClaimName | quote }}
+{{ end }}
