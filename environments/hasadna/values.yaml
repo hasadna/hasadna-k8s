@@ -123,6 +123,12 @@ traefik:
     backendUrl: "http://nominatim.datacity:8080"
     enableSSL: false
 
+  datacityApi:
+    enabled: true
+    frontendRule: "Host:api.datacity.org.il"
+    backendUrl: "http://api.datacity:8000"
+    enableSSL: false
+
   migdarInternalSearch:
     enabled: true
     frontendRule: "Host:migdar-internal-search.odata.org.il"

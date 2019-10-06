@@ -1,0 +1,22 @@
+{{ if .Values.enabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: api
+        image: {{ .Values.apiImage | default "budgetkey/open-budget-data-api" | quote }}
+        resources: {"requests": {"cpu": "50m", "memory": "50Mi"}, "limits": {"memory": "250Gi"}}
+        env:
+          - name: DATABASE_URL
+            value: postgresql://readonly:readonly@db.datacity.org.il/datacity
+{{ end }}

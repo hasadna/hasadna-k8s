@@ -62,6 +62,9 @@ data:
       {{ if and .Values.datacityNominatim.enableSSL .Values.datacityNominatim.enabled }}
 {{ .Values.datacityNominatim.acmeDomains | indent 6 }}
       {{ end }}
+      {{ if and .Values.datacityApi.enableSSL .Values.datacityApi.enabled }}
+{{ .Values.datacityApi.acmeDomains | indent 6 }}
+      {{ end }}
       [acme.dnsChallenge]
         provider = {{ .Values.letsencrypt.dnsProvider | quote }}
     {{ end }}
@@ -153,6 +156,12 @@ data:
       [backends.datacityNominatim]
         [backends.datacityNominatim.servers.server1]
           url = {{ .Values.datacityNominatim.backendUrl | quote }}
+      {{ end }}
+
+      {{ if .Values.datacityApi.enabled }}
+      [backends.datacityApi]
+        [backends.datacityApi.servers.server1]
+          url = {{ .Values.datacityApi.backendUrl | quote }}
       {{ end }}
 
       {{ if .Values.migdarInternalSearch.enabled }}
@@ -320,6 +329,18 @@ data:
         {{ end }}
         [frontends.datacityNominatim.routes.route1]
           rule = {{ .Values.datacityNominatim.frontendRule | quote }}
+      {{ end }}
+
+      {{ if .Values.datacityApi.enabled }}
+      [frontends.datacityApi]
+        backend="datacityApi"
+        passHostHeader = true
+        {{ if .Values.datacityApi.enableSSL }}
+        [frontends.datacityApi.headers]
+          SSLRedirect = true
+        {{ end }}
+        [frontends.datacityApi.routes.route1]
+          rule = {{ .Values.datacityApi.frontendRule | quote }}
       {{ end }}
 
       {{ if .Values.migdarInternalSearch.enabled }}
