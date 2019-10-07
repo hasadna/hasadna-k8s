@@ -19,4 +19,6 @@ spec:
         env:
           - name: DATABASE_URL
             value: postgresql://readonly:readonly@db.datacity.org.il/datacity
+          - name: MAX_ROWS
+            value: "25000"
 {{ end }}
