@@ -2,7 +2,7 @@ anyway:
   image: uumpa/anyway:267f7419d02e00e6e74e9e57e2a217cf33b7d57c
   productionImage: uumpa/anyway:ef99d85b586a94d9e3b98a3e7dad195334318311
 datacity:
-  backendImage: hasadna/datacity-backend@sha256:883a679e02ec329c6fe150a7c04e49ef663ef3c6ea1e238abff9ded33317ac9d
+  backendImage: hasadna/datacity-backend@sha256:d117bd98ed6708df34b242f505216046815d775016573b536c0549a943376422
   frontendImage: hasadna/datacity-importer@sha256:2f6c1b9585b775ce0c849b7e9c342d8237089233e0f909d6eaa9f5854320702e
 mysadna:
   image: uumpa/hasadna-mysadna:c0a681d5a0c68ada76b6d68fce1c2115224790a9
