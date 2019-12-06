@@ -13,7 +13,6 @@ odata:
     dbOps:
       backup: "gs://odata-k8s-backups/production/blue/datastore-db-dump-"
     persistentDiskName: odata-blue-datastore
-    dbNodeSelector: 'kubernetes.io/hostname: gke-hasadna-cluster-more-cpu-da25b37e-1dmn'
     # see https://github.com/OriHoch/kube-ip-dns-updater
     dbKubeIpDnsUpdaterSecret: odata-datastore-db-kube-ip-dns-updater
     # see odata-blue-datastore-db-kube-ip-dns-updater-rbac.yaml

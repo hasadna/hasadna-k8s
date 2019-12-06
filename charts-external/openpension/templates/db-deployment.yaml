@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: db
-        image: postgres
+        image: postgres:11
         ports:
         - containerPort: 5432
         resources: {{ .Values.dbResources }}

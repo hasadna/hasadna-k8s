@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: postgres
-        image: postgres
+        image: postgres:11
         resources: {{ .Values.postgres.resources }}
         env:
         - name: POSTGRES_PASSWORD
