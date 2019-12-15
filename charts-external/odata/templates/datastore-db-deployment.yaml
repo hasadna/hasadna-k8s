@@ -37,7 +37,7 @@ spec:
         image: {{ .Values.datastore.image | quote }}
         ports:
         - containerPort: 5432
-          {{ if .Values.datastore.dbEnableHostPort }}hostPort: 5432{{ end }}
+          {{ if .Values.datastore.dbEnableHostPort }}hostPort: 15432{{ end }}
         resources: {{ .Values.datastore.resources }}
         env:
         - name: POSTGRES_PASSWORD
