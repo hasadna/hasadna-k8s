@@ -7,7 +7,7 @@ datacity:
 mysadna:
   image: uumpa/hasadna-mysadna:c0a681d5a0c68ada76b6d68fce1c2115224790a9
 odata:
-  ckanImage: orihoch/odata-ckan:96fd9e00be32d06b43f0778d05a5a008ef1d1c2c
+  ckanImage: orihoch/odata-ckan:c1d53d7b0a49cdd917a9566ba6ea2511cd4a116a
 oknesset:
   DataBackendImage: uumpa/knesset-data-backend:bc03d3c1830a856d6bbacf4b2481d83dd1f836c6
   WebUiImage: uumpa/knesset-data-web-ui:94b6de1cc89ae20647e35aa606c3c9b95e81dbe6
