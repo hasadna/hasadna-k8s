@@ -22,4 +22,13 @@ spec:
             memory: 5Mi
         securityContext:
           privileged: true
+      - name: disable_hugepages
+          image: busybox:1.26.2
+          command: ["sh", "-c", "echo never > /sys/kernel/mm/transparent_hugepage/enabled && while true; do sleep 86400; done"]
+          resources:
+            requests:
+              cpu: 1m
+              memory: 5Mi
+          securityContext:
+            privileged: true
 {{ end }}
