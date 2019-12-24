@@ -12,6 +12,10 @@ spec:
       labels:
         name: cluster-admin
     spec:
+      volumes:
+        - name: host-sys
+          hostPath:
+            path: /sys
       containers:
       - name: sysctl-conf
         image: busybox:1.26.2
@@ -22,13 +26,16 @@ spec:
             memory: 5Mi
         securityContext:
           privileged: true
-      - name: disable_hugepages
-          image: busybox:1.26.2
-          command: ["sh", "-c", "echo never > /sys/kernel/mm/transparent_hugepage/enabled && while true; do sleep 86400; done"]
-          resources:
-            requests:
-              cpu: 1m
-              memory: 5Mi
-          securityContext:
-            privileged: true
+      - name: disable-hugepages
+        image: busybox:1.26.2
+        volumeMounts:
+          - name: host-sys
+            mountPath: /host-sys
+        command: ["sh", "-c", "echo never > /host-sys/kernel/mm/transparent_hugepage/enabled && while true; do sleep 86400; done"]
+        resources:
+          requests:
+            cpu: 1m
+            memory: 5Mi
+        securityContext:
+          privileged: true
 {{ end }}
