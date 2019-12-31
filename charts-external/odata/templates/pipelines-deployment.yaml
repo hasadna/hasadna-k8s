@@ -43,7 +43,6 @@ spec:
           value: {{ .Values.pipelines.ckanUrl | default "http://ckan:5000" | quote }}
         - name: DPP_REDIS_HOST
           value: "127.0.0.1"
-        
         {{ if .Values.pipelines.manual }}
         - name: MANUAL_PIPELINES
           value: "yes"
@@ -59,10 +58,23 @@ spec:
         - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
         - {mountPath: /var/redis, name: ckan-data, subPath: pipelines-redis}
         livenessProbe:
-          initialDelaySeconds: 15
-          timeoutSeconds: 2
+          initialDelaySeconds: 3600
+          timeoutSeconds: 30
+          failureThreshold: 1
           exec:
-            command: [sh, -c, "redis-cli ping && exit 0; rm -rf /var/redis/* && redis-server /etc/redis.conf --daemonize yes --dir /var/redis && exit 0; exit 1"]
+            command:
+            - sh
+            - -c
+            - |
+              if [ -e /var/lib/ckan/data/pipelines/upload_via_email/errors/stuck_pipelines_should_restart ]; then
+                echo stuck_pipelines_should_restart
+                cat /var/lib/ckan/data/pipelines/upload_via_email/errors/stuck_pipelines_should_restart
+                rm -rf /var/redis/* &&\
+                rm /var/lib/ckan/data/pipelines/upload_via_email/errors/stuck_pipelines_should_restart &&\
+                exit 1
+              else
+                exit 0
+              fi
       - name: monitor
         image: python:alpine
         env:
@@ -81,22 +93,38 @@ spec:
         - sh
         - -c
         - |
-          adduser -S -u 900 ckan ckan
-          su ckan -c "mkdir -p /var/lib/ckan/data/pipelines/upload_via_email/errors"
-          chmod -R +w /var/lib/ckan/data/pipelines/upload_via_email/errors
-          if ! which curl; then apk add curl; fi
+          chmod -R 777 /var/lib/ckan/data/pipelines/upload_via_email/errors
+          apk add curl
+          pip install requests==2.22.0
           while sleep $SLEEP_SECONDS; do
-            SLACK_PAYLOAD=$(curl -s http://localhost:5050/api/raw/ckanext-upload_via_email/upload_via_email \
-            | python -c '
-          import json, sys, secrets, os
-          p = json.load(sys.stdin)
+            rm -f .slack_payload
+            python -c 'import json, sys, secrets, os, requests, datetime, traceback
+          p = requests.get("http://localhost:5050/api/raw/ckanext-upload_via_email/upload_via_email").json()
           payload = {
             "channel": "#odata-notifications",
             "username": "odata-pipelines",
             "icon_emoji": ":ghost:"
           }
           p_message = p["message"]
-          error_id = str(p["last_success"])
+          error_id = last_success = str(p["last_success"])
+          try:
+            last_success = datetime.datetime.fromtimestamp(float(last_success))
+            if (datetime.datetime.now() - last_success).total_seconds()/60/60 > 3:
+              current_stuck = error_id
+              last_stuck = None
+              if os.path.exists("/var/lib/ckan/data/pipelines/upload_via_email/errors/last_stuck_pipelines_should_restart"):
+                with open("/var/lib/ckan/data/pipelines/upload_via_email/errors/last_stuck_pipelines_should_restart", "r") as f:
+                  last_stuck = f.read()
+              if current_stuck == last_stuck:
+                print("pipelines are stuck.. they should be restarted soon: " + error_id)
+              else:
+                print("creating stuck_pipelines_should_restart file: " + error_id)
+                with open("/var/lib/ckan/data/pipelines/upload_via_email/errors/stuck_pipelines_should_restart", "w") as f:
+                  f.write(error_id)
+                with open("/var/lib/ckan/data/pipelines/upload_via_email/errors/last_stuck_pipelines_should_restart", "w") as f:
+                  f.write(error_id)
+          except Exception:
+            traceback.print_exc()
           if p_message == "Succeeded" or p.get("success"):
             success_file = f"/var/lib/ckan/data/pipelines/upload_via_email/errors/success_{error_id}.json"
             if os.path.exists(success_file):
@@ -115,7 +143,8 @@ spec:
               with open(success_file, "w") as f:
                 json.dump(p, f, indent=2)
               payload.update(text=payload_message)
-              print(json.dumps(payload))
+              with open(".slack_payload", "w") as f:
+                json.dump(payload, f)
             exit(0)
           elif p_message in ["Running", "Queued"]:
             exit(0)
@@ -128,14 +157,18 @@ spec:
             payload.update(text=f"Error in upload_via_email pipeline: https://pipelines.odata.org.il/ckan/data/pipelines/upload_via_email/errors/error_{error_id}.json")
             with open(error_file, "w") as f:
               json.dump(p, f, indent=2)
-            print(json.dumps(payload))
-            exit(0)
-          ')
+            with open(".slack_payload", "w") as f:
+              json.dump(payload, f)
+            exit(0)'
+            chmod -R 777 /var/lib/ckan/data/pipelines/upload_via_email/errors
             [ "$?" != "0" ] && exit 1
-            if [ "${SLACK_PAYLOAD}" != "" ]; then
+            if [ -e .slack_payload ]; then
+              rm -f /var/lib/ckan/data/pipelines/upload_via_email/errors/stuck_pipelines_should_restart
               echo sending slack notification
-              echo "${SLACK_PAYLOAD}"
-              ! curl -X POST --data-urlencode "payload=${SLACK_PAYLOAD}" $SLACK_NOTIFICATIONS_URL && exit 1
+              echo "$(cat .slack_payload)"
+              curl -X POST --data-urlencode "payload=$(cat .slack_payload)" $SLACK_NOTIFICATIONS_URL
+              echo
+              echo slack notification exit code: $?
             fi
           done
         volumeMounts:
