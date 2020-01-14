@@ -16,6 +16,3 @@ openpension:
     image: uumpa/hasadna-openpension:client-c72f525ec4d7de2e4337c0a7b0b1f6f8d357b72f
   server:
     image: uumpa/hasadna-openpension:server-c72f525ec4d7de2e4337c0a7b0b1f6f8d357b72f
-opnepension:
-  client:
-    image: hasadna/open-pension-client:eb91f5f61b2d980910dea964691585dc001f6504
