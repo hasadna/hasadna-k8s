@@ -1,0 +1,19 @@
+{{ if and .Values.enabled .Values.ingress.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: nginx
+  namespace: odata
+spec:
+  rules:
+  {{ range .Values.ingress.hostnames }}
+  - host: {{ . }}
+    http:
+      paths:
+      - backend:
+          serviceName: nginx
+          servicePort: 80
+  {{ end }}
+{{ end }}

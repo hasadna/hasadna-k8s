@@ -1,9 +1,12 @@
 {{ if .Values.enabled }}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: db
 spec:
+  selector:
+    matchLabels:
+      app: db
   replicas: 1
   revisionHistoryLimit: 2
   strategy:
@@ -13,6 +16,7 @@ spec:
       labels:
         app: db
     spec:
+      {{ if .Values.globalTolerations }}tolerations: {{ .Values.globalTolerations }}{{ end }}
       terminationGracePeriodSeconds: {{ .Values.db.terminationGracePeriodSeconds }}
       containers:
       - name: db
@@ -97,7 +101,7 @@ spec:
         {{ else }}
         nfs:
           server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: "/"
+          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
         {{ end }}
         {{ end }}
 {{ end }}

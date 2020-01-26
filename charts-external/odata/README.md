@@ -12,50 +12,41 @@
 * Initialize the Minikube environment
   * `charts-external/odata/deploy.sh --install-minikube`
 
-### Install Production environment on hasadna cluster
+### Install Production environment on Kamatera Rancher cluster
 
-* Install Helm client
-  * To make sure you get corret version you should use the script in this repo
-  * `bash apps_travis_script.sh install_helm`
-  * if you have problems, refer to helm docs - [helm client](https://docs.helm.sh/using_helm/#installing-the-helm-client)
+* Install Helm3 client - [helm client](https://docs.helm.sh/using_helm/#installing-the-helm-client)
 * Verify helm installation
   * `helm version`
-* Switch to the odata environment with label for the new deployment
-  * `source switch_environment.sh odata test1`
-* Give cluster role binding to the default service account
-  * `kubectl create rolebinding odata-test1-default-binding --clusterrole=admin --user=system:serviceaccount:odata-test1:default --namespace=odata-test1`
-* (Optional) migrate from existing environment
-  * Make the data storage read-only
-    * `./kubectl.sh exec nfs -- chmod -R a-w /exports`
-  * Take a snapshot of current nfs disk
-    * `gcloud --project=hasadna-general compute disks snapshot odata-green-nfs --snapshot-names=odata-green-20180930 --zone=europe-west1-b`
-* Add the installation configuration in `environments/odata/values.test1.yaml`:
-```
-odataInstallGke:
-  nfsSourceSnapshot: odata-data-20180930
-  nfsSize: 100
-  dbSize: 20
-  datastoreSize: 50
-```
-* Run the installation script which creates persistent disks and sets up the data storage server
-  * `charts-external/odata/deploy.sh --install-gke`
+  * tested with version `3.0.2`
+* Switch to the odata kamatera environment
+  * `source switch_environment.sh odata-kamatera`
+* Run the installation script
+  * `charts-external/odata/deploy.sh --install-kamatera`
 * Create rbac role
   * Copy rbac manifest from `charts-external/odata/manifests/ckan-kubectl-rbac.yaml` to environment directory
   * Modify names and namespaces
-  * Apply: `kubectl apply -f environments/odata/odata-blue-ckan-kubectl-rbac.yaml`
-* Wait for NFS pod to be in running state
-  * `./kubectl.sh loop get pods`
-* Get the NFS service cluster IP
-  * `kubectl get service nfs`
-* Update the relevant values:
-  * Set the NFS service cluster IP in `ckanDataNfsServer`
-  * If installed using production setup on GKE, set persistent disk names:
-    * ckanDbPersistentDiskName: `odata-test1-db`
-    * datastore.persistentDiskName: `odata-test1-datastore`
+  * Apply: `kubectl apply -f environments/$K8S_ENVIRONMENT_NAME/ckan-kubectl-rbac.yaml`
+* Update the relevant values in `environments/ENVIRONMENT_NAME/values.yaml`:
+  * Set the NFS service cluster IP and path in `ckanDataNfsServer` and `ckanDataNfsServerPath`
+* Create secret:
+  * `kubectl -n odata create secret generic nginx-htpasswd --from-literal=secret-nginx-htpasswd="$(htpasswd -nb USERNAME PASSWORD)"`
+* For imported environments, copy these secrets from existing environment:
+```
+kubectl -n odata create secret generic pipelines-sysadmin \
+    --from-literal=apikey= \
+    --from-literal=email= \
+    --from-literal=password= \
+    --from-literal=user=
+```
+```
+kubectl -n odata create secret generic pipelines-monitor \
+    --from-literal=SLACK_NOTIFICATIONS_URL=
+```
 
-## Deploy a new environment
 
-* Connect to the relevant environment
+## Deploy a new environment (for all environment types)
+
+* Connect to the relevant environment (change environment name)
   * `source switch_environment.sh odata-minikube`
 * Deploy
   * You can either initialize a new, empty environment or restore from backup
@@ -68,6 +59,17 @@ odataInstallGke:
         * `charts-external/odata/deploy.sh --restore /path/to/google/cloud/service_account.json gs://odata-k8s-backups/production/blue/ckan-db-dump-$(date +%Y-%m-%d).ckan.dump`
       * For production environment - restore the datastore DB as well
         * `charts-external/odata/deploy.sh --restore /path/to/google/cloud/service_account.json gs://odata-k8s-backups/production/blue/ckan-db-dump-$(date +%Y-%m-%d).ckan.dump gs://odata-k8s-backups/production/blue/datastore-db-dump-$(date +%Y-%m-%d).datastore.dump`
+        * In case DB restore fails, try the following:
+          * Make sure the restore operation succeeded by checking the db-backup container logs 
+          * Edit the `db` deployment and remove the db restore command - allowing DB to run
+          * Execute shell on the db container and run the following:
+            * `psql -c "create role ckan with login password 'PASSWORD';"` (get the password from the CKAN secret)
+            * `psql -c 'GRANT ALL PRIVILEGES ON DATABASE "ckan" to ckan;'`
+            * `psql -d ckan -c 'grant all privileges on database ckan to ckan;'`
+            * `psql -d ckan -c 'grant all privileges on all tables in schema public to ckan;'`
+          * Now, restart ckan pod and check that it connects to DB successfully
+        * In case of permissions problems in CKAN pod, try the following from the NFS node:
+          * `chown -R 900:900 /srv/default/odata/pipelines/ /srv/default/odata/ckan/`
 * Wait for all pods to be in Running state
   * `./kubectl.sh loop get pods`
   * If a pod has problems try to force recreate

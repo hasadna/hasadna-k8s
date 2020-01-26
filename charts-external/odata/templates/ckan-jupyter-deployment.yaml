@@ -1,8 +1,11 @@
 {{ range .Values.ckanJupyterDeployments }}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata: {name: ckan-jupyter-{{ .name }}}
 spec:
+  selector:
+    matchLabels:
+      app: ckan-jupyter-{{ .name }}
   replicas: 1
   revisionHistoryLimit: 2
   template:
@@ -11,6 +14,7 @@ spec:
 #      annotations:
 #        checksum/configmap: -- include (print $.Template.BasePath "/ckan-configmap.yaml") . | sha256sum --
     spec:
+      {{ if .Values.globalTolerations }}tolerations: {{ .Values.globalTolerations }}{{ end }}
       terminationGracePeriodSeconds: 1
       serviceAccountName: {{ $.Values.ckanServiceAccountName | quote }}
       initContainers:
@@ -128,6 +132,6 @@ spec:
         {{ else }}
         nfs:
           server: {{ $.Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: "/"
+          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
         {{ end }}
 {{ end }}

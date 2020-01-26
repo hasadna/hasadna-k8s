@@ -1,8 +1,11 @@
 {{ if and .Values.enabled .Values.ckanDeploymentEnabled }}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata: {name: ckan}
 spec:
+  selector:
+    matchLabels:
+      app: ckan
   replicas: {{ .Values.replicas | default "2" }}
   revisionHistoryLimit: 2
   template:
@@ -11,6 +14,7 @@ spec:
       annotations:
         checksum/configmap: {{ include (print $.Template.BasePath "/ckan-configmap.yaml") . | sha256sum }}
     spec:
+      {{ if .Values.globalTolerations }}tolerations: {{ .Values.globalTolerations }}{{ end }}
       {{ if .Values.terminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       {{ end }}
@@ -133,6 +137,6 @@ spec:
         {{ else }}
         nfs:
           server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: "/"
+          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
         {{ end }}
 {{ end }}
