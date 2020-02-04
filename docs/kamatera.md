@@ -35,6 +35,7 @@ apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
   name: cluster-logs
+  namespace: default
 spec:
   version: 7.5.2
   http:
@@ -61,3 +62,28 @@ kubectl get elasticsearch
 Create an ingress with https to access the Elasticsearch server
 
 The Elasticsearch username/password is stored in secret `cluster-logs-es-elastic-user`
+
+Enable logging in Rancher
+
+Deploy Kibana:
+
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: cluster-logs-kibana
+  namespace: default
+spec:
+  version: 7.5.2
+  count: 1
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  elasticsearchRef:
+    name: cluster-logs
+EOF
+```
+
+Add an https ingress to access Kibana
