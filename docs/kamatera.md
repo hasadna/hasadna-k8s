@@ -37,6 +37,10 @@ metadata:
   name: cluster-logs
 spec:
   version: 7.5.2
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
   nodeSets:
   - name: default
     count: 1
@@ -53,3 +57,7 @@ Check status
 ```
 kubectl get elasticsearch
 ```
+
+Create an ingress with https to access the Elasticsearch server
+
+The Elasticsearch username/password is stored in secret `cluster-logs-es-elastic-user`
