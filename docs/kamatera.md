@@ -87,3 +87,54 @@ EOF
 ```
 
 Add an https ingress to access Kibana
+
+## Backup
+
+Backups are handled using Restic and run periodically from the Jenkins server
+
+All backups require the  following env vars and installation of Restic:
+
+```
+export RESTIC_PASSWORD=
+export AWS_ACCESS_KEY_ID=
+export AWS_SECRET_ACCESS_KEY=
+apt-get update && apt-get install -y restic
+```
+
+Initialize Rancher and Jenkins backups (run from the rancher/management server):
+
+```
+restic -r s3:s3.amazonaws.com/your-bucket-name/rancher init
+```
+
+Periodic backup job:
+
+```
+restic -r s3:s3.amazonaws.com/your-bucket-name/rancher /var/lib/rancher /srv/default
+```
+
+NFS Storage backups (run from the NFS node):
+
+```
+restic -r s3:s3.amazonaws.com/your-bucket-name/storage init
+```
+
+Periodic backup job:
+
+```
+restic -r s3:s3.amazonaws.com/your-bucket-name/storage backup /srv/default
+```
+
+etcd snapshot backups (run from one of the etcd nodes):
+
+```
+restic -r s3:s3.amazonaws.com/your-bucket-name/etcd init
+```
+
+Periodic backup job:
+
+```
+docker exec etcd etcdctl snapshot save /etcd-snapshot &&\
+docker cp etcd:/etcd-snapshot ./etcd-snapshot &&\
+restic -r s3:s3.amazonaws.com/your-bucket-name/etcd backup ./etcd-snapshot
+```
