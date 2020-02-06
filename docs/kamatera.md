@@ -81,7 +81,7 @@ metadata:
 spec:
   acme:
     email: user@example.com
-    server: https://acme-v01.api.letsencrypt.org/directory
+    server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       # Secret resource used to store the account's private key.
       name: cluster-issuer-account-key
@@ -130,3 +130,4 @@ spec:
   * `mount -t nfs 1.2.3.4:/srv/default/TARGET_VOLUME /var/kamatera-nfs/MY_VOLUME`
 * rsync:
   * `rsync -az /media/root/var/lib/kubelet/pods/POD_UID/volumes/... /media/root/var/kamatera-nfs/TARGET/`
+  * if rsync fails or connection is dropped, you can run `toolbox` and then run the rsync command again
