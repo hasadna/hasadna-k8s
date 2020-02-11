@@ -8,7 +8,6 @@ K8S_ENVIRONMENT_NAME="hasadna"
 OPS_REPO_SLUG="hasadna/hasadna-k8s"
 OPS_REPO_BRANCH="${TRAVIS_BRANCH}"
 ./run_docker_ops.sh "${K8S_ENVIRONMENT_NAME}" '
-    curl -L https://raw.githubusercontent.com/hasadna/hasadna-k8s/master/apps_travis_script.sh | bash /dev/stdin install_helm;
     ./kubectl_hot_reload.sh "'"${TRAVIS_COMMIT_MESSAGE}"'"
     HOT_RELOAD_RES=$?
     [ "${HOT_RELOAD_RES}" == "1" ] && echo hot reload failed && exit 1
@@ -26,7 +25,7 @@ OPS_REPO_BRANCH="${TRAVIS_BRANCH}"
     [ "${PATCH_RES}" != "2" ] && echo invalid patches exit code $PATCH_RES && exit 1
     echo nothing to do...
     exit 0
-' "orihoch/sk8s-ops" "${OPS_REPO_SLUG}" "${OPS_REPO_BRANCH}" "secret-k8s-ops.json"
+' "orihoch/hasadna-k8s-ops-kamatera@sha256:e87997ad5d4bdead53e15a7f1d1d017c39655a4e2ea4b5107b01a531825fe61b" "${OPS_REPO_SLUG}" "${OPS_REPO_BRANCH}" "secret-k8s-ops.json"
 if [ "$?" == "0" ]; then
     echo travis deployment success
     exit 0

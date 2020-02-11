@@ -11,7 +11,12 @@ for CHART_NAME in `ls charts-external`; do
             ! ./helm_lint_external_chart.sh $CHART_NAME $LINT_ENVIRONMENT && RES=1
         done
     else
-        helm lint charts-external/$CHART_NAME 2>/dev/null | grep 'ERROR' | grep -v 'Chart.yaml: version is required'
+        if [ "$(eval echo `./read_yaml.py "charts-external/${CHART_NAME}/Chart.yaml" apiVersion 2>/dev/null`)" == "v2" ]; then
+          HELM_BIN=helm3
+        else
+          HELM_BIN=helm
+        fi
+        $HELM_BIN lint charts-external/$CHART_NAME 2>/dev/null | grep 'ERROR' | grep -v 'Chart.yaml: version is required'
         if [ "$?" == "0" ]; then
             echo "${CHART_NAME}: failed lint"
             RES=1
@@ -19,7 +24,6 @@ for CHART_NAME in `ls charts-external`; do
             echo "${CHART_NAME}: OK"
         fi
     fi
-
 done
 
 exit $RES

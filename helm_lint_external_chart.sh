@@ -29,7 +29,13 @@ done
 
 VALUES=`cat "${TEMPDIR}/values.yaml"`
 
-CMD="helm lint -f ${TEMPDIR}/values.yaml ${CHART_DIRECTORY} ${@:3}"
+if [ "$(eval echo `./read_yaml.py "${CHART_DIRECTORY}/Chart.yaml" apiVersion 2>/dev/null`)" == "v2" ]; then
+  HELM_BIN=helm3
+else
+  HELM_BIN=helm
+fi
+
+CMD="$HELM_BIN lint -f ${TEMPDIR}/values.yaml ${CHART_DIRECTORY} ${@:3}"
 if $CMD 2>/dev/null | grep 'ERROR' | grep -v 'Chart.yaml: version is required'; then
     echo "CHART_DIRECTORY=${CHART_DIRECTORY}"
     echo "LINT_ENVIRONMENT=${LINT_ENVIRONMENT}"

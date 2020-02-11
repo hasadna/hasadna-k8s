@@ -1,18 +1,33 @@
 #!/usr/bin/env bash
 
-HELM_VERSION=v2.8.2
+HELM2_VERSION=v2.8.2
+HELM3_VERSION=v3.0.3
 
 [ -f .travis.env ] && source .travis.env
 
 if [ "${1}" == "install_helm" ]; then
-    if ! helm version --client --short | grep "Client: ${HELM_VERSION}+"; then
-        curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh &&\
-        chmod 700 get_helm.sh &&\
-        ./get_helm.sh --version "${HELM_VERSION}" &&\
-        helm version --client --short | grep "Client: ${HELM_VERSION}+"
-        [ "$?" != "0" ] && echo failed helm client installation && exit 1
-        rm get_helm.sh
+    if ! helm3 version --client --short | grep "${HELM3_VERSION}"; then
+        if [ ! -f ./get_helm.sh ]; then
+          curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh &&\
+          chmod 700 get_helm.sh
+        fi &&\
+        ./get_helm.sh --version "${HELM3_VERSION}" &&\
+        sudo mv /usr/local/bin/helm /usr/local/bin/helm3 &&\
+        echo helm3 version: &&\
+        helm3 version --client --short | grep "${HELM3_VERSION}"
+        [ "$?" != "0" ] && echo failed helm3 installation && exit 1
     fi
+    if ! helm version --client --short | grep "Client: ${HELM2_VERSION}+"; then
+        if [ ! -f ./get_helm.sh ]; then
+          curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh &&\
+          chmod 700 get_helm.sh
+        fi &&\
+        ./get_helm.sh --version "${HELM2_VERSION}" &&\
+        echo helm version: &&\
+        helm version --client --short | grep "Client: ${HELM2_VERSION}+"
+        [ "$?" != "0" ] && echo failed helm client installation && exit 1
+    fi
+    rm -f get_helm.sh
 
 elif [ "${1}" == "script" ]; then
     latest_tag=`eval 'echo $LATEST_IMAGE_TAG_'${TRAVIS_BRANCH}`

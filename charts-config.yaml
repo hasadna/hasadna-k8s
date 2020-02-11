@@ -15,13 +15,14 @@ anyway-production:
     image-prop: productionImage
 
 odata:
-  lint-environments: odata
+  lint-environments: odata-kamatera
   automatic-update:
     commit-message: automatic update of odata-ckan
-    namespace-name: odata-blue
+    namespace-name: odata
     deployment-name: ckan
     container-name: ckan
     image-prop: ckanImage
+    kubeconfig: /.rancher.kubeconfig
 
 mysadna:
   automatic-update:

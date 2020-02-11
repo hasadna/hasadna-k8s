@@ -34,16 +34,19 @@ def _process_automatic_update(auto_update_values):
         patch_params = '{}/{}'.format(object_type, object_name)
         patch_params += ' "{}={}"'.format(container_name, image)
         print('patching {}'.format(patch_params))
+        kubeconfig = 'KUBECONFIG='+auto_update_values.get('kubeconfig', '')
         if '--dry-run' in sys.argv:
-            if os.system('kubectl set image -n {} --dry-run -o yaml {}'.format(namespace_name,
-                                                                               patch_params)) == 0:
+            if os.system('{} kubectl set image -n {} --dry-run -o yaml {}'.format(
+                    kubeconfig, namespace_name, patch_params)
+            ) == 0:
                 print('dry run successful for {}'.format(chart_name))
                 return True
             else:
                 print('failed patch dry run for {}'.format(chart_name))
                 return False
-        elif os.system('kubectl set image -n {} {}'.format(namespace_name,
-                                                           patch_params)) == 0:
+        elif os.system('{} kubectl set image -n {} {}'.format(
+                kubeconfig, namespace_name, patch_params)
+        ) == 0:
             print('successfully patched {}'.format(chart_name))
             return True
         else:
