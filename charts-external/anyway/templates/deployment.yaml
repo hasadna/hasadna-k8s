@@ -1,10 +1,13 @@
 {{ if .Values.enabled }}
 {{ if not .Values.disbaledDeployment }}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: anyway
 spec:
+  selector:
+    matchLabels:
+      app: anyway
   replicas: 1
   revisionHistoryLimit: 2
   strategy:
