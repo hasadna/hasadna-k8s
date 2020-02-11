@@ -1,8 +1,11 @@
 {{ if and .Values.enabled .Values.pipelines.enabled }}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata: {name: pipelines}
 spec:
+  selector:
+    matchLabels:
+      app: pipelines
   replicas: 1
   strategy:
     type: Recreate
@@ -11,6 +14,7 @@ spec:
     metadata:
       labels: {app: pipelines}
     spec:
+      {{ if .Values.globalTolerations }}tolerations: {{ .Values.globalTolerations }}{{ end }}
       serviceAccountName: {{ .Values.ckanServiceAccountName | quote }}
       {{ if .Values.pipelines.terminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ .Values.pipelines.terminationGracePeriodSeconds }}
@@ -182,6 +186,6 @@ spec:
         {{ else }}
         nfs:
           server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: "/"
+          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
         {{ end }}
 {{ end }}

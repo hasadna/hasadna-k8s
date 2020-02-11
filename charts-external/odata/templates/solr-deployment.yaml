@@ -1,9 +1,12 @@
 {{ if .Values.enabled }}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: solr
 spec:
+  selector:
+    matchLabels:
+      app: solr
   replicas: 1
   revisionHistoryLimit: 2
   strategy:
@@ -13,6 +16,7 @@ spec:
       labels:
         app: solr
     spec:
+      {{ if .Values.globalTolerations }}tolerations: {{ .Values.globalTolerations }}{{ end }}
       initContainers:
       {{ if .Values.solrInitialize }}
       - name: initialize
@@ -62,6 +66,6 @@ spec:
         {{ else }}
         nfs:
           server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: "/"
+          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
         {{ end }}
 {{ end }}

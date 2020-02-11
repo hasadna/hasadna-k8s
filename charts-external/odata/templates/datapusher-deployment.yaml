@@ -1,10 +1,13 @@
 {{ if and .Values.enabled .Values.datastore.enabled }}
 {{ if .Values.datastore.datapusherEnabled }}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: datapusher
 spec:
+  selector:
+    matchLabels:
+      app: datapusher
   replicas: 1
   revisionHistoryLimit: 2
   strategy:
@@ -14,6 +17,7 @@ spec:
       labels:
         app: datapusher
     spec:
+      {{ if .Values.globalTolerations }}tolerations: {{ .Values.globalTolerations }}{{ end }}
       {{ if .Values.datastore.dataPusherTerminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ .Values.dataPusherTerminationGracePeriodSeconds }}
       {{ end }}

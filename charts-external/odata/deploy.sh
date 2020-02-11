@@ -135,6 +135,21 @@ spec:
     echo Great Success
     exit 0
 
+elif [ "${1}" == "--install-kamatera" ]; then
+    echo Installing and initializing on Kamatera
+    echo Please verify you are connected to the correct cluster and namespace
+    cat environments/${K8S_ENVIRONMENT_NAME}/.env
+    echo K8S_ENVIRONMENT_LABEL=${K8S_ENVIRONMENT_LABEL}
+    ! kubectl config get-contexts `kubectl config current-context` && exit 1
+    ! kubectl get nodes && exit 1
+    read -p "Press <Enter> to continue..."
+
+    echo Creating namespace $K8S_NAMESPACE
+    ! kubectl get ns $K8S_NAMESPACE && kubectl create ns $K8S_NAMESPACE
+
+    echo Great Success
+    exit 0
+
 elif [ "${1}" == "--install-minikube" ]; then
     if [ "${2}" != "-y" ]; then
         echo Please verify you are connected to the correct cluster and namespace

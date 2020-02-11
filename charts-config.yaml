@@ -30,15 +30,6 @@ mysadna:
     deployment-name: mysadna
     container-name: mysadna
 
-oknesset:
-  chart-name: oknesset
-  automatic-update:
-    commit-message: automatic update of knesset-data-backend
-    namespace-name: oknesset
-    deployment-name: knesset-data-backend
-    container-name: backend
-    image-prop: DataBackendImage
-
 openpension:
   automatic-updates:
     - commit-message: automatic update of openpension

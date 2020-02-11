@@ -1,8 +1,11 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx
 spec:
+  selector:
+    matchLabels:
+      app: nginx
   replicas: {{ if .Values.ckanHostPort }}1{{ else }}{{ .Values.nginxReplicas | default "2" }}{{ end }}
   {{ if .Values.ckanHostPort }}
   strategy:
@@ -16,6 +19,7 @@ spec:
         # update the pod on nginx-conf changes
         checksum/config: {{ include (print $.Template.BasePath "/nginx-configmap.yaml") . | sha256sum }}
     spec:
+      {{ if .Values.globalTolerations }}tolerations: {{ .Values.globalTolerations }}{{ end }}
       terminationGracePeriodSeconds: 1
       {{ if .Values.nginxNodeHostName }}
       nodeSelector:
@@ -59,5 +63,5 @@ spec:
         {{ else }}
         nfs:
           server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: "/"
+          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
         {{ end }}

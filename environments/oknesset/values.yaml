@@ -1,6 +1,0 @@
-oknesset:
-  enabled: true
-  DataBackendResources: '{"requests": {"cpu": "25m", "memory": "150Mi"}, "limits": {"memory": "300Mi"}}'
-  DataBackendImage: uumpa/knesset-data-backend
-  # kubectl -n oknesset create secret generic knesset-data-backend-db-config --from-file=db.config.json=/path/to/db.config.json
-  DataBackendDbConfigSecretName: knesset-data-backend-db-config

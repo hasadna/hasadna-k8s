@@ -1,9 +1,12 @@
 {{ if and .Values.enabled .Values.ckanDeploymentEnabled }}
 {{ if .Values.ckanJobsEnabled }}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata: {name: ckan-jobs-db}
 spec:
+  selector:
+    matchLabels:
+      app: ckan-jobs-db
   replicas: 1
   revisionHistoryLimit: 2
   strategy:
@@ -12,6 +15,7 @@ spec:
     metadata:
       labels: {app: ckan-jobs-db}
     spec:
+      {{ if .Values.globalTolerations }}tolerations: {{ .Values.globalTolerations }}{{ end }}
       {{ if .Values.ckanJobsDbTerminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ .Values.ckanJobsDbTerminationGracePeriodSeconds }}
       {{ end }}
@@ -37,7 +41,7 @@ spec:
         {{ else }}
         nfs:
           server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: "/"
+          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
         {{ end }}
 {{ end }}
 {{ end }}
