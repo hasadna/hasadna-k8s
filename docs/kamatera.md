@@ -6,7 +6,7 @@ Cluster is created using Rancher
 
 ## SSH to cluster nodes
 
-Using Rancher you can get a the keys for each node in a zip file
+Using Rancher you can get the keys for each node in a zip file
 
 ## Setting up NFS
 

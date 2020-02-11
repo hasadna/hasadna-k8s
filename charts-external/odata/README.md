@@ -19,6 +19,7 @@
   * `helm version`
   * tested with version `3.0.2`
 * Switch to the odata kamatera environment
+  * `export KUBECONFIG=/path/to/kamatera/kubeconfig`
   * `source switch_environment.sh odata-kamatera`
 * Run the installation script
   * `charts-external/odata/deploy.sh --install-kamatera`
@@ -155,3 +156,103 @@ You can also run a backup manually:
   * `./kubectl.sh exec db -c db -- bash /db-scripts/backup.sh`
   * `./kubectl.sh exec datastore-db -c db -- bash /db-scripts/backup.sh`
 * Wait ~1 minute for files to be available on google storage (for today's date)
+
+## Moving Odata from Gcloud to Kamatera
+
+Modify /etc/exports in the Kamatera NFS server to allow access from the Gcloud nodes
+
+Connect to the Gcloud environment and rsync all data:
+
+```
+export KUBECONFIG=
+source switch_environment.sh odata &&\
+source functions.sh &&\
+TARGET_NFS_IP=212.80.204.62 &&\
+mount_nfs_and_rsync `get_pod_node_name odata-blue nfs-` $TARGET_NFS_IP \
+                    /media/root/var/lib/kubelet/pods/`get_pod_uid odata-blue nfs-`/volumes/kubernetes.io~gce-pd/odata-blue-nfs-gcepd \
+                    /media/root/var/kamatera-nfs/odata \
+                    /srv/default/odata &&\
+mount_nfs_and_rsync `get_pod_node_name odata-blue db-` $TARGET_NFS_IP \
+                    /media/root/var/lib/kubelet/pods/`get_pod_uid odata-blue db-`/volumes/kubernetes.io~gce-pd/db/postgresql-data \
+                    /media/root/var/kamatera-nfs/odata/postgresql-data \
+                    /srv/default/odata/postgresql-data &&\
+mount_nfs_and_rsync `get_pod_node_name odata-blue datastore-db-` $TARGET_NFS_IP \
+                    /media/root/var/lib/kubelet/pods/`get_pod_uid odata-blue datastore-db-`/volumes/kubernetes.io~gce-pd/db/datastore-db-postgresql-data \
+                    /media/root/var/kamatera-nfs/odata/datastore-db-postgresql-data \
+                    /srv/default/odata/datastore-db-postgresql-data
+```
+
+Connect to the Gcloud environment and export the secrets:
+
+```
+export KUBECONFIG=
+source switch_environment.sh odata
+mkdir -p environments/odata-kamatera/.secrets
+for SECRET_NAME in ckan-db-backups ckan-db-restore ckan-secrets ckan-secrets-2 ckan-upload-via-email-env-vars \
+                   datastore-db-public-readonly-user env-vars nginx-htpasswd pipelines-monitor pipelines-sysadmin \
+                   odata-datastore-db-kube-ip-dns-updater; do
+    kubectl get -n odata-blue secret $SECRET_NAME --export -o yaml > environments/odata-kamatera/.secrets/$SECRET_NAME.yaml
+done
+```
+
+Connect to the odata environment, import the secrets and delete the local copies:
+
+```
+export KUBECONFIG=/path/to/kamatera/kubeconfig
+source switch_environment.sh odata-kamatera
+for SECRET_NAME in ckan-db-backups ckan-db-restore ckan-secrets ckan-secrets-2 ckan-upload-via-email-env-vars \
+                   datastore-db-public-readonly-user env-vars nginx-htpasswd pipelines-monitor pipelines-sysadmin \
+                   odata-datastore-db-kube-ip-dns-updater; do
+    kubectl delete -n odata secret $SECRET_NAME
+    kubectl apply -n odata -f environments/odata-kamatera/.secrets/$SECRET_NAME.yaml
+done
+rm -rf environments/odata-kamatera/.secrets
+```
+
+Connect to the kamatera environment and deploy:
+
+```
+export KUBECONFIG=/path/to/kamatera/kubeconfig
+source switch_environment.sh odata-kamatera
+kubectl -n odata apply -f environments/odata-kamatera/ckan-kubectl-rbac.yaml
+./helm_upgrade_external_chart.sh odata --install
+```
+
+Once all pods are running, you can test by port-forward to the nginx pod:
+
+```
+export KUBECONFIG=/path/to/kamatera/kubeconfig
+source switch_environment.sh odata-kamatera
+kubectl port-forward nginx-pod-name 8080:80
+```
+
+Test at http://localhost:8080 (pay attention that some links refer to the odata.org.il host, so you have to change manually to localhost)
+
+When you verified it works
+
+scale down the new pods to 0:
+
+```
+export KUBECONFIG=/path/to/kamatera/kubeconfig
+source switch_environment.sh odata-kamatera
+kubectl scale --replicas=0 deployment ckan &&\
+kubectl scale --replicas=0 deployment ckan-jobs &&\
+kubectl scale --replicas=0 deployment pipelines
+```
+
+scale down the old CKAN pods to 0:
+
+```
+export KUBECONFIG=
+source switch_environment.sh odata
+kubectl scale --replicas=0 deployment ckan &&\
+kubectl scale --replicas=0 deployment ckan-jobs &&\
+kubectl scale --replicas=0 deployment pipelines
+```
+
+Rerun the rsync commands (from previous step)
+
+update DNS in cloudflare to point to the new cluster worker1 node
+
+When rsync is done, scale back up the new pods and delete the old namespace
+
