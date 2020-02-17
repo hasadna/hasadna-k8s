@@ -11,7 +11,7 @@ odata:
 #  ckanDbPersistentDiskName: odata-db
   ckanDataNfsServer: "172.16.0.2"
   ckanDataNfsPath: "/srv/default/odata"
-  ckanSecretName: ckan-secrets
+  ckanSecretName: ckan-secrets-2
   envVarsSecretName: env-vars
 #  dbNfsEnabled: true
 #  ckanDbNfsServer: 10.104.143.63
@@ -123,3 +123,4 @@ odata:
     hostnames:
     - odata.org.il
     - www.odata.org.il
+    - pipelines.odata.org.il

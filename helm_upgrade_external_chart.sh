@@ -46,8 +46,14 @@ done
 
 VALUES=`cat "${TEMPDIR}/values.yaml"`
 
+if [ "$(eval echo `./read_yaml.py "${CHART_DIRECTORY}/Chart.yaml" apiVersion 2>/dev/null`)" == "v2" ]; then
+  HELM_BIN=helm3
+else
+  HELM_BIN=helm
+fi
+
 if [ "`./read_yaml.py "${TEMPDIR}/values.yaml" enabled 2>/dev/null`" == "true" ]; then
-    CMD="helm upgrade -f ${TEMPDIR}/values.yaml ${RELEASE_NAME} ${CHART_DIRECTORY} ${@:2}"
+    CMD="$HELM_BIN upgrade -f ${TEMPDIR}/values.yaml ${RELEASE_NAME} ${CHART_DIRECTORY} ${@:2}"
     if ! $CMD; then
         echo
         echo "${TEMPDIR}/values.yaml"
