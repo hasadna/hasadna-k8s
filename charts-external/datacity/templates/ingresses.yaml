@@ -14,5 +14,6 @@ spec:
           serviceName: {{ .serviceName }}
           servicePort: {{ .servicePort }}
   {{ end }}
+---
 {{ end }}
 {{ end }}
