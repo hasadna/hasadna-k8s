@@ -40,7 +40,11 @@ k8s_connect_custom() {
 	export K8S_NAMESPACE
 	export K8S_HELM_RELEASE_NAME
 	export K8S_ENVIRONMENT_NAME
-	export K8S_ENVIRONMENT_CONTEXT
+	if [ "${K8S_ENVIRONMENT_CONTEXT}" == "" ]; then
+	  export K8S_ENVIRONMENT_CONTEXT=`kubectl config current-context`
+  else
+    export K8S_ENVIRONMENT_CONTEXT
+  fi
   kubectl config set-context "${K8S_ENVIRONMENT_CONTEXT}" "--namespace=${K8S_NAMESPACE}" >/dev/null
   kubectl config use-context "${K8S_ENVIRONMENT_CONTEXT}"
   [ "${K8S_CONNECT_ORIGINAL_PS1}" == "" ] && export K8S_CONNECT_ORIGINAL_PS1="${PS1}"

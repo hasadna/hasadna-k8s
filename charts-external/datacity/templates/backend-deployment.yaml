@@ -1,9 +1,12 @@
 {{ if .Values.enabled }}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
 spec:
+  selector:
+    matchLabels:
+      app: backend
   replicas: 1
   revisionHistoryLimit: 2
   template:

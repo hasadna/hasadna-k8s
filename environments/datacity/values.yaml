@@ -1,2 +1,8 @@
 datacity:
   enabled: true
+  ingresses:
+    - name: frontend
+      rules:
+        - host: app.datacity.org.il
+          serviceName: frontend
+          servicePort: 8000

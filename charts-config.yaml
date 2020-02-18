@@ -1,18 +1,18 @@
-anyway:
-  automatic-update:
-    commit-message: automatic update of anyway testing environment
-    namespace-name: anyway
-    deployment-name: anyway
-    container-name: anyway
+#anyway:
+#  automatic-update:
+#    commit-message: automatic update of anyway testing environment
+#    namespace-name: anyway
+#    deployment-name: anyway
+#    container-name: anyway
 
-anyway-production:
-  chart-name: anyway
-  automatic-update:
-    commit-message: automatic update of anyway production environment
-    namespace-name: anyway-production
-    deployment-name: anyway
-    container-name: anyway
-    image-prop: productionImage
+#anyway-production:
+#  chart-name: anyway
+#  automatic-update:
+#    commit-message: automatic update of anyway production environment
+#    namespace-name: anyway-production
+#    deployment-name: anyway
+#    container-name: anyway
+#    image-prop: productionImage
 
 odata:
   lint-environments: odata-kamatera
@@ -24,12 +24,12 @@ odata:
     image-prop: ckanImage
     kubeconfig: /.rancher.kubeconfig
 
-mysadna:
-  automatic-update:
-    commit-message: automatic update of mysadna
-    namespace-name: mysadna
-    deployment-name: mysadna
-    container-name: mysadna
+#mysadna:
+#  automatic-update:
+#    commit-message: automatic update of mysadna
+#    namespace-name: mysadna
+#    deployment-name: mysadna
+#    container-name: mysadna
 
 openpension:
   automatic-updates:
