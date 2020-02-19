@@ -3,6 +3,8 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
 spec:
   rules:
   {{ range .Values.ingress.hostnames }}
