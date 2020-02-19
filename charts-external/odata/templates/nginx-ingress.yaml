@@ -4,7 +4,7 @@ kind: Ingress
 metadata:
   name: nginx
   annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.ingress.kubernetes.io/proxy-body-size: "300m"
 spec:
   rules:
   {{ range .Values.ingress.hostnames }}
