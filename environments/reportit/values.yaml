@@ -3,24 +3,44 @@ reportit:
   botkit:
     enabled: true
     # persistent volume claim and disk names must be unique across all projects in the cluster
-    persistentVolumeClaimName: reportit-botkit-data
+    # persistentVolumeClaimName: reportit-botkit-data
     # create the disk first:
     # gcloud compute disks create --size=20GB --zone=europe-west1-b openpension-mongodb-data
-    persistentVolumePersistentDiskName: reportit-botkit-data
-    persistentVolumeSize: 1G
+    # persistentVolumePersistentDiskName: reportit-botkit-data
+    # persistentVolumeSize: 1G
+    nfsServer: "172.16.0.2"
+    nfsPath: "/srv/default2/reportit/botkit"
   strapi:
     enabled: true
     # persistent volume claim and disk names must be unique across all projects in the cluster
-    persistentVolumeClaimName: reportit-strapi-data
+    # persistentVolumeClaimName: reportit-strapi-data
     # create the disk first:
     # gcloud compute disks create --size=500GB --zone=europe-west1-b reportit-strapi-data
-    persistentVolumePersistentDiskName: reportit-strapi-data
-    persistentVolumeSize: 500G
+    # persistentVolumePersistentDiskName: reportit-strapi-data
+    # persistentVolumeSize: 500G
+    nfsServer: "172.16.0.2"
+    nfsPath: "/srv/default2/reportit/strapi"
   postgres:
     enabled: true
     # persistent volume claim and disk names must be unique across all projects in the cluster
-    persistentVolumeClaimName: reportit-strapi-db
+    # persistentVolumeClaimName: reportit-strapi-db
     # create the disk first:
     # gcloud compute disks create --size=5GB --zone=europe-west1-b reportit-strapi-db
-    persistentVolumePersistentDiskName: reportit-strapi-db
-    persistentVolumeSize: 5G
+    # persistentVolumePersistentDiskName: reportit-strapi-db
+    # persistentVolumeSize: 5G
+    nfsServer: "172.16.0.2"
+    nfsPath: "/srv/default2/reportit/postgres"
+  ingresses:
+    - name: botkit
+      rules:
+        - host: botkit-cms.obudget.org
+          serviceName: botkit
+          servicePort: 3000
+    - name: strapi
+      rules:
+        - host: reportit-cms.obudget.org
+          serviceName: strapi
+          servicePort: 1337
+        - host: cms.equality.org.il
+          serviceName: strapi
+          servicePort: 1337

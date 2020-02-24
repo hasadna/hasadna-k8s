@@ -1,9 +1,12 @@
 {{ if .Values.enabled }}
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres
 spec:
+  selector:
+    matchLabels:
+      app: postgres
   replicas: 1
   revisionHistoryLimit: 2
   strategy:
@@ -27,6 +30,12 @@ spec:
           subPath: reportit_strapi_db
       volumes:
       - name: data
+        {{ if .Values.postgres.persistentVolumeClaimName }}
         persistentVolumeClaim:
           claimName: {{ .Values.postgres.persistentVolumeClaimName | quote }}
+        {{ else if .Values.postgres.nfsServer }}
+        nfs:
+          server: {{ .Values.postgres.nfsServer | quote }}
+          path: {{ .Values.postgres.nfsPath | quote }}
+        {{ end }}
 {{ end }}

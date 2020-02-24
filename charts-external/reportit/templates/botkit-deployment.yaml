@@ -1,9 +1,12 @@
 {{ if .Values.enabled }}
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: botkit
 spec:
+  selector:
+    matchLabels:
+      app: botkit
   replicas: 1
   revisionHistoryLimit: 2
   strategy:
@@ -26,6 +29,12 @@ spec:
           subPath: reportit_scripts
       volumes:
       - name: data
+        {{ if .Values.botkit.persistentVolumeClaimName }}
         persistentVolumeClaim:
           claimName: {{ .Values.botkit.persistentVolumeClaimName | quote }}
+        {{ else if .Values.botkit.nfsServer }}
+        nfs:
+          server: {{ .Values.botkit.nfsServer | quote }}
+          path: {{ .Values.botkit.nfsPath | quote }}
+        {{ end }}
 {{ end }}

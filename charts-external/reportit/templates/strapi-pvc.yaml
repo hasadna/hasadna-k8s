@@ -1,4 +1,4 @@
-{{ if .Values.enabled }}
+{{ if and .Values.enabled .Values.strapi.persistentVolumeClaimName }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
