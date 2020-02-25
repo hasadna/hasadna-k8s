@@ -2,8 +2,8 @@ cluster-admin:
   enabled: true
 
 nfs:
-  enabled: true
+  enabled: false
 
 traefik:
-  enabled: true
+  enabled: false
   dnsProvider: ""

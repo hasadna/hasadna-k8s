@@ -1,0 +1,140 @@
+nfs:
+  gcePersistentDiskName: hasadna-nfs
+
+traefik:
+  # nfs needs an ip, be sure to update it in case of changes to the nfs service
+  nfsServer: 10.23.253.67
+  enableLoadBalancer: true
+  # gcloud --project=hasadna-general compute addresses create hasadna-k8s-traefik --region=europe-west1
+  # gcloud --project=hasadna-general compute addresses describe hasadna-k8s-traefik --region=europe-west1 | grep ^address:
+  loadBalancerIP: 35.233.114.242
+
+  letsencrypt:
+    enabled: true
+    acmeEmail: ori@uumpa.com
+    dnsProvider: route53
+    AWS_ACCESS_KEY_ID: AKIAIWMQWDTIM7IZS3EA
+    AWS_REGION: "eu-west-1"
+    awsSecretName: route53
+
+  budgetkey:
+    enabled: true
+    frontendRule: "Host:next.obudget.org,data.obudget.org,socialmap.org.il,www.socialmap.org.il,kibana.obudget.org,www.obudget.org,obudget.org,pipelines.obudget.org,dgp.obudget.org"
+    backendUrl: "http://nginx.budgetkey:80"
+
+  oknesset:
+    enabled: true
+    frontendRule: "Host:oknesset.org,www.oknesset.org,committees-next.oknesset.org,production.oknesset.org"
+    backendUrl: "http://nginx.oknesset:80"
+    acmeDomains: |
+      [[acme.domains]]
+        main = "production.oknesset.org"
+      [[acme.domains]]
+        main = "committees-next.oknesset.org"
+      [[acme.domains]]
+        main = "oknesset.org"
+      [[acme.domains]]
+        main = "www.oknesset.org"
+
+  knessetdatabackend:
+    enabled: true
+    frontendRule: "Host:api.oknesset.org"
+    backendUrl: "http://knesset-data-backend.oknesset:4000"
+    acmeDomains: |
+      [[acme.domains]]
+        main = "api.oknesset.org"
+
+  anyway:
+    enabled: true
+    frontendRule: "Host:test.anyway.co.il"
+    backendUrl: "http://anyway.anyway:8000"
+    acmeDomains: |
+      [[acme.domains]]
+        main = "test.anyway.co.il"
+
+  openpension:
+    enabled: true
+    frontendRule: "Host:openpension.oknesset.org"
+    backendUrl: "http://client.openpension"
+    acmeDomains: |
+      [[acme.domains]]
+        main = "openpension.oknesset.org"
+
+  anywayProduction:
+    enabled: true
+    frontendRule: "Host:production.anyway.co.il"
+    backendUrl: "http://anyway.anyway-production:8000"
+    acmeDomains: |
+      [[acme.domains]]
+        main = "production.anyway.co.il"
+
+  odata:
+    enabled: true
+    frontendRule: "Host:www.odata.org.il,test-odata.oknesset.org,new.odata.org.il,odata.org.il,pipelines.odata.org.il"
+    backendUrl: "http://nginx.odata-blue:80"
+    canonicalDomainRedirect:
+      matchDomains: new.odata.org.il|odata.org.il
+      canonicalDomain: www.odata.org.il
+
+  monitoring:
+    enabled: true
+    frontendRule: "Host:monitoring.oknesset.org"
+    backendUrl: "http://grafana.monitoring:3000"
+    acmeDomains: |
+      [[acme.domains]]
+        main = "monitoring.oknesset.org"
+
+  mysadna:
+    enabled: true
+    frontendRule: "Host:my.hasadna.org.il"
+    backendUrl: "http://mysadna.mysadna:80"
+    enableSSL: false
+#    acmeDomains: |
+#      [[acme.domains]]
+#        main = "mysadna.oknesset.org"
+
+  reportit:
+    enabled: true
+    frontendRule: "Host:reportit.obudget.org"
+    backendUrl: "http://reportit.reportit:80"
+    enableSSL: false
+
+  botkit:
+    enabled: true
+    frontendRule: "Host:botkit-cms.obudget.org"
+    backendUrl: "http://botkit.reportit:3000"
+    enableSSL: false
+  
+  strapi:
+    enabled: true
+    frontendRule: "Host:reportit-cms.obudget.org,cms.equality.org.il"
+    backendUrl: "http://strapi.reportit:1337"
+    enableSSL: false
+
+  datacity:
+    enabled: true
+    frontendRule: "Host:app.datacity.org.il"
+    backendUrl: "http://frontend.datacity:8000"
+    enableSSL: false
+
+  datacityNominatim:
+    enabled: true
+    frontendRule: "Host:geocode.datacity.org.il"
+    backendUrl: "http://nominatim.datacity:8080"
+    enableSSL: false
+
+  datacityApi:
+    enabled: true
+    frontendRule: "Host:api.datacity.org.il"
+    backendUrl: "http://api.datacity:8000"
+    enableSSL: false
+
+  migdarInternalSearch:
+    enabled: true
+    frontendRule: "Host:migdar-internal-search.odata.org.il"
+    backendUrl: "http://internal-search-ui.migdar:8000"
+  
+  migdarWebUi:
+    enabled: true
+    frontendRule: "Host:yodaat.org,www.yodaat.org,api.yodaat.org"
+    backendUrl: "http://nginx.migdar:80"

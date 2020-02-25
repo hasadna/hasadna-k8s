@@ -1,8 +1,12 @@
-apiVersion: apps/v1beta1
+{{ if and .Values.enabled .Values.adminerEnabled }}
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: adminer
 spec:
+  selector:
+    matchLabels:
+      app: adminer
   replicas: 1
   template:
     metadata:
@@ -15,3 +19,4 @@ spec:
         image: adminer
         ports:
         - containerPort: 8080
+{{ end }}

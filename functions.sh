@@ -28,6 +28,6 @@ mount_nfs_and_rsync() {
     echo SOURCE_DIR=$SOURCE_DIR &&\
     echo TARGET_DIR=$TARGET_DIR &&\
     echo NFS_TARGET_DIR=$NFS_TARGET_DIR &&\
-    gcloud compute ssh $NODE_NAME -- toolbox bash -c '"apt-get update && apt-get install -y nfs-common rsync && mkdir -p '$TARGET_DIR'"' &&\
-    gcloud compute ssh $NODE_NAME -- toolbox bash -c '"mount -t nfs '$NFS_IP':'$NFS_TARGET_DIR' '$TARGET_DIR' && rsync --progress -az '$SOURCE_DIR'/ '$TARGET_DIR'/"'
+    gcloud compute ssh $NODE_NAME -- toolbox bash -c '"mkdir -p '$TARGET_DIR' && if ! which msrsync; then apt-get update && apt-get install -y nfs-common rsync python && wget https://raw.githubusercontent.com/jbd/msrsync/master/msrsync && chmod +x msrsync && mv ./msrsync /usr/local/bin/msrsync; fi"' &&\
+    gcloud compute ssh $NODE_NAME -- toolbox bash -c '"mount -t nfs '$NFS_IP':'$NFS_TARGET_DIR' '$TARGET_DIR' && msrsync -p 4 -s 500M -f 1000 --progress --rsync -az '$SOURCE_DIR'/ '$TARGET_DIR'/"'
 }
