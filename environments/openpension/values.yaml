@@ -1,13 +1,15 @@
 openpension:
   enabled: true
-  # initialize: true
+  initialize: true
   client:
     image: hasadna/open-pension-client
   server:
     image: hasadna/open-pension-server
   resources: '{"requests": {"cpu": "50m", "memory": "250Mi"}, "limits": {"memory": "500Mi"}}'
   rabbitmqResources: '{"requests": {"cpu": "10m", "memory": "100Mi"}, "limits": {"memory": "300Mi"}}'
-  dbPersistentDiskName: openpension-db
+  # dbPersistentDiskName: openpension-db
+  dbNfsServer: "172.16.0.2"
+  dbNfsPath: "/srv/default2/openpension/staging-db"
   dbResources: '{"requests": {"cpu": "20m", "memory": "50Mi"}, "limits": {"memory": "300Mi"}}'
 
   mongodb:
@@ -19,8 +21,23 @@ openpension:
     envFromSecretName: mongodb-env
 
     # persistent volume claim and disk names must be unique across all projects in the cluster
-    persistentVolumeClaimName: openpension-mongodb-data
+    # persistentVolumeClaimName: openpension-mongodb-data
     # create the disk first:
     # gcloud compute disks create --size=20GB --zone=europe-west1-b openpension-mongodb-data
-    persistentVolumePersistentDiskName: openpension-mongodb-data
-    persistentVolumeSize: "20G"
+    # persistentVolumePersistentDiskName: openpension-mongodb-data
+    # persistentVolumeSize: "20G"
+    nfsServer: "172.16.0.2"
+    nfsPath: "/srv/default2/openpension/staging-mongodb"
+
+  ingresses:
+    - name: client
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+      tls:
+        - hosts:
+            - openpension.oknesset.org
+          secretName: openpension-client-ingress-tls
+      rules:
+        - host: openpension.oknesset.org
+          serviceName: client
+          servicePort: 80

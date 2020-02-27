@@ -31,16 +31,16 @@ odata:
 #    deployment-name: mysadna
 #    container-name: mysadna
 
-openpension:
-  automatic-updates:
-    - commit-message: automatic update of openpension
-      namespace-name: openpension
-      deployment-name: server
-      container-name: server
-      image-prop: server image
-    - commit-message: automatic update of openpension
-      namespace-name: openpension
-      deployment-name: client
-      container-name: client
-      image-prop: client image
-
+#openpension:
+#  automatic-updates:
+#    - commit-message: automatic update of openpension
+#      namespace-name: openpension
+#      deployment-name: server
+#      container-name: server
+#      image-prop: server image
+#    - commit-message: automatic update of openpension
+#      namespace-name: openpension
+#      deployment-name: client
+#      container-name: client
+#      image-prop: client image
+#

@@ -1,9 +1,12 @@
 {{ if .Values.enabled }}
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: db
 spec:
+  selector:
+    matchLabels:
+      app: db
   replicas: 1
   revisionHistoryLimit: 2
   strategy:
@@ -39,6 +42,10 @@ spec:
       {{ if .Values.dbPersistentDiskName }}
         gcePersistentDisk:
           pdName: {{ .Values.dbPersistentDiskName | quote }}
+      {{ else if .Values.dbNfsServer }}
+        nfs:
+          server: {{ .Values.dbNfsServer | quote }}
+          path: {{ .Values.dbNfsPath | quote }}
       {{ else }}
         emptyDir: {}
       {{ end }}

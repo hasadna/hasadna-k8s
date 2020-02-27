@@ -1,0 +1,35 @@
+{{- if and .Values.enabled .Values.ingresses }}
+{{- range .Values.ingresses }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .name }}
+  {{- if .annotations }}
+  annotations:
+  {{- range $key, $value := .annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  {{- end }}
+spec:
+  rules:
+  {{- range .rules }}
+  - host: {{ .host }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ .serviceName }}
+          servicePort: {{ .servicePort }}
+  {{- end }}
+  {{- if .tls }}
+  tls:
+  {{- range .tls }}
+  - hosts:
+    {{- range .hosts }}
+    - {{ . | quote }}
+    {{- end }}
+    secretName: {{ .secretName | quote }}
+  {{- end }}
+  {{- end }}
+---
+{{- end }}
+{{- end }}
