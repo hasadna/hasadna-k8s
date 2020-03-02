@@ -13,6 +13,6 @@ oknesset:
   WebUiImage: uumpa/knesset-data-web-ui:94b6de1cc89ae20647e35aa606c3c9b95e81dbe6
 openpension:
   client:
-    image: hasadna/open-pension-client:7ae26d915a8636de697e018eb81b5b27308e6967
+    image: hasadna/open-pension-client:8a7985e581aaccfbd6706338945e7a94c08cd75d
   server:
     image: uumpa/hasadna-openpension:server-c72f525ec4d7de2e4337c0a7b0b1f6f8d357b72f
