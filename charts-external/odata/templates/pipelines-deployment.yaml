@@ -70,6 +70,7 @@ spec:
             - sh
             - -c
             - |
+              ! [ `redis-cli ping | grep -c PONG` = 1 ] && sleep 2 && ! [ `redis-cli ping | grep -c PONG` = 1 ] && sleep 2 && ! [ `redis-cli ping | grep -c PONG` = 1 ] && touch /var/lib/ckan/data/pipelines/upload_via_email/errors/stuck_pipelines_should_restart
               if [ -e /var/lib/ckan/data/pipelines/upload_via_email/errors/stuck_pipelines_should_restart ]; then
                 echo stuck_pipelines_should_restart
                 cat /var/lib/ckan/data/pipelines/upload_via_email/errors/stuck_pipelines_should_restart

@@ -39,11 +39,11 @@ TARGET_NFS_IP=212.80.204.62
 mount_nfs_and_rsync `get_pod_node_name reportit botkit-` $TARGET_NFS_IP \
                     /media/root/var/lib/kubelet/pods/`get_pod_uid reportit botkit-`/volumes/kubernetes.io~gce-pd/reportit-botkit-data/ \
                     /media/root/var/kamatera-nfs/reportit/botkit/ \
-                    /srv/default2/reportit/botkit/
+                    /srv/default2/reportit/botkit/ &&\
 mount_nfs_and_rsync `get_pod_node_name reportit strapi-` $TARGET_NFS_IP \
                     /media/root/var/lib/kubelet/pods/`get_pod_uid reportit strapi-`/volumes/kubernetes.io~gce-pd/reportit-strapi-data/ \
                     /media/root/var/kamatera-nfs/reportit/strapi/ \
-                    /srv/default2/reportit/strapi/
+                    /srv/default2/reportit/strapi/ &&\
 mount_nfs_and_rsync `get_pod_node_name reportit postgres-` $TARGET_NFS_IP \
                     /media/root/var/lib/kubelet/pods/`get_pod_uid reportit postgres-`/volumes/kubernetes.io~gce-pd/reportit-strapi-db/ \
                     /media/root/var/kamatera-nfs/reportit/postgres/ \
