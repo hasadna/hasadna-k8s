@@ -2,11 +2,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend
+  name: db
 spec:
   selector:
-    app: backend
+    app: db
   ports:
-  - name: "8000"
-    port: 8000
+  - name: "5432"
+    port: 5432
 {{ end }}

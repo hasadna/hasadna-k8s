@@ -1,11 +1,14 @@
 datacity:
   enabled: true
+  importer:
+    nfsServer: "172.16.0.2"
+    nfsPath: "/srv/default2/datacity/importer"
   ingresses:
     - name: frontend
       rules:
         - host: app.datacity.org.il
-          serviceName: frontend
-          servicePort: 8000
+          serviceName: importer
+          servicePort: 5000
     - name: nominatim
       rules:
         - host: geocode.datacity.org.il

@@ -2,11 +2,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: importer
 spec:
   selector:
-    app: frontend
+    app: importer
   ports:
-  - name: "8000"
-    port: 8000
+  - name: "5000"
+    port: 5000
 {{ end }}
