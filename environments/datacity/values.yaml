@@ -1,8 +1,8 @@
 datacity:
   enabled: true
   importer:
-    nfsServer: "172.16.0.2"
-    nfsPath: "/srv/default2/datacity/importer"
+    nfsServer: "172.16.0.9"
+    nfsPath: "/datacity/importer"
   ingresses:
     - name: frontend
       rules:
