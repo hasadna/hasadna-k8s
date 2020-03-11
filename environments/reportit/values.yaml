@@ -8,8 +8,8 @@ reportit:
     # gcloud compute disks create --size=20GB --zone=europe-west1-b openpension-mongodb-data
     # persistentVolumePersistentDiskName: reportit-botkit-data
     # persistentVolumeSize: 1G
-    nfsServer: "172.16.0.2"
-    nfsPath: "/srv/default2/reportit/botkit"
+    nfsServer: "172.16.0.9"
+    nfsPath: "/reportit/botkit"
   strapi:
     enabled: true
     # persistent volume claim and disk names must be unique across all projects in the cluster
@@ -18,8 +18,8 @@ reportit:
     # gcloud compute disks create --size=500GB --zone=europe-west1-b reportit-strapi-data
     # persistentVolumePersistentDiskName: reportit-strapi-data
     # persistentVolumeSize: 500G
-    nfsServer: "172.16.0.2"
-    nfsPath: "/srv/default2/reportit/strapi"
+    nfsServer: "172.16.0.9"
+    nfsPath: "/reportit/strapi"
   postgres:
     enabled: true
     # persistent volume claim and disk names must be unique across all projects in the cluster
@@ -28,8 +28,8 @@ reportit:
     # gcloud compute disks create --size=5GB --zone=europe-west1-b reportit-strapi-db
     # persistentVolumePersistentDiskName: reportit-strapi-db
     # persistentVolumeSize: 5G
-    nfsServer: "172.16.0.2"
-    nfsPath: "/srv/default2/reportit/postgres"
+    nfsServer: "172.16.0.9"
+    nfsPath: "/reportit/postgres"
   ingresses:
     - name: botkit
       rules:
