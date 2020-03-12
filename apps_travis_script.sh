@@ -29,6 +29,13 @@ if [ "${1}" == "install_helm" ]; then
     fi
     rm -f get_helm.sh
 
+elif [ "${1}" == "install_rancher" ]; then
+    curl https://releases.rancher.com/cli2/v2.3.2/rancher-linux-amd64-v2.3.2.tar.gz -o rancher-linux-amd64-v2.3.2.tar.gz &&\
+    tar -xzvf rancher-linux-amd64-v2.3.2.tar.gz &&\
+    sudo mv ./rancher-v2.3.2/rancher /usr/local/bin/ &&\
+    rm -rf ./rancher-v2.3.2 rancher-linux-amd64-v2.3.2.tar.gz &&\
+    rancher --version
+
 elif [ "${1}" == "script" ]; then
     latest_tag=`eval 'echo $LATEST_IMAGE_TAG_'${TRAVIS_BRANCH}`
     [ "${latest_tag}" == "" ] \
