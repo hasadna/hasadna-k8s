@@ -93,3 +93,67 @@ helm upgrade --install --namespace nfs-client-provisioner	\
 ```
 
 Using Rancher, you can now see the nfs-client storage class, you can set it as the default storage class using Rancher UI
+
+## NFS monitoring
+
+SSH to the NFS node
+
+Install docker:
+
+```
+apt-get update && apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common &&\
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &&\
+apt-key fingerprint 0EBFCD88
+```
+
+Verify fingerprint:
+
+```
+pub   rsa4096 2017-02-22 [SCEA]
+      9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+uid           [ unknown] Docker Release (CE deb) <docker@docker.com>
+sub   rsa4096 2017-02-22 [S]
+```
+
+Continue installation:
+
+```
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" &&\
+apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io
+```
+
+Run the Prometheus node exporter
+
+* this is the same one that runs on cluster nodes
+* change the listen address to the node's internal IP
+
+```
+docker run -d --name prom-node-exporter \
+    -v /proc:/host/proc \
+    -v /sys:/host/sys \
+    -v /:/host \
+    --net=host \
+    --restart unless-stopped \
+    rancher/prom-node-exporter:v0.17.0 \
+    --web.listen-address=172.16.0.9:9796 --path.procfs=/host/proc --path.sysfs=/host/sys --path.rootfs=/host --collector.arp \
+    --collector.bcache --collector.bonding --no-collector.buddyinfo --collector.conntrack --collector.cpu --collector.diskstats \
+    --no-collector.drbd --collector.edac --collector.entropy --collector.filefd --collector.filesystem --collector.hwmon \
+    --collector.infiniband --no-collector.interrupts --collector.ipvs --no-collector.ksmd --collector.loadavg --no-collector.logind \
+    --collector.mdadm --collector.meminfo --no-collector.meminfo_numa --no-collector.mountstats --collector.netdev --collector.netstat \
+    --collector.nfs --collector.nfsd --no-collector.ntp --no-collector.processes --no-collector.qdisc --no-collector.runit --collector.sockstat \
+    --collector.stat --no-collector.supervisord --no-collector.systemd --no-collector.tcpstat --collector.textfile --collector.time \
+    --collector.timex --collector.uname --collector.vmstat --no-collector.wifi --collector.xfs --collector.zfs
+```
+
+Edit the secret `prometheus-cluster-monitoring-additional-scrape-configs`, add the following job:
+
+```
+- job_name: 'nfs'
+  scrape_interval: 15s
+  static_configs:
+    - targets: ['172.16.0.9:9796']
+```
+
+After a few minutes you should start seeing the nfs node in grafana and Rancher monitoring graphs
+
+You can add an NFS dashboard to Grafana: https://grafana.com/grafana/dashboards/6257
