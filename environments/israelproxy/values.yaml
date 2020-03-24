@@ -1,0 +1,8 @@
+israelproxy:
+  enabled: true
+  ingresses:
+    - name: israelproxy
+      rules:
+        - host: israelproxy.odata.org.il
+          serviceName: israelproxy
+          servicePort: 80

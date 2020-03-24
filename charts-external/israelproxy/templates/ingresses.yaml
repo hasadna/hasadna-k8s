@@ -1,0 +1,19 @@
+{{ if and .Values.enabled .Values.ingresses }}
+{{ range .Values.ingresses }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .name }}
+spec:
+  rules:
+  {{ range .rules }}
+  - host: {{ .host }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ .serviceName }}
+          servicePort: {{ .servicePort }}
+  {{ end }}
+---
+{{ end }}
+{{ end }}

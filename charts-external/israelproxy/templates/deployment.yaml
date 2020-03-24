@@ -1,0 +1,29 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: israelproxy}
+spec:
+  selector:
+    matchLabels:
+      app: israelproxy
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels: {app: israelproxy}
+    spec:
+      containers:
+      - name: israelproxy
+        image: nginx
+        ports:
+        - containerPort: 80
+        resources: {{ .Values.resources }}
+        volumeMounts:
+          - name: nginx-conf
+            mountPath: /etc/nginx/conf.d
+            readOnly: true
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: israelproxy
+{{ end }}
