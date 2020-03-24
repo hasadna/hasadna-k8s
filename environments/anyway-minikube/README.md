@@ -16,10 +16,7 @@ Allows to test anyway kubernetes environment locally
   * To make sure you get corret version you should use the script in this repo
   * `bash apps_travis_script.sh install_helm`
   * if you have problems, refer to helm docs - [helm client](https://docs.helm.sh/using_helm/#installing-the-helm-client)
-* Install the helm server-side component on your minikube cluster
-  * `helm init --history-max 2 --upgrade --wait`
-* Verify helm installation
-  * `helm version`
+    * You should have helm 3 available in your path as `helm3`
 * Create DB secret
   * `kubectl create secret generic -n anyway-minikube db --from-literal=POSTGRES_PASSWORD=123456`
 * Create the Anyway secrets
