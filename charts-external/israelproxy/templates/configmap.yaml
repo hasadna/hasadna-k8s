@@ -13,4 +13,13 @@ data:
             proxy_set_header Host gisweb.azureedge.net;
         }
     }
+    server {
+        listen 80;
+        server_name differ.odata.org.il;
+        location / {
+          root /differ/data;
+          index null;
+          autoindex on;
+        }
+    }
 {{ end }}

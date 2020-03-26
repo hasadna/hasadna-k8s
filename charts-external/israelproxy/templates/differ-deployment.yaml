@@ -1,0 +1,34 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: differ}
+spec:
+  selector:
+    matchLabels:
+      app: differ
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels: {app: differ}
+    spec:
+      containers:
+      - name: differ
+        image: uumpa/differ@sha256:0a908aee18a3bce7fa87b51552ade87d29aad673401856232d9e146d6353377b
+        volumeMounts:
+          - name: data
+            mountPath: /data
+          - name: conf
+            mountPath: /etc/differ
+            readOnly: true
+      volumes:
+        - name: data
+          nfs:
+            server: {{ .Values.differNfsServer | quote }}
+            path: {{ $.Values.differNfsPath | quote }}
+        - name: conf
+          configMap:
+            name: differ
+{{ end }}

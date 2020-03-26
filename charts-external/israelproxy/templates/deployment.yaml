@@ -22,8 +22,15 @@ spec:
           - name: nginx-conf
             mountPath: /etc/nginx/conf.d
             readOnly: true
+          - name: differ
+            mountPath: /differ/data
+            readOnly: true
       volumes:
         - name: nginx-conf
           configMap:
             name: israelproxy
+        - name: differ
+          nfs:
+            server: {{ .Values.differNfsServer | quote }}
+            path: {{ $.Values.differNfsPath | quote }}
 {{ end }}
