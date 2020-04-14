@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+echo should not be used
+exit 1
+
 source connect.sh
 
 RES=0
