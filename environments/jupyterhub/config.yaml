@@ -1,0 +1,14 @@
+singleuser:
+  defaultUrl: "/lab"
+
+hub:
+  extraConfig:
+    jupyterlab: |
+      c.Spawner.cmd = ['jupyter-labhub']
+
+proxy:
+  https:
+    hosts:
+    - jupyterhub-test.odata.org.il
+    letsencrypt:
+      contactEmail: ori@uumpa.com
