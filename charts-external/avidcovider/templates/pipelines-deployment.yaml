@@ -1,0 +1,53 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pipelines
+spec:
+  selector:
+    matchLabels:
+      app: pipelines
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: pipelines
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: pipelines
+        image: {{ .Values.pipelinesImage | default "avidcovider/pipelines:latest" | quote }}
+        resources: {"requests": {"cpu": "800m", "memory": "1500Mi"}, "limits": {"memory": "3Gi"}}
+        args: ["server"]
+        ports:
+        - containerPort: 5000
+        env:
+          - name: COVID19_ISRAEL_PRIVATE_KEY_FILE
+            value: /secrets/covid19_israel_github_private_key
+          - name: COVID19_ISRAEL_REPOSITORY
+            value: {{ .Values.COVID19_ISRAEL_REPOSITORY | quote }}
+          - name: GOOGLE_SERVICE_ACCOUNT_FILE
+            value: /secrets/secret_service_account
+          - name: GOOGLE_API_KEY_FILE
+            value: /secrets/google_api_key.txt
+        volumeMounts:
+        - name: secrets
+          mountPath: /secrets
+        - name: covid19israel
+          mountPath: /COVID19-ISRAEL
+          subPath: COVID19-ISRAEL
+        - name: covid19israel
+          mountPath: /pipelines/data
+          subPath: data
+      volumes:
+      - name: secrets
+        secret:
+          secretName: {{ .Values.pipelinesSecretsSecretName | quote }}
+          defaultMode: 256
+      - name: covid19israel
+        gcePersistentDisk:
+          pdName: {{ .Values.pipelinesCovid19IsraelPersistentDiskName | quote }}
+{{ end }}

@@ -1,3 +1,22 @@
+odata:
+  lint-environments: odata-kamatera
+  automatic-update:
+    commit-message: automatic update of odata-ckan
+    namespace-name: odata
+    deployment-name: ckan
+    container-name: ckan
+    image-prop: ckanImage
+    kubeconfig: /.rancher.kubeconfig
+
+avidcovider:
+  lint-environments: avidcovider-gcloud
+  automatic-updates:
+    - commit-message: automatic update of avid-covider pipelines
+      namespace-name: avidcovider
+      deployment-name: pipelines
+      container-name: pipelines
+      image-prop: pipelinesImage
+
 #anyway:
 #  automatic-update:
 #    commit-message: automatic update of anyway testing environment
@@ -13,16 +32,6 @@
 #    deployment-name: anyway
 #    container-name: anyway
 #    image-prop: productionImage
-
-odata:
-  lint-environments: odata-kamatera
-  automatic-update:
-    commit-message: automatic update of odata-ckan
-    namespace-name: odata
-    deployment-name: ckan
-    container-name: ckan
-    image-prop: ckanImage
-    kubeconfig: /.rancher.kubeconfig
 
 #mysadna:
 #  automatic-update:

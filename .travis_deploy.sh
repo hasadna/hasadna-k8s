@@ -2,9 +2,14 @@
 
 echo "${TRAVIS_COMMIT_MESSAGE}" | grep -- --no-deploy && echo skipping deployment && exit 0
 
-openssl aes-256-cbc -K $encrypted_ff5d1c5705e0_key -iv $encrypted_ff5d1c5705e0_iv -in environments/hasadna/k8s-ops.json.enc -out secret-k8s-ops.json -d
+openssl aes-256-cbc -K $encrypted_ff5d1c5705e0_key -iv $encrypted_ff5d1c5705e0_iv -in environments/hasadna-gcloud/k8s-ops.json.enc -out secret-k8s-ops.json -d
 
-K8S_ENVIRONMENT_NAME="hasadna"
+if echo "${TRAVIS_COMMIT_MESSAGE}" | grep avid-covider; then
+  K8S_ENVIRONMENT_NAME="avidcovider-gcloud"
+else
+  K8S_ENVIRONMENT_NAME="hasadna"
+fi
+
 OPS_REPO_SLUG="hasadna/hasadna-k8s"
 OPS_REPO_BRANCH="${TRAVIS_BRANCH}"
 ./run_docker_ops.sh "${K8S_ENVIRONMENT_NAME}" '

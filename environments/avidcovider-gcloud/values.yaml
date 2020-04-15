@@ -1,0 +1,20 @@
+avidcovider:
+  enabled: true
+  # kubectl -n avidcovider create secret generic pipelines-secrets --from-file=covid19_israel_github_private_key= --from-file=secret_service_account= --from-file=google_api_key.txt=
+  pipelinesSecretsSecretName: pipelines-secrets
+  # gcloud --project=hasadna-general compute disks create avidcovider-pipelines-covid19israel --size=100GB --zone=europe-west1-b
+  pipelinesCovid19IsraelPersistentDiskName: avidcovider-pipelines-covid19israel
+  COVID19_ISRAEL_REPOSITORY: OriHoch/COVID19-ISRAEL
+  ingresses:
+    - name: pipelines
+      ssl: true
+      httpauth:
+        # htpasswd -c auth USERNAME
+        # kubectl -n avidcovider create secret generic pipelines-auth --from-file=auth
+        # rm -f auth
+        secretName: "pipelines-auth"
+        message: "Authentication Required"
+      rules:
+        - host: avidcovider-pipelines.odata.org.il
+          serviceName: pipelines
+          servicePort: 5000
