@@ -15,6 +15,9 @@ spec:
     metadata:
       labels:
         app: pipelines
+      annotations:
+        # update the pod on nginx-conf changes
+        checksum/config: {{ include (print $.Template.BasePath "/pipelines-nginx-configmap.yaml") . | sha256sum }}
     spec:
       terminationGracePeriodSeconds: 10
       containers:
@@ -42,6 +45,18 @@ spec:
         - name: covid19israel
           mountPath: /pipelines/data
           subPath: data
+      - name: nginx
+        image: nginx
+        resources: {"requests": {"cpu": "100m", "memory": "100Mi"}, "limits": {"memory": "500Mi"}}
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - name: nginx-conf
+            mountPath: /etc/nginx/conf.d
+            readOnly: true
+          - name: covid19israel
+            mountPath: /covid19israel
+            readOnly: true
       volumes:
       - name: secrets
         secret:
@@ -50,4 +65,7 @@ spec:
       - name: covid19israel
         gcePersistentDisk:
           pdName: {{ .Values.pipelinesCovid19IsraelPersistentDiskName | quote }}
+      - name: nginx-conf
+        configMap:
+          name: pipelines-nginx
 {{ end }}
