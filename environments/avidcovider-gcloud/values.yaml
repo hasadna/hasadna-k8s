@@ -4,7 +4,7 @@ avidcovider:
   pipelinesSecretsSecretName: pipelines-secrets
   # gcloud --project=hasadna-general compute disks create avidcovider-pipelines-covid19israel --size=100GB --zone=europe-west1-b
   pipelinesCovid19IsraelPersistentDiskName: avidcovider-pipelines-covid19israel
-  COVID19_ISRAEL_REPOSITORY: OriHoch/COVID19-ISRAEL
+  COVID19_ISRAEL_REPOSITORY: Amirgav/COVID19-ISRAEL
   ingresses:
     - name: pipelines
       ssl: true
