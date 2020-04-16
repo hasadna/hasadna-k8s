@@ -2,7 +2,7 @@ anyway:
   image: uumpa/anyway:267f7419d02e00e6e74e9e57e2a217cf33b7d57c
   productionImage: uumpa/anyway:ef99d85b586a94d9e3b98a3e7dad195334318311
 avidcovider:
-  pipelinesImage: avidcovider/pipelines:1e59f95054b5d3ddddabd8955590c33756909d66
+  pipelinesImage: avidcovider/pipelines:951c9918b043eea8d0c4bbc97f5909059a1741c8
 datacity:
   dgpAppDb: akariv/dgp-app-db@sha256:8ebf03009fb6c6e42308c2579b4ac2d979325a492fffd5942af0de3fc709ce28
   dgpAppImage: hasadna/datacity-dgp-importer@sha256:3096e2a74f370e3b8318d3cf236bdea87144ae31c2423d7841ccc40fa6d63c4b
@@ -15,6 +15,6 @@ oknesset:
   WebUiImage: uumpa/knesset-data-web-ui:94b6de1cc89ae20647e35aa606c3c9b95e81dbe6
 openpension:
   client:
-    image: hasadna/open-pension-client:8a7985e581aaccfbd6706338945e7a94c08cd75d
+    image: hasadna/open-pension-client:90ae973fe4ab0d6dd2c42eb5638838abba415352
   server:
     image: uumpa/hasadna-openpension:server-c72f525ec4d7de2e4337c0a7b0b1f6f8d357b72f
