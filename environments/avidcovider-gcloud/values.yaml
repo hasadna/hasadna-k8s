@@ -5,6 +5,10 @@ avidcovider:
   # gcloud --project=hasadna-general compute disks create avidcovider-pipelines-covid19israel --size=100GB --zone=europe-west1-b
   pipelinesCovid19IsraelPersistentDiskName: avidcovider-pipelines-covid19israel
   COVID19_ISRAEL_REPOSITORY: Amirgav/COVID19-ISRAEL
+  # kubectl create secret generic pipelines-cdc-secrets-certs --from-file=client-cert.pem=/path/to/certs/client-cert.pem --from-file=client-key.pem=/path/to/certs/client-key.pem --from-file=server-ca.pem=/path/to/certs/server-ca.pem
+  pipelinesCdcSecretsSecretName: pipelines-cdc-secrets-certs
+  # kubectl create secret generic pipelines-collector --from-literal=CORONA_DATA_COLLECTOR_DB_PASS= --from-literal=CORONA_DATA_COLLECTOR_GPS_URL_KEY --from-literal=CORONA_DATA_COLLECTOR_TELEGRAM_TOKEN=
+  pipelinesCollectorSecretName: pipelines-collector
   ingresses:
     - name: pipelines
       ssl: true

@@ -36,9 +36,21 @@ spec:
             value: /secrets/secret_service_account
           - name: GOOGLE_API_KEY_FILE
             value: /secrets/google_api_key.txt
+          - name: CORONA_DATA_COLLECTOR_DB_PASS
+            valueFrom: {"secretKeyRef":{"name":{{ .Values.pipelinesCollectorSecretName | quote }}, "key":"CORONA_DATA_COLLECTOR_DB_PASS"}}
+          - name: CORONA_DATA_COLLECTOR_GPS_URL_KEY
+            valueFrom: {"secretKeyRef":{"name":{{ .Values.pipelinesCollectorSecretName | quote }}, "key":"CORONA_DATA_COLLECTOR_GPS_URL_KEY"}}
+          - name: CORONA_DATA_COLLECTOR_TELEGRAM_TOKEN
+            valueFrom: {"secretKeyRef":{"name":{{ .Values.pipelinesCollectorSecretName | quote }}, "key":"CORONA_DATA_COLLECTOR_TELEGRAM_TOKEN"}}
+          - name: CORONA_DATA_COLLECTOR_GPS_PATH
+            value: /pipelines/data/corona_data_collector/gps_data.json
+          - name: CORONA_DATA_COLLECTOR_SECRETS_PATH
+            value: /cdc_secrets
         volumeMounts:
         - name: secrets
           mountPath: /secrets
+        - name: cdcsecrets
+          mountPath: /cdc_secrets/certs
         - name: covid19israel
           mountPath: /COVID19-ISRAEL
           subPath: COVID19-ISRAEL
@@ -61,6 +73,10 @@ spec:
       - name: secrets
         secret:
           secretName: {{ .Values.pipelinesSecretsSecretName | quote }}
+          defaultMode: 256
+      - name: cdcsecrets
+        secret:
+          secretName: {{ .Values.pipelinesCdcSecretsSecretName | quote }}
           defaultMode: 256
       - name: covid19israel
         gcePersistentDisk:
