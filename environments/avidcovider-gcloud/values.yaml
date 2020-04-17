@@ -9,6 +9,7 @@ avidcovider:
   pipelinesCdcSecretsSecretName: pipelines-cdc-secrets-certs
   # kubectl create secret generic pipelines-collector --from-literal=CORONA_DATA_COLLECTOR_DB_PASS= --from-literal=CORONA_DATA_COLLECTOR_GPS_URL_KEY --from-literal=CORONA_DATA_COLLECTOR_TELEGRAM_TOKEN=
   pipelinesCollectorSecretName: pipelines-collector
+  nfsServer: "10.0.11.24"
   ingresses:
     - name: pipelines
       ssl: true
@@ -23,5 +24,5 @@ avidcovider:
           serviceName: pipelines
           servicePort: 5000
         - host: avidcovider-pipelines-data.odata.org.il
-          serviceName: pipelines
+          serviceName: pipelines-nginx
           servicePort: 80
