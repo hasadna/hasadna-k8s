@@ -34,7 +34,7 @@ spec:
       - name: covid19israel
         nfs:
           server: {{ .Values.nfsServer | quote }}
-          path: "/"
+          path: {{ .Values.nfsRootPath | quote }}
       - name: nginx-conf
         configMap:
           name: pipelines-nginx

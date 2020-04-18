@@ -2,16 +2,18 @@ avidcovider:
   enabled: true
   # kubectl -n avidcovider create secret generic pipelines-secrets --from-file=covid19_israel_github_private_key= --from-file=secret_service_account= --from-file=google_api_key.txt=
   pipelinesSecretsSecretName: pipelines-secrets
-  # gcloud --project=hasadna-general compute disks create avidcovider-pipelines-covid19israel --size=100GB --zone=europe-west1-b
-  pipelinesCovid19IsraelPersistentDiskName: avidcovider-pipelines-covid19israel
+  # staging environment uses the same storage as prod (but different paths)
+  # pipelinesCovid19IsraelPersistentDiskName: avidcovider-pipelines-covid19israel
   COVID19_ISRAEL_REPOSITORY: Amirgav/COVID19-ISRAEL
   # kubectl create secret generic pipelines-cdc-secrets-certs --from-file=client-cert.pem=/path/to/certs/client-cert.pem --from-file=client-key.pem=/path/to/certs/client-key.pem --from-file=server-ca.pem=/path/to/certs/server-ca.pem
   pipelinesCdcSecretsSecretName: pipelines-cdc-secrets-certs
   # kubectl create secret generic pipelines-collector --from-literal=CORONA_DATA_COLLECTOR_DB_PASS= --from-literal=CORONA_DATA_COLLECTOR_GPS_URL_KEY --from-literal=CORONA_DATA_COLLECTOR_TELEGRAM_TOKEN=
   pipelinesCollectorSecretName: pipelines-collector
   nfsServer: "10.0.11.24"
-  enableNfsServerDeployment: true
-  nfsRootPath: "/"
+  # staging environment uses the prod environment's nfs server
+  enableNfsServerDeployment: false
+  nfsRootPath: "/staging"
+  COVID19_ISRAEL_BRANCH: "amit_bot2"
   ingresses:
     - name: pipelines
       ssl: true
@@ -22,9 +24,9 @@ avidcovider:
         secretName: "pipelines-auth"
         message: "Authentication Required"
       rules:
-        - host: avidcovider-pipelines.odata.org.il
+        - host: avidcovider-pipelines-staging.odata.org.il
           serviceName: pipelines
           servicePort: 5000
-        - host: avidcovider-pipelines-data.odata.org.il
+        - host: avidcovider-pipelines-staging-data.odata.org.il
           serviceName: pipelines-nginx
           servicePort: 80

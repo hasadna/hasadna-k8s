@@ -1,4 +1,4 @@
-{{ if .Values.enabled }}
+{{ if and .Values.enabled .Values.enableNfsServerDeployment }}
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:

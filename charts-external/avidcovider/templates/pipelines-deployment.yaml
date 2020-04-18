@@ -46,6 +46,10 @@ spec:
             value: /pipelines/data/corona_data_collector/gps_data.json
           - name: CORONA_DATA_COLLECTOR_SECRETS_PATH
             value: /cdc_secrets
+          {{ if .Values.COVID19_ISRAEL_BRANCH }}
+          - name: COVID19_ISRAEL_BRANCH
+            value: {{ .Values.COVID19_ISRAEL_BRANCH | quote }}
+          {{ end }}
         volumeMounts:
         - name: secrets
           mountPath: /secrets
@@ -69,5 +73,5 @@ spec:
       - name: covid19israel
         nfs:
           server: {{ .Values.nfsServer | quote }}
-          path: "/"
+          path: {{ .Values.nfsRootPath | quote }}
 {{ end }}
