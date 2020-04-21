@@ -2,7 +2,7 @@ anyway:
   image: uumpa/anyway:267f7419d02e00e6e74e9e57e2a217cf33b7d57c
   productionImage: uumpa/anyway:ef99d85b586a94d9e3b98a3e7dad195334318311
 avidcovider:
-  pipelinesImage: avidcovider/pipelines:8e9bc45aaaf12a2dc4c6c5467680775faf33b01c
+  pipelinesImage: avidcovider/pipelines:cf832f13066b60154b42c13d03aaeb531fcb486f
 datacity:
   dgpAppDb: akariv/dgp-app-db@sha256:8ebf03009fb6c6e42308c2579b4ac2d979325a492fffd5942af0de3fc709ce28
   dgpAppImage: hasadna/datacity-dgp-importer@sha256:3096e2a74f370e3b8318d3cf236bdea87144ae31c2423d7841ccc40fa6d63c4b
