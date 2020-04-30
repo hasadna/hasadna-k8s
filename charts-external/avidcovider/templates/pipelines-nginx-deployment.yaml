@@ -9,6 +9,8 @@ spec:
       app: pipelines-nginx
   replicas: 1
   revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -20,7 +22,7 @@ spec:
       containers:
       - name: nginx
         image: nginx
-        resources: {"requests": {"cpu": "100m", "memory": "100Mi"}, "limits": {"memory": "500Mi"}}
+        resources: {"requests": {"cpu": "500m", "memory": "1Gi"}, "limits": {"cpu": "500m", "memory": "1Gi"}}
         ports:
           - containerPort: 80
         volumeMounts:

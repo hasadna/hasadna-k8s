@@ -20,7 +20,7 @@ spec:
       - name: nfs
         image: gcr.io/google_containers/volume-nfs:0.8
         args: ["/exports"]
-        resources: {"requests": {"cpu": "150m", "memory": "200Mi"}, "limits": {"cpu": "150m", "memory": "200Mi"}}
+        resources: {"requests": {"cpu": "500m", "memory": "1Gi"}, "limits": {"cpu": "500m", "memory": "1Gi"}}
         ports:
           - name: nfs
             containerPort: 2049
