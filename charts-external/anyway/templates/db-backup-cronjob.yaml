@@ -8,7 +8,7 @@ spec:
     spec:
       template:
         spec:
-          containers:
+          initContainers:
             - name: db-backup-cronjob-pod
               image: postgres:9.6.17-alpine
               imagePullPolicy: "IfNotPresent"
@@ -33,7 +33,7 @@ spec:
               volumeMounts:
                 - name: data-db-backup
                   mountPath: /var/tmp
-
+          containers:
             - name: db-backup-upload-s3
               image: amazon/aws-cli:2.0.10
               imagePullPolicy: "IfNotPresent"
