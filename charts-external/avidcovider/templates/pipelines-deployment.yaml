@@ -38,6 +38,8 @@ spec:
             value: /secrets/google_api_key.txt
           - name: DEPLOY_KEY_FILE_hasadna_avid_covider_raw_data
             value: /secrets/deploy_key_hasadna_avid_covider_raw_data
+          - name: DEPLOY_KEY_FILE_hrossman_covid19_survey
+            value: /secrets/deploy_key_hrossman_covid19_survey
           - name: CORONA_DATA_COLLECTOR_DB_PASS
             valueFrom: {"secretKeyRef":{"name":{{ .Values.pipelinesCollectorSecretName | quote }}, "key":"CORONA_DATA_COLLECTOR_DB_PASS"}}
           - name: CORONA_DATA_COLLECTOR_GPS_URL_KEY
