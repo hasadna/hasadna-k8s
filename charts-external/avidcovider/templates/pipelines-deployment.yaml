@@ -23,7 +23,7 @@ spec:
       containers:
       - name: pipelines
         image: {{ .Values.pipelinesImage | default "avidcovider/pipelines:latest" | quote }}
-        resources: {"requests": {"cpu": "3000m", "memory": "10Gi"}, "limits": {"memory": "12Gi"}}
+        resources: {"requests": {"cpu": "3000m", "memory": "15Gi"}, "limits": {"memory": "20Gi"}}
         args: ["server"]
         ports:
         - containerPort: 5000
