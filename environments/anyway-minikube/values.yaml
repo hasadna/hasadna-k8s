@@ -1,5 +1,10 @@
 anyway:
-  enabled: true
-  disbaledDeployment: false
-  #initialize: true
-  image: mickeyrouash/anyway_mickeyr
+  imagePullPolicy: IfNotPresent ## FIXME: Remove
+  ingress:
+    hostname: anyway.co.il.127.0.0.1.nip.io
+    tls: false
+  restore:
+    enabled: true
+    # gdrive_file_id: "..."
+  backup:
+    enabled: false

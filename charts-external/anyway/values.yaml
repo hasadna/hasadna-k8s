@@ -1,0 +1,23 @@
+enabled: true
+image: hasadna/anyway
+imagePullPolicy: Always
+service:
+  enabled: true
+  port: 5000
+ingress:
+  enabled: true
+  hostname: anyway.co.il
+  tls: false
+db:
+  enabled: true
+  image: anywayteam/db
+  service:
+    enabled: true
+    port: 5432
+restore:
+  enabled: false
+  gdrive_file_id: ""
+backup:
+  enabled: true
+  image: postgis/postgis:9.6-2.5-alpine
+  schedule: "0 2 * * 0"

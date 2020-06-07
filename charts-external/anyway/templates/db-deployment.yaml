@@ -1,4 +1,4 @@
-{{ if .Values.enabled }}
+{{ if and .Values.enabled .Values.db.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,15 +19,39 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: db
-        image: mickeyrouash/anyway_db_mickeyr
+        image: {{ .Values.db.image }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
         ports:
-        - containerPort: 5432
+        - name: postgres
+          containerPort: {{ .Values.db.service.port }}
+        readinessProbe:
+          tcpSocket:
+            port: postgres
+          {{ if .Values.restore.enabled }}
+          initialDelaySeconds: 180
+          {{ else }}
+          initialDelaySeconds: 30
+          {{ end }}
+        livenessProbe:
+          tcpSocket:
+            port: postgres
+          {{ if .Values.restore.enabled }}
+          initialDelaySeconds: 180
+          {{ else }}
+          initialDelaySeconds: 30
+          {{ end }}
         resources: {{ .Values.dbResources }}
         env:
         - name: POSTGRES_PASSWORD
           valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_PASSWORD"}}
         - name: POSTGRES_USER
           value: anyway
+        {{ if .Values.restore.enabled }}
+        - name: RESTORE_DB
+          value: "TRUE"
+        - name: GDRIVE_FILE_ID  ## Needs to be a secret?
+          value: {{ .Values.restore.gdrive_file_id }}
+        {{ end }}
         volumeMounts:
         - name: data
           mountPath: /var/lib/postgresql/data
@@ -36,11 +60,10 @@ spec:
       volumes:
       - name: data
       {{ if .Values.dbPersistentDiskName }}
+        # FIXME
         gcePersistentDisk:
           pdName: {{ .Values.dbPersistentDiskName | quote }}
       {{ else }}
-        hostPath:
-          path: /data
-        #emptyDir: {}
+        emptyDir: {}
       {{ end }}
 {{ end }}

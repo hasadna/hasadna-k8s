@@ -1,5 +1,4 @@
 {{ if .Values.enabled }}
-{{ if not .Values.disbaledDeployment }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,9 +20,29 @@ spec:
       containers:
       - name: anyway
         image: {{ .Values.image }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
         resources: {{ .Values.resources }}
         ports:
-        - containerPort: 8000
+        - name: http
+          containerPort: {{ .Values.service.port }}
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+          {{ if .Values.restore.enabled }}
+          initialDelaySeconds: 180
+          {{ else }}
+          initialDelaySeconds: 60
+          {{ end }}
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+          {{ if .Values.restore.enabled }}
+          initialDelaySeconds: 180
+          {{ else }}
+          initialDelaySeconds: 60
+          {{ end }}
         envFrom:
         - secretRef: {"name": "anyway"}
         env:
@@ -33,38 +52,4 @@ spec:
           value: "postgresql://anyway:$(POSTGRES_PASSWORD)@db/anyway"
         - name: GUNICORN_CMD_ARGS
           value: "--bind=0.0.0.0"
-        {{ if .Values.initialize }}
-        - name: INITIALIZE
-          value: "yes"
-        {{ end }}
-        command:
-        - bash
-        - "-c"
-        - |
-          echo "INITIALIZE: ${INITIALIZE}"
-          if [ "${INITIALIZE}" == "yes" ]; then
-            sleep 2 && ! alembic upgrade head && exit 1\
-            python main.py process cbs && echo python main.py process cbs && exit 1\
-            python main.py process united --light && echo python main.py process united --light && exit 1\
-            [ "$?" != "0" ] && echo failed to initialize && exit 1
-          else
-            echo "else"
-            # ! alembic upgrade head && echo failed alembic upgrade && exit 1
-          fi
-          echo gunicorn anyway:app 
-          gunicorn anyway:app &
-          GUNICORN_PID=$!
-          echo celery worker -A anyway.clusters_calculator 
-          celery worker -A anyway.clusters_calculator &
-          CELERY_PID=$!
-          while ( ps $GUNICORN_PID && ps $CELERY_PID ) >/dev/null 2>&1
-          do
-            sleep 2
-          done
-      - name: rabbitmq
-        image: rabbitmq
-        resources: {{ .Values.rabbitmqResources }}
-        ports:
-        - containerPort: 5672
-{{ end }}
 {{ end }}

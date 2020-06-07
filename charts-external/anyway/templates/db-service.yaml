@@ -1,4 +1,4 @@
-{{ if .Values.enabled }}
+{{ if and .Values.db.enabled .Values.db.service.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -7,6 +7,7 @@ spec:
   selector:
     app: db
   ports:
-  - name: "5432"
-    port: 5432
+  - name: postgres
+    port: {{ .Values.db.service.port }}
 {{ end }}
+
