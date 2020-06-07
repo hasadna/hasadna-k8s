@@ -18,6 +18,10 @@ Infrastructure changes should be tested on the staging environment (`anyway` env
   * if you have problems, refer to helm docs - [helm client](https://docs.helm.sh/using_helm/#installing-the-helm-client)
 * Verify helm installation
   * `helm version`
+* Create the AWS_CREDENTIALS secret
+  * `kubectl create secret generic -n anyway-production aws_credentials --from-literal=AWS_ACCESS_KEY_ID=******* --from-literal=AWS_SECRET_ACCESS_KEY=*******`
+* Create the S3_BUCKET secret
+  * `kubectl create secret generic -n anyway-production s3_bucket --from-literal=S3_BUCKET=s3://*******`
 * Create the DB secret
   * `kubectl create secret generic -n anyway-production db --from-literal=POSTGRES_PASSWORD=*******`
 * Create the persistent disk for the DB
