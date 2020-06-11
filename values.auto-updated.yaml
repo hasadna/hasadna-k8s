@@ -5,7 +5,7 @@ anyway:
   nginxImage: anywayteam/nginx:sha-2549f7b
   productionImage: uumpa/anyway:ef99d85b586a94d9e3b98a3e7dad195334318311
 avidcovider:
-  pipelinesImage: avidcovider/pipelines:4f6ee974d9c304e0d75baa6b8ee1564289a7cee2
+  pipelinesImage: avidcovider/pipelines:329b08e37cf7b6e267e8b5b27b90a867e7bf95ac
 datacity:
   dgpAppDb: akariv/dgp-app-db@sha256:8ebf03009fb6c6e42308c2579b4ac2d979325a492fffd5942af0de3fc709ce28
   dgpAppImage: hasadna/datacity-dgp-importer@sha256:3096e2a74f370e3b8318d3cf236bdea87144ae31c2423d7841ccc40fa6d63c4b
