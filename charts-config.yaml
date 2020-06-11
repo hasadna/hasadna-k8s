@@ -31,6 +31,12 @@ anyway:
       container-name: anyway
       image-prop: image
       kubeconfig: /.rancher.kubeconfig
+    - commit-message: automatic update of anyway
+      namespace-name: anyway
+      deployment-name: nginx
+      container-name: nginx
+      image-prop: nginxImage
+      kubeconfig: /.rancher.kubeconfig
 
 #mysadna:
 #  automatic-update:
