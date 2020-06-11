@@ -1,74 +1,28 @@
+{{ if and .Values.enabled .Values.dbBackupEnabled }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: db-backup-cronjob
+  name: backup
 spec:
-  schedule: "0 1 * * *"
+  schedule: {{ .Values.dbBackupSchedule | quote }}
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
         spec:
-          initContainers:
-            - name: db-backup-cronjob-pod
-              image: postgres:9.6.17-alpine
-              imagePullPolicy: "IfNotPresent"
-              ports:
-                - containerPort: 5432
-              env:
-                - name: PGPASSWORD
-                  valueFrom:
-                    {
-                      "secretKeyRef":
-                        { "name": "db", "key": "POSTGRES_PASSWORD" },
-                    }
-                - name: POSTGRES_USER
-                  value: anyway
-              command:
-                - bash
-                - "-c"
-                - |
-                  pg_dump -h db -U $(POSTGRES_USER) -d anyway \
-                  -T users -T roles -T roles_users -T locationsubscribers -T report_preferences -T general_preferences > /var/tmp/anyway_public.pgdump
-                  pg_dump -h db -U $(POSTGRES_USER) -d anyway > /var/tmp/anyway_full.pgdump
-              volumeMounts:
-                - name: data-db-backup
-                  mountPath: /var/tmp
-          containers:
-            - name: db-backup-upload-s3
-              image: amazon/aws-cli:2.0.10
-              imagePullPolicy: "IfNotPresent"
-              env:
-                - name: AWS_ACCESS_KEY_ID
-                  valueFrom:
-                    {
-                      "secretKeyRef":
-                        {
-                          "name": "aws_credentials",
-                          "key": "AWS_ACCESS_KEY_ID",
-                        },
-                    }
-                - name: AWS_SECRET_ACCESS_KEY
-                  valueFrom:
-                    {
-                      "secretKeyRef":
-                        {
-                          "name": "aws_credentials",
-                          "key": "AWS_SECRET_ACCESS_KEY",
-                        },
-                    }
-                - name: S3_BUCKET
-                  valueFrom:
-                    {
-                      "secretKeyRef":
-                        { "name": "s3_bucket", "key": "S3_BUCKET" },
-                    }
-
-              args: ["s3", "cp", "/aws", "$(S3_BUCKET)", "--recursive"]
-              volumeMounts:
-                - name: data-db-backup
-                  mountPath: /aws
-          volumes:
-            - name: data-db-backup
-              emptyDir: {}
           restartPolicy: OnFailure
-      backoffLimit: 3
+          containers:
+          - name: db-backup
+            image: {{ .Values.dbBackupImage }}
+            envFrom:
+              - secretRef: {"name": "db-backup"}
+            env:
+              - name: DBDUMP_S3_FILE_PREFIX
+                value: {{ .Values.DBDUMP_S3_FILE_PREFIX | quote }}
+              - name: DBDUMP_HOST
+                value: "db"
+              - name: DBDUMP_USER
+                value: "postgres"
+{{ end }}

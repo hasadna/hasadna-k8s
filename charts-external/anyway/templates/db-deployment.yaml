@@ -1,4 +1,4 @@
-{{ if and .Values.enabled .Values.db.enabled }}
+{{ if .Values.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,39 +19,20 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: db
-        image: {{ .Values.db.image }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
-        ports:
-        - name: postgres
-          containerPort: {{ .Values.db.service.port }}
-        readinessProbe:
-          tcpSocket:
-            port: postgres
-          {{ if .Values.restore.enabled }}
-          initialDelaySeconds: 180
-          {{ else }}
-          initialDelaySeconds: 30
-          {{ end }}
-        livenessProbe:
-          tcpSocket:
-            port: postgres
-          {{ if .Values.restore.enabled }}
-          initialDelaySeconds: 180
-          {{ else }}
-          initialDelaySeconds: 30
-          {{ end }}
+        # we don't want to auto-update the DB!
+        image: anywayteam/db:sha-4fa1bfa
         resources: {{ .Values.dbResources }}
+        envFrom:
+          - secretRef: {"name": "db"}
         env:
-        - name: POSTGRES_PASSWORD
-          valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_PASSWORD"}}
-        - name: POSTGRES_USER
-          value: anyway
-        {{ if .Values.restore.enabled }}
-        - name: RESTORE_DB
-          value: "TRUE"
-        - name: GDRIVE_FILE_ID  ## Needs to be a secret?
-          value: {{ .Values.restore.gdrive_file_id }}
-        {{ end }}
+          - name: POSTGRES_USER
+            value: "postgres"
+          - name: POSTGRES_DB
+            value: "postgres"
+          - name: DBRESTORE_AWS_BUCKET
+            value: "anyway-full-db-dumps"
+          - name: DBRESTORE_FILE_NAME
+            value: "2020-06-09_anyway.pgdump"
         volumeMounts:
         - name: data
           mountPath: /var/lib/postgresql/data
@@ -59,11 +40,11 @@ spec:
           subPath: dbdata
       volumes:
       - name: data
-      {{ if .Values.dbPersistentDiskName }}
-        # FIXME
-        gcePersistentDisk:
-          pdName: {{ .Values.dbPersistentDiskName | quote }}
-      {{ else }}
+        {{ if and .Values.dbNfsServer .Values.dbNfsPath }}
+        nfs:
+          server: {{ .Values.dbNfsServer | quote }}
+          path: {{ $.Values.dbNfsPath | quote }}
+        {{ else }}
         emptyDir: {}
-      {{ end }}
+        {{ end }}
 {{ end }}

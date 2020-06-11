@@ -2,11 +2,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: db
+  name: nginx
 spec:
   selector:
-    app: db
+    app: nginx
   ports:
-  - name: "5432"
-    port: 5432
+  - name: "80"
+    port: 80
 {{ end }}

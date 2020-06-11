@@ -1,7 +1,23 @@
 anyway:
   enabled: true
-  # initialize: true
-  resources: '{"requests": {"cpu": "50m", "memory": "250Mi"}, "limits": {"memory": "500Mi"}}'
-  rabbitmqResources: '{"requests": {"cpu": "10m", "memory": "100Mi"}, "limits": {"memory": "300Mi"}}'
-  dbPersistentDiskName: anyway-db
-  dbResources: '{"requests": {"cpu": "20m", "memory": "50Mi"}, "limits": {"memory": "300Mi"}}'
+  enableSecondaries: true
+  secondaryReplicas: 1
+  nginxForwardedHost: "k8s.anyway.co.il"
+  nginxForwardedScheme: "https"
+  mountGoogleApplicationCredentialsSecret: true
+  mainResources: '{"requests": {"cpu": "150m", "memory": "1000Mi"}, "limits": {"memory": "1500Mi"}}'
+  secondariesResources: '{"requests": {"cpu": "100m", "memory": "700Mi"}, "limits": {"memory": "1000Mi"}}'
+  dbResources: '{"requests": {"cpu": "300m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}'
+  nginxResources: '{"requests": {"cpu": "100m", "memory": "100Mi"}, "limits": {"memory": "500Mi"}}'
+  dbNfsServer: "172.16.0.9"
+  dbNfsPath: "/anyway/db"
+  DBDUMP_S3_FILE_PREFIX: "k8s_"
+  dbBackupEnabled: true
+  dbBackupSchedule: "10 0 * * *"
+  ingresses:
+    - name: nginx
+      ssl: true
+      rules:
+        - host: k8s.anyway.co.il
+          serviceName: nginx
+          servicePort: 80

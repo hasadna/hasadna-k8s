@@ -1,0 +1,64 @@
+{{ if and .Values.enabled .Values.enableSecondaries }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anyway-secondaries
+spec:
+  selector:
+    matchLabels:
+      app: anyway-secondaries
+  replicas: {{ .Values.secondaryReplicas }}
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: anyway-secondaries
+        groupapp: anyway
+    spec:
+      terminationGracePeriodSeconds: 2
+      automountServiceAccountToken: false
+      containers:
+      - name: anyway
+        image: {{ .Values.image }}
+        command: ["gunicorn", "-b", "0.0.0.0:5000", "-w", "4", "-t", "120", "anyway:app"]
+        resources: {{ .Values.secondariesResources }}
+        env:
+        - name: ALLOW_ALEMBIC_UPGRADE
+          value: "no"
+        - name: PROXYFIX_X_FOR
+          value: "1"
+        - name: PROXYFIX_X_PROTO
+          value: "1"
+        - name: PROXYFIX_X_HOST
+          value: "1"
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/secrets/GOOGLE_APPLICATION_CREDENTIALS_KEY.json"
+        envFrom:
+        - secretRef: {"name": "anyway"}
+        - secretRef: {"name": "anyway-db"}
+        startupProbe:
+          httpGet:
+            path: /
+            port: 5000
+            host: anyway-main
+          failureThreshold: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 5
+      {{ if .Values.mountGoogleApplicationCredentialsSecret }}
+        volumeMounts:
+        - name: secrets
+          mountPath: /secrets/GOOGLE_APPLICATION_CREDENTIALS_KEY.json
+          subPath: GOOGLE_APPLICATION_CREDENTIALS_KEY.json
+      volumes:
+      - name: secrets
+        secret:
+          secretName: anyway
+      {{ end }}
+{{ end }}

@@ -17,21 +17,20 @@ avidcovider:
       container-name: pipelines
       image-prop: pipelinesImage
 
-#anyway:
-#  automatic-update:
-#    commit-message: automatic update of anyway testing environment
-#    namespace-name: anyway
-#    deployment-name: anyway
-#    container-name: anyway
-
-#anyway-production:
-#  chart-name: anyway
-#  automatic-update:
-#    commit-message: automatic update of anyway production environment
-#    namespace-name: anyway-production
-#    deployment-name: anyway
-#    container-name: anyway
-#    image-prop: productionImage
+anyway:
+  automatic-updates:
+    - commit-message: automatic update of anyway
+      namespace-name: anyway
+      deployment-name: anyway-main
+      container-name: anyway
+      image-prop: image
+      kubeconfig: /.rancher.kubeconfig
+    - commit-message: automatic update of anyway
+      namespace-name: anyway
+      deployment-name: anyway-secondaries
+      container-name: anyway
+      image-prop: image
+      kubeconfig: /.rancher.kubeconfig
 
 #mysadna:
 #  automatic-update:
