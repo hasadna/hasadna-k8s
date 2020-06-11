@@ -23,7 +23,7 @@ echo "DOCKER_RUN_PARAMS=${DOCKER_RUN_PARAMS}"
 [ -z "${OPS_REPO_SLUG}" ] && usage && exit 1
 
 [ -z "${SCRIPT}" ] && SCRIPT="bash"
-[ -z "${OPS_DOCKER_IMAGE}" ] && OPS_DOCKER_IMAGE="orihoch/hasadna-k8s-ops-kamatera@sha256:e87997ad5d4bdead53e15a7f1d1d017c39655a4e2ea4b5107b01a531825fe61b" \
+[ -z "${OPS_DOCKER_IMAGE}" ] && OPS_DOCKER_IMAGE="orihoch/hasadna-k8s-ops-kamatera@sha256:20f8d3b0983ee33287925569f3cb6ecb11eb5fc3134cc403421c6b73e9d2d016" \
                              && echo "OPS_DOCKER_IMAGE=${OPS_DOCKER_IMAGE}"
 [ -z "${OPS_REPO_BRANCH}" ] && OPS_REPO_BRANCH="master" \
                             && echo "OPS_REPO_BRANCH=${OPS_REPO_BRANCH}"

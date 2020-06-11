@@ -14,7 +14,7 @@ RUN apk --update --no-cache add sudo
 COPY apps_travis_script.sh ./
 RUN bash apps_travis_script.sh install_helm
 
-RUN echo 'rancher login --token $RANCHER_TOKEN $RANCHER_ENDPOINT' >> ~/.bashrc
+RUN echo 'rancher login --token $RANCHER_TOKEN --context c-vrqxr:p-tk6c8 $RANCHER_ENDPOINT' >> ~/.bashrc
 RUN echo 'rancher kubectl config view --raw | grep -v certificate-authority-data: > /.rancher.kubeconfig' >> ~/.bashrc
 RUN echo '[ -f /k8s-ops/secret.json ] && gcloud auth activate-service-account --key-file=/k8s-ops/secret.json' >> ~/.bashrc
 RUN echo '[ "${OPS_REPO_SLUG}" != "" ] && ! [ -d /ops ] && git clone --depth 1 --branch ${OPS_REPO_BRANCH:-master} https://github.com/${OPS_REPO_SLUG}.git /ops' >> ~/.bashrc
