@@ -11,4 +11,5 @@ anyway:
   DBDUMP_S3_FILE_PREFIX: "minikube_"
   dbBackupEnabled: false
   dbBackupSchedule: "10 0 * * *"
+  enableLogs: false
   ingresses: []

@@ -55,3 +55,13 @@ source switch_environment.sh anyway
 * Make sure you are connected to the right environment: `kubectl get nodes`
 * Dry run: `./helm_upgrade_external_chart.sh anyway --debug --dry-run`
 * Deploy: `./helm_upgrade_external_chart.sh anyway`
+
+## Enable logging
+
+Create a destination in papertrail, create a secret with the destination details and a filter to include only anyway namespace:
+
+```
+kubectl create secret generic papertrail-destination --from-literal=papertrail-destination=syslog+tls://logsN.papertrailapp.com:XXXXX?filter.labels=io.kubernetes.pod.namespace:anyway
+```
+
+Set enableLogs=true in the environment's values

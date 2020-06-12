@@ -1,0 +1,42 @@
+{{ if and .Values.enabled .Values.enableLogs }}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: logs
+spec:
+  selector:
+    matchLabels:
+      name: logs
+  template:
+    metadata:
+      labels:
+        name: logs
+    spec:
+      containers:
+        - resources:
+            requests:
+              cpu: 0.15
+            limits:
+              memory: 500Mi
+          env:
+            - name: SYSLOG_TAG
+              value: '{{"{{"}} index .Container.Config.Labels "app" {{"}}"}}[{{"{{"}} index .Container.Config.Labels "io.kubernetes.pod.name" {{"}}"}}]'
+            - name: SYSLOG_HOSTNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: ROUTE_URIS
+              valueFrom:
+                secretKeyRef:
+                  name: papertrail-destination
+                  key: papertrail-destination
+          image: gliderlabs/logspout:master@sha256:e3d9c894af372bf754010d2af0be0b739a29d6ebe5228dccadb78fc87cdfb178
+          name: logspout
+          volumeMounts:
+            - name: log
+              mountPath: /var/run/docker.sock
+      volumes:
+        - name: log
+          hostPath:
+              path: /var/run/docker.sock
+{{ end }}
