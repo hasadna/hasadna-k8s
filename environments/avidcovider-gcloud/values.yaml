@@ -12,6 +12,7 @@ avidcovider:
   nfsServer: "10.0.2.132"
   enableNfsServerDeployment: true
   nfsRootPath: "/"
+
 #  ingresses:
 #    - name: pipelines
 #      ssl: true
