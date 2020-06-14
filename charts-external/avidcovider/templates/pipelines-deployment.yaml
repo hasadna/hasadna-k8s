@@ -75,7 +75,11 @@ spec:
           secretName: {{ .Values.pipelinesCdcSecretsSecretName | quote }}
           defaultMode: 256
       - name: covid19israel
+        {{ if .Values.nfsServer }}
         nfs:
           server: {{ .Values.nfsServer | quote }}
           path: {{ .Values.nfsRootPath | quote }}
+        {{ else }}
+        emptyDir: {}
+        {{ end }}
 {{ end }}

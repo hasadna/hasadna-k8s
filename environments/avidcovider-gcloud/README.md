@@ -93,3 +93,30 @@ spec:
     - HOSTNAME
     secretName: NAME-cert
 ```
+
+## Copy secrets from other environment
+
+Switch to source environment and export the secrets
+
+```
+mkdir -p environments/avidcovider-gcloud/.secrets &&\
+kubectl -n avidcovider get secret pipelines-secrets --export -o yaml >environments/avidcovider-gcloud/.secrets/pipelines-secrets.yaml &&\
+kubectl -n avidcovider get secret  pipelines-cdc-secrets-certs --export -o yaml >environments/avidcovider-gcloud/.secrets/pipelines-cdc-secrets-certs.yaml &&\
+kubectl -n avidcovider get secret  pipelines-collector --export -o yaml >environments/avidcovider-gcloud/.secrets/pipelines-collector.yaml &&\
+kubectl -n avidcovider get secret  pipelines-auth --export -o yaml >environments/avidcovider-gcloud/.secrets/pipelines-auth.yaml
+```
+
+Switch to target environment and import the secrets
+
+```
+kubectl -n avidcovider apply -f environments/avidcovider-gcloud/.secrets/pipelines-secrets.yaml &&\
+kubectl -n avidcovider apply -f environments/avidcovider-gcloud/.secrets/pipelines-cdc-secrets-certs.yaml &&\
+kubectl -n avidcovider apply -f environments/avidcovider-gcloud/.secrets/pipelines-collector.yaml &&\
+kubectl -n avidcovider apply -f environments/avidcovider-gcloud/.secrets/pipelines-auth.yaml
+```
+
+Cleanup
+
+```
+rm -rf environments/avidcovider-gcloud/.secrets
+```

@@ -34,9 +34,13 @@ spec:
             readOnly: true
       volumes:
       - name: covid19israel
+        {{ if .Values.nfsServer }}
         nfs:
           server: {{ .Values.nfsServer | quote }}
           path: {{ .Values.nfsRootPath | quote }}
+        {{ else }}
+        emptyDir: {}
+        {{ end }}
       - name: nginx-conf
         configMap:
           name: pipelines-nginx
