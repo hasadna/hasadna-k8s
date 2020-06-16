@@ -17,11 +17,18 @@ spec:
         app: db
     spec:
       terminationGracePeriodSeconds: 10
+      {{ if .Values.dbNodeSelector }}
+      nodeSelector:
+        kubernetes.io/hostname: {{ .Values.dbNodeSelector }}
+      {{ end }}
       containers:
       - name: db
         # we don't want to auto-update the DB!
         image: anywayteam/db:sha-4fa1bfa
         resources: {{ .Values.dbResources }}
+        ports:
+          - containerPort: 5432
+            {{ if .Values.dbHostPort }}hostPort: {{ .Values.dbHostPort }}{{ end }}
         envFrom:
           - secretRef: {"name": "db"}
         env:

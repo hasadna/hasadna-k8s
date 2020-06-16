@@ -22,7 +22,7 @@ spec:
       containers:
       - name: anyway
         image: {{ .Values.image }}
-        command: ["gunicorn", "-b", "0.0.0.0:5000", "-w", "4", "-t", "120", "anyway:app"]
+        args: ["gunicorn", "-b", "0.0.0.0:5000", "-w", "4", "-t", "120", "anyway:app"]
         resources: {{ .Values.mainResources }}
         env:
         - name: PROXYFIX_X_FOR
