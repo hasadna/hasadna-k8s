@@ -13,19 +13,19 @@ avidcovider:
   enableNfsServerDeployment: true
   nfsRootPath: "/"
 
-#  ingresses:
-#    - name: pipelines
-#      ssl: true
-#      httpauth:
-#        # htpasswd -c auth USERNAME
-#        # kubectl -n avidcovider create secret generic pipelines-auth --from-file=auth
-#        # rm -f auth
-#        secretName: "pipelines-auth"
-#        message: "Authentication Required"
-#      rules:
-#        - host: avidcovider-pipelines.odata.org.il
-#          serviceName: pipelines
-#          servicePort: 5000
-#        - host: avidcovider-pipelines-data.odata.org.il
-#          serviceName: pipelines-nginx
-#          servicePort: 80
+  ingresses:
+    - name: pipelines
+      ssl: true
+      httpauth:
+        # htpasswd -c auth USERNAME
+        # kubectl -n avidcovider create secret generic pipelines-auth --from-file=auth
+        # rm -f auth
+        secretName: "pipelines-auth"
+        message: "Authentication Required"
+      rules:
+        - host: avidcovider-pipelines.odata.org.il
+          serviceName: pipelines
+          servicePort: 5000
+        - host: avidcovider-pipelines-data.odata.org.il
+          serviceName: pipelines-nginx
+          servicePort: 80
