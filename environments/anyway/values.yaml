@@ -2,7 +2,7 @@ anyway:
   enabled: true
   enableSecondaries: true
   secondaryReplicas: 1
-  nginxForwardedHost: "k8s.anyway.co.il"
+  nginxForwardedHost: "anyway.co.il"
   nginxForwardedScheme: "https"
   mountGoogleApplicationCredentialsSecret: true
   mainResources: '{"requests": {"cpu": "150m", "memory": "1000Mi"}, "limits": {"memory": "1500Mi"}}'
@@ -11,7 +11,7 @@ anyway:
   nginxResources: '{"requests": {"cpu": "100m", "memory": "100Mi"}, "limits": {"memory": "500Mi"}}'
   dbNfsServer: "172.16.0.9"
   dbNfsPath: "/anyway/db"
-  DBDUMP_S3_FILE_PREFIX: "k8s_"
+  DBDUMP_S3_FILE_PREFIX: ""
   dbBackupEnabled: true
   dbBackupSchedule: "10 0 * * *"
   enableLogs: true
@@ -19,6 +19,19 @@ anyway:
     - name: nginx
       ssl: true
       rules:
-        - host: k8s.anyway.co.il
+        - host: anyway.co.il
+          serviceName: nginx
+          servicePort: 80
+    - name: redirect
+      ssl: true
+      permanentRedirect: https://anyway.co.il
+      rules:
+        - host: www.anyway.co.il
+          serviceName: nginx
+          servicePort: 80
+        - host: www.oway.org.il
+          serviceName: nginx
+          servicePort: 80
+        - host: oway.org.il
           serviceName: nginx
           servicePort: 80

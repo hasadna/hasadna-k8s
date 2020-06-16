@@ -14,6 +14,9 @@ metadata:
     nginx.ingress.kubernetes.io/auth-secret: {{ .httpauth.secretName | quote }}
     nginx.ingress.kubernetes.io/auth-realm: {{ .httpauth.message | quote }}
   {{ end }}
+  {{ if .permanentRedirect }}
+    nginx.ingress.kubernetes.io/permanent-redirect: {{ .permanentRedirect | quote }}
+  {{ end }}
 spec:
   rules:
   {{ range .rules }}
