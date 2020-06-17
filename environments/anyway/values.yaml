@@ -2,7 +2,7 @@ anyway:
   enabled: true
   enableSecondaries: true
   secondaryReplicas: 1
-  nginxForwardedHost: "anyway.co.il"
+  nginxForwardedHost: "www.anyway.co.il"
   nginxForwardedScheme: "https"
   mountGoogleApplicationCredentialsSecret: true
   mainResources: '{"requests": {"cpu": "150m", "memory": "1000Mi"}, "limits": {"memory": "1500Mi"}}'
@@ -21,14 +21,14 @@ anyway:
     - name: nginx
       ssl: true
       rules:
-        - host: anyway.co.il
+        - host: www.anyway.co.il
           serviceName: nginx
           servicePort: 80
     - name: redirect
       ssl: true
-      permanentRedirect: https://anyway.co.il
+      permanentRedirect: https://www.anyway.co.il
       rules:
-        - host: www.anyway.co.il
+        - host: anyway.co.il
           serviceName: nginx
           servicePort: 80
         - host: www.oway.org.il
