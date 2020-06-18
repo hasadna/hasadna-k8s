@@ -1,0 +1,38 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: nginx
+      annotations:
+        # update the pod on nginx-conf changes
+        checksum/config: {{ include (print $.Template.BasePath "/nginx-configmap.yaml") . | sha256sum }}
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        resources: {"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "500Mi"}}
+        volumeMounts:
+          - name: nginx-conf
+            mountPath: /etc/nginx/conf.d
+            readOnly: true
+          - name: nginx-proxypass-conf
+            mountPath: /etc/nginx/proxypass
+            readOnly: true
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: nginx
+      - name: nginx-proxypass-conf
+        configMap:
+          name: nginx-proxypass
+{{ end }}
