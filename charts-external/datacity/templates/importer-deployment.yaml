@@ -48,4 +48,14 @@ spec:
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"GITHUB_KEY"}}
         - name: GITHUB_SECRET
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"GITHUB_SECRET"}}
+        - name: BUCKET_NAME
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"BUCKET_NAME"}}
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"AWS_ACCESS_KEY_ID"}}
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"AWS_SECRET_ACCESS_KEY"}}
+        - name: AWS_REGION
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"AWS_REGION"}}
+        - name: S3_ENDPOINT_URL
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"S3_ENDPOINT_URL"}}
 {{ end }}
