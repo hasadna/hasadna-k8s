@@ -1,8 +1,8 @@
 anyway:
-  dbBackupImage: anywayteam/db_backup:sha-2d9caae
-  dbImage: anywayteam/db:sha-2d9caae
-  image: anywayteam/anyway:sha-2d9caae
-  nginxImage: anywayteam/nginx:sha-2d9caae
+  dbBackupImage: anywayteam/db_backup:sha-0440779
+  dbImage: anywayteam/db:sha-0440779
+  image: anywayteam/anyway:sha-0440779
+  nginxImage: anywayteam/nginx:sha-0440779
   productionImage: uumpa/anyway:ef99d85b586a94d9e3b98a3e7dad195334318311
 avidcovider:
   pipelinesImage: avidcovider/pipelines:782b40a23bbf55ec4982a1073c39def8c041430c
@@ -18,6 +18,6 @@ oknesset:
   WebUiImage: uumpa/knesset-data-web-ui:94b6de1cc89ae20647e35aa606c3c9b95e81dbe6
 openpension:
   client:
-    image: hasadna/open-pension-client:2d4b414f990e9aa05df18427dfacf26bcf1cd509
+    image: hasadna/open-pension-client:1751e6911535841c903176e13bff4d95aaf0ee10
   server:
     image: uumpa/hasadna-openpension:server-c72f525ec4d7de2e4337c0a7b0b1f6f8d357b72f
