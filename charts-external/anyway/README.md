@@ -58,10 +58,15 @@ source switch_environment.sh anyway
 
 ## Enable logging
 
-Create a destination in papertrail, create a secret with the destination details and a filter to include only anyway namespace:
+Setup bindplane monitoring target with container logs filter `/var/log/containers/*anyway*.log`
+
+Set the target values in a secret:
 
 ```
-kubectl create secret generic papertrail-destination --from-literal=papertrail-destination=syslog+tls://logsN.papertrailapp.com:XXXXX?filter.labels=io.kubernetes.pod.namespace:anyway
+kubectl create secret generic bindplane-logs \
+    --from-literal=COMPANY_ID= \
+    --from-literal=SECRET_KEY= \
+    --from-literal=TEMPLATE_ID=
 ```
 
 Set enableLogs=true in the environment's values
