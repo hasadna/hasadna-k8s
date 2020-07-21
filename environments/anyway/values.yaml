@@ -7,7 +7,7 @@ anyway:
   mountGoogleApplicationCredentialsSecret: true
   mainResources: '{"requests": {"cpu": "150m", "memory": "1000Mi"}, "limits": {"memory": "1500Mi"}}'
   secondariesResources: '{"requests": {"cpu": "100m", "memory": "700Mi"}, "limits": {"memory": "1000Mi"}}'
-  dbResources: '{"requests": {"cpu": "300m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}'
+  dbResources: '{"requests": {"cpu": "300m", "memory": "1500Mi"}, "limits": {"memory": "2500Mi"}}'
   nginxResources: '{"requests": {"cpu": "100m", "memory": "100Mi"}, "limits": {"memory": "500Mi"}}'
   dbNfsServer: "172.16.0.9"
   dbNfsPath: "/anyway/db"
