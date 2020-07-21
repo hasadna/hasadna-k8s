@@ -13,9 +13,3 @@ resourcesaverproxy:
         - host: resourcesaverproxy.hasadna.org.il
           serviceName: resourcesaverproxy
           servicePort: 5000
-    - name: proxypass
-      ssl: true
-      rules:
-        - host: obus-splunk.hasadna.org.il
-          serviceName: nginx
-          servicePort: 81
