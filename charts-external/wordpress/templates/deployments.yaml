@@ -1,0 +1,72 @@
+{{ if and .Values.enabled .Values.deployments }}
+{{ range .Values.deployments }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .name }}
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .name }}
+    spec:
+      terminationGracePeriodSeconds: 5
+      automountServiceAccountToken: false
+      initContainers:
+      - name: createdb
+        image: mysql:5.7
+        command:
+          - bash
+          - -c
+          - |
+            echo Checking DB connection '{{ .dbName }}' &&\
+            if ! mysql -hdb -u{{ .dbName }} -p$DB_PASSWORD {{ .dbName }} -e"select 1;"; then
+              echo Initializing DB &&\
+              mysql -hdb -uroot -p$MYSQL_ROOT_PASSWORD -e"CREATE USER '{{ .dbName }}' IDENTIFIED BY '${DB_PASSWORD}';" &&\
+              mysql -hdb -uroot -p$MYSQL_ROOT_PASSWORD -e"CREATE DATABASE {{ .dbName }};" &&\
+              mysql -hdb -uroot -p$MYSQL_ROOT_PASSWORD -e"GRANT ALL PRIVILEGES ON {{ .dbName }}.* TO '{{ .dbName }}'" &&\
+              mysql -hdb -u{{ .dbName }} -p$DB_PASSWORD {{ .dbName }} -e"select 1;"
+            fi &&\
+            echo DB is ready
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom: {"secretKeyRef":{"name":"db", "key":"MYSQL_ROOT_PASSWORD"}}
+          - name: DB_PASSWORD
+            valueFrom: {"secretKeyRef":{"name":"{{ .name }}", "key":"DB_PASSWORD"}}
+      containers:
+      - name: wordpress
+        image: {{ .image | quote }}
+        resources: {{ .resources }}
+        ports:
+          - containerPort: 80
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: db
+        - name: WORDPRESS_DB_USER
+          value: {{ .dbName | quote }}
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom: {"secretKeyRef":{"name":"{{ .name }}", "key":"DB_PASSWORD"}}
+        - name: WORDPRESS_DB_NAME
+          value: {{ .dbName | quote }}
+        volumeMounts:
+          - name: data
+            mountPath: /var/www/html
+      volumes:
+        - name: data
+          {{ if and .nfsServer .nfsPath }}
+          nfs:
+            server: {{ .nfsServer | quote }}
+            path: {{ .nfsPath | quote }}
+          {{ else }}
+          emptyDir: {}
+          {{ end }}
+---
+{{ end }}
+{{ end }}

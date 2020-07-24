@@ -1,0 +1,41 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  selector:
+    matchLabels:
+      app: db
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: db
+        image: mysql:5.7
+        resources: {{ .Values.dbResources }}
+        ports:
+          - containerPort: 3306
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom: {"secretKeyRef":{"name":"db", "key":"MYSQL_ROOT_PASSWORD"}}
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: data
+        {{ if and .Values.dbNfsServer .Values.dbNfsPath }}
+        nfs:
+          server: {{ .Values.dbNfsServer | quote }}
+          path: {{ .Values.dbNfsPath | quote }}
+        {{ else }}
+        emptyDir: {}
+        {{ end }}
+{{ end }}

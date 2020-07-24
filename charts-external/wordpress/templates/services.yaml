@@ -1,0 +1,15 @@
+{{ if and .Values.enabled .Values.deployments }}
+{{ range .Values.deployments }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .name }}
+spec:
+  selector:
+    app: {{ .name }}
+  ports:
+  - name: "80"
+    port: 80
+---
+{{ end }}
+{{ end }}

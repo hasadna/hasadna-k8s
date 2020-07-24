@@ -1,0 +1,24 @@
+wordpress:
+  enabled: true
+  deployments:
+    - name: datacity
+      image: wordpress@sha256:95668fadc012aa882a19ffc875e5e2164a0a2fc7e201c869d0bc20ac0fab41c1
+      resources: '{"requests": {"cpu": "0.2", "memory": "400Mi"}, "limits": {"memory": "1.5Gi"}}'
+      nfsServer: "172.16.0.9"
+      nfsPath: "/wordpress/datacity"
+      dbName: datacity
+  dbResources: '{"requests": {"cpu": "0.2", "memory": "400Mi"}, "limits": {"memory": "1.5Gi"}}'
+  dbNfsServer: "172.16.0.9"
+  dbNfsPath: "/wordpress/db"
+  ingresses:
+    - name: sites
+      rules:
+        - host: www.datacity.org.il
+          serviceName: datacity
+          servicePort: 80
+    - name: datacity-redirect
+      permanentRedirect: https://www.datacity.org.il/
+      rules:
+        - host: datacity.org.il
+          serviceName: datacity
+          servicePort: 80
