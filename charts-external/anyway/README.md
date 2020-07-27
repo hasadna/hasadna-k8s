@@ -1,5 +1,11 @@
 # Anyway
 
+## Architecture
+
+https://docs.google.com/presentation/d/1bXkcCgsXUr1FQA7hCZdb5_m7IXIiP1UixuOHuV88sfs/edit?usp=sharing
+
+![](image.png)
+
 ## Connect to the cluster
 
 ### Using Minikube for local testing
