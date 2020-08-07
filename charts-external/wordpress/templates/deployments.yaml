@@ -58,6 +58,9 @@ spec:
         volumeMounts:
           - name: data
             mountPath: /var/www/html
+          - name: php-ini
+            mountPath: /usr/local/etc/php/php.ini
+            subPath: php.ini
       volumes:
         - name: data
           {{ if and .nfsServer .nfsPath }}
@@ -67,6 +70,9 @@ spec:
           {{ else }}
           emptyDir: {}
           {{ end }}
+        - name: php-ini
+          configMap:
+            name: php-ini-{{ .name }}
 ---
 {{ end }}
 {{ end }}

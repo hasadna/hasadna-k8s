@@ -7,11 +7,20 @@ wordpress:
       nfsServer: "172.16.0.9"
       nfsPath: "/wordpress/datacity"
       dbName: datacity
+      php_ini:
+        # Maximum size of POST data that PHP will accept.
+        post_max_size: "100M"
+        # Maximum allowed size for uploaded files.
+        upload_max_filesize: "100M"
+        # Maximum number of files that can be uploaded via a single request
+        max_file_uploads: "20"
   dbResources: '{"requests": {"cpu": "0.2", "memory": "400Mi"}, "limits": {"memory": "1.5Gi"}}'
   dbNfsServer: "172.16.0.9"
   dbNfsPath: "/wordpress/db"
   ingresses:
     - name: sites
+      # maximum allowed size for uploaded files
+      proxy_body_size: "100m"
       rules:
         - host: www.datacity.org.il
           serviceName: datacity

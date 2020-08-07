@@ -6,7 +6,9 @@ metadata:
   name: {{ .name }}
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/proxy-body-size: "20m"
+  {{ if .proxy_body_size }}
+    nginx.ingress.kubernetes.io/proxy-body-size: {{ .proxy_body_size | quote }}
+  {{ end }}
   {{ if .ssl }}
     cert-manager.io/cluster-issuer: letsencrypt
   {{ end }}
