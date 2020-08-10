@@ -89,3 +89,36 @@ Exec shell in wordpress container and add them:
 ```
 echo 'the base64 encoded settings' | base64 -d >> wp-settings.php 
 ```
+
+### Add Google Analytics tag
+
+Set the Google Analytics Tracking ID in env var
+
+```
+GTAG_ID="UA-123456789-1"
+```
+
+Copy the base64 code to clipboard:
+
+```
+echo '
+add_action("wp_head", "google_analytics_head_tag");
+function google_analytics_head_tag(){
+?>
+<script async src="https://www.googletagmanager.com/gtag/js?id='${GTAG_ID}'"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "'${GTAG_ID}'");
+</script>
+<?php
+};
+' | base64 -w0
+```
+
+Exec shell in wordpress container and add the base64 encoded code:
+
+```
+echo 'the base64 encoded settings' | base64 -d >> wp-settings.php 
+```
