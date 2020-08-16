@@ -1,8 +1,8 @@
 anyway:
-  dbBackupImage: anywayteam/db_backup:sha-7ef07e9
-  dbImage: anywayteam/db:sha-7ef07e9
-  image: anywayteam/anyway:sha-7ef07e9
-  nginxImage: anywayteam/nginx:sha-7ef07e9
+  dbBackupImage: anywayteam/db_backup:sha-8071588
+  dbImage: anywayteam/db:sha-8071588
+  image: anywayteam/anyway:sha-8071588
+  nginxImage: anywayteam/nginx:sha-8071588
   productionImage: uumpa/anyway:ef99d85b586a94d9e3b98a3e7dad195334318311
 avidcovider:
   pipelinesImage: avidcovider/pipelines:782b40a23bbf55ec4982a1073c39def8c041430c
