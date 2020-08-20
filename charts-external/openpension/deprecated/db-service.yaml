@@ -7,6 +7,6 @@ spec:
   selector:
     app: db
   ports:
-  - name: "3306"
-    port: 3306
+  - name: "5432"
+    port: 5432
 {{ end }}

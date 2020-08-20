@@ -17,36 +17,30 @@ spec:
         app: db
     spec:
       terminationGracePeriodSeconds: 10
+      {{ if .Values.dbNodeSelector }}
+      nodeSelector:
+        kubernetes.io/hostname: {{ .Values.dbNodeSelector }}
+      {{ end }}
       containers:
       - name: db
-        image: postgres:11
-        ports:
-        - containerPort: 5432
+        image: mysql:5.7
         resources: {{ .Values.dbResources }}
+        ports:
+          - containerPort: 3306
+            {{ if .Values.dbHostPort }}hostPort: {{ .Values.dbHostPort }}{{ end }}
         env:
-        - name: POSTGRES_PASSWORD
-          valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_PASSWORD"}}
-        - name: POSTGRES_USER
-          valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_USER"}}
-        - name: POSTGRES_HOST
-          value: "db"
-        - name: POSTGRES_DB
-          value: openpension       
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom: {"secretKeyRef":{"name":"db", "key":"MYSQL_ROOT_PASSWORD"}}
         volumeMounts:
         - name: data
-          mountPath: /var/lib/postgresql/data
-          # postgres doesn't let you use the root of a disk (it complaints about having lost+found directory)
-          subPath: dbdata
+          mountPath: /var/lib/mysql
       volumes:
       - name: data
-      {{ if .Values.dbPersistentDiskName }}
-        gcePersistentDisk:
-          pdName: {{ .Values.dbPersistentDiskName | quote }}
-      {{ else if .Values.dbNfsServer }}
+        {{ if and .Values.dbNfsServer .Values.dbNfsPath }}
         nfs:
           server: {{ .Values.dbNfsServer | quote }}
           path: {{ .Values.dbNfsPath | quote }}
-      {{ else }}
+        {{ else }}
         emptyDir: {}
-      {{ end }}
+        {{ end }}
 {{ end }}
