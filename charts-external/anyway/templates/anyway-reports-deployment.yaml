@@ -1,0 +1,23 @@
+{{ if and .Values.enabled .Values.reports.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reports
+spec:
+  selector:
+    matchLabels:
+      app: reports
+  replicas: {{ .Values.reports.replicas }}
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: reports
+    spec:
+      terminationGracePeriodSeconds: 2
+      automountServiceAccountToken: false
+      containers:
+      - name: reports
+        image: {{ .Values.anywayReportsImage }}
+        resources: {{ .Values.reports.resources }}
+{{ end }}

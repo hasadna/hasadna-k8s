@@ -1,7 +1,7 @@
 anyway:
   enabled: true
   enableSecondaries: true
-  secondaryReplicas: 1
+  secondaryReplicas: 3
   nginxForwardedHost: "www.anyway.co.il"
   nginxForwardedScheme: "https"
   mountGoogleApplicationCredentialsSecret: true
@@ -17,12 +17,21 @@ anyway:
   enableLogs: true
   dbNodeSelector: hasadna-worker1
   dbHostPort: 28733
+
+  reports:
+    enabled: true
+    replicas: 1
+    resources: '{"requests": {"cpu": "100m", "memory": "100Mi"}, "limits": {"memory": "500Mi"}}'
+
   ingresses:
     - name: nginx
       ssl: true
       rules:
         - host: www.anyway.co.il
           serviceName: nginx
+          servicePort: 80
+        - host: reports.anyway.co.il
+          serviceName: reports
           servicePort: 80
     - name: redirect
       ssl: true
