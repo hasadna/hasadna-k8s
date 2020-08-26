@@ -18,6 +18,7 @@ avidcovider:
       image-prop: pipelinesImage
 
 anyway:
+  lint-environments: anyway
   automatic-updates:
     - commit-message: automatic update of anyway
       namespace-name: anyway
