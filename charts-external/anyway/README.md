@@ -34,9 +34,9 @@ source switch_environment.sh anyway
   * To make sure you get corret version you should use the script in this repo
   * `bash apps_travis_script.sh install_helm`
   * if you have problems, refer to helm docs - [helm client](https://docs.helm.sh/using_helm/#installing-the-helm-client)
-    * You should have helm 3 available in your path as `helm3`
+    * You should have helm 3 available in your path as `helm`
 * Verify helm version
-  * `helm3 version`
+  * `helm version`
 * Create secrets
   * set env vars with the secret DB values
     * `POSTGRES_PASSWORD=`

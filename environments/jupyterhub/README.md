@@ -54,9 +54,9 @@ echo 'proxy:
 Install JupyterHub
 
 ```
-helm3 repo add jupyterhub https://jupyterhub.github.io/helm-chart/ &&\
-helm3 repo update &&\
-helm3 upgrade --install jupyterhub jupyterhub/jupyterhub \
+helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/ &&\
+helm repo update &&\
+helm upgrade --install jupyterhub jupyterhub/jupyterhub \
   --namespace default  \
   --version=0.9.0-beta.4 \
   --values environments/jupyterhub/secret-config.yaml
@@ -91,8 +91,8 @@ Run the upgrade as specified below
 ## Upgrading
 
 ```
-helm3 repo add jupyterhub https://jupyterhub.github.io/helm-chart/ &&\
-helm3 repo update
+helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/ &&\
+helm repo update
 ```
 
 ```
@@ -113,7 +113,7 @@ auth:
     users:
 '"$(python3 -c "import json, subprocess; print('\n'.join(['      - '+key for key in json.loads(subprocess.check_output('kubectl get configmap whitelist-users -o json', shell=True))['data'].keys()]))")"'
 ' > environments/jupyterhub/secret-config.yaml &&\
-helm3 upgrade jupyterhub jupyterhub/jupyterhub \
+helm upgrade jupyterhub jupyterhub/jupyterhub \
   --namespace default  \
   --version=0.9.0-beta.4 \
   --values environments/jupyterhub/secret-config.yaml \

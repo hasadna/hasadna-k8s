@@ -1,31 +1,19 @@
 #!/usr/bin/env bash
 
-HELM2_VERSION=v2.8.2
-HELM3_VERSION=v3.0.3
+HELM_VERSION=v3.2.4
 
 [ -f .travis.env ] && source .travis.env
 
 if [ "${1}" == "install_helm" ]; then
-    if ! helm3 version --client --short | grep "${HELM3_VERSION}"; then
+    if ! helm version --client --short | grep "${HELM_VERSION}"; then
         if [ ! -f ./get_helm.sh ]; then
           curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh &&\
           chmod 700 get_helm.sh
         fi &&\
-        ./get_helm.sh --version "${HELM3_VERSION}" &&\
-        sudo mv /usr/local/bin/helm /usr/local/bin/helm3 &&\
-        echo helm3 version: &&\
-        helm3 version --client --short | grep "${HELM3_VERSION}"
-        [ "$?" != "0" ] && echo failed helm3 installation && exit 1
-    fi
-    if ! helm version --client --short | grep "Client: ${HELM2_VERSION}+"; then
-        if [ ! -f ./get_helm.sh ]; then
-          curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh &&\
-          chmod 700 get_helm.sh
-        fi &&\
-        ./get_helm.sh --version "${HELM2_VERSION}" &&\
+        ./get_helm.sh --version "${HELM_VERSION}" &&\
         echo helm version: &&\
-        helm version --client --short | grep "Client: ${HELM2_VERSION}+"
-        [ "$?" != "0" ] && echo failed helm client installation && exit 1
+        helm version --client --short | grep "${HELM_VERSION}"
+        [ "$?" != "0" ] && echo failed helm installation && exit 1
     fi
     rm -f get_helm.sh
 
