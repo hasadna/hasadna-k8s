@@ -38,6 +38,12 @@ anyway:
       container-name: nginx
       image-prop: nginxImage
       kubeconfig: /.rancher.kubeconfig
+    - commit-message: automatic update of anyway-report docker image
+      namespace-name: anyway
+      deployment-name: reports
+      container-name: reports
+      image-prop: anywayReportsImage
+      kubeconfig: /.rancher.kubeconfig
 
 #mysadna:
 #  automatic-update:
