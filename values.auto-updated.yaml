@@ -1,5 +1,5 @@
 anyway:
-  anywayReportsImage: anywayteam/anyway-reports:sha-dcdded6
+  anywayReportsImage: anywayteam/anyway-reports:sha-d078e21
   dbBackupImage: anywayteam/db_backup:sha-aa94dc9
   dbImage: anywayteam/db:sha-aa94dc9
   image: anywayteam/anyway:sha-aa94dc9
