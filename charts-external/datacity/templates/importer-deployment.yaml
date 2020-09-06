@@ -18,7 +18,7 @@ spec:
       containers:
       - name: importer
         image: {{ .Values.dgpAppImage | default "hasadna/datacity-dgp-importer" | quote }}
-        resources: {"requests": {"cpu": "250m", "memory": "1Gi"}}
+        resources: {"requests": {"cpu": "247m", "memory": "1953Mi"}, "limits": {"cpu": "350m", "memory": "3000Mi"}}
         ports:
         - containerPort: 5000
         env:

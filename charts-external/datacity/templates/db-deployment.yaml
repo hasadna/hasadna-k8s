@@ -18,7 +18,7 @@ spec:
       containers:
       - name: db
         image: {{ .Values.dgpAppDb | default "akariv/dgp-app-db" | quote }}
-        resources: {"requests": {"cpu": "250m", "memory": "250Mi"}, "limits": {"memory": "2Gi"}}
+        resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "2Gi"}}
         volumeMounts:
         - name: data
           mountPath: /var/lib/postgresql/data

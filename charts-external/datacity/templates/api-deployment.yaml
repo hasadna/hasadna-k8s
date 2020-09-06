@@ -18,7 +18,7 @@ spec:
       containers:
       - name: api
         image: {{ .Values.apiImage | default "budgetkey/open-budget-data-api" | quote }}
-        resources: {"requests": {"cpu": "50m", "memory": "50Mi"}, "limits": {"memory": "250Gi"}}
+        resources: {"requests": {"cpu": "25m", "memory": "309Mi"}, "limits": {"cpu": "78m", "memory": "1000Mi"}}
         env:
           - name: DATABASE_URL
             value: postgresql://readonly:readonly@db/datasets
