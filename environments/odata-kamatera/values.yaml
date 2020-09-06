@@ -3,11 +3,11 @@
 odata:
   enabled: true
   ckanDeploymentEnabled: true
-  ckanResources: '{"requests": {"cpu": "400m", "memory": "1200Mi"}, "limits": {"memory": "2Gi"}}'
-  dbResources: '{"requests": {"cpu": "100m", "memory": "300Mi"}, "limits": {"memory": "600Mi"}}'
-  solrResources: '{"requests": {"cpu": "60m", "memory": "600Mi"}, "limits": {"memory": "1Gi"}}'
-  redisResources: '{"requests": {"cpu": "15m", "memory": "100Mi"}, "limits": {"memory": "300Mi"}}'
-  nginxResources: '{"requests": {"cpu": "60m", "memory": "300Mi"}, "limits": {"memory": "800Mi"}}'
+  ckanResources: '{"requests": {"cpu": "1737m", "memory": "1200Mi"}, "limits": {"cpu": "2000m", "memory": "2500Mi"}}'
+  dbResources: '{"requests": {"cpu": "500m", "memory": "600Mi"}, "limits": {"cpu": "2943m", "memory": "1200Mi"}}'
+  solrResources: '{"requests": {"cpu": "182m", "memory": "729Mi"}, "limits": {"cpu": "1306m", "memory": "1500Mi"}}'
+  redisResources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "256Mi"}}'
+  nginxResources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "164m", "memory": "256Mi"}}'
 #  ckanDbPersistentDiskName: odata-db
   ckanDataNfsServer: "172.16.0.9"
   ckanDataNfsPath: "/odata"
@@ -18,10 +18,10 @@ odata:
   replicas: 2
   ckanJobsEnabled: true
   # ckanJobsPortForward: true
-  ckanJobsDbResources: '{"requests": {"cpu": "20m", "memory": "50Mi"}, "limits": {"memory": "200Mi"}}'
+  ckanJobsDbResources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "339Mi"}}'
   # ckanJobsDbTerminationGracePeriodSeconds: 1
   ckanServiceAccountName: odata-ckan-kubectl
-  ckanJobsResources: '{"requests": {"cpu": "150m", "memory": "600Mi"}, "limits": {"memory": "1500Mi"}}'
+  ckanJobsResources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "1699Mi"}}'
   # kubectl create secret generic --from-literal=secret-nginx-htpasswd="$(htpasswd -nb username password)"
   nginxHtpasswdSecretName: nginx-htpasswd
   fixPermissions: false
@@ -41,7 +41,7 @@ odata:
     opsImage: orihoch/data4dappl-db-ops:v0.2.15
     # image: orihoch/hasadna-k8s-odata-db:12
     # opsImage: orihoch/hasadna-k8s-odata-db-ops:11
-    resources: '{"requests": {"cpu": "100m", "memory": "300Mi"}, "limits": {"memory": "600Mi"}}'
+    resources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "1543Mi"}}'
 #    persistentDiskName: odata-datastore-db
 #    dbNodeSelector: 'kubernetes.io/hostname: gke-hasadna-cluster-more-cpu-da25b37e-1dmn'
     # see https://github.com/OriHoch/kube-ip-dns-updater
@@ -69,7 +69,7 @@ odata:
     # pipelines require a shared directory with the ckan server
     # this requires ckanDataNfsServer to be set as well
     enabled: true
-    resources: '{"requests": {"cpu": "400m", "memory": "400Mi"}, "limits": {"memory": "800Mi"}}'
+    resources: '{"requests": {"cpu": "587m", "memory": "878Mi"}, "limits": {"cpu": "1200m", "memory": "1500Mi"}}'
     # terminationGracePeriodSeconds: 2
     sysadminUser: pipelines-sysadmin
     sysadminEmail: pipelines-sysadmin@odata.org.il
@@ -135,9 +135,6 @@ odata:
   - apiVersion: apps/v1
     kind: deployment
     name: ckan-jobs
-  - apiVersion: apps/v1
-    kind: deployment
-    name: datapusher
   - apiVersion: apps/v1
     kind: deployment
     name: datastore-db
