@@ -10,6 +10,7 @@ reportit:
     # persistentVolumeSize: 1G
     nfsServer: "172.16.0.9"
     nfsPath: "/reportit/botkit"
+    resources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "339Mi"}}'
   strapi:
     enabled: true
     # persistent volume claim and disk names must be unique across all projects in the cluster
@@ -20,6 +21,7 @@ reportit:
     # persistentVolumeSize: 500G
     nfsServer: "172.16.0.9"
     nfsPath: "/reportit/strapi"
+    resources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "1119Mi"}}'
   postgres:
     enabled: true
     # persistent volume claim and disk names must be unique across all projects in the cluster
@@ -30,6 +32,7 @@ reportit:
     # persistentVolumeSize: 5G
     nfsServer: "172.16.0.9"
     nfsPath: "/reportit/postgres"
+    resources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "339Mi"}}'
   ingresses:
     - name: botkit
       rules:
