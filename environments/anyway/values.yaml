@@ -46,3 +46,20 @@ anyway:
         - host: oway.org.il
           serviceName: nginx
           servicePort: 80
+
+  vertical_pod_autoscalers:
+  - apiVersion: apps/v1
+    kind: deployment
+    name: anyway-main
+  - apiVersion: apps/v1
+    kind: deployment
+    name: reports
+  - apiVersion: apps/v1
+    kind: deployment
+    name: anyway-secondaries
+  - apiVersion: apps/v1
+    kind: deployment
+    name: db
+  - apiVersion: apps/v1
+    kind: deployment
+    name: nginx

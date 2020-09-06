@@ -31,3 +31,11 @@ wordpress:
         - host: datacity.org.il
           serviceName: datacity
           servicePort: 80
+
+  vertical_pod_autoscalers:
+  - apiVersion: apps/v1
+    kind: deployment
+    name: db
+  - apiVersion: apps/v1
+    kind: deployment
+    name: datacity

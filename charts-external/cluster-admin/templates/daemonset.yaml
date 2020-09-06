@@ -16,14 +16,10 @@ spec:
         - name: host-sys
           hostPath:
             path: /sys
-      containers:
+      initContainers:
       - name: sysctl-conf
         image: busybox:1.26.2
-        command: ["sh", "-c", "sysctl -w vm.max_map_count=262144 && while true; do sleep 86400; done"]
-        resources:
-          requests:
-            cpu: 1m
-            memory: 5Mi
+        command: ["sh", "-c", "sysctl -w vm.max_map_count=262144"]
         securityContext:
           privileged: true
       - name: disable-hugepages
@@ -31,11 +27,15 @@ spec:
         volumeMounts:
           - name: host-sys
             mountPath: /host-sys
-        command: ["sh", "-c", "echo never > /host-sys/kernel/mm/transparent_hugepage/enabled && while true; do sleep 86400; done"]
+        command: ["sh", "-c", "echo never > /host-sys/kernel/mm/transparent_hugepage/enabled"]
+        securityContext:
+          privileged: true
+      containers:
+      - name: pause
+        image: busybox:1.26.2
+        command: ["sh", "-c", "while true; do sleep 86400; done"]
         resources:
           requests:
             cpu: 1m
             memory: 5Mi
-        securityContext:
-          privileged: true
 {{ end }}

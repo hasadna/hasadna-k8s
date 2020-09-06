@@ -124,3 +124,35 @@ odata:
     - odata.org.il
     - www.odata.org.il
     - pipelines.odata.org.il
+
+  vertical_pod_autoscalers:
+  - apiVersion: apps/v1
+    kind: deployment
+    name: ckan
+  - apiVersion: apps/v1
+    kind: deployment
+    name: ckan-jobs-db
+  - apiVersion: apps/v1
+    kind: deployment
+    name: ckan-jobs
+  - apiVersion: apps/v1
+    kind: deployment
+    name: datapusher
+  - apiVersion: apps/v1
+    kind: deployment
+    name: datastore-db
+  - apiVersion: apps/v1
+    kind: deployment
+    name: db
+  - apiVersion: apps/v1
+    kind: deployment
+    name: nginx
+  - apiVersion: apps/v1
+    kind: deployment
+    name: pipelines
+  - apiVersion: apps/v1
+    kind: deployment
+    name: redis
+  - apiVersion: apps/v1
+    kind: deployment
+    name: solr

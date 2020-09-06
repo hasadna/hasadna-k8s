@@ -44,3 +44,14 @@ reportit:
         - host: cms.equality.org.il
           serviceName: strapi
           servicePort: 1337
+
+  vertical_pod_autoscalers:
+  - apiVersion: apps/v1
+    kind: deployment
+    name: botkit
+  - apiVersion: apps/v1
+    kind: deployment
+    name: postgres
+  - apiVersion: apps/v1
+    kind: deployment
+    name: strapi

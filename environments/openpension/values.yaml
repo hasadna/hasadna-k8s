@@ -5,3 +5,8 @@ openpension:
   dbNfsPath: "/openpension/db"
   dbNodeSelector: hasadna-worker2
   dbHostPort: 28431
+
+  vertical_pod_autoscalers:
+  - apiVersion: apps/v1
+    kind: deployment
+    name: db
