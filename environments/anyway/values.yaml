@@ -5,10 +5,10 @@ anyway:
   nginxForwardedHost: "www.anyway.co.il"
   nginxForwardedScheme: "https"
   mountGoogleApplicationCredentialsSecret: true
-  mainResources: '{"requests": {"cpu": "150m", "memory": "1000Mi"}, "limits": {"memory": "1500Mi"}}'
-  secondariesResources: '{"requests": {"cpu": "100m", "memory": "700Mi"}, "limits": {"memory": "1000Mi"}}'
-  dbResources: '{"requests": {"cpu": "300m", "memory": "1500Mi"}, "limits": {"memory": "2500Mi"}}'
-  nginxResources: '{"requests": {"cpu": "100m", "memory": "100Mi"}, "limits": {"memory": "500Mi"}}'
+  mainResources: '{"requests": {"cpu": "25m", "memory": "684Mi"}, "limits": {"cpu": "78m", "memory": "1500Mi"}}'
+  secondariesResources: '{"requests": {"cpu": "25m", "memory": "933Mi"}, "limits": {"cpu": "78m", "memory": "1500Mi"}}'
+  dbResources: '{"requests": {"cpu": "25m", "memory": "2062Mi"}, "limits": {"cpu": "165m", "memory": "3500"}}'
+  nginxResources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "500Mi"}}'
   dbNfsServer: "172.16.0.9"
   dbNfsPath: "/anyway/db"
   DBDUMP_S3_FILE_PREFIX: ""
@@ -21,7 +21,7 @@ anyway:
   reports:
     enabled: true
     replicas: 1
-    resources: '{"requests": {"cpu": "100m", "memory": "100Mi"}, "limits": {"memory": "500Mi"}}'
+    resources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "500Mi"}}'
 
   ingresses:
     - name: nginx
