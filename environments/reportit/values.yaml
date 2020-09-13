@@ -21,7 +21,7 @@ reportit:
     # persistentVolumeSize: 500G
     nfsServer: "172.16.0.9"
     nfsPath: "/reportit/strapi"
-    resources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "1119Mi"}}'
+    resources: '{"requests": {"cpu": "93m", "memory": "256Mi"}, "limits": {"cpu": "163m", "memory": "1119Mi"}}'
   postgres:
     enabled: true
     # persistent volume claim and disk names must be unique across all projects in the cluster
