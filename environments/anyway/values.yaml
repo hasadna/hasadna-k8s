@@ -13,6 +13,7 @@ anyway:
   dbNfsPath: "/anyway/db"
   DBDUMP_S3_FILE_PREFIX: ""
   dbBackupEnabled: true
+  dbBackupResources: '{"requests": {"cpu": "25m", "memory": "700Mi"}, "limits": {"cpu": "165m", "memory": "1000Mi"}}'
   dbBackupSchedule: "10 0 * * *"
   enableLogs: true
   dbNodeSelector: hasadna-worker1
