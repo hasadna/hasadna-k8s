@@ -16,6 +16,7 @@ spec:
           containers:
           - name: db-backup
             image: {{ .Values.dbBackupImage }}
+            resources: {{ .Values.dbBackupResources }}
             envFrom:
               - secretRef: {"name": "db-backup"}
             env:
