@@ -15,10 +15,10 @@ SECRET_KEY=/path/to/secret_key
 ```
 ( cd docs/private &&\
     for SRC in `ls *.encrypted`; do
-        TARGET="$(echo "${FILE}" | cut -d. -f-2)"
+        TARGET="$(echo "${SRC}" | cut -d. -f-2)"
         ! openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -salt -d \
             -in "${SRC}" -out "${TARGET}" -pass "file:${SECRET_KEY}" \
-                && echo failed to decryp $SRC && exit 1
+                && echo failed to decrypt $SRC to $TARGET && exit 1
     done )
 ```
 

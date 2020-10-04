@@ -7,6 +7,10 @@ spec:
   selector:
     matchLabels:
       name: cluster-admin
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: '100%'
   template:
     metadata:
       labels:
@@ -16,7 +20,28 @@ spec:
         - name: host-sys
           hostPath:
             path: /sys
+        - name: hostfs
+          hostPath:
+            path: /
+        - name: pullsecret
+          secret:
+            secretName: github
       initContainers:
+      - name: dockerconf
+        image: busybox:1.26.2
+        command:
+          - sh
+          - -c
+          - |
+            cp /tmp/config.json /host/var/lib/kubelet/config.json &&\
+            mkdir -p /host/root/.docker &&\
+            cp /tmp/config.json /host/root/.docker/config.json
+        volumeMounts:
+          - name: hostfs
+            mountPath: /host
+          - name: pullsecret
+            mountPath: "/tmp/config.json"
+            subPath: ".dockerconfigjson"
       - name: sysctl-conf
         image: busybox:1.26.2
         command: ["sh", "-c", "sysctl -w vm.max_map_count=262144"]
