@@ -1,9 +1,9 @@
 anyway:
   anywayReportsImage: anywayteam/anyway-reports:sha-2b1db4b
-  dbBackupImage: docker.pkg.github.com/hasadna/anyway/db_backup:sha-e714a05
-  dbImage: docker.pkg.github.com/hasadna/anyway/db:sha-e714a05
-  image: docker.pkg.github.com/hasadna/anyway/anyway:sha-e714a05
-  nginxImage: docker.pkg.github.com/hasadna/anyway/nginx:sha-e714a05
+  dbBackupImage: docker.pkg.github.com/hasadna/anyway/db_backup:sha-496be12
+  dbImage: docker.pkg.github.com/hasadna/anyway/db:sha-496be12
+  image: docker.pkg.github.com/hasadna/anyway/anyway:sha-496be12
+  nginxImage: docker.pkg.github.com/hasadna/anyway/nginx:sha-496be12
   productionImage: uumpa/anyway:ef99d85b586a94d9e3b98a3e7dad195334318311
 avidcovider:
   pipelinesImage: avidcovider/pipelines:782b40a23bbf55ec4982a1073c39def8c041430c
