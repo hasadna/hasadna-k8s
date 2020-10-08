@@ -20,6 +20,8 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/pipelines-nginx-configmap.yaml") . | sha256sum }}
     spec:
       terminationGracePeriodSeconds: 10
+      imagePullSecrets:
+      - name: github
       containers:
       - name: pipelines
         image: {{ .Values.pipelinesImage | default "avidcovider/pipelines:latest" | quote }}
