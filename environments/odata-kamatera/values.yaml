@@ -69,7 +69,7 @@ odata:
     # pipelines require a shared directory with the ckan server
     # this requires ckanDataNfsServer to be set as well
     enabled: true
-    resources: '{"requests": {"cpu": "548m", "memory": "1181Mi"}, "limits": {"cpu": "618m", "memory": "2000Mi"}}'
+    resources: '{"requests": {"cpu": "548m", "memory": "1500Mi"}, "limits": {"cpu": "618m", "memory": "2500Mi"}}'
     # terminationGracePeriodSeconds: 2
     sysadminUser: pipelines-sysadmin
     sysadminEmail: pipelines-sysadmin@odata.org.il
