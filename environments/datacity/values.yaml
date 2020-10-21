@@ -1,5 +1,7 @@
 datacity:
   enabled: true
+  ckanDgpDbNfsServer: "172.16.0.9"
+  ckanDgpDbNfsPath: "/datacity/ckan-dgp-db"
   importer:
     nfsServer: "172.16.0.9"
     nfsPath: "/datacity/importer"
@@ -19,6 +21,11 @@ datacity:
         - host: api.datacity.org.il
           serviceName: api
           servicePort: 8000
+    - name: ckan-dgp
+      rules:
+        - host: ckan-dgp.datacity.org.il
+          serviceName: ckan-dgp
+          servicePort: 5000
 
   vertical_pod_autoscalers:
   - apiVersion: apps/v1

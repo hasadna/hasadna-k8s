@@ -45,6 +45,16 @@ anyway:
       image-prop: anywayReportsImage
       kubeconfig: /.rancher.kubeconfig
 
+datacity:
+  lint-environments: datacity
+  automatic-updates:
+    - commit-message: automatic update of datacity ckan dgp server
+      namespace-name: datacity
+      deployment-name: ckan-dgp
+      container-name: server
+      image-prop: ckanDgpServerImage
+      kubeconfig: /.rancher.kubeconfig
+
 #mysadna:
 #  automatic-update:
 #    commit-message: automatic update of mysadna
