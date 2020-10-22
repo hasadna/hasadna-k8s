@@ -2,6 +2,8 @@ datacity:
   enabled: true
   ckanDgpDbNfsServer: "172.16.0.9"
   ckanDgpDbNfsPath: "/datacity/ckan-dgp-db"
+  ckanDgpLogsNfsServer: "172.16.0.9"
+  ckanDgpLogsNfsPath: "/datacity/ckan-dgp-logs"
   importer:
     nfsServer: "172.16.0.9"
     nfsPath: "/datacity/importer"

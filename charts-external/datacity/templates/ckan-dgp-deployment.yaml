@@ -9,6 +9,8 @@ spec:
       app: ckan-dgp
   replicas: 1
   revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -26,6 +28,19 @@ spec:
       - name: server
         image: {{ .Values.ckanDgpServerImage | default "docker.pkg.github.com/hasadna/datacity-ckan-dgp/server" | quote }}
         resources: {"requests": {"cpu": "247m", "memory": "1953Mi"}, "limits": {"cpu": "350m", "memory": "3000Mi"}}
+        command:
+          - sh
+          - -c
+          - |
+            chown -R etl:etl /app/airflow &&\
+            HOME=/app exec su etl -mc /app/datacity_ckan_entrypoint.sh
+        securityContext:
+          runAsGroup: 0
+          runAsUser: 0
+        volumeMounts:
+          - name: logs
+            mountPath: /app/airflow/logs
+            subPath: airflow-logs
         ports:
         - containerPort: 5000
         env:
@@ -64,4 +79,8 @@ spec:
           nfs:
             server: {{ .Values.ckanDgpDbNfsServer | quote }}
             path: {{ .Values.ckanDgpDbNfsPath | quote }}
+        - name: logs
+          nfs:
+            server: {{ .Values.ckanDgpLogsNfsServer | quote }}
+            path: {{ .Values.ckanDgpLogsNfsPath | quote }}
 {{ end }}
