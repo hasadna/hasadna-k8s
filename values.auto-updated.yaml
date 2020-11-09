@@ -8,7 +8,7 @@ anyway:
 avidcovider:
   pipelinesImage: docker.pkg.github.com/hasadna/avid-covider-pipelines/pipelines:a32a5293d45c588859b28e8ecebcf4c7d1180cef
 datacity:
-  ckanDgpServerImage: docker.pkg.github.com/hasadna/datacity-ckan-dgp/server:040f19729450ba0d6396a79a867d8fbb6ab019d0
+  ckanDgpServerImage: docker.pkg.github.com/hasadna/datacity-ckan-dgp/server:bdb858fe0640a2f4bb0f94c8d4a69f087c1b3945
   dgpAppDb: akariv/dgp-app-db@sha256:8ebf03009fb6c6e42308c2579b4ac2d979325a492fffd5942af0de3fc709ce28
   dgpAppImage: hasadna/datacity-dgp-importer:ba08c17b7e12ebd601ba52b867c27a7a487a4995
 mysadna:
