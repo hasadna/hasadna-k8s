@@ -1,0 +1,19 @@
+name: ci
+on:
+  push:
+    branches:
+      - master
+env:
+  DOCKER_REPOSITORY_ANYWAY: "${{ github.repository }}/anyway"
+  DOCKER_REPOSITORY_DB: "${{ github.repository }}/db"
+  DOCKER_REPOSITORY_DB_BACKUP: "${{ github.repository }}/db_backup"
+  DOCKER_REPOSITORY_NGINX: "${{ github.repository }}/nginx"
+  SERVER: "docker.pkg.github.com"
+jobs:
+  ci:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - run: |
+      bash apps_travis_script.sh install_helm &&\
+      bash helm_lint_all.sh
