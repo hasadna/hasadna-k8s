@@ -13,8 +13,8 @@ jobs:
         bash helm_lint_all.sh &&\
         COMMIT_MSG="$(git log -1 --pretty=format:"%s")"
         [ "$?" != "0" ] && exit 1
-        ./kubectl_patch_charts.py "${COMMIT_MSG}" --dry-run
-        PATCH_RES=$?
+        ( ./kubectl_patch_charts.py "${COMMIT_MSG}" --dry-run
+          PATCH_RES=$? )
         [ "${PATCH_RES}" == "1" ] && echo patches dry run failed && exit 1
         if [ "${PATCH_RES}" == "0" ]; then
             echo performing patches
