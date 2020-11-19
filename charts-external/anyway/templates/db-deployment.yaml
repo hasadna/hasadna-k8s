@@ -39,7 +39,7 @@ spec:
           - name: DBRESTORE_AWS_BUCKET
             value: "anyway-full-db-dumps"
           - name: DBRESTORE_FILE_NAME
-            value: "2020-06-09_anyway.pgdump"
+            value: {{ .Values.dbRestoreFileName | quote }}
         volumeMounts:
         - name: data
           mountPath: /var/lib/postgresql/data

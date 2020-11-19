@@ -1,8 +1,8 @@
 anyway:
   enabled: true
-  enableSecondaries: true
-  secondaryReplicas: 3
-  nginxForwardedHost: "www.anyway.co.il"
+  enableSecondaries: false
+  secondaryReplicas: 0
+  nginxForwardedHost: "dev.anyway.co.il"
   nginxForwardedScheme: "https"
   mountGoogleApplicationCredentialsSecret: true
   mainResources: '{"requests": {"cpu": "25m", "memory": "684Mi"}, "limits": {"cpu": "78m", "memory": "1500Mi"}}'
@@ -10,18 +10,19 @@ anyway:
   dbResources: '{"requests": {"cpu": "25m", "memory": "2062Mi"}, "limits": {"cpu": "165m", "memory": "3500Mi"}}'
   nginxResources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "500Mi"}}'
   dbNfsServer: "172.16.0.9"
-  dbNfsPath: "/anyway/db"
+  dbNfsPath: "/anyway-dev/db"
   DBDUMP_S3_FILE_PREFIX: ""
-  dbBackupEnabled: true
+  dbBackupEnabled: false
   dbBackupResources: '{"requests": {"cpu": "25m", "memory": "700Mi"}, "limits": {"cpu": "165m", "memory": "1000Mi"}}'
   dbBackupSchedule: "10 0 * * *"
-  enableLogs: true
-  dbNodeSelector: hasadna-worker1
-  dbHostPort: 28733
-  dbRestoreFileName: "2020-06-09_anyway.pgdump"
+  enableLogs: false
+  # dbNodeSelector: hasadna-worker1
+  # dbHostPort: 28733
+  dbRestoreFileName: "2020-11-18_anyway.pgdump"
+  useDevImages: true
 
   reports:
-    enabled: true
+    enabled: false
     replicas: 1
     resources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "500Mi"}}'
 
@@ -29,36 +30,36 @@ anyway:
     - name: nginx
       ssl: true
       rules:
-        - host: www.anyway.co.il
+        - host: dev.anyway.co.il
           serviceName: nginx
           servicePort: 80
-        - host: reports.anyway.co.il
-          serviceName: reports
-          servicePort: 80
-    - name: redirect
-      ssl: true
-      permanentRedirect: https://www.anyway.co.il
-      rules:
-        - host: anyway.co.il
-          serviceName: nginx
-          servicePort: 80
-        - host: www.oway.org.il
-          serviceName: nginx
-          servicePort: 80
-        - host: oway.org.il
-          serviceName: nginx
-          servicePort: 80
+        # - host: reports.anyway.co.il
+        #   serviceName: reports
+        #   servicePort: 80
+    # - name: redirect
+    #   ssl: true
+    #   permanentRedirect: https://www.anyway.co.il
+    #   rules:
+    #     - host: anyway.co.il
+    #       serviceName: nginx
+    #       servicePort: 80
+    #     - host: www.oway.org.il
+    #       serviceName: nginx
+    #       servicePort: 80
+    #     - host: oway.org.il
+    #       serviceName: nginx
+    #       servicePort: 80
 
   vertical_pod_autoscalers:
   - apiVersion: apps/v1
     kind: deployment
     name: anyway-main
-  - apiVersion: apps/v1
-    kind: deployment
-    name: reports
-  - apiVersion: apps/v1
-    kind: deployment
-    name: anyway-secondaries
+  # - apiVersion: apps/v1
+  #   kind: deployment
+  #   name: reports
+  # - apiVersion: apps/v1
+  #   kind: deployment
+  #   name: anyway-secondaries
   - apiVersion: apps/v1
     kind: deployment
     name: db

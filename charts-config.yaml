@@ -45,6 +45,23 @@ anyway:
       image-prop: anywayReportsImage
       kubeconfig: /.rancher.kubeconfig
 
+anyway-dev:
+  lint-environments: anyway-dev
+  chart-name: anyway
+  automatic-updates:
+    - commit-message: automatic update of dev anyway
+      namespace-name: anyway-dev
+      deployment-name: anyway-main
+      container-name: anyway
+      image-prop: imageDev
+      kubeconfig: /.rancher.kubeconfig
+    - commit-message: automatic update of dev anyway
+      namespace-name: anyway-dev
+      deployment-name: nginx
+      container-name: nginx
+      image-prop: nginxImageDev
+      kubeconfig: /.rancher.kubeconfig
+
 datacity:
   lint-environments: datacity
   automatic-updates:

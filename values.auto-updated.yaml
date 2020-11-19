@@ -4,7 +4,8 @@ anyway:
   dbImage: docker.pkg.github.com/hasadna/anyway/db:sha-44e7f40
   image: docker.pkg.github.com/hasadna/anyway/anyway:sha-44e7f40
   nginxImage: docker.pkg.github.com/hasadna/anyway/nginx:sha-44e7f40
-  productionImage: uumpa/anyway:ef99d85b586a94d9e3b98a3e7dad195334318311
+  imageDev: docker.pkg.github.com/hasadna/anyway/anyway:sha-44e7f40
+  nginxImageDev: docker.pkg.github.com/hasadna/anyway/nginx:sha-44e7f40
 avidcovider:
   pipelinesImage: docker.pkg.github.com/hasadna/avid-covider-pipelines/pipelines:a32a5293d45c588859b28e8ecebcf4c7d1180cef
 datacity:

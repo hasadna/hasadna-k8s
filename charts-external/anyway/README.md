@@ -76,3 +76,16 @@ kubectl create secret generic bindplane-logs \
 ```
 
 Set enableLogs=true in the environment's values
+
+## Creating a new environment based on existing environment
+
+In this example - production environment will be copied to dev environment
+
+* Copy the `environments/anyway` directory to `environments/anyway-dev`
+* Modify the files in the new environment directory as needed
+* Create the namespace - `kubectl create ns anyway-dev`
+* Using Rancher - clone the secrets from old to new environment (secrets: `anyway`, `anyway-db`, `db`)
+* Dry run and debug
+  * `./helm_upgrade_external_chart.sh anyway --install --debug --dry-run`
+* Install
+  * `./helm_upgrade_external_chart.sh anyway --install`

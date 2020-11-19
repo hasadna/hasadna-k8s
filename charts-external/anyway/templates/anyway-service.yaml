@@ -5,7 +5,7 @@ metadata:
   name: anyway
 spec:
   selector:
-    app: anyway-secondaries
+    app: anyway{{ if .Values.enableSecondaries }}-secondaries{{ else }}-main{{ end }}
   ports:
   - name: "5000"
     port: 5000

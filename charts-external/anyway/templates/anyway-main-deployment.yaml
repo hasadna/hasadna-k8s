@@ -21,7 +21,11 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: anyway
+        {{ if .Values.useDevImages }}
+        image: {{ .Values.imageDev }}
+        {{ else }}
         image: {{ .Values.image }}
+        {{ end }}
         args: ["gunicorn", "-b", "0.0.0.0:5000", "-w", "4", "-t", "120", "anyway:app"]
         resources: {{ .Values.mainResources }}
         env:
@@ -41,13 +45,13 @@ spec:
             path: /
             port: 5000
           failureThreshold: 30
-          periodSeconds: 10
+          periodSeconds: 2
           timeoutSeconds: 5
         readinessProbe:
           httpGet:
             path: /
             port: 5000
-          periodSeconds: 10
+          periodSeconds: 2
           timeoutSeconds: 5
           failureThreshold: 5
       {{ if .Values.mountGoogleApplicationCredentialsSecret }}
