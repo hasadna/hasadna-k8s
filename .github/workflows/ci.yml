@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+env:
+  RANCHER_KUBECONFIG: ${{ secrets.RANCHER_KUBECONFIG }}
 jobs:
   ci:
     runs-on: ubuntu-18.04
@@ -12,6 +14,12 @@ jobs:
         bash apps_travis_script.sh install_helm &&\
         bash helm_lint_all.sh &&\
         COMMIT_MSG="$(git log -1 --pretty=format:"%s")" &&\
+        pushd `mktemp -d` &&\
+        curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" &&\
+        chmod +x ./kubectl && sudo mv ./kubectl /usr/local/bin/kubectl &&\
+        popd &&\
+        echo "${RANCHER_KUBECONFIG}" > .rancher.kubeconfig &&\
+        KUBECONFIG=.rancher.kubeconfig kubectl get nodes >/dev/null &&\
         if ./kubectl_patch_charts.py "${COMMIT_MSG}" --dry-run; then
           echo performing patches &&\
           if ./kubectl_patch_charts.py "${COMMIT_MSG}"; then

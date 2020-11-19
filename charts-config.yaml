@@ -6,7 +6,7 @@ odata:
     deployment-name: ckan
     container-name: ckan
     image-prop: ckanImage
-    kubeconfig: /.rancher.kubeconfig
+    kubeconfig: .rancher.kubeconfig
 
 avidcovider:
   lint-environments: avidcovider-gcloud
@@ -25,25 +25,25 @@ anyway:
       deployment-name: anyway-main
       container-name: anyway
       image-prop: image
-      kubeconfig: /.rancher.kubeconfig
+      kubeconfig: .rancher.kubeconfig
     - commit-message: automatic update of anyway
       namespace-name: anyway
       deployment-name: anyway-secondaries
       container-name: anyway
       image-prop: image
-      kubeconfig: /.rancher.kubeconfig
+      kubeconfig: .rancher.kubeconfig
     - commit-message: automatic update of anyway
       namespace-name: anyway
       deployment-name: nginx
       container-name: nginx
       image-prop: nginxImage
-      kubeconfig: /.rancher.kubeconfig
+      kubeconfig: .rancher.kubeconfig
     - commit-message: automatic update of anyway-report docker image
       namespace-name: anyway
       deployment-name: reports
       container-name: reports
       image-prop: anywayReportsImage
-      kubeconfig: /.rancher.kubeconfig
+      kubeconfig: .rancher.kubeconfig
 
 anyway-dev:
   lint-environments: anyway-dev
@@ -54,13 +54,13 @@ anyway-dev:
       deployment-name: anyway-main
       container-name: anyway
       image-prop: imageDev
-      kubeconfig: /.rancher.kubeconfig
+      kubeconfig: .rancher.kubeconfig
     - commit-message: automatic update of dev anyway
       namespace-name: anyway-dev
       deployment-name: nginx
       container-name: nginx
       image-prop: nginxImageDev
-      kubeconfig: /.rancher.kubeconfig
+      kubeconfig: .rancher.kubeconfig
 
 datacity:
   lint-environments: datacity
@@ -70,7 +70,7 @@ datacity:
       deployment-name: ckan-dgp
       container-name: server
       image-prop: ckanDgpServerImage
-      kubeconfig: /.rancher.kubeconfig
+      kubeconfig: .rancher.kubeconfig
 
 #mysadna:
 #  automatic-update:
