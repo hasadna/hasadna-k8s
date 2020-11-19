@@ -10,4 +10,18 @@ jobs:
     - uses: actions/checkout@v2
     - run: |
         bash apps_travis_script.sh install_helm &&\
-        bash helm_lint_all.sh
+        bash helm_lint_all.sh &&\
+        COMMIT_MSG="$(git log -1 --pretty=format:"%s")"
+        [ "$?" != "0" ] && exit 1
+        ./kubectl_patch_charts.py "${COMMIT_MSG}" --dry-run
+        PATCH_RES=$?
+        [ "${PATCH_RES}" == "1" ] && echo patches dry run failed && exit 1
+        if [ "${PATCH_RES}" == "0" ]; then
+            echo performing patches
+            ! ./kubectl_patch_charts.py "${COMMIT_MSG}" && echo failed patches && exit 1
+            echo patches successful
+            exit 0
+        fi
+        [ "${PATCH_RES}" != "2" ] && echo invalid patches exit code $PATCH_RES && exit 1
+        echo nothing to do...
+        exit 0
