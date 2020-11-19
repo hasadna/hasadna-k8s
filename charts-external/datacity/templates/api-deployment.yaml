@@ -21,7 +21,7 @@ spec:
         resources: {"requests": {"cpu": "25m", "memory": "309Mi"}, "limits": {"cpu": "78m", "memory": "1000Mi"}}
         env:
           - name: DATABASE_URL
-            value: postgresql://readonly:readonly@db/datasets
+            value: postgresql://readonly:readonly@importer-db/datasets
           - name: MAX_ROWS
             value: "25000"
 {{ end }}

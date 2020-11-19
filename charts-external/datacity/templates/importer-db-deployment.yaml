@@ -2,22 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: db
+  name: importer-db
 spec:
   selector:
     matchLabels:
-      app: db
+      app: importer-db
   replicas: 1
   revisionHistoryLimit: 2
   template:
     metadata:
       labels:
-        app: db
+        app: importer-db
     spec:
       terminationGracePeriodSeconds: 10
       containers:
-      - name: db
-        image: {{ .Values.dgpAppDb | default "akariv/dgp-app-db" | quote }}
+      - name: importer-db
+        image: {{ .Values.dgpAppDbImage | default "akariv/dgp-app-db" | quote }}
         resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "2Gi"}}
         volumeMounts:
         - name: data
