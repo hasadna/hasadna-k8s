@@ -12,7 +12,7 @@ We have a Jenkins job which runs it (but have to run it manually after creating 
 
 The following is required to use NFS v4:
 
-* in /etc/exorts, a single export should have option fsid=0
+* in /etc/exports, a single export should have option fsid=0
 * when setting the path to mount, it should be without the directory prefix
 * e.g.:
   * in /etc/exports: `/srv/default2 172.16.0.0/23(rw,sync,no_subtree_check,no_root_squash,fsid=0)`
