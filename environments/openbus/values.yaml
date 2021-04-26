@@ -1,0 +1,24 @@
+openbus:
+  enabled: true
+  nfsServer: "172.16.0.9"
+  sshTunnelSecretName: sshtunnel
+
+  # siriRequesterPauseForDebug: true
+  siriRequesterResources: '{"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "500Mi"}}'
+  siriRequesterNginxResources: '{"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}'
+  siriRequesterNfsPath: "/openbus/siri-requester"
+  siriRequesterSecretName: siri-requester
+
+  ingresses:
+    - name: siri-requester
+      ssl: true
+      httpauth:
+        # htpasswd -c auth USERNAME
+        # kubectl -n openbus create secret generic siri-requester-httpauth --from-file=auth
+        # rm -f auth
+        secretName: "siri-requester-httpauth"
+        message: "Authentication Required"
+      rules:
+        - host: open-bus-siri-requester.hasadna.org.il
+          serviceName: siri-requester
+          servicePort: 80

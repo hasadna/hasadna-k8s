@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: siri-requester
+spec:
+  selector:
+    matchLabels:
+      app: siri-requester
+  replicas: 1
+  revisionHistoryLimit: 5
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: siri-requester
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: app
+          image: {{ .Values.siriRequesterImage }}
+          resources: {{ .Values.siriRequesterResources }}
+          {{ if .Values.siriRequesterPauseForDebug }}
+          command:
+            - sh
+            - -c
+            - while true; do sleep 86400; done
+          {{ end }}
+          env:
+            - name: OPEN_BUS_SIRI_STORAGE_ROOTPATH
+              value: "/siri_requester_storage"
+            - name: OPEN_BUS_SSH_TUNNEL_PRIVATE_KEY_FILE
+              value: "/ssh_tunnel_private_key/key"
+          envFrom:
+            - secretRef:
+                name: {{ .Values.siriRequesterSecretName }}
+          volumeMounts:
+            - name: sirirequester
+              mountPath: /siri_requester_storage
+            - name: sshtunnelsecret
+              mountPath: /ssh_tunnel_private_key
+        - name: nginx
+          image: {{ .Values.siriRequesterNginxImage }}
+          resources: {{ .Values.siriRequesterNginxResources }}
+          volumeMounts:
+            - name: sirirequester
+              mountPath: /srv
+      volumes:
+        - name: sirirequester
+          nfs:
+            server: {{ .Values.nfsServer | quote }}
+            path: {{ .Values.siriRequesterNfsPath | quote }}
+        - name: sshtunnelsecret
+          secret:
+            secretName: {{ .Values.sshTunnelSecretName }}
+            defaultMode: 0400
