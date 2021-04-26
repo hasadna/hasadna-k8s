@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault
+spec:
+  selector:
+    matchLabels:
+      app: vault
+  replicas: 1
+  revisionHistoryLimit: 5
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: vault
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: vault
+          # pulled April 26, 2021
+          image: vault@sha256:10f564c947706e021e60c84bd22b1e91559db133d6d3a57e930d32cd7e0cbf77
+          resources: {{ .Values.resources }}
+          args:
+            - server
+          ports:
+            - containerPort: 8200
+          env:
+            - name: VAULT_LOCAL_CONFIG
+              value: '{"backend": {"file": {"path": "/var/vault/file"}}, "listener": {"tcp": {"address": "0.0.0.0:8200", "tls_disable": 1}}, "api_addr": "http://127.0.0.1:8200", "ui": true}'
+          volumeMounts:
+            - name: vaultdata
+              mountPath: /var/vault
+              subPath: vaultdata
+          securityContext:
+            privileged: true
+      volumes:
+        - name: vaultdata
+          nfs:
+            server: {{ .Values.nfsServer | quote }}
+            path: {{ .Values.nfsPath | quote }}
