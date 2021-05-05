@@ -42,6 +42,21 @@ SSH to NFS server and create NFS path
 mkdir -p /srv/default2/openbus/siri-requester
 ```
 
+Create DB password secret
+
+```
+POSTGRES_PASSWORD=`python3 -c 'import secrets; print(secrets.token_hex(16))'`
+kubectl -n openbus create secret generic db \
+    --from-literal=POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
+    --from-literal=SQLALCHEMY_URL=postgresql://postgres:${POSTGRES_PASSWORD}@stride-db
+```
+
+SSH to NFS server and create NFS path
+
+```
+mkdir -p /srv/default2/openbus/stride-db
+```
+
 Dry Run
 
 ```

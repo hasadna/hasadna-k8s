@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stride-db
+spec:
+  selector:
+    matchLabels:
+      app: stride-db
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: stride-db
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: db
+        image: {{ .Values.db.image | quote }}
+        resources: {{ .Values.db.resources }}
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_PASSWORD"}}
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+          subPath: stride_db
+      volumes:
+      - name: data
+        nfs:
+          server: {{ .Values.nfsServer | quote }}
+          path: {{ .Values.db.nfsPath | quote }}

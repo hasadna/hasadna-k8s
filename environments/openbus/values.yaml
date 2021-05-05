@@ -9,6 +9,11 @@ openbus:
   siriRequesterNfsPath: "/openbus/siri-requester"
   siriRequesterSecretName: siri-requester
 
+  db:
+    image: "postgres:13"
+    resources: '{"requests": {"cpu": "200m", "memory": "2000Mi"}, "limits": {"memory": "3000Mi"}}'
+    nfsPath: "/openbus/stride-db"
+
   ingresses:
     - name: siri-requester
       ssl: true

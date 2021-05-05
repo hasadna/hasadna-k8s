@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stride-db-migrations
+spec:
+  selector:
+    matchLabels:
+      app: stride-db-migrations
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: stride-db-migrations
+    spec:
+      terminationGracePeriodSeconds: 10
+      initContainers:
+      - name: wait-for-db
+        image: {{ .Values.db.image | quote }}
+        env:
+        - name: PGPASSWORD
+          valueFrom: { "secretKeyRef": { "name": "db", "key": "POSTGRES_PASSWORD" } }
+        command:
+        - bash
+        - -c
+        - |
+          for I in 1 2 3 4 5 6 7 8 9 10; do
+            if psql -h stride-db -U postgres -c "select 1"; then exit 0; else sleep 1; fi
+          done
+          exit 1
+      - name: migrations
+        image: {{ .Values.strideDbAppImage | quote }}
+        env:
+        - name: SQLALCHEMY_URL
+          valueFrom: {"secretKeyRef":{"name":"db", "key":"SQLALCHEMY_URL"}}
+      containers:
+      - name: pause
+        image: gcr.io/google-containers/pause:2.0

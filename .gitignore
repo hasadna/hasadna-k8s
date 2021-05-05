@@ -102,3 +102,4 @@ ENV/
 secret*
 get_helm.sh
 .dfs-checkpoints
+.rancher.kubeconfig
