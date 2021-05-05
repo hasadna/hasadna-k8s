@@ -22,7 +22,7 @@ oknesset:
 openbus:
   siriRequesterImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester:60122c20a06c4b50c90f71fc4cd7c32a44d12d08
   siriRequesterNginxImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester-nginx:60122c20a06c4b50c90f71fc4cd7c32a44d12d08
-  strideDbAppImage: docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db:8c69c5e244f7ccafbfcefc48a5487e15afe7c920
+  strideDbAppImage: docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db:0696264ac5c5d2bb68e059a7520936d45e9376a3
 openpension:
   client:
     image: hasadna/open-pension-client:1f8f83e2a8e61e0928e4b5f499475f8e675265bd
