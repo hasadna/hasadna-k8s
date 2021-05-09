@@ -24,7 +24,7 @@ spec:
       containers:
       - name: db
         # we don't want to auto-update the DB!
-        image: anywayteam/db:sha-4fa1bfa
+        image: docker.pkg.github.com/hasadna/anyway/db:sha-168b027
         resources: {{ .Values.dbResources }}
         ports:
           - containerPort: 5432
