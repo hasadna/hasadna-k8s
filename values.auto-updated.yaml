@@ -3,9 +3,9 @@ anyway:
   dbBackupImage: docker.pkg.github.com/hasadna/anyway/db_backup:sha-5c2beb0
   dbImage: docker.pkg.github.com/hasadna/anyway/db:sha-5c2beb0
   image: docker.pkg.github.com/hasadna/anyway/anyway:sha-5c2beb0
-  imageDev: docker.pkg.github.com/hasadna/anyway/anyway:sha-bdd61f4
+  imageDev: docker.pkg.github.com/hasadna/anyway/anyway:sha-fd58eac
   nginxImage: docker.pkg.github.com/hasadna/anyway/nginx:sha-5c2beb0
-  nginxImageDev: docker.pkg.github.com/hasadna/anyway/nginx:sha-bdd61f4
+  nginxImageDev: docker.pkg.github.com/hasadna/anyway/nginx:sha-fd58eac
 avidcovider:
   pipelinesImage: docker.pkg.github.com/hasadna/avid-covider-pipelines/pipelines:a32a5293d45c588859b28e8ecebcf4c7d1180cef
 datacity:
