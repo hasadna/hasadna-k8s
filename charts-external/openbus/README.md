@@ -68,3 +68,17 @@ Deploy
 ```
 ./helm_upgrade_external_chart.sh openbus --install
 ```
+
+## Enable DB Redash read-only user
+
+Run the following on the stride DB (replace **** with real password):
+
+```
+CREATE ROLE stride_readonly;
+GRANT CONNECT ON DATABASE postgres TO stride_readonly;
+GRANT USAGE ON SCHEMA public TO stride_readonly;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO stride_readonly;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO stride_readonly;
+CREATE USER redash WITH PASSWORD '*****';
+GRANT stride_readonly TO redash;
+```

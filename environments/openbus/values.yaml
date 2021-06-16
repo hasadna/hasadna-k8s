@@ -15,6 +15,7 @@ openbus:
     image: "postgres:13"
     resources: '{"requests": {"cpu": "200m", "memory": "2000Mi"}, "limits": {"memory": "3000Mi"}}'
     nfsPath: "/openbus/stride-db"
+    nodePort: 31834
 
   ingresses:
     - name: siri-requester
