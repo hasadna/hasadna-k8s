@@ -51,10 +51,34 @@ kubectl -n openbus create secret generic db \
     --from-literal=SQLALCHEMY_URL=postgresql://postgres:${POSTGRES_PASSWORD}@stride-db
 ```
 
-SSH to NFS server and create NFS path
+SSH to NFS server and create NFS paths
 
 ```
 mkdir -p /srv/default2/openbus/stride-db
+```
+
+Create Airflow secrets
+
+```
+OPEN_BUS_PIPELINES_AIRFLOW_ADMIN_PASSWORD=`python3 -c 'import secrets; print(secrets.token_hex(16))'`
+kubectl -n openbus create secret generic airflow \
+    --from-literal=OPEN_BUS_PIPELINES_AIRFLOW_ADMIN_PASSWORD=${OPEN_BUS_PIPELINES_AIRFLOW_ADMIN_PASSWORD}
+```
+
+Create Airflow DB password secret
+
+```
+AIRFLOW_DB_POSTGRES_PASSWORD=`python3 -c 'import secrets; print(secrets.token_hex(16))'`
+kubectl -n openbus create secret generic airflow-db \
+    --from-literal=POSTGRES_PASSWORD=${AIRFLOW_DB_POSTGRES_PASSWORD} \
+    --from-literal=SQLALCHEMY_URL=postgresql://postgres:${AIRFLOW_DB_POSTGRES_PASSWORD}@airflow-db
+```
+
+SSH to NFS server and create NFS paths
+
+```
+mkdir -p /srv/default2/openbus/airflow-db
+mkdir -p /srv/default2/openbus/airflow-home
 ```
 
 Dry Run

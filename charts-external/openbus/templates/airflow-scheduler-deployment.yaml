@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-scheduler
+spec:
+  selector:
+    matchLabels:
+      app: airflow-scheduler
+  replicas: 1
+  revisionHistoryLimit: 5
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: airflow-scheduler
+    spec:
+      terminationGracePeriodSeconds: 240
+      containers:
+        - name: scheduler
+          image: {{ .Values.pipelinesImage }}
+          resources: {{ .Values.airflowScheduler.resources }}
+          env:
+            - name: OPEN_BUS_PIPELINES_AIRFLOW_ROLE
+              value: "scheduler"
+            - name: OPEN_BUS_SIRI_STORAGE_ROOTPATH
+              value: "/var/siri-storage"
+            - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+              valueFrom: {"secretKeyRef":{"name":"airflow-db", "key":"SQLALCHEMY_URL"}}
+            - name: SQLALCHEMY_URL
+              valueFrom: { "secretKeyRef": { "name": "db", "key": "SQLALCHEMY_URL" } }
+          envFrom:
+            - secretRef:
+                name: "airflow"
+          volumeMounts:
+            - name: airflow-home
+              mountPath: /var/airflow
+            - name: sirirequester
+              mountPath: /var/siri-storage
+      volumes:
+        - name: airflow-home
+          nfs:
+            server: {{ .Values.nfsServer | quote }}
+            path: {{ .Values.airflowHomeNfsPath | quote }}
+        - name: sirirequester
+          nfs:
+            server: {{ .Values.nfsServer | quote }}
+            path: {{ .Values.siriRequesterNfsPath | quote }}

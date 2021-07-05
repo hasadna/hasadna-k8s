@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-webserver
+spec:
+  selector:
+    matchLabels:
+      app: airflow-webserver
+  replicas: 1
+  revisionHistoryLimit: 5
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: airflow-webserver
+    spec:
+      terminationGracePeriodSeconds: 240
+      containers:
+        - name: webserver
+          image: {{ .Values.pipelinesImage }}
+          resources: {{ .Values.airflowWebserver.resources }}
+          env:
+            - name: OPEN_BUS_PIPELINES_AIRFLOW_INITIALIZE
+              value: "yes"
+            - name: OPEN_BUS_PIPELINES_AIRFLOW_ROLE
+              value: "webserver"
+            - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+              valueFrom: {"secretKeyRef":{"name":"airflow-db", "key":"SQLALCHEMY_URL"}}
+          envFrom:
+            - secretRef:
+                name: "airflow"
+          volumeMounts:
+            - name: airflow-home
+              mountPath: /var/airflow
+      volumes:
+        - name: airflow-home
+          nfs:
+            server: {{ .Values.nfsServer | quote }}
+            path: {{ .Values.airflowHomeNfsPath | quote }}

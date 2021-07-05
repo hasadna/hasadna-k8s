@@ -93,6 +93,18 @@ openbus:
       container-name: migrations
       image-prop: strideDbAppImage
       kubeconfig: .rancher.kubeconfig
+    - commit-message: automatic update of open bus pipelines
+      namespace-name: openbus
+      deployment-name: airflow-scheduler
+      container-name: scheduler
+      image-prop: pipelinesImage
+      kubeconfig: .rancher.kubeconfig
+    - commit-message: automatic update of open bus pipelines
+      namespace-name: openbus
+      deployment-name: airflow-webserver
+      container-name: webserver
+      image-prop: pipelinesImage
+      kubeconfig: .rancher.kubeconfig
 
 #mysadna:
 #  automatic-update:
