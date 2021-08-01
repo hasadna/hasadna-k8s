@@ -13,7 +13,7 @@ openbus:
 
   db:
     image: "postgres:13"
-    resources: '{"requests": {"cpu": "200m", "memory": "2000Mi"}, "limits": {"memory": "3000Mi"}}'
+    resources: '{"requests": {"cpu": "6000m", "memory": "8000Mi"}, "limits": {"memory": "9000Mi"}}'
     nfsPath: "/openbus/stride-db"
     nodePort: 31834
 

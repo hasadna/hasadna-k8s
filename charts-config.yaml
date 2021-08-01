@@ -87,6 +87,12 @@ openbus:
       container-name: nginx
       image-prop: siriRequesterNginxImage
       kubeconfig: .rancher.kubeconfig
+    - commit-message: automatic update of open bus siri etl
+      namespace-name: openbus
+      deployment-name: siri-etl
+      container-name: process-new-snapshots
+      image-prop: siriEtlImage
+      kubeconfig: .rancher.kubeconfig
     - commit-message: automatic update of open bus stride db
       namespace-name: openbus
       deployment-name: stride-db-migrations
