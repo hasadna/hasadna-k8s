@@ -27,6 +27,8 @@ spec:
               value: "/siri_requester_storage"
             - name: SQLALCHEMY_URL
               valueFrom: {"secretKeyRef":{"name":"db", "key":"SQLALCHEMY_URL"}}
+            - name: DEBUG
+              value: "yes"
           volumeMounts:
             - name: sirirequester
               mountPath: /siri_requester_storage
