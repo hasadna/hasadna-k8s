@@ -80,19 +80,19 @@ anyway-dev:
       image-prop: nginxImageDev
       kubeconfig: .rancher.kubeconfig
     - commit-message: automatic update of dev etl anyway
-      namespace-name: anyway
+      namespace-name: anyway-dev
       deployment-name: airflow-webserver
       container-name: webserver
       image-prop: airflowImageDev
       kubeconfig: .rancher.kubeconfig
     - commit-message: automatic update of dev etl anyway
-      namespace-name: anyway
+      namespace-name: anyway-dev
       deployment-name: airflow-scheduler
       container-name: scheduler
       image-prop: airflowImageDev
       kubeconfig: .rancher.kubeconfig
     - commit-message: automatic update of dev etl anyway
-      namespace-name: anyway
+      namespace-name: anyway-dev
       deployment-name: airflow-nginx
       container-name: nginx
       image-prop: etlNginxImageDev
