@@ -17,7 +17,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: nginx
-          image: {{ .Values.etlNginxImage }}
+          image: {{ if .Values.useDevImages }}{{ .Values.etlNginxImageDev }}{{ else }}{{ .Values.etlNginxImage }}{{ end }}
           resources: {{ toYaml .Values.etlNginxResources | nindent 12 }}
           volumeMounts:
             - name: anyway-etl-data

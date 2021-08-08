@@ -44,19 +44,19 @@ anyway:
       container-name: reports
       image-prop: anywayReportsImage
       kubeconfig: .rancher.kubeconfig
-    - commit-message: automatic update of etl anyway
+    - commit-message: automatic update of prod etl anyway
       namespace-name: anyway
       deployment-name: airflow-webserver
       container-name: webserver
-      image-prop: pipelinesImage
+      image-prop: airflowImage
       kubeconfig: .rancher.kubeconfig
-    - commit-message: automatic update of etl anyway
+    - commit-message: automatic update of prod etl anyway
       namespace-name: anyway
       deployment-name: airflow-scheduler
       container-name: scheduler
-      image-prop: pipelinesImage
+      image-prop: airflowImage
       kubeconfig: .rancher.kubeconfig
-    - commit-message: automatic update of etl anyway
+    - commit-message: automatic update of prod etl anyway
       namespace-name: anyway
       deployment-name: airflow-nginx
       container-name: nginx
@@ -78,6 +78,24 @@ anyway-dev:
       deployment-name: nginx
       container-name: nginx
       image-prop: nginxImageDev
+      kubeconfig: .rancher.kubeconfig
+    - commit-message: automatic update of dev etl anyway
+      namespace-name: anyway
+      deployment-name: airflow-webserver
+      container-name: webserver
+      image-prop: airflowImageDev
+      kubeconfig: .rancher.kubeconfig
+    - commit-message: automatic update of dev etl anyway
+      namespace-name: anyway
+      deployment-name: airflow-scheduler
+      container-name: scheduler
+      image-prop: airflowImageDev
+      kubeconfig: .rancher.kubeconfig
+    - commit-message: automatic update of dev etl anyway
+      namespace-name: anyway
+      deployment-name: airflow-nginx
+      container-name: nginx
+      image-prop: etlNginxImageDev
       kubeconfig: .rancher.kubeconfig
 
 datacity:

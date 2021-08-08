@@ -19,7 +19,7 @@ spec:
       terminationGracePeriodSeconds: 240
       containers:
         - name: scheduler
-          image: {{ .Values.airflowImage }}
+          image: {{ if .Values.useDevImages }}{{ .Values.airflowImage }}{{ else }}{{ .Values.airflowImageDev }}{{ end }}
           resources: {{ toYaml .Values.airflowScheduler.resources | nindent 12 }}
           env:
             - name: ANYWAY_ETL_AIRFLOW_ROLE
