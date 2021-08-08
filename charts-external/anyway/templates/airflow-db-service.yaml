@@ -1,0 +1,12 @@
+{{ if .Values.enableAirflow }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: airflow-db
+spec:
+  selector:
+    app: airflow-db
+  ports:
+  - name: "5432"
+    port: 5432
+{{ end }}

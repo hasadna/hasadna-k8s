@@ -89,3 +89,23 @@ In this example - production environment will be copied to dev environment
   * `./helm_upgrade_external_chart.sh anyway --install --debug --dry-run`
 * Install
   * `./helm_upgrade_external_chart.sh anyway --install`
+
+## Enabling the Airflow server
+
+Set the following values in `anyway` secret:
+
+* `AIRFLOW_DB_POSTGRES_PASSWORD`: Generate a password (`python3 -c 'import secrets; print(secrets.token_hex(16))'`)
+* `AIRFLOW_SQLALCHEMY_URL`: (replace AIRFLOW_DB_POSTGRES_PASSWORD with the password you generated) `postgresql://postgres:AIRFLOW_DB_POSTGRES_PASSWORD@airflow-db`
+* `AIRFLOW_ADMIN_PASSWORD`: Generate a password (`python3 -c 'import secrets; print(secrets.token_hex(16))'`)
+
+SSH to NFS server and create NFS paths
+
+```
+mkdir -p /srv/default2/anyway/airflow-db
+mkdir -p /srv/default2/anyway/airflow-home
+mkdir -p /srv/default2/anyway/etl-data
+```
+
+Enable airflow by setting `enableAirflow: true` in the relevant environment's values
+
+Deploy

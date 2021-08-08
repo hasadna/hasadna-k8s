@@ -1,0 +1,51 @@
+{{ if .Values.enableAirflow }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-scheduler
+spec:
+  selector:
+    matchLabels:
+      app: airflow-scheduler
+  replicas: 1
+  revisionHistoryLimit: 5
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: airflow-scheduler
+    spec:
+      terminationGracePeriodSeconds: 240
+      containers:
+        - name: scheduler
+          image: {{ .Values.airflowImage }}
+          resources: {{ toYaml .Values.airflowScheduler.resources | nindent 12 }}
+          env:
+            - name: ANYWAY_ETL_AIRFLOW_ROLE
+              value: "scheduler"
+            - name: ANYWAY_ETL_AIRFLOW_PIP_INSTALL_DEPS
+              value: "yes"
+            - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+              valueFrom: {"secretKeyRef": {"name":"anyway", "key":"AIRFLOW_SQLALCHEMY_URL"}}
+            - name: SQLALCHEMY_URL
+              valueFrom: {"secretKeyRef": {"name": "anyway-db", "key": "DATABASE_URL" }}
+            - name: IMAP_MAIL_USER
+              valueFrom: {"secretKeyRef": {"name": "anyway", "key": "MAILUSER" }}
+            - name: IMAP_MAIL_PASSWORD
+              valueFrom: {"secretKeyRef": {"name": "anyway", "key": "MAILPASS" }}
+          volumeMounts:
+            - name: airflow-home
+              mountPath: /var/airflow
+            - name: anyway-etl-data
+              mountPath: /var/anyway-etl-data
+      volumes:
+        - name: airflow-home
+          nfs:
+            server: {{ .Values.nfsServer | quote }}
+            path: {{ .Values.airflowHomeNfsPath | quote }}
+        - name: anyway-etl-data
+          nfs:
+            server: {{ .Values.nfsServer | quote }}
+            path: {{ .Values.anywayEtlDataNfsPath | quote }}
+{{ end }}

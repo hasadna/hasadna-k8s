@@ -25,6 +25,23 @@ anyway:
     replicas: 1
     resources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "500Mi"}}'
 
+  nfsServer: "172.16.0.9"
+  enableAirflow: true
+  airflowDb:
+    # pulled August 8, 2021
+    image: "postgres:13@sha256:6647385dd9ae11aa2216bf55c54d126b0a85637b3cf4039ef24e3234113588e3"
+    resources: {"requests": {"cpu": "50m", "memory": "300Mi"}, "limits": {"memory": "700Mi"}}
+    nfsPath: "/anyway/airflow-db"
+  airflowImage: "docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-airflow:latest"
+  airflowScheduler:
+    resources: {"requests": {"cpu": "300m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
+  airflowWebserver:
+    resources: {"requests": {"cpu": "50m", "memory": "300Mi"}, "limits": {"memory": "700Mi"}}
+  airflowHomeNfsPath: "/anyway/airflow-home"
+  anywayEtlDataNfsPath: "/anyway/etl-data"
+  etlNginxImage: "docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-nginx:latest"
+  etlNginxResources: {"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}
+
   ingresses:
     - name: nginx
       ssl: true
@@ -48,6 +65,18 @@ anyway:
         - host: oway.org.il
           serviceName: nginx
           servicePort: 80
+    - name: airflow
+      ssl: true
+      rules:
+        - host: airflow.anyway.co.il
+          serviceName: airflow-webserver
+          servicePort: 8080
+    - name: airflow-data
+      ssl: true
+      rules:
+        - host: airflow-data.anyway.co.il
+          serviceName: airflow-nginx
+          servicePort: 80
 
   vertical_pod_autoscalers:
   - apiVersion: apps/v1
@@ -65,3 +94,12 @@ anyway:
   - apiVersion: apps/v1
     kind: deployment
     name: nginx
+  - apiVersion: apps/v1
+    kind: deployment
+    name: airflow-db
+  - apiVersion: apps/v1
+    kind: deployment
+    name: airflow-scheduler
+  - apiVersion: apps/v1
+    kind: deployment
+    name: airflow-webserver

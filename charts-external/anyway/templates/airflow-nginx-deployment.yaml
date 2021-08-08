@@ -1,0 +1,30 @@
+{{ if .Values.enableAirflow }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-nginx
+spec:
+  selector:
+    matchLabels:
+      app: airflow-nginx
+  replicas: 1
+  revisionHistoryLimit: 5
+  template:
+    metadata:
+      labels:
+        app: airflow-nginx
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: nginx
+          image: {{ .Values.etlNginxImage }}
+          resources: {{ toYaml .Values.etlNginxResources | nindent 12 }}
+          volumeMounts:
+            - name: anyway-etl-data
+              mountPath: /var/anyway-etl-data
+      volumes:
+        - name: anyway-etl-data
+          nfs:
+            server: {{ .Values.nfsServer | quote }}
+            path: {{ .Values.anywayEtlDataNfsPath | quote }}
+{{ end }}
