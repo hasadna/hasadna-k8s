@@ -10,8 +10,8 @@ anyway:
   nginxImage: docker.pkg.github.com/hasadna/anyway/nginx:sha-0f20006
   nginxImageDev: docker.pkg.github.com/hasadna/anyway/nginx:sha-8230c62
 anyway-dev:
-  airflowImage: docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-airflow:3ad57b1f973a84ae6661050acab4c368148e2e45
-  etlNginxImage: docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-nginx:3ad57b1f973a84ae6661050acab4c368148e2e45
+  airflowImage: docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-airflow:ec74d84af90f125f8c716e7d7b2c314093a2e473
+  etlNginxImage: docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-nginx:ec74d84af90f125f8c716e7d7b2c314093a2e473
 avidcovider:
   pipelinesImage: docker.pkg.github.com/hasadna/avid-covider-pipelines/pipelines:a32a5293d45c588859b28e8ecebcf4c7d1180cef
 datacity:
