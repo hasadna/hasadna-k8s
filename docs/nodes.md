@@ -6,7 +6,7 @@
 bash apps_travis_script.sh install_rancher
 ```
 
-Get a Rancher API key (from the Rancher web UI)
+Get the admin token from Vault Projects/k8s/rancher-admin-token
 
 login:
 
@@ -16,9 +16,11 @@ rancher login --token RANCHER_API_TOKEN RANCHER_API_ENDPOINT
 
 ## SSH to nodes
 
+SSH to hasadna-ssh-access-point (see private/doc001.md)
+
 List nodes: `rancher nodes`
 
-SSH to node: `rancher ssh NODE_NAME -o IdentitiesOnly=yes`
+SSH to node: `rancher ssh NODE_NAME`
 
 ## Cluster node pools
 

@@ -4,16 +4,16 @@ openbus:
   sshTunnelSecretName: sshtunnel
 
   # siriRequesterPauseForDebug: true
-  siriRequesterResources: '{"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "500Mi"}}'
+  siriRequesterResources: '{"requests": {"cpu": "200m", "memory": "1000Mi"}, "limits": {"memory": "1500Mi"}}'
   siriRequesterNginxResources: '{"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}'
   siriRequesterNfsPath: "/openbus/siri-requester"
   siriRequesterSecretName: siri-requester
 
-  siriEtlProcessNewSnapshotsResources: '{"requests": {"cpu": "3000m", "memory": "500Mi"}, "limits": {"memory": "1500Mi"}}'
+  siriEtlProcessNewSnapshotsResources: '{"requests": {"cpu": "600m", "memory": "5000Mi"}, "limits": {"memory": "8000Mi"}}'
 
   db:
     image: "postgres:13"
-    resources: '{"requests": {"cpu": "6000m", "memory": "8000Mi"}, "limits": {"memory": "9000Mi"}}'
+    resources: '{"requests": {"cpu": "4000m", "memory": "16000Mi"}, "limits": {"cpu": "4000m", "memory": "16000Mi"}}'
     nfsPath: "/openbus/stride-db"
     nodePort: 31834
 
@@ -23,9 +23,9 @@ openbus:
     resources: '{"requests": {"cpu": "50m", "memory": "300Mi"}, "limits": {"memory": "700Mi"}}'
     nfsPath: "/openbus/airflow-db"
   airflowWebserver:
-    resources: '{"requests": {"cpu": "50m", "memory": "300Mi"}, "limits": {"memory": "700Mi"}}'
+    resources: '{"requests": {"cpu": "250m", "memory": "1000Mi"}, "limits": {"memory": "2000Mi"}}'
   airflowScheduler:
-    resources: '{"requests": {"cpu": "300m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}'
+    resources: '{"requests": {"cpu": "600m", "memory": "8000Mi"}, "limits": {"memory": "12000Mi"}}'
 
   ingresses:
     - name: siri-requester
