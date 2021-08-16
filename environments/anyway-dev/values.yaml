@@ -17,7 +17,7 @@ anyway:
   dbBackupSchedule: "10 0 * * *"
   enableLogs: false
   # dbNodeSelector: hasadna-worker1
-  # dbHostPort: 28733
+  dbHostPort: 28734
   dbRestoreFileName: "2020-11-18_anyway.pgdump"
   useDevImages: true
 

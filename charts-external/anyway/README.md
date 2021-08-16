@@ -109,3 +109,24 @@ mkdir -p /srv/default2/anyway/etl-data
 Enable airflow by setting `enableAirflow: true` in the relevant environment's values
 
 Deploy
+
+## Enable DB Redash read-only user
+
+Start a shell on DB pod and run the following to start an sql session:
+
+```
+su postgres
+psql anyway
+```
+
+Run the following to create the readonly user (replace **** with real password):
+
+```
+CREATE ROLE readonly;
+GRANT CONNECT ON DATABASE anyway TO readonly;
+GRANT USAGE ON SCHEMA public TO readonly;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO readonly;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO readonly;
+CREATE USER redash WITH PASSWORD '*****';
+GRANT readonly TO redash;
+```
