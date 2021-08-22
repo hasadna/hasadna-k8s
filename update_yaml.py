@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 import sys, json, yaml, os
 
@@ -6,7 +6,7 @@ set_values = json.loads(sys.argv[1])
 filename = sys.argv[2]
 if os.path.exists(filename):
     with open(filename) as f:
-        values = yaml.load(f, Loader=yaml.FullLoader)
+        values = yaml.load(f)
 else:
     values = {}
 

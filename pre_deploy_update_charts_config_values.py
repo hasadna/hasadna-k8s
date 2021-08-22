@@ -8,10 +8,10 @@ environment_name = sys.argv[3]
 sys.stderr.write("pre_deploy_update_charts_config_values (values_filename={}, chart_name={}, environment_name={})\n".format(values_filename, chart_name, environment_name))
 
 with open('charts-config.yaml') as charts_config_f:
-    charts_config = yaml.load(charts_config_f, Loader=yaml.FullLoader)
+    charts_config = yaml.load(charts_config_f)
 
 with open(values_filename) as values_f:
-    values = yaml.load(values_f, Loader=yaml.FullLoader)
+    values = yaml.load(values_f)
 
 environment_charts_config = charts_config.get(environment_name, {})
 if environment_charts_config.get('chart-name') == chart_name:

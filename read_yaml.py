@@ -1,10 +1,10 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 import sys, json, yaml, os
 
 filename = sys.argv[1]
 with open(filename) as f:
-    values = yaml.load(f, Loader=yaml.FullLoader)
+    values = yaml.load(f)
 
 def get_from_dict(values, keys):
     if len(keys) < 1:
