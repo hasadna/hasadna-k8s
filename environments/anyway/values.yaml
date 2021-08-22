@@ -41,6 +41,12 @@ anyway:
   anywayEtlDataNfsPath: "/anyway/etl-data"
   etlNginxImage: "docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-nginx:latest"
   etlNginxResources: {"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}
+  ANYWAY_ETL_BRANCH: ""
+  ANYWAY_ETL_USE_LATEST_TAG: "yes"
+  ANYWAY_KUBECTL_NAMESPACE: "anyway"
+  AIRFLOW__SMTP__SMTP_MAIL_FROM: "Airflow <airflow@anyway.co.il>"
+  AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "False"
+  AIRFLOW__WEBSERVER__BASE_URL: https://airflow.anyway.co.il
 
   ingresses:
     - name: nginx

@@ -21,11 +21,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: anyway
-        {{ if .Values.useDevImages }}
-        image: {{ .Values.imageDev }}
-        {{ else }}
-        image: {{ .Values.image }}
-        {{ end }}
+        image: {{ if .Values.useDevImages }}{{ .Values.imageDev }}{{ else }}{{ .Values.image }}{{ end }}
         args: ["gunicorn", "-b", "0.0.0.0:5000", "-w", "4", "-t", "120", "anyway:app"]
         resources: {{ .Values.mainResources }}
         env:

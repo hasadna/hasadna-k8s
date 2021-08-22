@@ -19,11 +19,7 @@ spec:
       terminationGracePeriodSeconds: 2
       containers:
       - name: nginx
-        {{ if .Values.useDevImages }}
-        image: {{ .Values.nginxImageDev }}
-        {{ else }}
-        image: {{ .Values.nginxImage }}
-        {{ end }}
+        image: {{ if .Values.useDevImages }}{{ .Values.nginxImageDev }}{{ else }}{{ .Values.nginxImage }}{{ end }}
         resources: {{ .Values.nginxResources }}
         volumeMounts:
         - name: conf

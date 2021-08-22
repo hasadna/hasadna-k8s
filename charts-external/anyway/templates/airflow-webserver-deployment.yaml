@@ -19,7 +19,7 @@ spec:
       terminationGracePeriodSeconds: 240
       containers:
         - name: webserver
-          image: {{ if .Values.useDevImages }}{{ .Values.airflowImage }}{{ else }}{{ .Values.airflowImageDev }}{{ end }}
+          image: {{ if .Values.useDevImages }}{{ .Values.airflowImageDev }}{{ else }}{{ .Values.airflowImage }}{{ end }}
           resources: {{ toYaml .Values.airflowWebserver.resources | nindent 12 }}
           env:
             - name: ANYWAY_ETL_AIRFLOW_INITIALIZE
@@ -30,6 +30,8 @@ spec:
               valueFrom: {"secretKeyRef": {"name":"anyway", "key":"AIRFLOW_SQLALCHEMY_URL"}}
             - name: ANYWAY_ETL_AIRFLOW_ADMIN_PASSWORD
               valueFrom: {"secretKeyRef": {"name":"anyway", "key":"AIRFLOW_ADMIN_PASSWORD"}}
+            - name: AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION
+              value: {{ .Values.AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION | quote }}
           volumeMounts:
             - name: airflow-home
               mountPath: /var/airflow

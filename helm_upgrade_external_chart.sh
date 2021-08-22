@@ -44,13 +44,15 @@ do
 #    cat "${TEMPDIR}/values.yaml"
 done
 
-VALUES=`cat "${TEMPDIR}/values.yaml"`
+./pre_deploy_update_charts_config_values.py "${TEMPDIR}/values.yaml" "${CHART_NAME}" "${K8S_ENVIRONMENT_NAME}" > "${TEMPDIR}/values-updated.yaml"
 
-if [ "`./read_yaml.py "${TEMPDIR}/values.yaml" enabled 2>/dev/null`" == "true" ]; then
-    CMD="helm upgrade -f ${TEMPDIR}/values.yaml ${RELEASE_NAME} ${CHART_DIRECTORY} ${@:2}"
+VALUES=`cat "${TEMPDIR}/values-updated.yaml"`
+
+if [ "`./read_yaml.py "${TEMPDIR}/values-updated.yaml" enabled 2>/dev/null`" == "true" ]; then
+    CMD="helm upgrade -f ${TEMPDIR}/values-updated.yaml ${RELEASE_NAME} ${CHART_DIRECTORY} ${@:2}"
     if ! $CMD; then
         echo
-        echo "${TEMPDIR}/values.yaml"
+        echo "${TEMPDIR}/values-updated.yaml"
         echo "${VALUES}"
         echo
         echo "CMD"

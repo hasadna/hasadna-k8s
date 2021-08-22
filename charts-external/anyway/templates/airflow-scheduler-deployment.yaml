@@ -17,15 +17,22 @@ spec:
         app: airflow-scheduler
     spec:
       terminationGracePeriodSeconds: 240
+      serviceAccountName: airflow-scheduler
       containers:
         - name: scheduler
-          image: {{ if .Values.useDevImages }}{{ .Values.airflowImage }}{{ else }}{{ .Values.airflowImageDev }}{{ end }}
+          image: {{ if .Values.useDevImages }}{{ .Values.airflowImageDev }}{{ else }}{{ .Values.airflowImage }}{{ end }}
           resources: {{ toYaml .Values.airflowScheduler.resources | nindent 12 }}
           env:
             - name: ANYWAY_ETL_AIRFLOW_ROLE
               value: "scheduler"
             - name: ANYWAY_ETL_AIRFLOW_PIP_INSTALL_DEPS
               value: "yes"
+            - name: ANYWAY_ETL_BRANCH
+              value: {{ .Values.ANYWAY_ETL_BRANCH | quote }}
+            - name: ANYWAY_ETL_USE_LATEST_TAG
+              value: {{ .Values.ANYWAY_ETL_USE_LATEST_TAG | quote }}
+            - name: ANYWAY_KUBECTL_NAMESPACE
+              value: {{ .Values.ANYWAY_KUBECTL_NAMESPACE | quote }}
             - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
               valueFrom: {"secretKeyRef": {"name":"anyway", "key":"AIRFLOW_SQLALCHEMY_URL"}}
             - name: SQLALCHEMY_URL
@@ -34,6 +41,22 @@ spec:
               valueFrom: {"secretKeyRef": {"name": "anyway", "key": "MAILUSER" }}
             - name: IMAP_MAIL_PASSWORD
               valueFrom: {"secretKeyRef": {"name": "anyway", "key": "MAILPASS" }}
+            - name: AIRFLOW__EMAIL__EMAIL_BACKEND
+              value: "airflow.utils.email.send_email_smtp"
+            - name: AIRFLOW__SMTP__SMTP_HOST
+              valueFrom: {"secretKeyRef": {"name": "anyway", "key": "AIRFLOW__SMTP__SMTP_HOST" }}
+            - name: AIRFLOW__SMTP__SMTP_MAIL_FROM
+              value: {{ .Values.AIRFLOW__SMTP__SMTP_MAIL_FROM }}
+            - name: AIRFLOW__SMTP__SMTP_USER
+              valueFrom: {"secretKeyRef": {"name": "anyway", "key": "AIRFLOW__SMTP__SMTP_USER" }}
+            - name: AIRFLOW__SMTP__SMTP_PASSWORD
+              valueFrom: {"secretKeyRef": {"name": "anyway", "key": "AIRFLOW__SMTP__SMTP_PASSWORD" }}
+            - name: AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION
+              value: {{ .Values.AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION | quote }}
+            - name: ANYWAY_ETL_ALERT_EMAILS
+              valueFrom: {"secretKeyRef": {"name": "anyway", "key": "ANYWAY_ETL_ALERT_EMAILS" }}
+            - name: AIRFLOW__WEBSERVER__BASE_URL
+              value: {{ .Values.AIRFLOW__WEBSERVER__BASE_URL | quote }}
           volumeMounts:
             - name: airflow-home
               mountPath: /var/airflow
