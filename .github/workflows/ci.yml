@@ -3,6 +3,12 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
+    inputs:
+      fake_commit_message:
+        description: 'fake commit message to use for the manual trigger, if empty uses the actual commit message'
+        required: true
+        default: ''
 env:
   RANCHER_KUBECONFIG: ${{ secrets.RANCHER_KUBECONFIG }}
 jobs:
@@ -17,9 +23,13 @@ jobs:
         popd &&\
         bash apps_travis_script.sh install_helm &&\
         bash helm_lint_all.sh &&\
-        COMMIT_MSG="$(git log -1 --pretty=format:"%s")" &&\
+        COMMIT_MSG="${{ github.event.inputs.fake_commit_message }}" &&\
+        if [ "${COMMIT_MSG}" == "" ]; then
+          COMMIT_MSG="$(git log -1 --pretty=format:"%s")"
+        fi &&\
         echo "${RANCHER_KUBECONFIG}" > .rancher.kubeconfig &&\
         KUBECONFIG=.rancher.kubeconfig kubectl get nodes >/dev/null &&\
+        KUBECONFIG=.rancher.kubeconfig kubectl version &&\
         if ./kubectl_patch_charts.py "${COMMIT_MSG}" --dry-run; then
           echo performing patches &&\
           if ./kubectl_patch_charts.py "${COMMIT_MSG}"; then
