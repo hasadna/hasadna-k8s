@@ -76,13 +76,6 @@ anyway-dev:
       pre-deploy-update-chart-config-value: true
     - commit-message: automatic update of dev anyway
       namespace-name: anyway-dev
-      deployment-name: anyway-secondaries
-      container-name: anyway
-      image-prop: imageDev
-      kubeconfig: .rancher.kubeconfig
-      pre-deploy-update-chart-config-value: true
-    - commit-message: automatic update of dev anyway
-      namespace-name: anyway-dev
       deployment-name: nginx
       container-name: nginx
       image-prop: nginxImageDev
