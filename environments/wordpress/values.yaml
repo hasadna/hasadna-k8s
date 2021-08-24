@@ -31,6 +31,13 @@ wordpress:
         - host: datacity.org.il
           serviceName: datacity
           servicePort: 80
+    - name: hasadna-site-redirect
+      permanentRedirect: https://www.hasadna.org.il/
+      rules:
+        - host: hasadna.org.il
+          # serviceName is irrelevant because we have a redirect but it must be set
+          serviceName: datacity
+          servicePort: 80
 
   vertical_pod_autoscalers:
   - apiVersion: apps/v1
