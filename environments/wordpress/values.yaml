@@ -33,6 +33,8 @@ wordpress:
           servicePort: 80
     - name: hasadna-site-redirect
       permanentRedirect: https://www.hasadna.org.il/
+      ssl: true
+      sslSelfSigned: true
       rules:
         - host: hasadna.org.il
           # serviceName is irrelevant because we have a redirect but it must be set

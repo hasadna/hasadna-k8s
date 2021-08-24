@@ -9,7 +9,7 @@ metadata:
   {{ if .proxy_body_size }}
     nginx.ingress.kubernetes.io/proxy-body-size: {{ .proxy_body_size | quote }}
   {{ end }}
-  {{ if .ssl }}
+  {{ if and .ssl (not .sslSelfSigned) }}
     cert-manager.io/cluster-issuer: letsencrypt
   {{ end }}
   {{ if .httpauth }}
