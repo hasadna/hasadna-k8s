@@ -152,6 +152,12 @@ openbus:
       container-name: webserver
       image-prop: pipelinesImage
       kubeconfig: .rancher.kubeconfig
+    - commit-message: automatic update of open bus stride api
+      namespace-name: openbus
+      deployment-name: stride-api
+      container-name: api
+      image-prop: strideApiImage
+      kubeconfig: .rancher.kubeconfig
 
 #mysadna:
 #  automatic-update:

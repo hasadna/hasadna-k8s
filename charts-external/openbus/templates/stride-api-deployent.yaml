@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stride-api
+spec:
+  selector:
+    matchLabels:
+      app: stride-api
+  replicas: 1
+  revisionHistoryLimit: 5
+  template:
+    metadata:
+      labels:
+        app: stride-api
+    spec:
+      terminationGracePeriodSeconds: 240
+      containers:
+        - name: api
+          image: {{ .Values.strideApiImage }}
+          resources: {{ toYaml .Values.strideApiResources | nindent 12 }}
+          env:
+            - name: SQLALCHEMY_URL
+              valueFrom: {"secretKeyRef":{"name":"db", "key":"SQLALCHEMY_URL"}}

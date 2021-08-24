@@ -27,6 +27,8 @@ openbus:
   airflowScheduler:
     resources: '{"requests": {"cpu": "600m", "memory": "8000Mi"}, "limits": {"memory": "12000Mi"}}'
 
+  strideApiResources: {"requests": {"cpu": "1000m", "memory": "1000Mi"}, "limits": {"memory": "2000Mi"}}
+
   ingresses:
     - name: siri-requester
       ssl: true
@@ -46,3 +48,9 @@ openbus:
         - host: open-bus-airflow.hasadna.org.il
           serviceName: airflow-webserver
           servicePort: 8080
+    - name: stride-api
+      ssl: true
+      rules:
+        - host: open-bus-stride-api.hasadna.org.il
+          serviceName: stride-api
+          servicePort: 80
