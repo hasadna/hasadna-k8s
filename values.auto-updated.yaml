@@ -8,9 +8,9 @@ anyway:
   etlNginxImage: docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-nginx:v0.0.5
   etlNginxImageDev: docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-nginx:9b0fb7e3d7badd382329fab79aa2d5e27ce5a82f
   image: docker.pkg.github.com/hasadna/anyway/anyway:sha-f9531e9
-  imageDev: docker.pkg.github.com/hasadna/anyway/anyway:sha-9b4a365
+  imageDev: docker.pkg.github.com/hasadna/anyway/anyway:sha-e8836d5
   nginxImage: docker.pkg.github.com/hasadna/anyway/nginx:sha-f9531e9
-  nginxImageDev: docker.pkg.github.com/hasadna/anyway/nginx:sha-9b4a365
+  nginxImageDev: docker.pkg.github.com/hasadna/anyway/nginx:sha-e8836d5
 avidcovider:
   pipelinesImage: docker.pkg.github.com/hasadna/avid-covider-pipelines/pipelines:a32a5293d45c588859b28e8ecebcf4c7d1180cef
 datacity:
