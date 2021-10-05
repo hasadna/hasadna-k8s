@@ -27,6 +27,11 @@ openbus:
   airflowScheduler:
     resources: '{"requests": {"cpu": "600m", "memory": "8000Mi"}, "limits": {"memory": "12000Mi"}}'
 
+  airflow:
+    enableEmails: true
+    AIRFLOW__SMTP__SMTP_MAIL_FROM: "Open Bus Airflow <open-bus-airflow@hasadna.org.il>"
+    AIRFLOW__WEBSERVER__BASE_URL: "https://open-bus-airflow.hasadna.org.il"
+
   strideApiResources: {"requests": {"cpu": "1000m", "memory": "1000Mi"}, "limits": {"memory": "2000Mi"}}
 
   ingresses:
