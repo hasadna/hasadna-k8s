@@ -4,6 +4,10 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ .name }}
+  annotations:
+    {{- if .proxyBodySize }}
+    nginx.ingress.kubernetes.io/proxy-body-size: {{ .proxyBodySize | quote }}
+    {{- end }}
 spec:
   rules:
   {{ range .rules }}
