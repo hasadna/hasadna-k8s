@@ -19,7 +19,7 @@ anyway:
   # dbNodeSelector: hasadna-worker1
   # dbHostPort: 28734
   dbNodePort: 30735
-  dbRestoreFileName: "2020-11-18_anyway.pgdump"
+  dbRestoreFileName: "2021-10-10_anyway.pgdump"
   useDevImages: true
 
   reports:

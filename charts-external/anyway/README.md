@@ -130,3 +130,15 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO readonly;
 CREATE USER redash WITH PASSWORD '*****';
 GRANT readonly TO redash;
 ```
+
+## Restore from backup
+
+Production DB has a daily backup which can be used to populate a new environment's DB
+
+Following steps are for restoring to dev environment:
+
+* stop the dev DB by scaling the db deployment down to 0 replicas
+* SSH to hasadna NFS server and clear the DB data directory (`/srv/default2/anyway-dev/db/dbdata`)
+* Edit the environment values (`environments/anyway-dev/values.yaml`) and set `dbRestoreFileName` to the current day's date.
+* Deploy the anyway chart - this will cause DB to be recreated from the backup
+* The restore can take a long time..
