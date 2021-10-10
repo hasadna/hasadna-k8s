@@ -34,6 +34,8 @@ openbus:
 
   strideApiResources: {"requests": {"cpu": "1000m", "memory": "1000Mi"}, "limits": {"memory": "2000Mi"}}
 
+  gtfsNfsPath: "/openbus/gtfs"
+
   ingresses:
     - name: siri-requester
       ssl: true
@@ -58,4 +60,10 @@ openbus:
       rules:
         - host: open-bus-stride-api.hasadna.org.il
           serviceName: stride-api
+          servicePort: 80
+    - name: gtfs
+      ssl: true
+      rules:
+        - host: open-bus-gtfs-data.hasadna.org.il
+          serviceName: gtfs-nginx
           servicePort: 80
