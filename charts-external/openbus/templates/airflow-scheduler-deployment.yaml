@@ -25,6 +25,8 @@ spec:
               value: "scheduler"
             - name: OPEN_BUS_SIRI_STORAGE_ROOTPATH
               value: "/var/siri-storage"
+            - name: GTFS_ETL_ROOT_ARCHIVES_FOLDER
+              value: "/var/gtfs-storage"
             - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
               valueFrom: {"secretKeyRef":{"name":"airflow-db", "key":"SQLALCHEMY_URL"}}
             - name: SQLALCHEMY_URL
@@ -55,6 +57,8 @@ spec:
               mountPath: /var/airflow
             - name: sirirequester
               mountPath: /var/siri-storage
+            - name: gtfs
+              mountPath: /var/gtfs-storage
       volumes:
         - name: airflow-home
           nfs:
@@ -64,3 +68,7 @@ spec:
           nfs:
             server: {{ .Values.nfsServer | quote }}
             path: {{ .Values.siriRequesterNfsPath | quote }}
+        - name: gtfs
+          nfs:
+            server: {{ .Values.nfsServer | quote }}
+            path: {{ .Values.gtfsNfsPath | quote }}
