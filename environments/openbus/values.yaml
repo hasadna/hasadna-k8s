@@ -6,6 +6,7 @@ openbus:
   # siriRequesterPauseForDebug: true
   siriRequesterResources: '{"requests": {"cpu": "200m", "memory": "1000Mi"}, "limits": {"memory": "1500Mi"}}'
   siriRequesterNginxResources: '{"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}'
+  siriRequesterHealthResources: '{"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}'
   siriRequesterNfsPath: "/openbus/siri-requester"
   siriRequesterSecretName: siri-requester
 

@@ -39,9 +39,22 @@ spec:
               mountPath: /siri_requester_storage
             - name: sshtunnelsecret
               mountPath: /ssh_tunnel_private_key
+        - name: health
+          image: {{ .Values.siriRequesterImage }}
+          resources: {{ .Values.siriRequesterHealthResources }}
+          command: [open-bus-siri-requester, health-daemon-start]
+          env:
+            - name: OPEN_BUS_SIRI_STORAGE_ROOTPATH
+              value: "/siri_requester_storage"
+          volumeMounts:
+            - name: sirirequester
+              mountPath: /siri_requester_storage
         - name: nginx
           image: {{ .Values.siriRequesterNginxImage }}
           resources: {{ .Values.siriRequesterNginxResources }}
+          env:
+            - name: SIRI_REQUESTER_HEALTH_URL
+              value: http://localhost:8081
           volumeMounts:
             - name: sirirequester
               mountPath: /srv
