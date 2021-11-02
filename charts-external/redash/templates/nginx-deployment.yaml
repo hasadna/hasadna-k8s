@@ -1,0 +1,27 @@
+{{ if not .Values.redashInitialize }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: nginx
+        # pulled Nov 1, 2021
+        image: redash/nginx:latest@sha256:4eaaa7af6476b0422058b0022661ad6129dfbf9065c506fb0904bbf0a16f2007
+        ports:
+        - containerPort: 80
+        resources: {{ toYaml .Values.nginx.resources | nindent 10 }}
+{{ end }}

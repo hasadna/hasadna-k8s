@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+spec:
+  selector:
+    matchLabels:
+      app: server
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: server
+        image: {{ .Values.redashImage | quote }}
+        {{ if .Values.redashInitialize }}
+        command:
+        - sh
+        - -c
+        - |
+          /app/bin/docker-entrypoint create_db &&\
+          echo create_db completed successfully &&\
+          sleep 86400
+        {{ else }}
+        args: [server]
+        {{ end }}
+        ports:
+        - containerPort: 5000
+        resources: {{ toYaml .Values.server.resources | nindent 10 }}
+        env:
+        - name: REDASH_WEB_WORKERS
+          value: {{ .Values.server.REDASH_WEB_WORKERS | quote }}
+        envFrom:
+        - secretRef:
+            name: redash

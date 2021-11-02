@@ -1,0 +1,33 @@
+{{ if not .Values.redashInitialize }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scheduled-worker
+spec:
+  selector:
+    matchLabels:
+      app: scheduled-worker
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: scheduled-worker
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: scheduled-worker
+        image: {{ .Values.redashImage | quote }}
+        args: ["worker"]
+        resources: {{ toYaml .Values.scheduledWorker.resources | nindent 10 }}
+        env:
+        - name: QUEUES
+          value: scheduled_queries,schemas
+        - name: WORKERS_COUNT
+          value: "1"
+        envFrom:
+        - secretRef:
+            name: redash
+{{ end }}

@@ -1,0 +1,33 @@
+{{ if not .Values.redashInitialize }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scheduler
+spec:
+  selector:
+    matchLabels:
+      app: scheduler
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: scheduler
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: scheduler
+        image: {{ .Values.redashImage | quote }}
+        args: [scheduler]
+        resources: {{ toYaml .Values.scheduler.resources | nindent 10 }}
+        env:
+        - name: QUEUES
+          value: celery
+        - name: WORKERS_COUNT
+          value: "1"
+        envFrom:
+        - secretRef:
+            name: redash
+{{ end }}

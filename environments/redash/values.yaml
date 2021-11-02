@@ -1,0 +1,60 @@
+redash:
+  enabled: true
+  redashImage: redash/redash:8.0.0.b32245
+  redashInitialize: ""
+
+  server:
+    resources: {"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
+    REDASH_WEB_WORKERS: "4"
+
+  scheduler:
+    resources: {"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
+
+  scheduledWorker:
+    resources: {"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
+
+  adhocWorker:
+    resources: {"requests": {"cpu": "200m", "memory": "1000Mi"}, "limits": {"memory": "2000Mi"}}
+    WORKERS_COUNT: 4
+
+  redis:
+    resources: {"requests": {"cpu": "50m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
+
+  postgres:
+    resources: {"requests": {"cpu": "50m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
+    nfsServer: "172.16.0.9"
+    nfsPath: "/redash/postgres"
+
+  nginx:
+    resources: {"requests": {"cpu": "50m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
+
+  ingresses:
+    - name: nginx
+      ssl: true
+      rules:
+        - host: redash.hasadna.org.il
+          serviceName: nginx
+          servicePort: 80
+
+  vertical_pod_autoscalers:
+    - apiVersion: apps/v1
+      kind: deployment
+      name: adhoc-worker
+    - apiVersion: apps/v1
+      kind: deployment
+      name: nginx
+    - apiVersion: apps/v1
+      kind: deployment
+      name: postgres
+    - apiVersion: apps/v1
+      kind: deployment
+      name: redis
+    - apiVersion: apps/v1
+      kind: deployment
+      name: scheduled-worker
+    - apiVersion: apps/v1
+      kind: deployment
+      name: scheduler
+    - apiVersion: apps/v1
+      kind: deployment
+      name: server

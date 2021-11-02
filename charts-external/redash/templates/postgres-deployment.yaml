@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: postgres
+        image: postgres:9.6-alpine@sha256:8c3455a1c953c7c4fbcedca28a0c9c665cb6175934148335b3b86df5d106b9b5
+        ports:
+        - containerPort: 5432
+        resources: {{ toYaml .Values.postgres.resources | nindent 10 }}
+        envFrom:
+        - secretRef:
+            name: redash
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+          subPath: redash_postgres
+      volumes:
+        - name: data
+          nfs:
+            server: {{ .Values.postgres.nfsServer | quote }}
+            path: {{ .Values.postgres.nfsPath | quote }}
