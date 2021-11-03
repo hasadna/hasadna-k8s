@@ -10,7 +10,7 @@ openbus:
   siriRequesterNfsPath: "/openbus/siri-requester"
   siriRequesterSecretName: siri-requester
 
-  siriEtlProcessNewSnapshotsResources: '{"requests": {"cpu": "600m", "memory": "5000Mi"}, "limits": {"memory": "8000Mi"}}'
+  siriEtlProcessNewSnapshotsResources: '{"requests": {"cpu": "3000m", "memory": "4000Mi"}, "limits": {"memory": "8000Mi"}}'
 
   db:
     image: "postgres:13"

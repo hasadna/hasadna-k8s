@@ -29,6 +29,8 @@ spec:
               valueFrom: {"secretKeyRef":{"name":"db", "key":"SQLALCHEMY_URL"}}
             - name: DEBUG
               value: "yes"
+            - name: OPEN_BUS_SIRI_ETL_USE_OBJECTSMAKER_CACHE
+              value: "yes"
           volumeMounts:
             - name: sirirequester
               mountPath: /siri_requester_storage
