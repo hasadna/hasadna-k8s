@@ -29,7 +29,7 @@ openbus:
   siriEtlImage: docker.pkg.github.com/hasadna/open-bus-siri-etl/open-bus-siri-etl:e3718ea7fc2b4fc18774c11dbc35903e05ae409b
   siriRequesterImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester:d13ad8bf536ac9aa9bfdf456bce2fb9b3f5f4d91
   siriRequesterNginxImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester-nginx:d13ad8bf536ac9aa9bfdf456bce2fb9b3f5f4d91
-  strideApiImage: ghcr.io/hasadna/open-bus-stride-api/open-bus-stride-api:6f93b8e216cfad80b10ef43a36df01f329373475
+  strideApiImage: ghcr.io/hasadna/open-bus-stride-api/open-bus-stride-api:5608b4838e66be9b30f2a4f0a5b05a8e32024f3a
   strideDbAppImage: docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db:c5075f8e8a918d3e782efcb712421ce614b76ff3
 openpension:
   client:
