@@ -43,12 +43,6 @@ openbus:
   ingresses:
     - name: siri-requester
       ssl: true
-      httpauth:
-        # htpasswd -c auth USERNAME
-        # kubectl -n openbus create secret generic siri-requester-httpauth --from-file=auth
-        # rm -f auth
-        secretName: "siri-requester-httpauth"
-        message: "Authentication Required"
       rules:
         - host: open-bus-siri-requester.hasadna.org.il
           serviceName: siri-requester
