@@ -112,6 +112,12 @@ datacity:
       container-name: server
       image-prop: ckanDgpServerImage
       kubeconfig: .rancher.kubeconfig
+    - commit-message: automatic update of datacity dgp importer
+      namespace-name: datacity
+      deployment-name: importer
+      container-name: importer
+      image-prop: dgpAppImage
+      kubeconfig: .rancher.kubeconfig
 
 openbus:
   lint-environments: openbus
