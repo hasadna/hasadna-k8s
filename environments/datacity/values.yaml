@@ -28,6 +28,11 @@ datacity:
         - host: ckan-dgp.datacity.org.il
           serviceName: ckan-dgp
           servicePort: 5000
+    - name: importer-db
+      rules:
+        - host: app-db.datacity.org.il
+          serviceName: importer-db
+          servicePort: 5432
 
   vertical_pod_autoscalers:
   - apiVersion: apps/v1
