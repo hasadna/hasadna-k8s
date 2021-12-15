@@ -58,4 +58,6 @@ spec:
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"AWS_REGION"}}
         - name: S3_ENDPOINT_URL
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"S3_ENDPOINT_URL"}}
+        envFrom:
+        - secretRef: {"name": "ckan-dgp-instances"}
 {{ end }}
