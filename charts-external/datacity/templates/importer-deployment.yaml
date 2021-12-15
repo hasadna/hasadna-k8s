@@ -27,7 +27,7 @@ spec:
         - name: AIRFLOW__CORE__PARALLELISM
           value: "1"
         - name: AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL
-          value: "60"
+          value: "50"
         - name: AIRFLOW__CORE__EXECUTOR
           value: SequentialExecutor
         - name: DATABASE_URL
