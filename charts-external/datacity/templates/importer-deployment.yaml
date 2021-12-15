@@ -58,6 +58,8 @@ spec:
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"AWS_REGION"}}
         - name: S3_ENDPOINT_URL
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"S3_ENDPOINT_URL"}}
-        envFrom:
-        - secretRef: {"name": "ckan-dgp-instances"}
+        - name: CKAN_HOST
+          valueFrom: {"secretKeyRef":{"name":"ckan-dgp-instances", "key":"CKAN_INSTANCE_HASADNA_URL"}}
+        - name: CKAN_API_KEY
+          valueFrom: {"secretKeyRef":{"name":"ckan-dgp-instances", "key":"CKAN_INSTANCE_HASADNA_API_KEY"}}
 {{ end }}
