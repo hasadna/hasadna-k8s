@@ -4,7 +4,7 @@ import sys, json, yaml, os
 
 filename = sys.argv[1]
 with open(filename) as f:
-    values = yaml.load(f)
+    values = yaml.load(f, Loader=yaml.SafeLoader)
 
 def get_from_dict(values, keys):
     if len(keys) < 1:

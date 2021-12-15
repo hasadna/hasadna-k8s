@@ -6,7 +6,7 @@ set_values = json.loads(sys.argv[1])
 filename = sys.argv[2]
 if os.path.exists(filename):
     with open(filename) as f:
-        values = yaml.load(f)
+        values = yaml.load(f, Loader=yaml.SafeLoader)
 else:
     values = {}
 
