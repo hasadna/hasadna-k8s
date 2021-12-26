@@ -16,7 +16,7 @@ avidcovider:
 datacity:
   ckanDgpServerImage: docker.pkg.github.com/hasadna/datacity-ckan-dgp/server:4a61be492e5c72e56d3aa9caadee5315cd48f90b
   dgpAppDbImage: akariv/dgp-app-db@sha256:8ebf03009fb6c6e42308c2579b4ac2d979325a492fffd5942af0de3fc709ce28
-  dgpAppImage: docker.pkg.github.com/hasadna/datacity-dgp-importer/server:d66a025498305054ca2d13b115bbcd7e9f3551ee
+  dgpAppImage: docker.pkg.github.com/hasadna/datacity-dgp-importer/server:437dc5f4a6fb9a30893b4e4c3fc1d4f0a9681e22
 mysadna:
   image: uumpa/hasadna-mysadna:c0a681d5a0c68ada76b6d68fce1c2115224790a9
 odata:
