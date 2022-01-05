@@ -1,11 +1,11 @@
 anyway:
-  airflowImage: docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-airflow:v0.0.18
+  airflowImage: docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-airflow:v0.0.19
   airflowImageDev: docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-airflow:3284107f5d2f69747c7f14bd8968d93f6b4e9693
   anywayReportsImage: docker.pkg.github.com/hasadna/anyway-reports/anyway-reports:sha-b456d8b
   dbBackupImage: docker.pkg.github.com/hasadna/anyway/db_backup:sha-4bbcd42
   dbImage: docker.pkg.github.com/hasadna/anyway/db:sha-4bbcd42
   etlImage: docker.pkg.github.com/hasadna/anyway-etl/anyway-etl:55a7c1ddb4610b2f75f88db8615f373b62c9f226
-  etlNginxImage: docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-nginx:v0.0.18
+  etlNginxImage: docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-nginx:v0.0.19
   etlNginxImageDev: docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-nginx:3284107f5d2f69747c7f14bd8968d93f6b4e9693
   image: docker.pkg.github.com/hasadna/anyway/anyway:sha-4bbcd42
   imageDev: docker.pkg.github.com/hasadna/anyway/anyway:sha-21ec95a
