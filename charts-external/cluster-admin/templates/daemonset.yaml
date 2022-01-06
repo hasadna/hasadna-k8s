@@ -35,7 +35,8 @@ spec:
           - |
             cp /tmp/config.json /host/var/lib/kubelet/config.json &&\
             mkdir -p /host/root/.docker &&\
-            cp /tmp/config.json /host/root/.docker/config.json
+            cp /tmp/config.json /host/root/.docker/config.json &&\
+            echo '{{ toJson .Values.dockerDaemonConfig }}' > /host/etc/docker/daemon.json
         volumeMounts:
           - name: hostfs
             mountPath: /host
