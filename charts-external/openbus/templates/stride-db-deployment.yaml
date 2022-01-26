@@ -19,6 +19,11 @@ spec:
       containers:
       - name: db
         image: {{ .Values.db.image | quote }}
+        args:
+          - -c
+          - max_wal_size=10GB
+          - -c
+          - min_wal_size=1GB
         resources: {{ .Values.db.resources }}
         env:
         - name: POSTGRES_PASSWORD
