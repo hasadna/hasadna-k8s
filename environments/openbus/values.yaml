@@ -18,7 +18,7 @@ openbus:
     nfsPath: "/openbus/stride-db"
     nodePort: 31834
     backupSchedule: "37 1 * * *"
-    backupImage: "docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db-backup:d40e9e4cbac929ba0521284644206f7ae09ec5b3"
+    backupImage: "docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db-backup:d358f4dfa16e60f9aad8946cad314fa4b5a195cb"
     backupResources: '{"requests": {"cpu": "200m", "memory": "1500Mi"}, "limits": {"cpu": "400m", "memory": "3000Mi"}}'
 
   airflowHomeNfsPath: "/openbus/airflow-home"
@@ -65,3 +65,9 @@ openbus:
         - host: open-bus-gtfs-data.hasadna.org.il
           serviceName: gtfs-nginx
           servicePort: 80
+    - name: stride-db-backup-monitor
+      ssl: true
+      rules:
+        - host: open-bus-stride-db-backup-monitor.hasadna.org.il
+          serviceName: stride-db-backup-monitor
+          servicePort: 8081

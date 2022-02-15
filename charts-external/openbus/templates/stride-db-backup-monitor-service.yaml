@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: stride-db-backup-monitor
+spec:
+  selector:
+    app: stride-db-backup
+  ports:
+  - name: "8081"
+    port: 8081

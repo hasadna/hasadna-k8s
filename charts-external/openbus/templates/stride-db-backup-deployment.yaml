@@ -42,6 +42,18 @@ spec:
           - name: sirirequester
             mountPath: /mnt
             subPath: stride_db_backup
+      - name: monitor
+        image: {{ .Values.db.backupImage }}
+        args:
+          - "--health-daemon"
+        resources: {"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}
+        env:
+          - name: PG_BACKUP_FILENAME
+            value: /mnt/stride_db.sql.gz
+        volumeMounts:
+          - name: sirirequester
+            mountPath: /mnt
+            subPath: stride_db_backup
       volumes:
         - name: sirirequester
           nfs:
