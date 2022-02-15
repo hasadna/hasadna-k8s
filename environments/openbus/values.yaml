@@ -18,8 +18,8 @@ openbus:
     nfsPath: "/openbus/stride-db"
     nodePort: 31834
     backupSchedule: "37 1 * * *"
-    backupImage: "docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db-backup:7d9baebf70a4b4801da86ba4075a448a156528fe"
-    backupResources: '{"requests": {"cpu": "25m", "memory": "700Mi"}, "limits": {"cpu": "165m", "memory": "1000Mi"}}'
+    backupImage: "docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db-backup:d40e9e4cbac929ba0521284644206f7ae09ec5b3"
+    backupResources: '{"requests": {"cpu": "200m", "memory": "1500Mi"}, "limits": {"cpu": "400m", "memory": "3000Mi"}}'
 
   airflowHomeNfsPath: "/openbus/airflow-home"
   airflowDb:

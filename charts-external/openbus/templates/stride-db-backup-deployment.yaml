@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stride-db-backup
+spec:
+  selector:
+    matchLabels:
+      app: stride-db-backup
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: stride-db-backup
+    spec:
+      terminationGracePeriodSeconds: 10
+      nodeSelector:
+        hasadna/worker-label: moredisk
+      containers:
+      - name: backup
+        image: {{ .Values.db.backupImage }}
+        args:
+          - "--cron"
+          - {{ .Values.db.backupSchedule | quote }}
+        resources: {{ .Values.db.backupResources }}
+        env:
+          - name: PGPASSWORD
+            valueFrom: {"secretKeyRef": {"name":"db", "key":"POSTGRES_PASSWORD"}}
+          - name: PG_BACKUP_HOSTNAME
+            value: "stride-db"
+          - name: PG_BACKUP_USER
+            value: postgres
+          - name: PG_BACKUP_DB
+            value: postgres
+          - name: PG_BACKUP_SCHEMA
+            value: public
+          - name: PG_BACKUP_FILENAME
+            value: /mnt/stride_db.sql.gz
+        volumeMounts:
+          - name: sirirequester
+            mountPath: /mnt
+            subPath: stride_db_backup
+      volumes:
+        - name: sirirequester
+          nfs:
+            server: {{ .Values.nfsServer | quote }}
+            path: {{ .Values.siriRequesterNfsPath | quote }}
