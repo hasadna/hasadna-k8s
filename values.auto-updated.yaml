@@ -8,15 +8,15 @@ anyway:
   etlNginxImage: docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-nginx:v0.0.24
   etlNginxImageDev: docker.pkg.github.com/hasadna/anyway-etl/anyway-etl-nginx:7e37f6014f05de3d08fe755154e094888d9170e3
   image: docker.pkg.github.com/hasadna/anyway/anyway:sha-03ab35f
-  imageDev: docker.pkg.github.com/hasadna/anyway/anyway:sha-876a2ca
+  imageDev: docker.pkg.github.com/hasadna/anyway/anyway:sha-caebb0c
   nginxImage: docker.pkg.github.com/hasadna/anyway/nginx:sha-03ab35f
-  nginxImageDev: docker.pkg.github.com/hasadna/anyway/nginx:sha-876a2ca
+  nginxImageDev: docker.pkg.github.com/hasadna/anyway/nginx:sha-caebb0c
 avidcovider:
   pipelinesImage: docker.pkg.github.com/hasadna/avid-covider-pipelines/pipelines:a32a5293d45c588859b28e8ecebcf4c7d1180cef
 datacity:
   ckanDgpServerImage: docker.pkg.github.com/hasadna/datacity-ckan-dgp/server:4a61be492e5c72e56d3aa9caadee5315cd48f90b
   dgpAppDbImage: akariv/dgp-app-db@sha256:8ebf03009fb6c6e42308c2579b4ac2d979325a492fffd5942af0de3fc709ce28
-  dgpAppImage: docker.pkg.github.com/hasadna/datacity-dgp-importer/server:381ec3bb83fcb9336dc0633781b8258f8a036b39
+  dgpAppImage: docker.pkg.github.com/hasadna/datacity-dgp-importer/server:15649f7f4ac1fb9dc3112c84ee6786b76c79da86
 mysadna:
   image: uumpa/hasadna-mysadna:c0a681d5a0c68ada76b6d68fce1c2115224790a9
 odata:
@@ -25,12 +25,12 @@ oknesset:
   DataBackendImage: uumpa/knesset-data-backend:bc03d3c1830a856d6bbacf4b2481d83dd1f836c6
   WebUiImage: uumpa/knesset-data-web-ui:94b6de1cc89ae20647e35aa606c3c9b95e81dbe6
 openbus:
-  pipelinesImage: docker.pkg.github.com/hasadna/open-bus-pipelines/open-bus-pipelines:f5afb460577055a02dd6d6b40abd84e4e4ac1136
-  siriEtlImage: docker.pkg.github.com/hasadna/open-bus-siri-etl/open-bus-siri-etl:02693f7f5de3ac9a093f8905fa56d31f089f8141
-  siriRequesterImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester:d13ad8bf536ac9aa9bfdf456bce2fb9b3f5f4d91
-  siriRequesterNginxImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester-nginx:d13ad8bf536ac9aa9bfdf456bce2fb9b3f5f4d91
-  strideApiImage: ghcr.io/hasadna/open-bus-stride-api/open-bus-stride-api:374b499eea13be21333863c3d9c994e72063d7cb
-  strideDbAppImage: docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db:2909deb12d5e558e87c76f5cd0b1d5f4af62a14a
+  pipelinesImage: docker.pkg.github.com/hasadna/open-bus-pipelines/open-bus-pipelines:24f4b182eb2607e42661f6fe04e4252e18bf77d3
+  siriEtlImage: docker.pkg.github.com/hasadna/open-bus-siri-etl/open-bus-siri-etl:9060592ec047863d511d078e265168301d3504d3
+  siriRequesterImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester:2ef13e4bf50261a41230b33a46ad76964ce6b7bf
+  siriRequesterNginxImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester-nginx:2ef13e4bf50261a41230b33a46ad76964ce6b7bf
+  strideApiImage: ghcr.io/hasadna/open-bus-stride-api/open-bus-stride-api:893dbd4c4b385122542b3b7c593f12833b5df15e
+  strideDbAppImage: docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db:f599fa36a57a4aae9449e5b3905b4971ef30d34c
 openpension:
   client:
     image: hasadna/open-pension-client:1f8f83e2a8e61e0928e4b5f499475f8e675265bd
