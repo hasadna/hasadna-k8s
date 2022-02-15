@@ -15,7 +15,7 @@ spec:
       labels:
         app: airflow-db
     spec:
-      terminationGracePeriodSeconds: 10
+      terminationGracePeriodSeconds: 60
       containers:
       - name: db
         image: {{ .Values.airflowDb.image }}

@@ -24,7 +24,7 @@ openbus:
   airflowHomeNfsPath: "/openbus/airflow-home"
   airflowDb:
     image: "postgres:13"
-    resources: '{"requests": {"cpu": "50m", "memory": "300Mi"}, "limits": {"memory": "700Mi"}}'
+    resources: '{"requests": {"cpu": "200m", "memory": "1000Mi"}, "limits": {"memory": "2000Mi"}}'
     nfsPath: "/openbus/airflow-db"
   airflowWebserver:
     resources: '{"requests": {"cpu": "250m", "memory": "1000Mi"}, "limits": {"memory": "2000Mi"}}'
