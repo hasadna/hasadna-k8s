@@ -131,6 +131,12 @@ openbus:
     - commit-message: automatic update of open bus siri requester
       namespace-name: openbus
       deployment-name: siri-requester
+      container-name: health
+      image-prop: siriRequesterImage
+      kubeconfig: .rancher.kubeconfig
+    - commit-message: automatic update of open bus siri requester
+      namespace-name: openbus
+      deployment-name: siri-requester-nginx
       container-name: nginx
       image-prop: siriRequesterNginxImage
       kubeconfig: .rancher.kubeconfig

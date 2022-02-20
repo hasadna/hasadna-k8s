@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: siri-requester-nginx
+spec:
+  selector:
+    matchLabels:
+      app: siri-requester-nginx
+  replicas: 1
+  revisionHistoryLimit: 5
+  template:
+    metadata:
+      labels:
+        app: siri-requester-nginx
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: nginx
+          image: {{ .Values.siriRequesterNginxImage }}
+          resources: {{ .Values.siriRequesterNginxResources }}
+          env:
+            - name: SIRI_REQUESTER_HEALTH_URL
+              value: http://siri-requester:8081
+          volumeMounts:
+            - name: sirirequester
+              mountPath: /srv
+      volumes:
+        - name: sirirequester
+          nfs:
+            server: {{ .Values.nfsServer | quote }}
+            path: {{ .Values.siriRequesterNfsPath | quote }}

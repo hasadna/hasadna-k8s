@@ -45,7 +45,7 @@ openbus:
       ssl: true
       rules:
         - host: open-bus-siri-requester.hasadna.org.il
-          serviceName: siri-requester
+          serviceName: siri-requester-nginx
           servicePort: 80
     - name: airflow-webserver
       ssl: true

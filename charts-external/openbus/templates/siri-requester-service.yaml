@@ -6,5 +6,5 @@ spec:
   selector:
     app: siri-requester
   ports:
-  - name: "80"
-    port: 80
+  - name: "8081"
+    port: 8081
