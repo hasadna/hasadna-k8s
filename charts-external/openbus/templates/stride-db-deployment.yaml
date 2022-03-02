@@ -35,5 +35,5 @@ spec:
       volumes:
       - name: data
         nfs:
-          server: {{ .Values.nfsServer | quote }}
+          server: {{ .Values.db.nfsServer | quote }}
           path: {{ .Values.db.nfsPath | quote }}
