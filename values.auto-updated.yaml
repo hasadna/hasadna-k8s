@@ -25,7 +25,7 @@ oknesset:
   DataBackendImage: uumpa/knesset-data-backend:bc03d3c1830a856d6bbacf4b2481d83dd1f836c6
   WebUiImage: uumpa/knesset-data-web-ui:94b6de1cc89ae20647e35aa606c3c9b95e81dbe6
 openbus:
-  pipelinesImage: docker.pkg.github.com/hasadna/open-bus-pipelines/open-bus-pipelines:24f4b182eb2607e42661f6fe04e4252e18bf77d3
+  pipelinesImage: docker.pkg.github.com/hasadna/open-bus-pipelines/open-bus-pipelines:146d74cd851fcb855a5088a64858201d840aaa23
   siriEtlImage: docker.pkg.github.com/hasadna/open-bus-siri-etl/open-bus-siri-etl:e3ec39a864a5732de032d7414c2e26d1765338fd
   siriRequesterImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester:2ef13e4bf50261a41230b33a46ad76964ce6b7bf
   siriRequesterNginxImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester-nginx:2ef13e4bf50261a41230b33a46ad76964ce6b7bf
