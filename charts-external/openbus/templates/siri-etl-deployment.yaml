@@ -28,7 +28,7 @@ spec:
             - name: SQLALCHEMY_URL
               valueFrom: {"secretKeyRef":{"name":"db", "key":"SQLALCHEMY_URL"}}
             - name: DEBUG
-              value: "yes"
+              value: "no"
             - name: OPEN_BUS_SIRI_ETL_USE_OBJECTSMAKER_CACHE
               value: "yes"
           volumeMounts:
