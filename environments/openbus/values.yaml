@@ -68,9 +68,9 @@ openbus:
         - host: open-bus-gtfs-data.hasadna.org.il
           serviceName: gtfs-nginx
           servicePort: 80
-    - name: stride-db-backup-monitor
+    - name: webmon
       ssl: true
       rules:
-        - host: open-bus-stride-db-backup-monitor.hasadna.org.il
-          serviceName: stride-db-backup-monitor
-          servicePort: 8081
+        - host: open-bus-webmon.hasadna.org.il
+          serviceName: webmon
+          servicePort: 8901
