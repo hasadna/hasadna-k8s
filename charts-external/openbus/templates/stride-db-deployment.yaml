@@ -1,3 +1,4 @@
+{{ if .Values.db.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -32,8 +33,14 @@ spec:
         - name: data
           mountPath: /var/lib/postgresql/data
           subPath: stride_db
+        - name: dshm
+          mountPath: /dev/shm
       volumes:
       - name: data
         nfs:
           server: {{ .Values.db.nfsServer | quote }}
           path: {{ .Values.db.nfsPath | quote }}
+      - name: dshm
+        emptyDir:
+            medium: Memory
+{{ end }}

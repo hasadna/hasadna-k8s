@@ -1,3 +1,4 @@
+{{ if .Values.db.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -8,3 +9,4 @@ spec:
   ports:
   - name: "8081"
     port: 8081
+{{ end }}

@@ -1,0 +1,3 @@
+webmons:
+  - path: /stride-db-backup
+    python_file: /opt/webmon/stride-db-backup.py

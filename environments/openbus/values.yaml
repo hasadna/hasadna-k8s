@@ -13,14 +13,16 @@ openbus:
   siriEtlProcessNewSnapshotsResources: '{"requests": {"cpu": "3000m", "memory": "4000Mi"}, "limits": {"memory": "8000Mi"}}'
 
   db:
-    image: "postgres:13"
-    resources: '{"requests": {"cpu": "4000m", "memory": "16000Mi"}, "limits": {"cpu": "4000m", "memory": "16000Mi"}}'
-    nfsServer: "172.16.0.12"
-    nfsPath: "/stride/db"
-    nodePort: 31834
-    backupSchedule: "37 1 * * *"
-    backupImage: "docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db-backup:d358f4dfa16e60f9aad8946cad314fa4b5a195cb"
-    backupResources: '{"requests": {"cpu": "200m", "memory": "1500Mi"}, "limits": {"cpu": "400m", "memory": "3000Mi"}}'
+    enabled: false
+    # image is used for the stride-db-migrations, it should use the same version as the dedicated db uses
+    image: "postgres:14"
+    # resources: '{"requests": {"cpu": "6000m", "memory": "30000Mi"}, "limits": {"cpu": "6000m", "memory": "30000Mi"}}'
+    # nfsServer: "172.16.0.12"
+    # nfsPath: "/stride/db"
+    # nodePort: 31834
+    # backupSchedule: "37 1 * * *"
+    # backupImage: "docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db-backup:d358f4dfa16e60f9aad8946cad314fa4b5a195cb"
+    # backupResources: '{"requests": {"cpu": "200m", "memory": "1500Mi"}, "limits": {"cpu": "400m", "memory": "3000Mi"}}'
 
   airflowHomeNfsPath: "/openbus/airflow-home"
   airflowDb:

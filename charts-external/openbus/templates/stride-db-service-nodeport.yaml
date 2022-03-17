@@ -1,3 +1,4 @@
+{{ if .Values.db.enabled }}
 {{ if .Values.db.nodePort }}
 apiVersion: v1
 kind: Service
@@ -11,4 +12,5 @@ spec:
   - name: "5432"
     port: 5432
     nodePort: {{  .Values.db.nodePort }}
+{{ end }}
 {{ end }}
