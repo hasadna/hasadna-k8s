@@ -18,6 +18,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: webmon
+        # built from ../webmon
         image: ghcr.io/orihoch/hasadna-open-bus-webmon:be9f0b02da27ad46808fa7cf516c5dca7144d6c1
         env:
           - name: AWS_ACCESS_KEY_ID
