@@ -216,6 +216,94 @@ Add the following cronjob:
 37 1 * * * bash /var/lib/postgresql/stride-backup.sh 2>&1 >> /var/lib/postgresql/stride-backup.log
 ```
 
+Install docker:
+
+```
+apt-get update && apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common &&\
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &&\
+apt-key fingerprint 0EBFCD88
+```
+
+Verify fingerprint:
+
+```
+pub   rsa4096 2017-02-22 [SCEA]
+      9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+uid           [ unknown] Docker Release (CE deb) <docker@docker.com>
+sub   rsa4096 2017-02-22 [S]
+```
+
+Continue installation:
+
+```
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" &&\
+apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io
+```
+
+Run the Prometheus node exporter
+
+* this is the same one that runs on cluster nodes
+* change the listen address to the node's internal IP
+* it will restart on failure and persist after server restart
+
+```
+docker run -d --name prom-node-exporter \
+    -v /proc:/host/proc \
+    -v /sys:/host/sys \
+    -v /:/host \
+    --net=host \
+    --restart unless-stopped \
+    rancher/prom-node-exporter:v0.17.0 \
+    --web.listen-address=172.16.0.16:9796 --path.procfs=/host/proc --path.sysfs=/host/sys --path.rootfs=/host --collector.arp \
+    --collector.bcache --collector.bonding --no-collector.buddyinfo --collector.conntrack --collector.cpu --collector.diskstats \
+    --no-collector.drbd --collector.edac --collector.entropy --collector.filefd --collector.filesystem --collector.hwmon \
+    --collector.infiniband --no-collector.interrupts --collector.ipvs --no-collector.ksmd --collector.loadavg --no-collector.logind \
+    --collector.mdadm --collector.meminfo --no-collector.meminfo_numa --no-collector.mountstats --collector.netdev --collector.netstat \
+    --no-collector.nfs --no-collector.nfsd --no-collector.ntp --no-collector.processes --no-collector.qdisc --no-collector.runit --collector.sockstat \
+    --collector.stat --no-collector.supervisord --no-collector.systemd --no-collector.tcpstat --collector.textfile --collector.time \
+    --collector.timex --collector.uname --collector.vmstat --no-collector.wifi --collector.xfs --collector.zfs
+```
+
+Start the Postgresql exporter
+
+* Image sha256 is from Mar. 18, 2022
+* Change the listen-address to the internal IP
+* Change the DATA_SOURCE_NAME according to relevant connection details
+
+```
+docker run -d --name prom-postgres-exporter \
+  --restart unless-stopped \
+  --net=host \
+  -e DATA_SOURCE_NAME="postgresql://postgres:password@localhost:5432/postgres?sslmode=disable" \
+  quay.io/prometheuscommunity/postgres-exporter@sha256:8fa85c23bb8dafb7b15673b800f588445fd9c0378631e2bac8e2e5567b345b69 \
+  --web.listen-address=172.16.0.16:9797
+```
+
+Open ports for internal IP in the firewall
+
+```
+ufw allow from 172.16.0.0/16
+```
+
+Edit the secret `prometheus-cluster-monitoring-additional-scrape-configs`, add the following jobs
+(change IPs if needed):
+
+```
+- job_name: 'openbus-stride-db-server'
+  scrape_interval: 15s
+  static_configs:
+    - targets: ['172.16.0.16:9796']
+- job_name: 'openbus-stride-db-postgres'
+  scrape_interval: 15s
+  static_configs:
+    - targets: ['172.16.0.16:9797']
+```
+
+After a few minutes you should start seeing the server in grafana and Rancher monitoring graphs
+
+You can add a postgresql dashboard to Grafana: https://grafana.com/grafana/dashboards/9628
+
+
 ### Enable DB Redash read-only user
 
 Run the following on the stride DB (replace **** with real password):
