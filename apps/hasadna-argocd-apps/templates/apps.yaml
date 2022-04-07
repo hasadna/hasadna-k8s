@@ -6,9 +6,9 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    namespace: {{ .destinationNamespace | quote }}
+    namespace: {{ if .destinationNamespace }}{{ .destinationNamespace | quote }}{{ else }}{{ .name | quote }}{{ end }}
     server: 'https://kubernetes.default.svc'
-  project: {{ .project | quote }}
+  project: {{ if .project }}{{ .project | quote }}{{ else }}{{ .name | quote }}{{ end }}
   source: {{ toYaml .source | nindent 4 }}
   syncPolicy:
     {{ if not .disableAutoSync }}

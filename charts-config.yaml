@@ -119,57 +119,5 @@ datacity:
       image-prop: dgpAppImage
       kubeconfig: .rancher.kubeconfig
 
-openbus:
-  lint-environments: openbus
-  automatic-updates:
-    - commit-message: automatic update of open bus siri requester
-      namespace-name: openbus
-      deployment-name: siri-requester
-      container-name: app
-      image-prop: siriRequesterImage
-      kubeconfig: .rancher.kubeconfig
-    - commit-message: automatic update of open bus siri requester
-      namespace-name: openbus
-      deployment-name: siri-requester
-      container-name: health
-      image-prop: siriRequesterImage
-      kubeconfig: .rancher.kubeconfig
-    - commit-message: automatic update of open bus siri requester
-      namespace-name: openbus
-      deployment-name: siri-requester-nginx
-      container-name: nginx
-      image-prop: siriRequesterNginxImage
-      kubeconfig: .rancher.kubeconfig
-    - commit-message: automatic update of open bus siri etl
-      namespace-name: openbus
-      deployment-name: siri-etl
-      container-name: process-new-snapshots
-      image-prop: siriEtlImage
-      kubeconfig: .rancher.kubeconfig
-    - commit-message: automatic update of open bus stride db
-      namespace-name: openbus
-      deployment-name: stride-db-migrations
-      container-name: migrations
-      image-prop: strideDbAppImage
-      kubeconfig: .rancher.kubeconfig
-    - commit-message: automatic update of open bus pipelines
-      namespace-name: openbus
-      deployment-name: airflow-scheduler
-      container-name: scheduler
-      image-prop: pipelinesImage
-      kubeconfig: .rancher.kubeconfig
-    - commit-message: automatic update of open bus pipelines
-      namespace-name: openbus
-      deployment-name: airflow-webserver
-      container-name: webserver
-      image-prop: pipelinesImage
-      kubeconfig: .rancher.kubeconfig
-    - commit-message: automatic update of open bus stride api
-      namespace-name: openbus
-      deployment-name: stride-api
-      container-name: api
-      image-prop: strideApiImage
-      kubeconfig: .rancher.kubeconfig
-
 redash:
   lint-environments: redash

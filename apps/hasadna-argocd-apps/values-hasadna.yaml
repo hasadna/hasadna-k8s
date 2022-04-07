@@ -1,11 +1,23 @@
 apps:
+
   - name: cluster-admin
     project: default
     destinationNamespace: default
     source:
-      path: apps/cluster-admin
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: testing-argocd
+      path: apps/cluster-admin
       helm:
         valueFiles:
           - values-hasadna.yaml
+
+  - name: openbus
+    disableAutoSync: true
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: testing-argocd
+      path: apps/openbus
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+          - values-hasadna-auto-updated.yaml
