@@ -2,12 +2,10 @@ apps:
   - name: hello-world
     project: default
     destinationNamespace: hello-world
-    createNamespace: true
-    autoSync: true
     source:
+      path: apps/hello-world
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: testing-argocd
       helm:
         valueFiles:
           - values-production.yaml
-        path: apps/hello-world
-        repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
-        targetRevision: testing-argocd
