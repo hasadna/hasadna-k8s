@@ -1,4 +1,4 @@
-pipelinesImage: docker.pkg.github.com/hasadna/open-bus-pipelines/open-bus-pipelines:146d74cd851fcb855a5088a64858201d840aaa23
+pipelinesImage: docker.pkg.github.com/hasadna/open-bus-pipelines/open-bus-pipelines:c92917f093bfe88ba52f36fe4b65793cf1e811fe
 siriEtlImage: docker.pkg.github.com/hasadna/open-bus-siri-etl/open-bus-siri-etl:92ff0b65c9aea401d7ed480b0b9c25f32a24c55d
 siriRequesterImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester:2ef13e4bf50261a41230b33a46ad76964ce6b7bf
 siriRequesterNginxImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester-nginx:2ef13e4bf50261a41230b33a46ad76964ce6b7bf
