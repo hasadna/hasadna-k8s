@@ -1,0 +1,9 @@
+{{ range .Values.projects }}
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: {{ .name | quote }}
+  namespace: argocd
+spec: {{ toYaml .spec | nindent 2 }}
+---
+{{ end }}

@@ -1,3 +1,14 @@
+projects:
+
+  - name: openbus
+    spec:
+      destinations:
+        - name: '*'
+          namespace: openbus
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+
 apps:
 
   - name: cluster-admin
