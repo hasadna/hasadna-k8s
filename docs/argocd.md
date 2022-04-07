@@ -4,13 +4,31 @@
 
 ## Usage
 
-You should login at https://argocd.hasadna.org.il using GitHub, to have access you need to belong
-to [hasadna argocd-admins team](https://github.com/orgs/hasadna/teams/argocd-admins).
+All the infrastructure is managed via apps defined under `apps/`, each directory under `apps/` is a single app
+which can be deployed to the cluster. Apps are usually helm charts, but can also contain manifests or kustomize 
+files. See argocd documentation for details.
+
+All the apps which need to be synced should be defined in the app `hasadna-argocd`. App definitions
+should be added to `hasadna-argocd/values-hasadna.yaml`.
+
+You can track progress of deployments using the Web UI. Login at https://argocd.hasadna.org.il 
+using GitHub, to have access you need to belong to one of these teams:
+* [argocd-users](https://github.com/orgs/hasadna/teams/argocd-users) - have read-only access, can view deployment progress but can't perform any actions 
+* [argocd-admins](https://github.com/orgs/hasadna/teams/argocd-admins) - have full admin access
 
 To login from the CLI: `argocd login --sso argocd-grpc.hasadna.org.il`
 
 You can also login using the local admin user, the password is available in Vault `Projects/k8s/argocd`.
 You can login from CLI using `argocd login --username "" --password "" argocd-grpc.hasadna.org.il`
+
+## Migrating to argocd from helm
+
+Old helm releases can be migrated to argocd with minimal disruption using the following procedure:
+
+* Move relevant chart + valuse to `apps/`
+* Add the app to `hasadna-argocd/values-hasadna.yaml`
+* Delete all Helm secrets in the app namespace - this removes the helm releases without deleting the resources
+* Commit the changes and sync the argocd app
 
 ## Install
 

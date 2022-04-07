@@ -1,6 +1,3 @@
-cluster-admin:
-  enabled: true
-
 nfs:
   enabled: false
 

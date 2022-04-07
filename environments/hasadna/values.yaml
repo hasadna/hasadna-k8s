@@ -1,9 +1,0 @@
-cluster-admin:
-  enabled: true
-  adminerEnabled: false
-  dockerDaemonConfig:
-    "log-driver": "json-file"
-    "log-opts":
-      "max-size": "100m"
-      "max-file": "5"
-      "compress": "true"

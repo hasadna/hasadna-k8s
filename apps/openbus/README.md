@@ -6,11 +6,10 @@ Open Bus project
 
 First, deploy the Stride DB server, see below under "Stride DB" for details.
 
-Connect to openbus production environment
+Connect to cluster
 
 ```
 export KUBECONFIG=/path/to/kamatera/kubeconfig
-source switch_environment.sh openbus
 ```
 
 Create namespace
@@ -81,17 +80,7 @@ mkdir -p /srv/default2/openbus/airflow-db
 mkdir -p /srv/default2/openbus/airflow-home
 ```
 
-Dry Run
-
-```
-./helm_upgrade_external_chart.sh openbus --install --debug --dry-run
-```
-
-Deploy
-
-```
-./helm_upgrade_external_chart.sh openbus --install
-```
+Sync the app in [ArgoCD](/docs/argocd.md)
 
 
 ## Stride DB

@@ -1,0 +1,33 @@
+projects:
+
+  - name: openbus
+    spec:
+      destinations:
+        - name: '*'
+          namespace: openbus
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+
+apps:
+
+  - name: cluster-admin
+    project: default
+    destinationNamespace: default
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: testing-argocd
+      path: apps/cluster-admin
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+
+  - name: openbus
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: testing-argocd
+      path: apps/openbus
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+          - values-hasadna-auto-updated.yaml

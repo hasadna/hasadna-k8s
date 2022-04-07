@@ -24,13 +24,6 @@ odata:
 oknesset:
   DataBackendImage: uumpa/knesset-data-backend:bc03d3c1830a856d6bbacf4b2481d83dd1f836c6
   WebUiImage: uumpa/knesset-data-web-ui:94b6de1cc89ae20647e35aa606c3c9b95e81dbe6
-openbus:
-  pipelinesImage: docker.pkg.github.com/hasadna/open-bus-pipelines/open-bus-pipelines:146d74cd851fcb855a5088a64858201d840aaa23
-  siriEtlImage: docker.pkg.github.com/hasadna/open-bus-siri-etl/open-bus-siri-etl:92ff0b65c9aea401d7ed480b0b9c25f32a24c55d
-  siriRequesterImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester:2ef13e4bf50261a41230b33a46ad76964ce6b7bf
-  siriRequesterNginxImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester-nginx:2ef13e4bf50261a41230b33a46ad76964ce6b7bf
-  strideApiImage: ghcr.io/hasadna/open-bus-stride-api/open-bus-stride-api:b00efdcd64c405a5e5dc09d83d2fec3c2b3f93e1
-  strideDbAppImage: docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db:2fcf21b99a0fab22a4ea8ec05ace3ef0cd1f4003
 openpension:
   client:
     image: hasadna/open-pension-client:1f8f83e2a8e61e0928e4b5f499475f8e675265bd
