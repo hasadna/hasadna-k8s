@@ -1,0 +1,34 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: betaknesset-elasticsearch
+spec:
+  version: 8.1.2
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  nodeSets:
+  - name: default
+    count: 1
+    podTemplate:
+      spec:
+        containers:
+          - name: elasticsearch
+            resources:
+              requests:
+                memory: 3Gi
+                cpu: 1
+              limits:
+                memory: 4Gi
+                cpu: 2
+    volumeClaimTemplates:
+      - metadata:
+          name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
+        spec:
+          storageClassName: "nfs-client"
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 50Gi
