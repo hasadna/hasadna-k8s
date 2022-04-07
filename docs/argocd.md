@@ -1,25 +1,27 @@
 # Argo CD - continuous deployment
 
-[Download ArgoCD CLI](https://argo-cd.readthedocs.io/en/stable/getting_started/#2-download-argo-cd-cli)
+All the infrastructure is managed via apps defined under `apps/`.
+Each directory under `apps/` is a single app which can be deployed to the cluster.
+Apps are usually helm charts, but can also contain manifests or kustomize files.
+See argocd documentation for all available options.
 
-## Usage
+All the apps which need to be synced should be defined in `apps/hasadna-argocd/values-hasadna.yaml`.
+The `hasadna-argocd` app is synced and any apps defined there will be added and synced as well.
 
-All the infrastructure is managed via apps defined under `apps/`, each directory under `apps/` is a single app
-which can be deployed to the cluster. Apps are usually helm charts, but can also contain manifests or kustomize 
-files. See argocd documentation for details.
-
-All the apps which need to be synced should be defined in the app `hasadna-argocd`. App definitions
-should be added to `hasadna-argocd/values-hasadna.yaml`.
-
-You can track progress of deployments using the Web UI. Login at https://argocd.hasadna.org.il 
-using GitHub, to have access you need to belong to one of these teams:
+You can track progress of deployments using the Web UI.
+Login at https://argocd.hasadna.org.il using GitHub.
+To have access you need to belong to one of these teams:
 * [argocd-users](https://github.com/orgs/hasadna/teams/argocd-users) - have read-only access, can view deployment progress but can't perform any actions 
 * [argocd-admins](https://github.com/orgs/hasadna/teams/argocd-admins) - have full admin access
 
-To login from the CLI: `argocd login --sso argocd-grpc.hasadna.org.il`
-
 You can also login using the local admin user, the password is available in Vault `Projects/k8s/argocd`.
-You can login from CLI using `argocd login --username "" --password "" argocd-grpc.hasadna.org.il`
+
+## Using ArgoCD CLI
+
+[Download ArgoCD CLI](https://argo-cd.readthedocs.io/en/stable/getting_started/#2-download-argo-cd-cli)
+
+* Login using SSO: `argocd login --sso argocd-grpc.hasadna.org.il`
+* Login using username/password: `argocd login --username "" --password "" argocd-grpc.hasadna.org.il`
 
 ## Migrating to argocd from helm
 
