@@ -1,12 +1,12 @@
 # Argo CD - continuous deployment
 
-All the infrastructure is managed via apps defined under `apps/`.
-Each directory under `apps/` is a single app which can be deployed to the cluster.
+All the infrastructure is managed via apps defined under [/apps](/apps).
+Each directory under [/apps](/apps) is a single app which can be deployed to the cluster.
 Apps are usually helm charts, but can also contain manifests or kustomize files.
 See argocd documentation for all available options.
 
-All the apps which need to be synced should be defined in `apps/hasadna-argocd/values-hasadna.yaml`.
-The `hasadna-argocd` app is synced and any apps defined there will be added and synced as well.
+All the apps which need to be synced should be defined in [/apps/hasadna-argocd/values-hasadna.yaml](/apps/hasadna-argocd/values-hasadna.yaml).
+The `hasadna-argocd` app is synced in ArgoCD and any apps defined there will be added and synced as well.
 
 You can track progress of deployments using the Web UI.
 Login at https://argocd.hasadna.org.il using GitHub.
