@@ -1,11 +1,11 @@
 apps:
-  - name: hello-world
+  - name: cluster-admin
     project: default
-    destinationNamespace: hello-world
+    destinationNamespace: default
     source:
-      path: apps/hello-world
+      path: apps/cluster-admin
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: testing-argocd
       helm:
         valueFiles:
-          - values-production.yaml
+          - values-hasadna.yaml
