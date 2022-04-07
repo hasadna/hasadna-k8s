@@ -9,6 +9,15 @@ projects:
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
 
+  - name: betaknesset
+    spec:
+      destinations:
+        - name: '*'
+          namespace: betaknesset
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+
 apps:
 
   - name: cluster-admin
@@ -31,3 +40,9 @@ apps:
         valueFiles:
           - values-hasadna.yaml
           - values-hasadna-auto-updated.yaml
+
+  - name: betaknesset
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/betaknesset
