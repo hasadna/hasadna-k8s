@@ -1,17 +1,36 @@
 # cluster monitoring
 
-monitoring is based on Rancher
+monitoring is based on Rancher (2.6) monitoring
 
-go to the hasadna cluster > tools > monitoring >
-  * enable persistent storage for prometheus: true
-  * storage class: nfs-client
-  * enable persistent storage for grafana: true
-  * storage class: nfs-client
-  * enable
+## Install
 
-go to hasadna cluster > cluster metrics > grafana
-  * on the bottom left - sign in
-  * `admin` / `admin`
-  * set a new password
+Cluster explorer > hasadna > cluster tools > Monitoring > Install
 
-The password is stored in Hasadna's vault `Projects/k8s/grafana-admin`
+* version: 100.1.2+up19.0.3
+* Prometheus - enable persistent storage
+  * Size: `50Gi`
+  * Storage class name: `nfs-client`
+* Grafana - enable persistent storage
+  * same as prometheus
+
+## Grafana
+
+Access Grafana from the Rancher UI
+
+Sign-in to make changes with username `admin`, password from vault `Projects/k8s/grafana-admin`
+
+## Prometheus additional scrape configs
+
+Cluster explorer > hasadna > cluster tools > monitoring > update
+
+Edit as yaml and add scrape configs, for example:
+
+```
+  prometheusSpec:
+    additionalScrapeConfigs:
+    - job_name: myjob
+      metrics_path: /metrics
+      static_configs:
+        - targets:
+          - <IP>:<PORT>
+```

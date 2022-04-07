@@ -285,21 +285,11 @@ Open ports for internal IP in the firewall
 ufw allow from 172.16.0.0/16
 ```
 
-Edit the secret `prometheus-cluster-monitoring-additional-scrape-configs`, add the following jobs
-(change IPs if needed):
+See docs/monitoring.md Prometheus additional scrape configs, add 2 jobs:
+* openbus-stride-db-server: 172.16.0.16:9796
+* openbus-stride-db-postgres: 172.16.0.16:9797
 
-```
-- job_name: 'openbus-stride-db-server'
-  scrape_interval: 15s
-  static_configs:
-    - targets: ['172.16.0.16:9796']
-- job_name: 'openbus-stride-db-postgres'
-  scrape_interval: 15s
-  static_configs:
-    - targets: ['172.16.0.16:9797']
-```
-
-After a few minutes you should start seeing the server in grafana and Rancher monitoring graphs
+The nfs node appears in grafana dashboard `Rancher / Node`
 
 You can add a postgresql dashboard to Grafana: https://grafana.com/grafana/dashboards/9628
 

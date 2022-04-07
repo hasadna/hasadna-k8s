@@ -145,15 +145,8 @@ docker run -d --name prom-node-exporter \
     --collector.timex --collector.uname --collector.vmstat --no-collector.wifi --collector.xfs --collector.zfs
 ```
 
-Edit the secret `prometheus-cluster-monitoring-additional-scrape-configs`, add the following job:
+See docs/monitoring.md Prometheus additional scrape configs
 
-```
-- job_name: 'nfs'
-  scrape_interval: 15s
-  static_configs:
-    - targets: ['172.16.0.9:9796']
-```
+The nfs node appears in grafana dashboard `Rancher / Node`
 
-After a few minutes you should start seeing the nfs node in grafana and Rancher monitoring graphs
-
-You can add an NFS dashboard to Grafana: https://grafana.com/grafana/dashboards/6257
+You can also add an NFS dashboard to Grafana: https://grafana.com/grafana/dashboards/6257

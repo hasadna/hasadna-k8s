@@ -1,6 +1,10 @@
 # Backups
 
-Backups are handled using Restic and run periodically from the Jenkins server
+## Restic Backups
+
+Restic backups run periodically from the Jenkins server
+
+Get secret values from Hasadna's Vault `Projects/k8s/restic-backups`
 
 Make sure you are using Restic version 0.9
 
@@ -30,11 +34,11 @@ where BACKUP_TYPE can be one of:
 
 Before first backup, each repo was initialized with the following command: `restic -r $RESTIC_REPO init`
 
-## Periodic backup jobs
+### Periodic backup jobs
 
 Jobs are scheduled on the Jenkins server
 
-### Rancher and Jenkins backups
+#### Rancher and Jenkins backups
 
 * name: `backup-rancher`
 * discard old builds: keep 10 days
@@ -52,7 +56,7 @@ eval "${RESTIC_BACKUP_VARS}"
 restic -r $RESTIC_REPO backup $BACKUP_DIRECTORIES
 ```
 
-### Storage backups
+#### Storage backups
 
 * name: `hasadna-backup-storage`
 * discard old builds: keep 10 days
@@ -99,7 +103,7 @@ done
 exit $ALL_RET
 ```
 
-### etcd backups
+#### etcd backups
 
 * name: `hasadna-backup-etcd`
 * discard old builds: keep 10 days
@@ -127,3 +131,18 @@ rancher ssh $ETCD_NODE -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=
   ./restic -r $RESTIC_REPO backup ./etcd-snapshot
 "
 ```
+
+## Rancher snapshots
+
+Edit the cluster, select etcd snapshots target s3
+
+Get secret values from Hasadna's Vault `Projects/k8s/restic-backups`
+
+* S3 bucket name: same as the Restic bucket name
+* S3 region: `us-east-1`
+* S3 region endpoint: `s3.us-east-1.amazonaws.com`
+* S3 folder: (change based on cluster name): `rancher-snapshots-***`
+* S3 Access Key / S3 Secret: same as the Restic
+* Recurring etcd snapshots enable: yes
+* recurrent snapshot interval: 12 hours
+* recurring etcd snapshots retention: 6 days
