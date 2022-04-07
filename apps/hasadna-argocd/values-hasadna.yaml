@@ -16,7 +16,7 @@ apps:
     destinationNamespace: default
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
-      targetRevision: testing-argocd
+      targetRevision: master
       path: apps/cluster-admin
       helm:
         valueFiles:
@@ -25,7 +25,7 @@ apps:
   - name: openbus
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
-      targetRevision: testing-argocd
+      targetRevision: master
       path: apps/openbus
       helm:
         valueFiles:
