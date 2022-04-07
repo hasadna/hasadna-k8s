@@ -11,18 +11,12 @@ spec:
   project: {{ .project | quote }}
   source: {{ toYaml .source | nindent 4 }}
   syncPolicy:
-    {{ if ! .disableAutoSync }}
+    {{ if not .disableAutoSync }}
     automated:
       prune: true
       selfHeal: true
     {{ end }}
     syncOptions:
       - CreateNamespace=true
-    retry:
-      limit: 2
-      backoff:
-        duration: 5s
-        factor: 2
-        maxDuration: 3m0s
 ---
 {{ end }}
