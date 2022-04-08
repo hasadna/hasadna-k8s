@@ -4,6 +4,12 @@ VPA Has to be deployed manually, we only use the recommender and do the scaling 
 
 ## Deploy
 
+Generate certs (should be done only once):
+
+```
+apps/vertical-pod-autoscaler/gencerts.sh
+```
+
 Deploy manually:
 
 ```
