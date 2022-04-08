@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- admission-controller-deployment.yaml
+- recommender-deployment.yaml
+- vpa-rbac.yaml
+- vpa-v1-crd.yaml

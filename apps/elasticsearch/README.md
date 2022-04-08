@@ -10,6 +10,14 @@ The operator and CRDs should be deployed manually:
 kubectl apply -k apps/elasticsearch/operator
 ```
 
+## Upgrading the operator
+
+Make changes in the download.sh script and then run it to download the relevant manifests:
+
+```
+apps/elasticsearch/operator/download.sh
+``` 
+
 ## Deploy instances
 
 Instances should be deployed as part of other apps, using the ECK CRDs
