@@ -95,11 +95,21 @@ apps:
           - values-hasadna-auto-updated.yaml
 
   - name: openpension
-    disableAutoSync: true
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/openpension
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+
+  - name: redash
+    project: default
+    disableAutoSync: true
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/redash
       helm:
         valueFiles:
           - values-hasadna.yaml
