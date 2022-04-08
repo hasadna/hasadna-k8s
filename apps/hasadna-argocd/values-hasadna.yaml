@@ -36,6 +36,15 @@ projects:
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
 
+  - name: openpension
+    spec:
+      destinations:
+        - name: '*'
+          namespace: openpension
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+
 apps:
 
   - name: cluster-admin
@@ -84,3 +93,13 @@ apps:
         valueFiles:
           - values-hasadna.yaml
           - values-hasadna-auto-updated.yaml
+
+  - name: openpension
+    disableAutoSync: true
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/openpension
+      helm:
+        valueFiles:
+          - values-hasadna.yaml

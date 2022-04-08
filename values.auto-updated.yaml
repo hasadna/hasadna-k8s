@@ -11,13 +11,6 @@ anyway:
   imageDev: docker.pkg.github.com/hasadna/anyway/anyway:sha-fc53a43
   nginxImage: docker.pkg.github.com/hasadna/anyway/nginx:sha-98f07c0
   nginxImageDev: docker.pkg.github.com/hasadna/anyway/nginx:sha-fc53a43
-mysadna:
-  image: uumpa/hasadna-mysadna:c0a681d5a0c68ada76b6d68fce1c2115224790a9
 oknesset:
   DataBackendImage: uumpa/knesset-data-backend:bc03d3c1830a856d6bbacf4b2481d83dd1f836c6
   WebUiImage: uumpa/knesset-data-web-ui:94b6de1cc89ae20647e35aa606c3c9b95e81dbe6
-openpension:
-  client:
-    image: hasadna/open-pension-client:1f8f83e2a8e61e0928e4b5f499475f8e675265bd
-  server:
-    image: uumpa/hasadna-openpension:server-c72f525ec4d7de2e4337c0a7b0b1f6f8d357b72f

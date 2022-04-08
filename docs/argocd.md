@@ -8,6 +8,10 @@ See argocd documentation for all available options.
 All the apps which need to be synced should be defined in [/apps/hasadna-argocd/values-hasadna.yaml](/apps/hasadna-argocd/values-hasadna.yaml).
 The `hasadna-argocd` app is synced in ArgoCD and any apps defined there will be added and synced as well.
 
+You can disable the auto-sync of apps, allowing to view diff before applying or 
+to make manual changes for debugging, by adding `disableAutoSync: true` to the 
+relevant app definition in `hasadna-argocd/values-hasadna.yaml`
+
 You can track progress of deployments using the Web UI.
 Login at https://argocd.hasadna.org.il using GitHub.
 To have access you need to belong to one of these teams:
