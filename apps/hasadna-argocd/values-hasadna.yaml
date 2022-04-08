@@ -123,11 +123,21 @@ apps:
           - values-hasadna.yaml
 
   - name: reportit
-    disableAutoSync: true
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/reportit
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+
+  - name: resourcesaver
+    project: default
+    disableAutoSync: true
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/resourcesaverproxy
       helm:
         valueFiles:
           - values-hasadna.yaml
