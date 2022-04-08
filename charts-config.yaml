@@ -1,12 +1,3 @@
-avidcovider:
-  lint-environments: avidcovider-gcloud
-  automatic-updates:
-    - commit-message: automatic update of avid-covider pipelines
-      namespace-name: avidcovider
-      deployment-name: pipelines
-      container-name: pipelines
-      image-prop: pipelinesImage
-
 anyway:
   lint-environments: anyway
   automatic-updates:
@@ -92,22 +83,6 @@ anyway-dev:
       image-prop: etlNginxImageDev
       kubeconfig: .rancher.kubeconfig
       pre-deploy-update-chart-config-value: true
-
-datacity:
-  lint-environments: datacity
-  automatic-updates:
-    - commit-message: automatic update of datacity ckan dgp server
-      namespace-name: datacity
-      deployment-name: ckan-dgp
-      container-name: server
-      image-prop: ckanDgpServerImage
-      kubeconfig: .rancher.kubeconfig
-    - commit-message: automatic update of datacity dgp importer
-      namespace-name: datacity
-      deployment-name: importer
-      container-name: importer
-      image-prop: dgpAppImage
-      kubeconfig: .rancher.kubeconfig
 
 redash:
   lint-environments: redash
