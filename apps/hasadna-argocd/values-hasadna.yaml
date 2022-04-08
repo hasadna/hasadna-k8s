@@ -54,6 +54,15 @@ projects:
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
 
+  - name: migdar
+    spec:
+      destinations:
+        - name: '*'
+          namespace: migdar
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/migdar-k8s.git'
+
 apps:
 
   - name: cluster-admin
@@ -160,3 +169,15 @@ apps:
       helm:
         valueFiles:
           - values-hasadna.yaml
+
+  - name: migdar
+    disableAutoSync: true
+    source:
+      repoURL: 'https://github.com/hasadna/migdar-k8s.git'
+      targetRevision: migrate-to-argocd
+      path: apps/migdar
+      helm:
+        valueFiles:
+          - values-global.yaml
+          - values-hasadna.yaml
+          - values-hasadna-auto-updated.yaml
