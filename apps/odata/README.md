@@ -1,5 +1,9 @@
 # Odata (ckan) chart
 
+**IMPORTANT NOTICE**
+
+**Most of the documentation and scripts are not compatible with ArgoCD and will need to be updated**
+
 ## Installation
 
 ### Install Minikube environment for local development
