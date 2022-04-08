@@ -1,0 +1,11 @@
+enabled: true
+resources: '{"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "500Mi"}}'
+nfsServer: "172.16.0.9"
+nfsPath: "/hasadna/vault"
+ingresses:
+  - name: vault
+    ssl: true
+    rules:
+      - host: vault.hasadna.org.il
+        serviceName: vault
+        servicePort: 8200

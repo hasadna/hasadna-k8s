@@ -2,33 +2,6 @@
 
 Hashicorp Vault is used for secure centralized secrets storage
 
-## Install
-
-Connect to vault production environment
-
-```
-export KUBECONFIG=/path/to/kamatera/kubeconfig
-source switch_environment.sh vault
-```
-
-Create namespace
-
-```
-kubectl create ns vault
-```
-
-Dry Run
-
-```
-./helm_upgrade_external_chart.sh vault --install --debug --dry-run
-```
-
-Deploy
-
-```
-./helm_upgrade_external_chart.sh vault --install
-```
-
 ## Usage
 
 ### Add an admin user
