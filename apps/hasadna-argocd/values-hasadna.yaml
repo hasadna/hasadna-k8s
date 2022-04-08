@@ -76,7 +76,6 @@ apps:
           - values-hasadna-auto-updated.yaml
 
   - name: datacity
-    disableAutoSync: true
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
