@@ -11,6 +11,3 @@ anyway:
   imageDev: docker.pkg.github.com/hasadna/anyway/anyway:sha-fc53a43
   nginxImage: docker.pkg.github.com/hasadna/anyway/nginx:sha-98f07c0
   nginxImageDev: docker.pkg.github.com/hasadna/anyway/nginx:sha-fc53a43
-oknesset:
-  DataBackendImage: uumpa/knesset-data-backend:bc03d3c1830a856d6bbacf4b2481d83dd1f836c6
-  WebUiImage: uumpa/knesset-data-web-ui:94b6de1cc89ae20647e35aa606c3c9b95e81dbe6

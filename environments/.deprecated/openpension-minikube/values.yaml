@@ -1,6 +1,0 @@
-openpension:
-  enabled: true
-  client:
-    image: hasadna/open-pension-client
-  server:
-    image: hasadna/open-pension-server
