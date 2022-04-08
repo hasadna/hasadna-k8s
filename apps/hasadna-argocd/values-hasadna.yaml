@@ -18,6 +18,18 @@ projects:
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
 
+  - name: anyway
+    spec:
+      destinations:
+        - name: '*'
+          namespace: anyway
+          server: 'https://kubernetes.default.svc'
+        - name: '*'
+          namespace: anyway-dev
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+
 apps:
 
   - name: cluster-admin
@@ -46,3 +58,27 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/betaknesset
+
+  - name: anyway-prod
+    project: anyway
+    destinationNamespace: anyway
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/anyway
+      helm:
+        valueFiles:
+          - values-anyway-prod.yaml
+          - values-anyway-auto-updated.yaml
+
+  - name: anyway-dev
+    project: anyway
+    destinationNamespace: anyway-dev
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/anyway
+      helm:
+        valueFiles:
+          - values-anyway-dev.yaml
+          - values-anyway-auto-updated.yaml
