@@ -143,11 +143,21 @@ apps:
 
   - name: vault
     project: default
-    disableAutoSync: true
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/vault
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+
+  - name: wordpress
+    project: default
+    disableAutoSync: true
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/wordpress
       helm:
         valueFiles:
           - values-hasadna.yaml

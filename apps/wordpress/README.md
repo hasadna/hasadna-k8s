@@ -4,12 +4,6 @@ This chart allows to deploy multiple Wordpress instances
 
 ## Install
 
-Create namespace
-
-```
-kubectl create ns wordpress
-```
-
 Create DB secret
 
 ```
