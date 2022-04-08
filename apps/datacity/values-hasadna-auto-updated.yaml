@@ -1,0 +1,3 @@
+ckanDgpServerImage: docker.pkg.github.com/hasadna/datacity-ckan-dgp/server:4a61be492e5c72e56d3aa9caadee5315cd48f90b
+dgpAppDbImage: akariv/dgp-app-db@sha256:8ebf03009fb6c6e42308c2579b4ac2d979325a492fffd5942af0de3fc709ce28
+dgpAppImage: docker.pkg.github.com/hasadna/datacity-dgp-importer/server:4390a988da6a1f00972fd9be762b2afc20ce0d37

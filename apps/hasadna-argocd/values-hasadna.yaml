@@ -27,6 +27,15 @@ projects:
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
 
+  - name: datacity
+    spec:
+      destinations:
+        - name: '*'
+          namespace: datacity
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+
 apps:
 
   - name: cluster-admin
@@ -61,6 +70,17 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/odata
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+          - values-hasadna-auto-updated.yaml
+
+  - name: datacity
+    disableAutoSync: true
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/datacity
       helm:
         valueFiles:
           - values-hasadna.yaml
