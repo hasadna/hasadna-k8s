@@ -19,8 +19,6 @@ datacity:
   dgpAppImage: docker.pkg.github.com/hasadna/datacity-dgp-importer/server:4390a988da6a1f00972fd9be762b2afc20ce0d37
 mysadna:
   image: uumpa/hasadna-mysadna:c0a681d5a0c68ada76b6d68fce1c2115224790a9
-odata:
-  ckanImage: ghcr.io/orihoch/data4dappl/odata-ckan:a00ae4862a3a92d51334aa4e2d441e20bbf368f9
 oknesset:
   DataBackendImage: uumpa/knesset-data-backend:bc03d3c1830a856d6bbacf4b2481d83dd1f836c6
   WebUiImage: uumpa/knesset-data-web-ui:94b6de1cc89ae20647e35aa606c3c9b95e81dbe6
