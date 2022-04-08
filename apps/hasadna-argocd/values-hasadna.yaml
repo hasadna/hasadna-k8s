@@ -171,10 +171,9 @@ apps:
           - values-hasadna.yaml
 
   - name: migdar
-    disableAutoSync: true
     source:
       repoURL: 'https://github.com/hasadna/migdar-k8s.git'
-      targetRevision: migrate-to-argocd
+      targetRevision: master
       path: apps/migdar
       helm:
         valueFiles:
