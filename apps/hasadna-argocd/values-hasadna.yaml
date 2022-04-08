@@ -63,6 +63,15 @@ projects:
       sourceRepos:
         - 'https://github.com/hasadna/migdar-k8s.git'
 
+  - name: oknesset
+    spec:
+      destinations:
+        - name: '*'
+          namespace: oknesset
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/OriHoch/knesset-data-k8s.git'
+
 apps:
 
   - name: cluster-admin
@@ -180,3 +189,37 @@ apps:
           - values-global.yaml
           - values-hasadna.yaml
           - values-hasadna-auto-updated.yaml
+
+  - name: oknesset-nginx
+    project: oknesset
+    destinationNamespace: oknesset
+    source:
+      repoURL: 'https://github.com/OriHoch/knesset-data-k8s.git'
+      targetRevision: master
+      path: apps/nginx
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+
+  - name: oknesset-pipelines
+    project: oknesset
+    destinationNamespace: oknesset
+    source:
+      repoURL: 'https://github.com/OriHoch/knesset-data-k8s.git'
+      targetRevision: master
+      path: apps/pipelines
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+          - values-hasadna-auto-updated.yaml
+
+  - name: oknesset-publicdb
+    project: oknesset
+    destinationNamespace: oknesset
+    source:
+      repoURL: 'https://github.com/OriHoch/knesset-data-k8s.git'
+      targetRevision: master
+      path: apps/publicdb
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
