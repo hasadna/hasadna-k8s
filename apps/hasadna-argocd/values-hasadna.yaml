@@ -45,6 +45,15 @@ projects:
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
 
+  - name: reportit
+    spec:
+      destinations:
+        - name: '*'
+          namespace: reportit
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+
 apps:
 
   - name: cluster-admin
@@ -105,11 +114,20 @@ apps:
 
   - name: redash
     project: default
-    disableAutoSync: true
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/redash
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+
+  - name: reportit
+    disableAutoSync: true
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/reportit
       helm:
         valueFiles:
           - values-hasadna.yaml
