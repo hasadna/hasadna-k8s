@@ -96,6 +96,9 @@ projects:
         - name: 'datacity'
           namespace: srm-site-production
           server: '*'
+        - name: 'datacity'
+          namespace: srm-e664cac9300c
+          server: '*'
       sourceRepos:
         - 'https://github.com/whiletrue-industries/srm-devops.git'
 
@@ -317,3 +320,16 @@ apps:
           - values.yaml
           - values.auto-updated.yaml
           - values.staging.yaml
+
+  - name: srm-ckan-production-backups
+    project: srm
+    destinationNamespace: srm-e664cac9300c
+    destinationClusterName: datacity
+    disableAutoSync: true
+    source:
+      repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
+      targetRevision: migrate-to-argocd
+      path: helm/ckan-backups
+      helm:
+        valueFiles:
+          - values.yaml
