@@ -87,6 +87,9 @@ projects:
         - name: '*'
           namespace: srm-etl-production
           server: 'https://kubernetes.default.svc'
+        - name: '*'
+          namespace: srm-etl-staging
+          server: 'https://kubernetes.default.svc'
       sourceRepos:
         - 'https://github.com/whiletrue-industries/srm-devops.git'
 
