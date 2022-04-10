@@ -81,6 +81,15 @@ projects:
       sourceRepos:
         - 'https://github.com/OpenBudget/budgetkey-k8s.git'
 
+  - name: srm
+    spec:
+      destinations:
+        - name: '*'
+          namespace: srm-etl-production
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/whiletrue-industries/srm-devops.git'
+
 apps:
 
   - name: cluster-admin
@@ -243,3 +252,16 @@ apps:
           - values-global.yaml
           - values-hasadna.yaml
           - values.auto-updated.yaml
+
+  - name: srm-etl-production
+    disableAutoSync: true
+    source:
+      repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
+      targetRevision: migrate-to-argocd
+      path: helm/etl
+      helm:
+        valueFiles:
+          - values.yaml
+          - values.auto-updated.yaml
+          - values.production.yaml
+          - values.auto-updated.production.yaml
