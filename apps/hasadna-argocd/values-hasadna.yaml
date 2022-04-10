@@ -90,6 +90,12 @@ projects:
         - name: '*'
           namespace: srm-etl-staging
           server: 'https://kubernetes.default.svc'
+        - name: 'datacity'
+          namespace: srm-site-staging
+          server: '*'
+        - name: 'datacity'
+          namespace: srm-site-production
+          server: '*'
       sourceRepos:
         - 'https://github.com/whiletrue-industries/srm-devops.git'
 
@@ -277,6 +283,35 @@ apps:
       repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
       targetRevision: migrate-to-argocd
       path: helm/etl
+      helm:
+        valueFiles:
+          - values.yaml
+          - values.auto-updated.yaml
+          - values.staging.yaml
+
+  - name: srm-site-production
+    project: srm
+    destinationClusterName: datacity
+    disableAutoSync: true
+    source:
+      repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
+      targetRevision: migrate-to-argocd
+      path: helm/site
+      helm:
+        valueFiles:
+          - values.yaml
+          - values.auto-updated.yaml
+          - values.production.yaml
+          - values.auto-updated.production.yaml
+
+  - name: srm-site-staging
+    project: srm
+    destinationClusterName: datacity
+    disableAutoSync: true
+    source:
+      repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
+      targetRevision: migrate-to-argocd
+      path: helm/site
       helm:
         valueFiles:
           - values.yaml
