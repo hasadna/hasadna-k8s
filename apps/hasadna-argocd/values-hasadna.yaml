@@ -267,10 +267,9 @@ apps:
 
   - name: srm-etl-production
     project: srm
-    disableAutoSync: true
     source:
       repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
-      targetRevision: migrate-to-argocd
+      targetRevision: main
       path: helm/etl
       helm:
         valueFiles:
@@ -281,10 +280,9 @@ apps:
 
   - name: srm-etl-staging
     project: srm
-    disableAutoSync: true
     source:
       repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
-      targetRevision: migrate-to-argocd
+      targetRevision: main
       path: helm/etl
       helm:
         valueFiles:
@@ -295,10 +293,9 @@ apps:
   - name: srm-site-production
     project: srm
     destinationClusterName: datacity
-    disableAutoSync: true
     source:
       repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
-      targetRevision: migrate-to-argocd
+      targetRevision: main
       path: helm/site
       helm:
         valueFiles:
@@ -310,10 +307,9 @@ apps:
   - name: srm-site-staging
     project: srm
     destinationClusterName: datacity
-    disableAutoSync: true
     source:
       repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
-      targetRevision: migrate-to-argocd
+      targetRevision: main
       path: helm/site
       helm:
         valueFiles:
@@ -325,10 +321,9 @@ apps:
     project: srm
     destinationNamespace: srm-e664cac9300c
     destinationClusterName: datacity
-    disableAutoSync: true
     source:
       repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
-      targetRevision: migrate-to-argocd
+      targetRevision: main
       path: helm/ckan-backups
       helm:
         valueFiles:
