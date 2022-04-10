@@ -234,10 +234,9 @@ apps:
           - values-hasadna.yaml
 
   - name: budgetkey
-    disableAutoSync: true
     source:
       repoURL: 'https://github.com/OpenBudget/budgetkey-k8s.git'
-      targetRevision: migrate-to-argocd
+      targetRevision: master
       path: .
       helm:
         valueFiles:
