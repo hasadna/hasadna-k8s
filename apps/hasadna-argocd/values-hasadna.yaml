@@ -254,6 +254,7 @@ apps:
           - values.auto-updated.yaml
 
   - name: srm-etl-production
+    project: srm
     disableAutoSync: true
     source:
       repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
