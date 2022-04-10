@@ -266,3 +266,16 @@ apps:
           - values.auto-updated.yaml
           - values.production.yaml
           - values.auto-updated.production.yaml
+
+  - name: srm-etl-staging
+    project: srm
+    disableAutoSync: true
+    source:
+      repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
+      targetRevision: migrate-to-argocd
+      path: helm/etl
+      helm:
+        valueFiles:
+          - values.yaml
+          - values.auto-updated.yaml
+          - values.staging.yaml
