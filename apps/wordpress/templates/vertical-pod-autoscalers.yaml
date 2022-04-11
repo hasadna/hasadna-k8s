@@ -8,5 +8,7 @@ spec:
     apiVersion: {{ .apiVersion }}
     kind: {{ .kind }}
     name: {{ .name }}
+  updatePolicy:
+    updateMode: "Off"
 ---
 {{ end }}
