@@ -141,6 +141,8 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/openbus
+      plugin:
+        name: argocd-vault-plugin
       helm:
         valueFiles:
           - values-hasadna.yaml
