@@ -141,11 +141,9 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/openbus
-      plugin:
-        name: argocd-vault-plugin-helm-with-args
-        env:
-          - name: helm_args
-            value: -f values-hasadna.yaml -f values-hasadna-auto-updated.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
+      - values-hasadna-auto-updated.yaml
 
   - name: betaknesset
     source:
