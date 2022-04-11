@@ -142,11 +142,10 @@ apps:
       targetRevision: master
       path: apps/openbus
       plugin:
-        name: argocd-vault-plugin
-      helm:
-        valueFiles:
-          - values-hasadna.yaml
-          - values-hasadna-auto-updated.yaml
+        name: argocd-vault-plugin-helm
+        env:
+          - name: helm_args
+            value: -f values-hasadna.yaml -f values-hasadna-auto-updated.yaml
 
   - name: betaknesset
     source:
