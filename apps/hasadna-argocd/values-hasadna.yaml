@@ -293,7 +293,6 @@ apps:
   - name: srm-site-production
     project: srm
     destinationClusterName: datacity
-    disableAutoSync: true
     source:
       repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
       targetRevision: main
