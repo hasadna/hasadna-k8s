@@ -19,6 +19,8 @@ projects:
           server: 'https://kubernetes.default.svc'
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
+      orphanedResources:
+        warn: true
 
   - name: odata
     spec:
@@ -28,6 +30,8 @@ projects:
           server: 'https://kubernetes.default.svc'
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
+      orphanedResources:
+        warn: true
 
   - name: datacity
     spec:
@@ -37,6 +41,8 @@ projects:
           server: 'https://kubernetes.default.svc'
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
+      orphanedResources:
+        warn: true
 
   - name: openpension
     spec:
@@ -46,6 +52,8 @@ projects:
           server: 'https://kubernetes.default.svc'
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
+      orphanedResources:
+        warn: true
 
   - name: reportit
     spec:
@@ -55,6 +63,8 @@ projects:
           server: 'https://kubernetes.default.svc'
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
+      orphanedResources:
+        warn: true
 
   - name: migdar
     spec:
@@ -64,6 +74,8 @@ projects:
           server: 'https://kubernetes.default.svc'
       sourceRepos:
         - 'https://github.com/hasadna/migdar-k8s.git'
+      orphanedResources:
+        warn: true
 
   - name: oknesset
     spec:
@@ -73,6 +85,8 @@ projects:
           server: 'https://kubernetes.default.svc'
       sourceRepos:
         - 'https://github.com/OriHoch/knesset-data-k8s.git'
+      orphanedResources:
+        warn: true
 
   - name: budgetkey
     spec:
@@ -82,6 +96,8 @@ projects:
           server: 'https://kubernetes.default.svc'
       sourceRepos:
         - 'https://github.com/OpenBudget/budgetkey-k8s.git'
+      orphanedResources:
+        warn: true
 
   - name: srm
     spec:
@@ -103,6 +119,8 @@ projects:
           server: '*'
       sourceRepos:
         - 'https://github.com/whiletrue-industries/srm-devops.git'
+      orphanedResources:
+        warn: true
 
 apps:
 
