@@ -9,7 +9,7 @@ projects:
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
       orphanedResources:
-        warn: false
+        warn: true
 
   - name: betaknesset
     spec:
