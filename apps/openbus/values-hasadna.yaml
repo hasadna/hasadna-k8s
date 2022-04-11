@@ -47,6 +47,34 @@ secrets:
     vaultPath: kv/data/Projects/OBus/k8s-secrets
     data:
       key: "<sshtunnel-key>"
+  - name: siri-requester
+    vaultPath: kv/data/Projects/OBus/k8s-secrets
+    data:
+      OPEN_BUS_MOT_KEY: "<OPEN_BUS_MOT_KEY>"
+      OPEN_BUS_S3_ACCESS_KEY_ID: "<OPEN_BUS_S3_ACCESS_KEY_ID>"
+      OPEN_BUS_S3_BUCKET: "<OPEN_BUS_S3_BUCKET>"
+      OPEN_BUS_S3_SECRET_ACCESS_KEY: "<OPEN_BUS_S3_SECRET_ACCESS_KEY>"
+      OPEN_BUS_SSH_TUNNEL_SERVER_IP: "<OPEN_BUS_SSH_TUNNEL_SERVER_IP>"
+  - name: db
+    vaultPath: kv/data/Projects/OBus/k8s-secrets
+    data:
+      POSTGRES_PASSWORD: "<DB_POSTGRES_PASSWORD>"
+      SQLALCHEMY_URL: "<DB_SQLALCHEMY_URL>"
+  - name: airflow
+    vaultPath: kv/data/Projects/OBus/k8s-secrets
+    data:
+      AIRFLOW__SMTP__SMTP_HOST: "<AIRFLOW__SMTP__SMTP_HOST>"
+      AIRFLOW__SMTP__SMTP_PASSWORD: "<AIRFLOW__SMTP__SMTP_PASSWORD>"
+      AIRFLOW__SMTP__SMTP_USER: "<AIRFLOW__SMTP__SMTP_USER>"
+      OPEN_BUS_PIPELINES_AIRFLOW_ADMIN_PASSWORD: "<OPEN_BUS_PIPELINES_AIRFLOW_ADMIN_PASSWORD>"
+      OPEN_BUS_PIPELINES_ALERT_EMAILS: "<OPEN_BUS_PIPELINES_ALERT_EMAILS>"
+      OPEN_BUS_STRIDE_PUBLIC_S3_WRITE_ACCESS_KEY_ID: "<OPEN_BUS_STRIDE_PUBLIC_S3_WRITE_ACCESS_KEY_ID>"
+      OPEN_BUS_STRIDE_PUBLIC_S3_WRITE_SECRET_ACCESS_KEY: "<OPEN_BUS_STRIDE_PUBLIC_S3_WRITE_SECRET_ACCESS_KEY>"
+  - name: airflow-db
+    vaultPath: kv/data/Projects/OBus/k8s-secrets
+    data:
+      POSTGRES_PASSWORD: "<AIRFLOW_DB_POSTGRES_PASSWORD>"
+      SQLALCHEMY_URL: "<AIRFLOW_DB_SQLALCHEMY_URL>"
 
 ingresses:
   - name: siri-requester

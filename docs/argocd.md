@@ -20,6 +20,19 @@ To have access you need to belong to one of these teams:
 
 You can also login using the local admin user, the password is available in Vault `Projects/k8s/argocd`.
 
+## Secrets Management
+
+Argo Vault plugin is installed and configured to use secrets from Hasadna's Vault.
+See [how it works](https://argocd-vault-plugin.readthedocs.io/en/stable/howitworks/).
+
+To enable the plugin on an argocd app, add the following instead of specifying the standard helm source:
+
+```
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
+      - values-hasadna-auto-updated.yaml
+```
+
 ## Using ArgoCD CLI
 
 [Download ArgoCD CLI](https://argo-cd.readthedocs.io/en/stable/getting_started/#2-download-argo-cd-cli)
