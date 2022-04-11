@@ -38,12 +38,51 @@ Old helm releases can be migrated to argocd with minimal disruption using the fo
 
 ## Install
 
+Create namespace
+
 ```
 kubectl create ns argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
-Edit the argocd-server deployment and add `--insecure` flag as we will handle TLS on the ingress
+Login to Vault as admin and add the following:
+
+read-only policy:
+
+```
+path "kv/data/*" {
+  capabilities = [ "read" ]
+}
+```
+
+approle:
+
+```
+vault write auth/approle/role/ROLE_NAME token_policies="POLICY_NAME" token_ttl=1h token_max_ttl=4h
+```
+
+Get role and secret id
+
+```
+vault read auth/approle/role/ROLE_NAME/role-id
+vault write -force auth/approle/role/ROLE_NAME/secret-id
+``` 
+
+Create vault credentials secret
+
+```
+kubectl -n argocd create secret generic argocd-vault-plugin-credentials \
+    --from-literal=VAULT_ADDR= \
+    --from-literal=AVP_TYPE=vault \
+    --from-literal=AVP_AUTH_TYPE=approle \
+    --from-literal=AVP_ROLE_ID= \
+    --from-literal=AVP_SECRET_ID=
+```
+
+Deploy
+
+```
+kubectl apply -n argocd -k apps/hasadna-argocd/manifests
+```
 
 Deploy ingresses
 

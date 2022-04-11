@@ -42,6 +42,12 @@ strideApiResources: {"requests": {"cpu": "1000m", "memory": "1000Mi"}, "limits":
 
 gtfsNfsPath: "/openbus/gtfs"
 
+secrets:
+  - name: sshtunnel
+    vaultPath: kv/data/Projects/OBus/k8s-secrets
+    data:
+      key: "<sshtunnel-key>"
+
 ingresses:
   - name: siri-requester
     ssl: true
