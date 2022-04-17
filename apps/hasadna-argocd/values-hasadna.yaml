@@ -122,6 +122,18 @@ projects:
       orphanedResources:
         warn: true
 
+  - name: anyway
+    spec:
+      destinations:
+        - name: '*'
+          namespace: anyway
+          server: 'https://kubernetes.default.svc'
+        - name: '*'
+          namespace: anyway-dev
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+
 apps:
 
   - name: cluster-admin
@@ -347,3 +359,29 @@ apps:
       helm:
         valueFiles:
           - values.yaml
+
+  - name: anyway-prod
+    project: anyway
+    destinationNamespace: anyway
+    disableAutoSync: true
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/anyway
+      helm:
+        valueFiles:
+          - values-anyway-prod.yaml
+          - values-anyway-auto-updated.yaml
+
+  - name: anyway-dev
+    project: anyway
+    destinationNamespace: anyway-dev
+    disableAutoSync: true
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/anyway
+      helm:
+        valueFiles:
+          - values-anyway-dev.yaml
+          - values-anyway-auto-updated.yaml
