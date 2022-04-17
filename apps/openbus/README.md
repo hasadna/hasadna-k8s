@@ -18,36 +18,10 @@ Create namespace
 kubectl create ns openbus
 ```
 
-Create ssh tunnel secret
-
-```
-kubectl -n openbus create secret generic sshtunnel \
-    --from-file=key=
-```
-
-Create siri requester secret
-
-```
-kubectl -n openbus create secret generic siri-requester \
-    --from-literal=OPEN_BUS_MOT_KEY= \
-    --from-literal=OPEN_BUS_SSH_TUNNEL_SERVER_IP= \
-    --from-literal=OPEN_BUS_S3_ENDPOINT_URL= \
-    --from-literal=OPEN_BUS_S3_ACCESS_KEY_ID= \
-    --from-literal=OPEN_BUS_S3_SECRET_ACCESS_KEY= \
-    --from-literal=OPEN_BUS_S3_BUCKET=
-```
-
 SSH to NFS server and create NFS path
 
 ```
 mkdir -p /srv/default2/openbus/siri-requester
-```
-
-Create DB password secret, change the username/password/ip according to actual values:
-
-```
-kubectl -n openbus create secret generic db \
-    --from-literal=SQLALCHEMY_URL=postgresql://postgres:password@172.16.0.16/postgres
 ```
 
 SSH to NFS server and create NFS paths
@@ -56,21 +30,15 @@ SSH to NFS server and create NFS paths
 mkdir -p /srv/default2/openbus/stride-db
 ```
 
-Create Airflow secrets
+Generate airflow password, set in secrets (see `values-hasadna.yaml` for secrets definitions)
 
 ```
 OPEN_BUS_PIPELINES_AIRFLOW_ADMIN_PASSWORD=`python3 -c 'import secrets; print(secrets.token_hex(16))'`
-kubectl -n openbus create secret generic airflow \
-    --from-literal=OPEN_BUS_PIPELINES_AIRFLOW_ADMIN_PASSWORD=${OPEN_BUS_PIPELINES_AIRFLOW_ADMIN_PASSWORD}
 ```
 
-Create Airflow DB password secret
-
+Generate Airflow DB password secret:
 ```
 AIRFLOW_DB_POSTGRES_PASSWORD=`python3 -c 'import secrets; print(secrets.token_hex(16))'`
-kubectl -n openbus create secret generic airflow-db \
-    --from-literal=POSTGRES_PASSWORD=${AIRFLOW_DB_POSTGRES_PASSWORD} \
-    --from-literal=SQLALCHEMY_URL=postgresql://postgres:${AIRFLOW_DB_POSTGRES_PASSWORD}@airflow-db
 ```
 
 SSH to NFS server and create NFS paths

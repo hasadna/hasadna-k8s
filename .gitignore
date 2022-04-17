@@ -99,7 +99,7 @@ ENV/
 
 /.env
 .idea
-secret*
+/secret*
 get_helm.sh
 .dfs-checkpoints
 .rancher.kubeconfig

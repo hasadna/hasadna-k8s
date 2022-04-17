@@ -7,9 +7,20 @@ metadata:
 spec:
   destination:
     namespace: {{ if .destinationNamespace }}{{ .destinationNamespace | quote }}{{ else }}{{ .name | quote }}{{ end }}
+    {{ if .destinationClusterName }}
+    name: {{ .destinationClusterName | quote }}
+    {{ else }}
     server: 'https://kubernetes.default.svc'
+    {{ end }}
   project: {{ if .project }}{{ .project | quote }}{{ else }}{{ .name | quote }}{{ end }}
   source: {{ toYaml .source | nindent 4 }}
+  {{ if .sourceVaultPluginHelmValueFiles }}
+    plugin:
+      name: argocd-vault-plugin-helm-with-args
+      env:
+        - name: helm_args
+          value: {{ range .sourceVaultPluginHelmValueFiles }} -f {{ . }} {{ end }}
+  {{ end }}
   syncPolicy:
     {{ if not .disableAutoSync }}
     automated:

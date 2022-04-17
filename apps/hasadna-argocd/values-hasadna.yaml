@@ -8,6 +8,8 @@ projects:
           server: 'https://kubernetes.default.svc'
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
+      orphanedResources:
+        warn: true
 
   - name: betaknesset
     spec:
@@ -17,6 +19,108 @@ projects:
           server: 'https://kubernetes.default.svc'
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
+      orphanedResources:
+        warn: true
+
+  - name: odata
+    spec:
+      destinations:
+        - name: '*'
+          namespace: odata
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+      orphanedResources:
+        warn: true
+
+  - name: datacity
+    spec:
+      destinations:
+        - name: '*'
+          namespace: datacity
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+      orphanedResources:
+        warn: true
+
+  - name: openpension
+    spec:
+      destinations:
+        - name: '*'
+          namespace: openpension
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+      orphanedResources:
+        warn: true
+
+  - name: reportit
+    spec:
+      destinations:
+        - name: '*'
+          namespace: reportit
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+      orphanedResources:
+        warn: true
+
+  - name: migdar
+    spec:
+      destinations:
+        - name: '*'
+          namespace: migdar
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/migdar-k8s.git'
+      orphanedResources:
+        warn: true
+
+  - name: oknesset
+    spec:
+      destinations:
+        - name: '*'
+          namespace: oknesset
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/OriHoch/knesset-data-k8s.git'
+      orphanedResources:
+        warn: true
+
+  - name: budgetkey
+    spec:
+      destinations:
+        - name: '*'
+          namespace: budgetkey
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/OpenBudget/budgetkey-k8s.git'
+      orphanedResources:
+        warn: true
+
+  - name: srm
+    spec:
+      destinations:
+        - name: '*'
+          namespace: srm-etl-production
+          server: 'https://kubernetes.default.svc'
+        - name: '*'
+          namespace: srm-etl-staging
+          server: 'https://kubernetes.default.svc'
+        - name: 'datacity'
+          namespace: srm-site-staging
+          server: '*'
+        - name: 'datacity'
+          namespace: srm-site-production
+          server: '*'
+        - name: 'datacity'
+          namespace: srm-e664cac9300c
+          server: '*'
+      sourceRepos:
+        - 'https://github.com/whiletrue-industries/srm-devops.git'
+      orphanedResources:
+        warn: true
 
   - name: anyway
     spec:
@@ -48,16 +152,213 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/openbus
-      helm:
-        valueFiles:
-          - values-hasadna.yaml
-          - values-hasadna-auto-updated.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
+      - values-hasadna-auto-updated.yaml
 
   - name: betaknesset
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/betaknesset
+
+  - name: odata
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/odata
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+          - values-hasadna-auto-updated.yaml
+
+  - name: datacity
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/datacity
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+          - values-hasadna-auto-updated.yaml
+
+  - name: openpension
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/openpension
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+
+  - name: redash
+    project: default
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/redash
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+
+  - name: reportit
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/reportit
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+
+  - name: resourcesaver
+    project: default
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/resourcesaverproxy
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+
+  - name: vault
+    project: default
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/vault
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+
+  - name: wordpress
+    project: default
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/wordpress
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+
+  - name: migdar
+    source:
+      repoURL: 'https://github.com/hasadna/migdar-k8s.git'
+      targetRevision: master
+      path: apps/migdar
+      helm:
+        valueFiles:
+          - values-global.yaml
+          - values-hasadna.yaml
+          - values-hasadna-auto-updated.yaml
+
+  - name: oknesset-nginx
+    project: oknesset
+    destinationNamespace: oknesset
+    source:
+      repoURL: 'https://github.com/OriHoch/knesset-data-k8s.git'
+      targetRevision: master
+      path: apps/nginx
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+
+  - name: oknesset-pipelines
+    project: oknesset
+    destinationNamespace: oknesset
+    source:
+      repoURL: 'https://github.com/OriHoch/knesset-data-k8s.git'
+      targetRevision: master
+      path: apps/pipelines
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+          - values-hasadna-auto-updated.yaml
+
+  - name: oknesset-publicdb
+    project: oknesset
+    destinationNamespace: oknesset
+    source:
+      repoURL: 'https://github.com/OriHoch/knesset-data-k8s.git'
+      targetRevision: master
+      path: apps/publicdb
+      helm:
+        valueFiles:
+          - values-hasadna.yaml
+
+  - name: budgetkey
+    source:
+      repoURL: 'https://github.com/OpenBudget/budgetkey-k8s.git'
+      targetRevision: master
+      path: .
+      helm:
+        valueFiles:
+          - values-global.yaml
+          - values-hasadna.yaml
+          - values.auto-updated.yaml
+
+  - name: srm-etl-production
+    project: srm
+    source:
+      repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
+      targetRevision: main
+      path: helm/etl
+      helm:
+        valueFiles:
+          - values.yaml
+          - values.auto-updated.yaml
+          - values.production.yaml
+          - values.auto-updated.production.yaml
+
+  - name: srm-etl-staging
+    project: srm
+    source:
+      repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
+      targetRevision: main
+      path: helm/etl
+      helm:
+        valueFiles:
+          - values.yaml
+          - values.auto-updated.yaml
+          - values.staging.yaml
+
+  - name: srm-site-production
+    project: srm
+    destinationClusterName: datacity
+    source:
+      repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
+      targetRevision: main
+      path: helm/site
+      helm:
+        valueFiles:
+          - values.yaml
+          - values.auto-updated.yaml
+          - values.production.yaml
+          - values.auto-updated.production.yaml
+
+  - name: srm-site-staging
+    project: srm
+    destinationClusterName: datacity
+    source:
+      repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
+      targetRevision: main
+      path: helm/site
+      helm:
+        valueFiles:
+          - values.yaml
+          - values.auto-updated.yaml
+          - values.staging.yaml
+
+  - name: srm-ckan-production-backups
+    project: srm
+    destinationNamespace: srm-e664cac9300c
+    destinationClusterName: datacity
+    source:
+      repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
+      targetRevision: main
+      path: helm/ckan-backups
+      helm:
+        valueFiles:
+          - values.yaml
 
   - name: anyway-prod
     project: anyway
