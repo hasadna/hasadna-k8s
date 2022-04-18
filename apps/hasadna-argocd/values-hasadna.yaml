@@ -363,7 +363,6 @@ apps:
   - name: anyway-prod
     project: anyway
     destinationNamespace: anyway
-    disableAutoSync: true
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master

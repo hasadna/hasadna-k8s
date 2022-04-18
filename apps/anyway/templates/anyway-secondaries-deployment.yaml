@@ -37,19 +37,18 @@ spec:
         - secretRef: {"name": "anyway"}
         - secretRef: {"name": "anyway-db"}
         startupProbe:
-          httpGet:
-            path: /
-            port: 5000
-            host: anyway-main.{{ .Release.Namespace }}.svc.cluster.local
-          failureThreshold: 240
-          periodSeconds: 10
-          timeoutSeconds: 5
+          exec:
+            command: [ "sleep", "30" ]
+          timeoutSeconds: 50
+          periodSeconds: 50
+          successThreshold: 1
+          failureThreshold: 1
         readinessProbe:
           httpGet:
             path: /
             port: 5000
           periodSeconds: 10
-          timeoutSeconds: 5
+          timeoutSeconds: 30
           failureThreshold: 5
       {{ if .Values.mountGoogleApplicationCredentialsSecret }}
         volumeMounts:
