@@ -40,7 +40,7 @@ spec:
           httpGet:
             path: /
             port: 5000
-            host: anyway-main.{{ .Release.Namespace }}.cluster.local
+            host: anyway-main.{{ .Release.Namespace }}.svc.cluster.local
           failureThreshold: 240
           periodSeconds: 10
           timeoutSeconds: 5
