@@ -40,7 +40,7 @@ spec:
           httpGet:
             path: /
             port: 5000
-          failureThreshold: 30
+          failureThreshold: 240
           periodSeconds: 2
           timeoutSeconds: 5
         readinessProbe:

@@ -41,7 +41,7 @@ spec:
             path: /
             port: 5000
             host: anyway-main
-          failureThreshold: 30
+          failureThreshold: 240
           periodSeconds: 10
           timeoutSeconds: 5
         readinessProbe:
