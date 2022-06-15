@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: terraform-state-db
+spec:
+  selector:
+    app: terraform-state-db
+  ports:
+  - name: "5432"
+    port: 5432

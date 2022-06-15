@@ -6,3 +6,20 @@ dockerDaemonConfig:
     "max-size": "100m"
     "max-file": "5"
     "compress": "true"
+
+terraformStateDb:
+  resources:
+    requests:
+      memory: 250Mi
+      cpu: 50m
+    limits:
+      memory: 500Mi
+      cpu: 100m
+  nfsServer: "172.16.0.9"
+  nfsPath: "/terraform/state_db"
+
+secrets:
+  - name: terraform-state-db
+    vaultPath: kv/data/Projects/k8s/terraform
+    data:
+      POSTGRES_PASSWORD: "<state_db_password>"

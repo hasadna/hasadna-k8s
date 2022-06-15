@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terraform-state-db
+spec:
+  selector:
+    matchLabels:
+      app: terraform-state-db
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: terraform-state-db
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: postgres
+        # pulled Jun 15, 2022
+        image: postgres:14@sha256:2d1e636f07781d4799b3f2edbff78a0a5494f24c4512cb56a83ebfd0e04ec074
+        ports:
+        - containerPort: 5432
+        resources: {{ toYaml .Values.terraformStateDb.resources | nindent 10 }}
+        envFrom:
+          - secretRef:
+              name: terraform-state-db
+        volumeMounts:
+          - name: data
+            mountPath: /var/lib/postgresql/data
+            subPath: terraform_state_db_postgres
+      volumes:
+        - name: data
+          nfs:
+            server: {{ .Values.terraformStateDb.nfsServer | quote }}
+            path: {{ .Values.terraformStateDb.nfsPath | quote }}
