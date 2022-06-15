@@ -8,6 +8,7 @@ dockerDaemonConfig:
     "compress": "true"
 
 terraformStateDb:
+  nodePort: 32975
   resources:
     requests:
       memory: 250Mi

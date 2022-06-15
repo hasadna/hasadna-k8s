@@ -3,8 +3,10 @@ kind: Service
 metadata:
   name: terraform-state-db
 spec:
+  type: NodePort
   selector:
     app: terraform-state-db
   ports:
   - name: "5432"
     port: 5432
+    nodePort: {{  .Values.terraformStateDb.nodePort }}
