@@ -143,9 +143,8 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/cluster-admin
-      helm:
-        valueFiles:
-          - values-hasadna.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
 
   - name: openbus
     source:
