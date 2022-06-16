@@ -1,3 +1,5 @@
+globalDisableAutoSync: true
+
 projects:
 
   - name: openbus
@@ -166,29 +168,26 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/odata
-      helm:
-        valueFiles:
-          - values-hasadna.yaml
-          - values-hasadna-auto-updated.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
+      - values-hasadna-auto-updated.yaml
 
   - name: datacity
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/datacity
-      helm:
-        valueFiles:
-          - values-hasadna.yaml
-          - values-hasadna-auto-updated.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
+      - values-hasadna-auto-updated.yaml
 
   - name: openpension
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/openpension
-      helm:
-        valueFiles:
-          - values-hasadna.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
 
   - name: redash
     project: default
@@ -196,18 +195,16 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/redash
-      helm:
-        valueFiles:
-          - values-hasadna.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
 
   - name: reportit
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/reportit
-      helm:
-        valueFiles:
-          - values-hasadna.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
 
   - name: resourcesaver
     project: default
@@ -215,9 +212,8 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/resourcesaverproxy
-      helm:
-        valueFiles:
-          - values-hasadna.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
 
   - name: vault
     project: default
@@ -225,9 +221,8 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/vault
-      helm:
-        valueFiles:
-          - values-hasadna.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
 
   - name: wordpress
     project: default
@@ -235,20 +230,18 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/wordpress
-      helm:
-        valueFiles:
-          - values-hasadna.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
 
   - name: migdar
     source:
       repoURL: 'https://github.com/hasadna/migdar-k8s.git'
       targetRevision: master
       path: apps/migdar
-      helm:
-        valueFiles:
-          - values-global.yaml
-          - values-hasadna.yaml
-          - values-hasadna-auto-updated.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-global.yaml
+      - values-hasadna.yaml
+      - values-hasadna-auto-updated.yaml
 
   - name: oknesset-nginx
     project: oknesset
@@ -257,9 +250,8 @@ apps:
       repoURL: 'https://github.com/OriHoch/knesset-data-k8s.git'
       targetRevision: master
       path: apps/nginx
-      helm:
-        valueFiles:
-          - values-hasadna.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
 
   - name: oknesset-pipelines
     project: oknesset
@@ -268,10 +260,9 @@ apps:
       repoURL: 'https://github.com/OriHoch/knesset-data-k8s.git'
       targetRevision: master
       path: apps/pipelines
-      helm:
-        valueFiles:
-          - values-hasadna.yaml
-          - values-hasadna-auto-updated.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
+      - values-hasadna-auto-updated.yaml
 
   - name: oknesset-publicdb
     project: oknesset
@@ -280,20 +271,18 @@ apps:
       repoURL: 'https://github.com/OriHoch/knesset-data-k8s.git'
       targetRevision: master
       path: apps/publicdb
-      helm:
-        valueFiles:
-          - values-hasadna.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
 
   - name: budgetkey
     source:
       repoURL: 'https://github.com/OpenBudget/budgetkey-k8s.git'
       targetRevision: master
       path: .
-      helm:
-        valueFiles:
-          - values-global.yaml
-          - values-hasadna.yaml
-          - values.auto-updated.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-global.yaml
+      - values-hasadna.yaml
+      - values.auto-updated.yaml
 
   - name: srm-etl-production
     project: srm
@@ -301,12 +290,11 @@ apps:
       repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
       targetRevision: main
       path: helm/etl
-      helm:
-        valueFiles:
-          - values.yaml
-          - values.auto-updated.yaml
-          - values.production.yaml
-          - values.auto-updated.production.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values.yaml
+      - values.auto-updated.yaml
+      - values.production.yaml
+      - values.auto-updated.production.yaml
 
   - name: srm-etl-staging
     project: srm
@@ -314,11 +302,10 @@ apps:
       repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
       targetRevision: main
       path: helm/etl
-      helm:
-        valueFiles:
-          - values.yaml
-          - values.auto-updated.yaml
-          - values.staging.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values.yaml
+      - values.auto-updated.yaml
+      - values.staging.yaml
 
   - name: srm-site-production
     project: srm
@@ -327,12 +314,11 @@ apps:
       repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
       targetRevision: main
       path: helm/site
-      helm:
-        valueFiles:
-          - values.yaml
-          - values.auto-updated.yaml
-          - values.production.yaml
-          - values.auto-updated.production.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values.yaml
+      - values.auto-updated.yaml
+      - values.production.yaml
+      - values.auto-updated.production.yaml
 
   - name: srm-site-staging
     project: srm
@@ -341,11 +327,10 @@ apps:
       repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
       targetRevision: main
       path: helm/site
-      helm:
-        valueFiles:
-          - values.yaml
-          - values.auto-updated.yaml
-          - values.staging.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values.yaml
+      - values.auto-updated.yaml
+      - values.staging.yaml
 
   - name: srm-ckan-production-backups
     project: srm
@@ -355,9 +340,8 @@ apps:
       repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
       targetRevision: main
       path: helm/ckan-backups
-      helm:
-        valueFiles:
-          - values.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values.yaml
 
   - name: anyway-prod
     project: anyway
@@ -366,10 +350,9 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/anyway
-      helm:
-        valueFiles:
-          - values-anyway-prod.yaml
-          - values-anyway-auto-updated.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-anyway-prod.yaml
+      - values-anyway-auto-updated.yaml
 
   - name: anyway-dev
     project: anyway
@@ -378,7 +361,6 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/anyway
-      helm:
-        valueFiles:
-          - values-anyway-dev.yaml
-          - values-anyway-auto-updated.yaml
+    sourceVaultPluginHelmValueFiles:
+      - values-anyway-dev.yaml
+      - values-anyway-auto-updated.yaml

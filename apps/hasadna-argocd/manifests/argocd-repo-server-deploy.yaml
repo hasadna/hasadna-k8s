@@ -7,10 +7,15 @@ spec:
     spec:
       containers:
       - name: argocd-repo-server
+        # Built from apps/hasadna-argocd/plugin Jun 16, 2022
+        image: ghcr.io/hasadna/hasadna-k8s-argocd:9e673f3920177061eb2158ffb61ca6f85f68d4a3@sha256:e2fd5eab4be999f98decd5807a2c25e0b9cbd2308d71fffc50c213adaf7fce4f
         volumeMounts:
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-vault-plugin
           subPath: argocd-vault-plugin
+        - name: custom-tools
+          mountPath: /usr/local/bin/argocd-hasadna-plugin
+          subPath: argocd-hasadna-plugin
         envFrom:
           - secretRef:
               name: argocd-vault-plugin-credentials
@@ -32,7 +37,11 @@ spec:
             wget -O argocd-vault-plugin
             https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_linux_amd64 &&
             chmod +x argocd-vault-plugin &&
-            mv argocd-vault-plugin /custom-tools/
+            mv argocd-vault-plugin /custom-tools/ &&
+            wget -O argocd-hasadna-plugin
+            https://raw.githubusercontent.com/hasadna/hasadna-k8s/master/apps/hasadna-argocd/argocd-hasadna-plugin.py &&
+            chmod +x argocd-hasadna-plugin &&
+            mv argocd-hasadna-plugin /custom-tools/
         volumeMounts:
           - mountPath: /custom-tools
             name: custom-tools

@@ -22,10 +22,12 @@ spec:
           value: {{ range .sourceVaultPluginHelmValueFiles }} -f {{ . }} {{ end }}
   {{ end }}
   syncPolicy:
+    {{ if not $.Values.globalDisableAutoSync }}
     {{ if not .disableAutoSync }}
     automated:
       prune: true
       selfHeal: true
+    {{ end }}
     {{ end }}
     syncOptions:
       - CreateNamespace=true
