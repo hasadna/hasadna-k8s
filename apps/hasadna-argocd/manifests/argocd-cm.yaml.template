@@ -3,6 +3,20 @@ kind: ConfigMap
 metadata:
   name: argocd-cm
 data:
+  url: "https://argocd.hasadna.org.il"
+  dex.config: |
+    connectors:
+      - type: github
+        id: github
+        name: GitHub
+        config:
+          clientID: "__dex.config.connectors.github.clientID__"
+          clientSecret: "__dex.config.connectors.github.clientSecret__"
+          orgs:
+          - name: hasadna
+            teams:
+            - argocd-admins
+            - argocd-users
   configManagementPlugins: |
     - name: argocd-vault-plugin
       generate:

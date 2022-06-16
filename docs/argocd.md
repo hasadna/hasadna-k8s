@@ -91,6 +91,23 @@ kubectl -n argocd create secret generic argocd-vault-plugin-credentials \
     --from-literal=AVP_SECRET_ID=
 ```
 
+Set Vault connection details for Hasadna's Vault
+
+```
+export VAULT_ADDR=
+export VAULT_TOKEN=
+```
+
+Make sure you have `vault` and `jq` binaries installed locally
+
+Render the templates with secret values from Vault
+
+```
+apps/hasadna-argocd/manifests/render_templates.sh
+```
+
+Make sure you are connected to Hasadna's cluster (`kubectl get nodes`)
+
 Deploy
 
 ```
