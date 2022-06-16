@@ -19,6 +19,8 @@ data:
             - argocd-users
   configManagementPlugins: |
     - name: argocd-vault-plugin-helm-with-args
+      init:
+        command: ["helm", "dependency", "build"]
       generate:
         command: ["sh", "-c"]
         args: ['helm template "$ARGOCD_APP_NAME" ${helm_args} . | argocd-vault-plugin generate - | argocd-hasadna-plugin']
