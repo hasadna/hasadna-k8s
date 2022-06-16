@@ -8,7 +8,7 @@ spec:
       containers:
       - name: argocd-repo-server
         # Built from apps/hasadna-argocd/plugin Jun 16, 2022
-        image: ghcr.io/hasadna/hasadna-k8s-argocd:9e673f3920177061eb2158ffb61ca6f85f68d4a3@sha256:e2fd5eab4be999f98decd5807a2c25e0b9cbd2308d71fffc50c213adaf7fce4f
+        image: ghcr.io/hasadna/hasadna-k8s-argocd:a4396ec95d96f532b01dd5992364ef7e2f6e35af
         volumeMounts:
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-vault-plugin
