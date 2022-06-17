@@ -26,7 +26,7 @@ Hasadna ArgoCD plugin handles replacing values in rendered templates from [hasad
 and from Hasadna Vault. Any value in the following format will be replaced:
 
 * `iac:key` - the `key` will be taken from [hasadna-iac tf_outputs](https://github.com/hasadna/hasadna-iac/blob/main/kubernetes_tf_outputs.tf)
-* `vault:path:key` - the `key` will be taken from the Vault `path`
+* `vault:path:key` - the `key` will be taken from the Vault `path`, value will be base64 encoded and should be used in k8s secrets only
 
 To render templates locally:
 
