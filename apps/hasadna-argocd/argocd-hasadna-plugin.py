@@ -32,16 +32,17 @@ def init(chart_path):
 def parse_matches(matches):
     parsed_matches = {}
     for match in matches:
-        if match.startswith('vault:'):
+        if match.startswith('vault'):
             match_parts = match.split(':')
             if len(match_parts) > 2:
-                _, vault_path, *vault_key = match.split(':')
+                parse_type, vault_path, *vault_key = match.split(':')
                 vault_key = ':'.join(vault_key)
                 if len(vault_path) and len(vault_key):
                     parsed_matches[match] = {
                         'type': 'vault',
                         'path': vault_path,
-                        'key': vault_key
+                        'key': vault_key,
+                        'output_raw': parse_type == 'vault_raw'
                     }
         elif match.startswith('iac:'):
             match_parts = match.split(':')
@@ -95,7 +96,10 @@ def get_match_values(parsed_matches):
         elif parsed_match['type'] == 'vault':
             if parsed_match['path'] not in vault_paths_data:
                 vault_paths_data[parsed_match['path']] = get_vault_path_data(vault_addr, vault_token, parsed_match['path'])
-            match_values[match] = vault_paths_data[parsed_match['path']].get(parsed_match['key'], '')
+            val = vault_paths_data[parsed_match['path']].get(parsed_match['key'], '')
+            if not parsed_match['output_raw']:
+                val = base64.b64encode(val.encode()).decode()
+            match_values[match] = val
     return match_values
 
 
