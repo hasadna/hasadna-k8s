@@ -2,7 +2,6 @@
 import re
 import os
 import sys
-import json
 import base64
 import urllib3
 import subprocess
@@ -59,10 +58,10 @@ def parse_matches(matches):
 
 def get_vault_path_data(vault_addr, vault_token, path):
     path = os.path.join('kv', 'data', path)
-    return json.loads(subprocess.check_output(
-        'curl -s --header "X-Vault-Token: {}" "{}/v1/{}"'.format(vault_token, vault_addr, path),
-        shell=True
-    ).decode())['data']['data']
+    return requests.get(
+        os.path.join(vault_addr, 'v1', path),
+        headers={'X-Vault-Token': vault_token}
+    ).json()['data']['data']
 
 
 def get_iac_data():

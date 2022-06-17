@@ -36,5 +36,5 @@ spec:
           - mountPath: /custom-tools
             name: custom-tools
 
-      # Not strictly necessary, but required for passing AVP configuration from a secret and for using Kubernetes auth to Hashicorp Vault
       automountServiceAccountToken: true
+      serviceAccountName: argocd-server
