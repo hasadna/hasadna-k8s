@@ -20,7 +20,7 @@ data:
   configManagementPlugins: |
     - name: argocd-vault-plugin-helm-with-args
       init:
-        command: ["helm", "dependency", "build"]
+        command: ["argocd-hasadna-plugin", "init", "."]
       generate:
         command: ["sh", "-c"]
-        args: ['helm template "$ARGOCD_APP_NAME" ${helm_args} . | argocd-vault-plugin generate - | argocd-hasadna-plugin']
+        args: ['argocd-hasadna-plugin generate . "$ARGOCD_APP_NAME" ${helm_args}']

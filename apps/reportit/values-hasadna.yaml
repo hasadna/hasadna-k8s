@@ -7,7 +7,7 @@ botkit:
   # gcloud compute disks create --size=20GB --zone=europe-west1-b openpension-mongodb-data
   # persistentVolumePersistentDiskName: reportit-botkit-data
   # persistentVolumeSize: 1G
-  nfsServer: "172.16.0.9"
+  nfsServer: "~iac:hasadna_nfs1_internal_ip~"
   nfsPath: "/reportit/botkit"
   resources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "339Mi"}}'
 strapi:
@@ -18,7 +18,7 @@ strapi:
   # gcloud compute disks create --size=500GB --zone=europe-west1-b reportit-strapi-data
   # persistentVolumePersistentDiskName: reportit-strapi-data
   # persistentVolumeSize: 500G
-  nfsServer: "172.16.0.9"
+  nfsServer: "~iac:hasadna_nfs1_internal_ip~"
   nfsPath: "/reportit/strapi"
   resources: '{"requests": {"cpu": "93m", "memory": "256Mi"}, "limits": {"cpu": "163m", "memory": "1119Mi"}}'
 postgres:
@@ -29,7 +29,7 @@ postgres:
   # gcloud compute disks create --size=5GB --zone=europe-west1-b reportit-strapi-db
   # persistentVolumePersistentDiskName: reportit-strapi-db
   # persistentVolumeSize: 5G
-  nfsServer: "172.16.0.9"
+  nfsServer: "~iac:hasadna_nfs1_internal_ip~"
   nfsPath: "/reportit/postgres"
   resources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "339Mi"}}'
 ingresses:

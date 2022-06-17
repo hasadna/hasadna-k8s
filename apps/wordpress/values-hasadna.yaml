@@ -3,7 +3,7 @@ deployments:
   - name: datacity
     image: wordpress@sha256:95668fadc012aa882a19ffc875e5e2164a0a2fc7e201c869d0bc20ac0fab41c1
     resources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "1543Mi"}}'
-    nfsServer: "172.16.0.9"
+    nfsServer: "~iac:hasadna_nfs1_internal_ip~"
     nfsPath: "/wordpress/datacity"
     dbName: datacity
     php_ini:
@@ -14,7 +14,7 @@ deployments:
       # Maximum number of files that can be uploaded via a single request
       max_file_uploads: "20"
 dbResources: '{"requests": {"cpu": "50m", "memory": "309Mi"}, "limits": {"cpu": "150m", "memory": "2215Mi"}}'
-dbNfsServer: "172.16.0.9"
+dbNfsServer: "~iac:hasadna_nfs1_internal_ip~"
 dbNfsPath: "/wordpress/db"
 ingresses:
   - name: sites

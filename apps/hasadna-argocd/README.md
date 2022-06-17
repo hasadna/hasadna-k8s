@@ -2,4 +2,133 @@
 
 Contains ArgoCD definitions
 
-See [/docs/argocd.md](/docs/argocd.md) for usage and installation instructions
+For general usage instructions see [/docs/argocd.md](/docs/argocd.md)
+
+## Migrating to argocd from helm
+
+Old helm releases can be migrated to argocd with minimal disruption using the following procedure:
+
+* Move relevant chart + valuse to `apps/`
+* Add the app to `hasadna-argocd/values-hasadna.yaml`
+* Delete all Helm secrets in the app namespace - this removes the helm releases without deleting the resources
+* Commit the changes and sync the argocd app
+
+## Install ArgoCD
+
+Create namespace
+
+```
+kubectl create ns argocd
+```
+
+Login to Vault as admin and add the following:
+
+read-only policy:
+
+```
+path "kv/data/*" {
+  capabilities = [ "read" ]
+}
+```
+
+approle:
+
+```
+vault write auth/approle/role/ROLE_NAME token_policies="POLICY_NAME" token_ttl=1h token_max_ttl=4h
+```
+
+Get role and secret id
+
+```
+vault read auth/approle/role/ROLE_NAME/role-id
+vault write -force auth/approle/role/ROLE_NAME/secret-id
+``` 
+
+Create vault credentials secret
+
+```
+kubectl -n argocd create secret generic argocd-vault-plugin-credentials \
+    --from-literal=VAULT_ADDR= \
+    --from-literal=AVP_TYPE=vault \
+    --from-literal=AVP_AUTH_TYPE=approle \
+    --from-literal=AVP_ROLE_ID= \
+    --from-literal=AVP_SECRET_ID=
+```
+
+Set Vault connection details for Hasadna's Vault
+
+```
+export VAULT_ADDR=
+export VAULT_TOKEN=
+```
+
+Make sure you have `vault` and `jq` binaries installed locally
+
+Render the templates with secret values from Vault
+
+```
+apps/hasadna-argocd/manifests/render_templates.sh
+```
+
+Make sure you are connected to Hasadna's cluster (`kubectl get nodes`)
+
+Deploy
+
+```
+kubectl apply -n argocd -k apps/hasadna-argocd/manifests
+```
+
+Deploy ingresses
+
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: argocd-server-https
+  namespace: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: argocd.hasadna.org.il
+    http:
+      paths:
+      - backend:
+          serviceName: argocd-server
+          servicePort: http
+  tls:
+  - hosts:
+    - argocd.hasadna.org.il
+    secretName: argocd-server-https-cert
+```
+
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: argocd-server-grpc
+  namespace: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+spec:
+  rules:
+  - host: argocd-grpc.hasadna.org.il
+    http:
+      paths:
+      - backend:
+          serviceName: argocd-server
+          servicePort: https
+  tls:
+  - hosts:
+    - argocd-grpc.hasadna.org.il
+    secretName: argocd-server-grpc-cert
+```
+
+## Backup / persistency
+
+All argocd data is stored in Kubernetes CRDs under `argocd` namespace.
+
+Backup using `argocd admin export --namespace argocd`

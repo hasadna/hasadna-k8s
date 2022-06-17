@@ -11,14 +11,8 @@ spec:
         image: ghcr.io/hasadna/hasadna-k8s-argocd:a4396ec95d96f532b01dd5992364ef7e2f6e35af
         volumeMounts:
         - name: custom-tools
-          mountPath: /usr/local/bin/argocd-vault-plugin
-          subPath: argocd-vault-plugin
-        - name: custom-tools
           mountPath: /usr/local/bin/argocd-hasadna-plugin
           subPath: argocd-hasadna-plugin
-        envFrom:
-          - secretRef:
-              name: argocd-vault-plugin-credentials
       volumes:
       - name: custom-tools
         emptyDir: {}
@@ -34,10 +28,6 @@ spec:
             value: "1.10.1"
         args:
           - >-
-            wget -O argocd-vault-plugin
-            https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_linux_amd64 &&
-            chmod +x argocd-vault-plugin &&
-            mv argocd-vault-plugin /custom-tools/ &&
             wget -O argocd-hasadna-plugin
             https://raw.githubusercontent.com/hasadna/hasadna-k8s/master/apps/hasadna-argocd/argocd-hasadna-plugin.py &&
             chmod +x argocd-hasadna-plugin &&

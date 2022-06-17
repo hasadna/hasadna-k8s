@@ -1,6 +1,6 @@
 enabled: true
 resources: '{"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "500Mi"}}'
-nfsServer: "172.16.0.9"
+nfsServer: "~iac:hasadna_nfs1_internal_ip~"
 nfsPath: "/hasadna/vault"
 ingresses:
   - name: vault

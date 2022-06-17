@@ -16,11 +16,10 @@ terraformStateDb:
     limits:
       memory: 500Mi
       cpu: 100m
-  nfsServer: "172.16.0.9"
+  nfsServer: "~iac:hasadna_nfs1_internal_ip~"
   nfsPath: "/terraform/state_db"
 
 secrets:
   - name: terraform-state-db
-    vaultPath: kv/data/Projects/k8s/terraform
     data:
-      POSTGRES_PASSWORD: "<state_db_password>"
+      POSTGRES_PASSWORD: "~vault:Projects/k8s/terraform:state_db_password~"

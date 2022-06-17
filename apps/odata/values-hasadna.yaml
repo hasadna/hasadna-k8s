@@ -8,7 +8,7 @@ solrResources: '{"requests": {"cpu": "182m", "memory": "729Mi"}, "limits": {"cpu
 redisResources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "256Mi"}}'
 nginxResources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "164m", "memory": "256Mi"}}'
 #  ckanDbPersistentDiskName: odata-db
-ckanDataNfsServer: "172.16.0.9"
+ckanDataNfsServer: "~iac:hasadna_nfs1_internal_ip~"
 ckanDataNfsPath: "/odata"
 ckanSecretName: ckan-secrets-2
 envVarsSecretName: env-vars

@@ -3,7 +3,7 @@ enabled: true
 image: uumpa/resourcesaverproxy@sha256:f623e582fd3d74d15f97bc4c8e0d7b8765ffca696af7b093a89e642a037d3131
 webResources: '{"requests": {"cpu": "100m", "memory": "200Mi"}, "limits": {"memory": "600Mi"}}'
 daemonResources: '{"requests": {"cpu": "100m", "memory": "200Mi"}, "limits": {"memory": "600Mi"}}'
-nfsServer: "172.16.0.9"
+nfsServer: "~iac:hasadna_nfs1_internal_ip~"
 nfsPath: "/resourcesaver/proxy/runtime"
 ingresses:
   - name: web

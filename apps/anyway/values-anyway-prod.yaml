@@ -8,7 +8,7 @@ mainResources: '{"requests": {"cpu": "100m", "memory": "1000Mi"}, "limits": {"cp
 secondariesResources: '{"requests": {"cpu": "100m", "memory": "1000Mi"}, "limits": {"cpu": "150m", "memory": "1500Mi"}}'
 dbResources: '{"requests": {"cpu": "25m", "memory": "2062Mi"}, "limits": {"cpu": "165m", "memory": "3500Mi"}}'
 nginxResources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "500Mi"}}'
-dbNfsServer: "172.16.0.9"
+dbNfsServer: "~iac:hasadna_nfs1_internal_ip~"
 dbNfsPath: "/anyway/db"
 DBDUMP_S3_FILE_PREFIX: ""
 dbBackupEnabled: true
@@ -24,7 +24,7 @@ reports:
   replicas: 1
   resources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "500Mi"}}'
 
-nfsServer: "172.16.0.9"
+nfsServer: "~iac:hasadna_nfs1_internal_ip~"
 enableAirflow: true
 airflowDb:
   # pulled August 8, 2021

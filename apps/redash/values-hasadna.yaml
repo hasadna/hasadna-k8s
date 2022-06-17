@@ -21,7 +21,7 @@ redis:
 
 postgres:
   resources: {"requests": {"cpu": "50m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
-  nfsServer: "172.16.0.9"
+  nfsServer: "~iac:hasadna_nfs1_internal_ip~"
   nfsPath: "/redash/postgres"
 
 nginx:
