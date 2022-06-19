@@ -36,7 +36,7 @@ airflowScheduler:
 airflow:
   enableEmails: true
   AIRFLOW__SMTP__SMTP_MAIL_FROM: "Open Bus Airflow <open-bus-airflow@hasadna.org.il>"
-  AIRFLOW__WEBSERVER__BASE_URL: "https://open-bus-airflow.hasadna.org.il"
+  AIRFLOW__WEBSERVER__BASE_URL: "https://~iac:ingress-open-bus-airflow~"
 
 strideApiResources: {"requests": {"cpu": "1000m", "memory": "1000Mi"}, "limits": {"memory": "2000Mi"}}
 
@@ -75,30 +75,30 @@ ingresses:
   - name: siri-requester
     ssl: true
     rules:
-      - host: open-bus-siri-requester.hasadna.org.il
+      - host: "~iac:ingress-open-bus-siri-requester~"
         serviceName: siri-requester-nginx
         servicePort: 80
   - name: airflow-webserver
     ssl: true
     rules:
-      - host: open-bus-airflow.hasadna.org.il
+      - host: "~iac:ingress-open-bus-airflow~"
         serviceName: airflow-webserver
         servicePort: 8080
   - name: stride-api
     ssl: true
     rules:
-      - host: open-bus-stride-api.hasadna.org.il
+      - host: "~iac:ingress-open-bus-stride-api~"
         serviceName: stride-api
         servicePort: 80
   - name: gtfs
     ssl: true
     rules:
-      - host: open-bus-gtfs-data.hasadna.org.il
+      - host: "~iac:ingress-open-bus-gtfs-data~"
         serviceName: gtfs-nginx
         servicePort: 80
   - name: webmon
     ssl: true
     rules:
-      - host: open-bus-webmon.hasadna.org.il
+      - host: "~iac:ingress-open-bus-webmon~"
         serviceName: webmon
         servicePort: 8901
