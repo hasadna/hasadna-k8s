@@ -16,22 +16,61 @@ spec:
         app: terraform-state-db
     spec:
       terminationGracePeriodSeconds: 10
+      initContainers:
+        - name: init-ssl
+          # pulled Jun 19, 2022
+          image: alpine@sha256:686d8c9dfa6f3ccfc8230bc3178d23f84eeaf7e457f36f271ab1acc53015037c
+          command:
+            - sh
+            - -c
+            - |
+              cp /opt/ssl/server.* /opt/secured_ssl/ &&\
+              chmod 600 /opt/secured_ssl/server.* &&\
+              chown 999:999 /opt/secured_ssl/* &&\
+              if ! cat /var/lib/postgresql/data/pg_hba.conf | grep "^hostnossl"; then
+                sed -i '1i hostnossl all all 0.0.0.0/0 reject' /var/lib/postgresql/data/pg_hba.conf
+              fi
+          volumeMounts:
+            - name: ssl
+              mountPath: /opt/ssl
+            - name: secured-ssl
+              mountPath: /opt/secured_ssl
+            - name: data
+              mountPath: /var/lib/postgresql/data
+              subPath: terraform_state_db_postgres
       containers:
-      - name: postgres
-        # pulled Jun 15, 2022
-        image: postgres:14@sha256:2d1e636f07781d4799b3f2edbff78a0a5494f24c4512cb56a83ebfd0e04ec074
-        ports:
-        - containerPort: 5432
-        resources: {{ toYaml .Values.terraformStateDb.resources | nindent 10 }}
-        envFrom:
-          - secretRef:
-              name: terraform-state-db
-        volumeMounts:
-          - name: data
-            mountPath: /var/lib/postgresql/data
-            subPath: terraform_state_db_postgres
+        - name: postgres
+          # pulled Jun 15, 2022
+          image: postgres:14@sha256:2d1e636f07781d4799b3f2edbff78a0a5494f24c4512cb56a83ebfd0e04ec074
+          args: [
+            -c, "ssl_cert_file=/opt/secured_ssl/server.crt",
+            -c, "ssl_key_file=/opt/secured_ssl/server.key",
+            -c, "ssl=on"
+          ]
+          ports:
+            - containerPort: 5432
+          resources: {{ toYaml .Values.terraformStateDb.resources | nindent 12 }}
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom: {"secretKeyRef":{"name":"terraform-state-db", "key":"POSTGRES_PASSWORD"}}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+              subPath: terraform_state_db_postgres
+            - name: secured-ssl
+              mountPath: /opt/secured_ssl
       volumes:
         - name: data
           nfs:
             server: {{ .Values.terraformStateDb.nfsServer | quote }}
             path: {{ .Values.terraformStateDb.nfsPath | quote }}
+        - name: ssl
+          secret:
+            secretName: terraform-state-db
+            items:
+              - key: server.key
+                path: server.key
+              - key: server.crt
+                path: server.crt
+        - name: secured-ssl
+          emptyDir: {}

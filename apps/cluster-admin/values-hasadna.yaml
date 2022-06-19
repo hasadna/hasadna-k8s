@@ -23,3 +23,7 @@ secrets:
   - name: terraform-state-db
     data:
       POSTGRES_PASSWORD: "~vault:Projects/k8s/terraform:state_db_password~"
+      # openssl req -new -x509 -days 365 -nodes -text -out server.crt \
+      #  -keyout server.key -subj "/CN=terraform-state-db.localhost"
+      server.key: "~vault:Projects/k8s/terraform:state_db_server.key~"
+      server.crt: "~vault:Projects/k8s/terraform:state_db_server.crt~"
