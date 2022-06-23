@@ -86,6 +86,8 @@ ingresses:
         servicePort: 8080
   - name: stride-api
     ssl: true
+    proxyTimeouts:
+      read: 600
     rules:
       - host: "~iac:ingress-open-bus-stride-api~"
         serviceName: stride-api
