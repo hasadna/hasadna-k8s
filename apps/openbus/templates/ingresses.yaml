@@ -18,9 +18,9 @@ metadata:
     nginx.ingress.kubernetes.io/permanent-redirect: {{ .permanentRedirect | quote }}
   {{ end }}
   {{ if .proxyTimeouts }}
-  {{ if .proxyTimeouts.connect }}nginx.ingress.kubernetes.io/proxy-connect-timeout: {{ .proxyTimeouts.connect | quote }}{{ end }}
-  {{ if .proxyTimeouts.read }}nginx.ingress.kubernetes.io/proxy-read-timeout: {{ .proxyTimeouts.read | quote }}{{ end }}
-  {{ if .proxyTimeouts.send }}nginx.ingress.kubernetes.io/proxy-send-timeout: {{ .proxyTimeouts.send | quote }}{{ end }}
+    {{ if .proxyTimeouts.connect }}nginx.ingress.kubernetes.io/proxy-connect-timeout: {{ .proxyTimeouts.connect | quote }}{{ end }}
+    {{ if .proxyTimeouts.read }}nginx.ingress.kubernetes.io/proxy-read-timeout: {{ .proxyTimeouts.read | quote }}{{ end }}
+    {{ if .proxyTimeouts.send }}nginx.ingress.kubernetes.io/proxy-send-timeout: {{ .proxyTimeouts.send | quote }}{{ end }}
   {{ end }}
 spec:
   rules:
