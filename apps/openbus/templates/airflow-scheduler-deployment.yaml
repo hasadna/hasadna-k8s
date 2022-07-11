@@ -49,6 +49,8 @@ spec:
             - name: AIRFLOW__WEBSERVER__BASE_URL
               value: {{ .Values.airflow.AIRFLOW__WEBSERVER__BASE_URL | quote }}
             {{ end }}
+            - name: OPEN_BUS_STRIDE_PUBLIC_S3_OBJECT_PREFIX
+              value: "__production__"
           envFrom:
             - secretRef:
                 name: "airflow"
