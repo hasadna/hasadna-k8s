@@ -2,5 +2,5 @@ pipelinesImage: ghcr.io/hasadna/open-bus-pipelines/open-bus-pipelines:7d3d09a803
 siriEtlImage: docker.pkg.github.com/hasadna/open-bus-siri-etl/open-bus-siri-etl:558a6e90c607419df40f6679628ad91b3c820088
 siriRequesterImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester:ed5ed1f76b65394d15570b6b5e637b205f754369
 siriRequesterNginxImage: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester-nginx:ed5ed1f76b65394d15570b6b5e637b205f754369
-strideApiImage: ghcr.io/hasadna/open-bus-stride-api/open-bus-stride-api:537d50a6da11087960294c922b5d07ad9844bfcc
+strideApiImage: ghcr.io/hasadna/open-bus-stride-api/open-bus-stride-api:35df806642c0a4b86b7327ba68591bb6d32a73c2
 strideDbAppImage: ghcr.io/hasadna/open-bus-stride-db/open-bus-stride-db:db6729a9325d4c6147bc473c015b2dd05e8ca4e2
