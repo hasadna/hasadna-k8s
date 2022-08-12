@@ -159,11 +159,9 @@ apps:
       - values-hasadna-auto-updated.yaml
 
   - name: betaknesset
-    # testing PR https://github.com/hasadna/hasadna-k8s/pull/25
-    disableAutoSync: true
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
-      targetRevision: add-betaknesset-db
+      targetRevision: master
       path: apps/betaknesset
     sourceVaultPluginHelmValueFiles:
       - values-hasadna.yaml
