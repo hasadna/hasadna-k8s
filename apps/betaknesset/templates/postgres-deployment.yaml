@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: postgres
+        # Pulled Aug 12, 2022
+        image: postgres:14@sha256:f8816ada742348e1adfcec5c2a180b675bf6e4a294e0feb68bd70179451e1242
+        resources: {{ toYaml .Values.postgres.resources | nindent 10 }}
+        ports:
+          - containerPort: 5432
+        env:
+          - name: POSTGRES_PASSWORD
+            valueFrom: {"secretKeyRef":{"name":"postgres", "key":"password"}}
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+          # postgres doesn't let you use the root of a disk (complaints about having lost+found directory)
+          subPath: dbdata
+      volumes:
+      - name: data
+        nfs:
+          server: {{ .Values.postgres.nfsServer | quote }}
+          path: {{ $.Values.postgres.nfsPath | quote }}
