@@ -163,6 +163,8 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/betaknesset
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
 
   - name: odata
     source:
