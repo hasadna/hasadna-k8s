@@ -6,10 +6,10 @@ Restic backups run periodically from the Jenkins server
 
 Get secret values from Hasadna's Vault `Projects/k8s/restic-backups`
 
-Make sure you are using Restic version 0.9
+Make sure you are using Restic version 0.13.1
 
 ```
-restic version | grep 'restic 0.9.'
+restic version | grep 'restic 0.13.1'
 ```
 
 Install Restic by downloading the binary and placing in PATH: https://github.com/restic/restic/releases
@@ -52,7 +52,7 @@ Jobs are scheduled on the Jenkins server
 #!/usr/bin/env bash
 
 eval "${RESTIC_BACKUP_VARS}"
-! restic version | grep 'restic 0.9.' && exit 1
+! restic version | grep 'restic 0.13.1' && exit 1
 restic -r $RESTIC_REPO backup $BACKUP_DIRECTORIES
 ```
 
@@ -70,7 +70,7 @@ restic -r $RESTIC_REPO backup $BACKUP_DIRECTORIES
 
 RESTIC="restic"
 
-! $RESTIC version | grep 'restic 0.9.' && exit 1
+! $RESTIC version | grep 'restic 0.13.1' && exit 1
 
 ALL_RET=0
 
@@ -115,16 +115,16 @@ exit $ALL_RET
 ```
 #!/usr/bin/env bash
 
-wget -q https://releases.rancher.com/cli2/v2.3.2/rancher-linux-amd64-v2.3.2.tar.gz
-tar -xzf rancher-linux-amd64-v2.3.2.tar.gz
-chmod +x rancher-v2.3.2/rancher
-export PATH=`pwd`/rancher-v2.3.2:$PATH
+wget -q https://releases.rancher.com/cli2/v2.6.4/rancher-linux-amd64-v2.6.4.tar.gz
+tar -xzf rancher-linux-amd64-v2.6.4.tar.gz
+chmod +x rancher-v2.6.4/rancher
+export PATH=`pwd`/rancher-v2.6.4:$PATH
 $RANCHER_GLOBAL_ADMIN_LOGIN --context c-vrqxr:p-g6m98
 ETCD_NODE=`rancher nodes | grep master | cut -d" " -f1 | head -n1`
 echo getting backup from node $ETCD_NODE
 rancher ssh $ETCD_NODE -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
   eval \"${RESTIC_BACKUP_VARS}\"
-  curl -L https://github.com/restic/restic/releases/download/v0.9.6/restic_0.9.6_linux_amd64.bz2 | bunzip2 > restic &&\
+  curl -L https://github.com/restic/restic/releases/download/v0.13.1/restic_0.13.1_linux_amd64.bz2 | bunzip2 > restic &&\
   chmod +x restic && ./restic version &&\
   docker exec etcd etcdctl snapshot save /etcd-snapshot &&\
   docker cp etcd:/etcd-snapshot ./etcd-snapshot &&\
