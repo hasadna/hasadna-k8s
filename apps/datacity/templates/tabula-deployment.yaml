@@ -1,0 +1,22 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tabula
+spec:
+  selector:
+    matchLabels:
+      app: tabula
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: tabula
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: tabula
+        image: {{ .Values.tabulaImage | default "hasadna/tabula" | quote }}
+        resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "600Mi"}}
+{{ end }}
