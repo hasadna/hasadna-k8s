@@ -18,5 +18,5 @@ spec:
       containers:
       - name: tabula
         image: {{ .Values.tabulaImage | default "hasadna/tabula" | quote }}
-        resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "600Mi"}}
+        resources: {"requests": {"cpu": "25m", "memory": "256Mi"}}
 {{ end }}
