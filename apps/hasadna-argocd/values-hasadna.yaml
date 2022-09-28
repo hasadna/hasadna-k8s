@@ -347,6 +347,7 @@ apps:
       - values.yaml
 
   - name: anyway-prod
+    disableAutoSync: true
     project: anyway
     destinationNamespace: anyway
     source:
@@ -358,6 +359,7 @@ apps:
       - values-anyway-auto-updated.yaml
 
   - name: anyway-dev
+    disableAutoSync: true
     project: anyway
     destinationNamespace: anyway-dev
     source:
