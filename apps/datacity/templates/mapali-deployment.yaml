@@ -75,4 +75,11 @@ spec:
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_S3_ENDPOINT_URL"}}
         - name: DGP_APP_DEFAULT_ROLE
           value: "2"
+
+      volumes:
+        - name: data
+          nfs:
+            server: {{ .Values.mapaliDbNfsServer | quote }}
+            path: {{ .Values.mapaliDbNfsPath | quote }}
+
 {{ end }}
