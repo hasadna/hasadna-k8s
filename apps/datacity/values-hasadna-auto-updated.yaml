@@ -1,3 +1,4 @@
 ckanDgpServerImage: docker.pkg.github.com/hasadna/datacity-ckan-dgp/server:39b6ec9c13af9d0707e790454bbd6be63dc5f188
 dgpAppDbImage: akariv/dgp-app-db@sha256:8ebf03009fb6c6e42308c2579b4ac2d979325a492fffd5942af0de3fc709ce28
 dgpAppImage: docker.pkg.github.com/hasadna/datacity-dgp-importer/server:37184a42c327c304c08b4e5c764aceea2317dcbb
+mapaliImage: docker.pkg.github.com/hasadna/datacity-mapali/server:4f0e334b74e3c736da13535c2e5822559385cf66
