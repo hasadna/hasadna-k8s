@@ -69,7 +69,7 @@ spec:
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_MAPS_BUCKET_NAME"}}
         - name: MAPS_S3_ACCESS_KEY_ID
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_AWS_ACCESS_KEY_ID"}}
-        - name: MAPS_S3_ACCESS_KEY_ID
+        - name: MAPS_S3_SECRET_ACCESS_KEY
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_AWS_SECRET_ACCESS_KEY"}}
         - name: MAPS_S3_ENDPOINT_URL
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_S3_ENDPOINT_URL"}}
