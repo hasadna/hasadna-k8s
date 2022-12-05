@@ -21,10 +21,10 @@ spec:
       - name: db
         image: "docker.pkg.github.com/hasadna/datacity-ckan-dgp/datacity-ckan-dgp-db:210085d803fd866c24f2d644920dd276527d74f1"
         resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "2Gi"}}
-        # volumeMounts:
-        #   - name: data
-        #     mountPath: /var/lib/postgresql/data
-        #     subPath: postgres_data2
+        volumeMounts:
+          - name: data
+            mountPath: /var/lib/postgresql/data
+            subPath: postgres_data2
       - name: server
         image: {{ .Values.mapaliImage | default "docker.pkg.github.com/hasadna/mapali/server" | quote }}
         resources: {"requests": {"cpu": "247m", "memory": "1953Mi"}, "limits": {"cpu": "500m", "memory": "4000Mi"}}
@@ -76,10 +76,10 @@ spec:
         - name: DGP_APP_DEFAULT_ROLE
           value: "2"
 
-      # volumes:
-      #   - name: data
-      #     nfs:
-      #       server: {{ .Values.mapaliDbNfsServer | quote }}
-      #       path: {{ .Values.mapaliDbNfsPath | quote }}
+      volumes:
+        - name: data
+          nfs:
+            server: {{ .Values.mapaliDbNfsServer | quote }}
+            path: {{ .Values.mapaliDbNfsPath | quote }}
 
 {{ end }}
