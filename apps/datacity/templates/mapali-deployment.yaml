@@ -1,0 +1,78 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mapali
+spec:
+  selector:
+    matchLabels:
+      app: mapali
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mapali
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: db
+        image: "docker.pkg.github.com/hasadna/datacity-ckan-dgp/datacity-ckan-dgp-db:210085d803fd866c24f2d644920dd276527d74f1"
+        resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "2Gi"}}
+        volumeMounts:
+          - name: data
+            mountPath: /var/lib/postgresql/data
+            subPath: postgres_data2
+      - name: server
+        image: {{ .Values.mapaliImage | default "docker.pkg.github.com/hasadna/mapali/server" | quote }}
+        resources: {"requests": {"cpu": "247m", "memory": "1953Mi"}, "limits": {"cpu": "500m", "memory": "4000Mi"}}
+        securityContext:
+          runAsGroup: 0
+          runAsUser: 0
+        ports:
+        - containerPort: 5000
+        env:
+        - name: EXTERNAL_ADDRESS
+          value: https://mapali.datacity.org.il
+        - name: PUBLIC_KEY
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"PUBLIC_KEY"}}
+        - name: PRIVATE_KEY
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"PRIVATE_KEY"}}
+
+        - name: GOOGLE_KEY
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"GOOGLE_KEY"}}
+        - name: GOOGLE_SECRET
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"GOOGLE_SECRET"}}
+
+        - name: DATABASE_URL
+          value: postgresql://postgres:postgres@localhost/auth
+        - name: DATASETS_DATABASE_URL
+          value: postgresql://postgres:postgres@localhost/datasets
+        - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+          value: postgresql://postgres:postgres@localhost/airflow
+        - name: ETLS_DATABASE_URL
+          value: postgresql://postgres:postgres@localhost/etls
+        - name: BUCKET_NAME
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_TEMP_BUCKET_NAME"}}
+        - name: AWS_REGION
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_AWS_REGION"}}
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_AWS_ACCESS_KEY_ID"}}
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_AWS_SECRET_ACCESS_KEY"}}
+        - name: S3_ENDPOINT_URL
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_S3_ENDPOINT_URL"}}
+
+        - name: MAPS_S3_BUCKET_NAME
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_MAPS_BUCKET_NAME"}}
+        - name: MAPS_S3_ACCESS_KEY_ID
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_AWS_ACCESS_KEY_ID"}}
+        - name: MAPS_S3_ACCESS_KEY_ID
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_AWS_SECRET_ACCESS_KEY"}}
+        - name: MAPS_S3_ENDPOINT_URL
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_S3_ENDPOINT_URL"}}
+        - name: DGP_APP_DEFAULT_ROLE
+          value: "2"
+{{ end }}

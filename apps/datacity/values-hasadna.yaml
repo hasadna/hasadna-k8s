@@ -32,6 +32,11 @@ ingresses:
       - host: ckan-dgp.datacity.org.il
         serviceName: ckan-dgp
         servicePort: 5000
+  - name: mapali
+    rules:
+      - host: mapali.datacity.org.il
+        serviceName: mapali
+        servicePort: 5000
 
 vertical_pod_autoscalers:
 - apiVersion: apps/v1
