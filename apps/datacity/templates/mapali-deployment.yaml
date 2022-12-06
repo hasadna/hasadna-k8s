@@ -27,7 +27,7 @@ spec:
             subPath: postgres_data2
       - name: server
         image: {{ .Values.mapaliImage | default "docker.pkg.github.com/hasadna/mapali/server" | quote }}
-        resources: {"requests": {"cpu": "247m", "memory": "1953Mi"}, "limits": {"cpu": "500m", "memory": "4000Mi"}}
+        resources: {"requests": {"cpu": "250m", "memory": "2Gi"}, "limits": {"cpu": "1000m", "memory": "4Gi"}}
         securityContext:
           runAsGroup: 0
           runAsUser: 0
@@ -72,6 +72,8 @@ spec:
         - name: MAPS_S3_SECRET_ACCESS_KEY
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_AWS_SECRET_ACCESS_KEY"}}
         - name: MAPS_S3_ENDPOINT_URL
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_S3_ENDPOINT_URL"}}
+        - name: MAPS_S3_REGION_NAME
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_S3_ENDPOINT_URL"}}
         - name: DGP_APP_DEFAULT_ROLE
           value: "2"
