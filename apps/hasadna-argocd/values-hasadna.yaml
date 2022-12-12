@@ -141,7 +141,7 @@ apps:
   - name: cluster-admin
     project: default
     destinationNamespace: default
-    # disableAutoSync: true
+    disableAutoSync: true
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
