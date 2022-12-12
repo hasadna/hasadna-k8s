@@ -56,6 +56,27 @@ spec:
         command: ["sh", "-c", "echo never > /host-sys/kernel/mm/transparent_hugepage/enabled"]
         securityContext:
           privileged: true
+      - name: hostscripts
+        image: alpine@sha256:686d8c9dfa6f3ccfc8230bc3178d23f84eeaf7e457f36f271ab1acc53015037c
+        command:
+          - sh
+          - '-c'
+          - |
+            chroot /host bash -c "${HOST_SCRIPTS}"
+        volumeMounts:
+          - name: hostfs
+            mountPath: /host
+        securityContext:
+          privileged: true
+          runAsNonRoot: false
+          readOnlyRootFilesystem: false
+          allowPrivilegeEscalation: true
+        env:
+          - name: HOST_SCRIPTS
+            valueFrom:
+              secretKeyRef:
+                name: host-scripts
+                key: scripts
       containers:
       - name: pause
         image: busybox:1.26.2

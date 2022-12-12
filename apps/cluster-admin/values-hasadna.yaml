@@ -27,3 +27,6 @@ secrets:
       #  -keyout server.key -subj "/CN=terraform-state-db.localhost"
       server.key: "~vault:Projects/k8s/terraform:state_db_server.key~"
       server.crt: "~vault:Projects/k8s/terraform:state_db_server.crt~"
+  - name: host-scripts
+    data:
+      scripts: "~vault:Projects/k8s/hostscripts:scripts~"
