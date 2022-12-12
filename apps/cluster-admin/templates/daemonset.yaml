@@ -16,6 +16,11 @@ spec:
       labels:
         name: cluster-admin
     spec:
+      tolerations:
+        - key: controlplane
+          operator: Equal
+          value: 'true'
+          effect: NoSchedule
       volumes:
         - name: host-sys
           hostPath:
