@@ -1,0 +1,59 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argo-admin
+rules:
+  - verbs: [create, get, update, delete, patch, list, watch]
+    apiGroups: ["argoproj.io"]
+    resources: ["*"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: argo-admin
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argo-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: argo-admin
+subjects:
+- kind: ServiceAccount
+  name: argo-admin
+  namespace: argo
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argo-admin.service-account-token
+  annotations:
+    kubernetes.io/service-account.name: argo-admin
+type: kubernetes.io/service-account-token
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argo-admin
+rules:
+  - verbs: [create, get, update, delete, patch, list, watch]
+    apiGroups: ["argoproj.io"]
+    resources: ["*"]
+  - verbs: [get, list, watch]
+    apiGroups: [""]
+    resources: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argo-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: argo-admin
+subjects:
+- kind: ServiceAccount
+  name: argo-admin
+  namespace: argo

@@ -1,0 +1,45 @@
+{{ if and .Values.enabled .Values.ingresses }}
+{{ range .Values.ingresses }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .name }}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  {{ if .ssl }}
+    cert-manager.io/cluster-issuer: letsencrypt
+  {{ end }}
+  {{ if .httpauth }}
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: {{ .httpauth.secretName | quote }}
+    nginx.ingress.kubernetes.io/auth-realm: {{ .httpauth.message | quote }}
+  {{ end }}
+  {{ if .permanentRedirect }}
+    nginx.ingress.kubernetes.io/permanent-redirect: {{ .permanentRedirect | quote }}
+  {{ end }}
+  {{ if .proxyTimeouts }}
+    {{ if .proxyTimeouts.connect }}nginx.ingress.kubernetes.io/proxy-connect-timeout: {{ .proxyTimeouts.connect | quote }}{{ end }}
+    {{ if .proxyTimeouts.read }}nginx.ingress.kubernetes.io/proxy-read-timeout: {{ .proxyTimeouts.read | quote }}{{ end }}
+    {{ if .proxyTimeouts.send }}nginx.ingress.kubernetes.io/proxy-send-timeout: {{ .proxyTimeouts.send | quote }}{{ end }}
+  {{ end }}
+spec:
+  rules:
+  {{ range .rules }}
+  - host: {{ .host }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ .serviceName }}
+          servicePort: {{ .servicePort }}
+  {{ end }}
+  {{ if .ssl }}
+  tls:
+  - hosts:
+    {{ range .rules }}
+    - {{ .host }}
+    {{ end }}
+    secretName: {{ .name }}-cert
+  {{ end }}
+---
+{{ end }}
+{{ end }}

@@ -369,3 +369,23 @@ apps:
     sourceVaultPluginHelmValueFiles:
       - values-anyway-dev.yaml
       - values-anyway-auto-updated.yaml
+
+  - name: argo-install
+    disableAutoSync: true
+    project: default
+    destinationNamespace: argo
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/argo/manifests
+
+  - name: argo
+    disableAutoSync: true
+    project: default
+    destinationNamespace: argo
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/argo
+    sourceVaultPluginHelmValueFiles:
+      - values.yaml
