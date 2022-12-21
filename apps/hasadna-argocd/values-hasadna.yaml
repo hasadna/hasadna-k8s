@@ -277,6 +277,14 @@ apps:
     sourceVaultPluginHelmValueFiles:
       - values-hasadna.yaml
 
+  - name: oknesset-workflows
+    project: oknesset
+    destinationNamespace: oknesset
+    source:
+      repoURL: 'https://github.com/OriHoch/knesset-data-k8s.git'
+      targetRevision: master
+      path: apps/workflows
+
   - name: budgetkey
     source:
       repoURL: 'https://github.com/OpenBudget/budgetkey-k8s.git'
