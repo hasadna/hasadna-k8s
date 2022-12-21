@@ -377,7 +377,7 @@ apps:
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
-      path: apps/argo/manifests
+      path: apps/argoworkflows/manifests
 
   - name: argo
     disableAutoSync: true
@@ -386,6 +386,6 @@ apps:
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
-      path: apps/argo
+      path: apps/argoworkflows
     sourceVaultPluginHelmValueFiles:
       - values.yaml
