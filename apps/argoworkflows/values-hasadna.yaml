@@ -1,4 +1,4 @@
-ArgoServerDomain: "argo.hasadna.org.il"
+enabled: true
 
 ingresses:
   - name: argo
