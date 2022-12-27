@@ -4,6 +4,7 @@ apiVersion: v2
 
 annotations:
   argocd-hasadna-plugin/namespace: forum
+  argocd-hasadna-plugin/skip-init: "true"
 
 dependencies:
   - name: discourse

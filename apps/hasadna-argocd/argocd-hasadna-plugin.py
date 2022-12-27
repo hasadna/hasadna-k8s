@@ -26,10 +26,16 @@ except config.ConfigException:
 coreV1Api = client.CoreV1Api()
 
 
+def get_chart_config(chart_path):
+    with open(os.path.join(chart_path, 'Chart.yaml')) as f:
+        chart = yaml.safe_load(f)
+    return chart
+
+
 def init(chart_path):
-    # charts should run `helm dependency build` and commit the `charts` directory
-    # subprocess.check_call(['helm', 'dependency', 'build'], cwd=chart_path)
-    pass
+    chart = get_chart_config(chart_path)
+    if not chart.get('annotations', {}).get('argocd-hasadna-plugin/skip-init'):
+        subprocess.check_call(['helm', 'dependency', 'build'], cwd=chart_path)
 
 
 def parse_matches(matches):
@@ -107,8 +113,7 @@ def get_match_values(parsed_matches):
 
 
 def generate(chart_path, argocd_app_name, *helm_args):
-    with open(os.path.join(chart_path, 'Chart.yaml')) as f:
-        chart = yaml.safe_load(f)
+    chart = get_chart_config(chart_path)
     chart_namespace = chart.get('annotations', {}).get('argocd-hasadna-plugin/namespace')
     helm_args = list(helm_args)
     if chart_namespace:
