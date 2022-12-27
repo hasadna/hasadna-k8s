@@ -397,3 +397,14 @@ apps:
       path: apps/argoworkflows
     sourceVaultPluginHelmValueFiles:
       - values.yaml
+
+  - name: forum
+    disableAutoSync: true
+    project: default
+    destinationNamespace: forum
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/forum
+    sourceVaultPluginHelmValueFiles:
+      - values.yaml

@@ -1,0 +1,8 @@
+name: forum
+version: "0.0.0"
+apiVersion: v2
+
+dependencies:
+  - name: discourse
+    version: "9.0.6"
+    repository: "https://charts.bitnami.com/bitnami"

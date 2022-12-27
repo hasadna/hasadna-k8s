@@ -1,0 +1,52 @@
+discourse:
+  kubeVersion: "1.19.16"
+  auth:
+    username: devops
+    email: devops@hasadna.org.il
+    existingSecret: discourse-passwords
+  host: forum.hasadna.org.il
+  smtp:
+    enabled: true
+    host: smtp.sendgrid.com
+    port: 2525
+    existingSecret: discourse-passwords
+    user: daonb
+  discourse:
+    skipInstall: true
+  persistence:
+    enabled: true
+    storageClass: "nfs-client"
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+#      cert-manager.io/cluster-issuer: letsencrypt
+    apiVersion: extensions/v1beta1
+    hostname: forum.hasadna.org.il
+#    tls: true
+#    extraTls:
+#      - hosts:
+#          - forum.hasadna.org.il
+#        secretName: forum.hasadna.org.il-tls
+#  volumePermissions:
+#    enabled: true
+  postgresql:
+    auth:
+      existingSecret: discourse-passwords
+      secretKeys:
+        adminPasswordKey: postgres-password-admin
+        replicationPasswordKey: postgres-password-replication
+        userPasswordKey: postgres-password-user
+
+  redis:
+    auth:
+      enabled: false
+
+secrets:
+  - name: discourse-passwords
+    data:
+      discourse-password: "~vault:Projects/hasadna-forum/admin:password~"
+      smtp-password: "~vault:Projects/hasadna-forum/smtp:password~"
+      postgres-password-admin: "~vault:Projects/hasadna-forum/db:password-admin~"
+      postgres-password-replication: "~vault:Projects/hasadna-forum/db:password-replication~"
+      postgres-password-user: "~vault:Projects/hasadna-forum/db:password-user~"
