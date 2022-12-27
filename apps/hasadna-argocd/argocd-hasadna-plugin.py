@@ -2,6 +2,7 @@
 import re
 import os
 import sys
+import yaml
 import base64
 import urllib3
 import subprocess
@@ -106,6 +107,12 @@ def get_match_values(parsed_matches):
 
 
 def generate(chart_path, argocd_app_name, *helm_args):
+    with open(os.path.join(chart_path, 'Chart.yaml')) as f:
+        chart = yaml.safe_load(f)
+    chart_namespace = chart.get('annotations', {}).get('argocd-hasadna-plugin/namespace')
+    helm_args = list(helm_args)
+    if chart_namespace:
+        helm_args += ['--namespace', chart_namespace]
     yamls = subprocess.check_output(
         ['helm', 'template', argocd_app_name, *helm_args, '.'],
         cwd=chart_path

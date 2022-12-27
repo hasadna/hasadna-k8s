@@ -2,6 +2,9 @@ name: forum
 version: "0.0.0"
 apiVersion: v2
 
+annotations:
+  argocd-hasadna-plugin/namespace: forum
+
 dependencies:
   - name: discourse
     version: "9.0.6"
