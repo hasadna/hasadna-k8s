@@ -42,6 +42,12 @@ strideApiResources: {"requests": {"cpu": "1000m", "memory": "1000Mi"}, "limits":
 
 gtfsNfsPath: "/openbus/gtfs"
 
+legacy:
+  siriCollectorResources: {"requests": {"cpu": "500m", "memory": "500Mi"}, "limits": {"memory": "2000Mi"}}
+  gtfsCollectorResources: {"requests": {"cpu": "500m", "memory": "500Mi"}, "limits": {"memory": "2000Mi"}}
+  nfsPath: "/openbus/legacy/openbus"
+
+
 secrets:
   - name: sshtunnel
     data:

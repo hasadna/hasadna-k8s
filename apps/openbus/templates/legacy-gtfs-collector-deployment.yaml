@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: legacy-gtfs-collector
+spec:
+  selector:
+    matchLabels:
+      app: legacy-gtfs-collector
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: legacy-gtfs-collector
+    spec:
+      terminationGracePeriodSeconds: 120
+      containers:
+      - name: gtfs-collector
+        # Pulled Dec 27, 2022
+        image: openbus1/gtfs-collector:master@sha256:d0789ede03fdc58510d33bbb4d42cfa5c368c9ee40e972731076b5c5196a3ce7
+        resources: {{ toYaml .Values.legacy.gtfsCollectorResources | nindent 10 }}
+        env:
+        - name: gtfs.agencies
+          value: "[3,4,5,7,8,14,15,16,18,19,25,30,31,32]"
+        - name: gtfs.dateOfLastDownload
+          value: "2018-11-17"
+        - name: gtfs.reschedule.url
+          value: "http://legacy-siri-collector:8080/data/schedules/read/all"
+        - name: gtfs.dir.location
+          value: "/opt/hasadna/data/"
+        - name: gtfs.schedules.location
+          value: "/opt/hasadna/data/"
+        - name: gtfs.RawFilesBackupDirectory
+          value: "/opt/hasadna/data/"
+        volumeMounts:
+        - name: legacy-openbus
+          mountPath: /opt/hasadna/data
+      volumes:
+      - name: legacy-openbus
+        nfs:
+          server: {{ .Values.nfsServer | quote }}
+          path: {{ .Values.legacy.nfsPath | quote }}

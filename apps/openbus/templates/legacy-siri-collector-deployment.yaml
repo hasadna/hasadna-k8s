@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: legacy-siri-collector
+spec:
+  selector:
+    matchLabels:
+      app: legacy-siri-collector
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: legacy-siri-collector
+    spec:
+      terminationGracePeriodSeconds: 120
+      containers:
+      - name: siri-collector
+        # Pulled Dec 27, 2022
+        image: openbus1/siri-collector:master@sha256:f70ffd3d78255ac6bbd0785552cdcfdc84193dc140bd2f0a0ed993c03fa5f844
+        resources: {{ toYaml .Values.legacy.siriCollectorResources | nindent 10 }}
+        env:
+          - name: spring.profiles.active
+            value: production
+          - name: scheduler.data.file
+            value: /opt/hasadna/data/
+          - name: gtfs.schedules.location
+            value: /opt/hasadna/data/
+          - name: gtfs.dir.location
+            value: /opt/hasadna
+          - name: SIRI_OUTPUT_PATH
+            value: /opt/hasadna/data/siri_output
+        volumeMounts:
+        - name: legacy-openbus
+          mountPath: /opt/hasadna/data
+      volumes:
+      - name: legacy-openbus
+        nfs:
+          server: {{ .Values.nfsServer | quote }}
+          path: {{ .Values.legacy.nfsPath | quote }}
