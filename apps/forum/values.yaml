@@ -11,6 +11,11 @@ discourse:
     port: 2525
     existingSecret: discourse-passwords
     user: daonb
+  externalDatabase:
+    existingSecret: discourse-passwords
+    user: discourse
+    host: forum-postgresql
+    database: discourse
   discourse:
     skipInstall: true
   persistence:
