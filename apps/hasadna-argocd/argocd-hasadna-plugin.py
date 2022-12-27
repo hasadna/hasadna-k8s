@@ -26,7 +26,9 @@ coreV1Api = client.CoreV1Api()
 
 
 def init(chart_path):
-    subprocess.check_call(['helm', 'dependency', 'build'], cwd=chart_path)
+    # charts should run `helm dependency build` and commit the `charts` directory
+    # subprocess.check_call(['helm', 'dependency', 'build'], cwd=chart_path)
+    pass
 
 
 def parse_matches(matches):
