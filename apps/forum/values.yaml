@@ -20,14 +20,14 @@ discourse:
     enabled: true
     annotations:
       kubernetes.io/ingress.class: "nginx"
-#      cert-manager.io/cluster-issuer: letsencrypt
+      cert-manager.io/cluster-issuer: letsencrypt
     apiVersion: extensions/v1beta1
     hostname: forum.hasadna.org.il
-#    tls: true
-#    extraTls:
-#      - hosts:
-#          - forum.hasadna.org.il
-#        secretName: forum.hasadna.org.il-tls
+    tls: true
+    extraTls:
+      - hosts:
+          - forum.hasadna.org.il
+        secretName: forum.hasadna.org.il-tls
 #  volumePermissions:
 #    enabled: true
   postgresql:
@@ -35,7 +35,6 @@ discourse:
     auth:
       existingSecret: discourse-passwords
       database: discourse
-
   redis:
     kubeVersion: "1.19"
     auth:
