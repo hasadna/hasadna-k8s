@@ -34,10 +34,6 @@ discourse:
     kubeVersion: "1.19"
     auth:
       existingSecret: discourse-passwords
-      secretKeys:
-        adminPasswordKey: postgres-password-admin
-        replicationPasswordKey: postgres-password-replication
-        userPasswordKey: postgres-password-user
 
   redis:
     kubeVersion: "1.19"
@@ -49,6 +45,6 @@ secrets:
     data:
       discourse-password: "~vault:Projects/hasadna-forum/admin:password~"
       smtp-password: "~vault:Projects/hasadna-forum/smtp:password~"
-      postgres-password-admin: "~vault:Projects/hasadna-forum/db:password-admin~"
-      postgres-password-replication: "~vault:Projects/hasadna-forum/db:password-replication~"
-      postgres-password-user: "~vault:Projects/hasadna-forum/db:password-user~"
+      postgres-password: "~vault:Projects/hasadna-forum/db:password-admin~"
+      replication-password: "~vault:Projects/hasadna-forum/db:password-replication~"
+      password: "~vault:Projects/hasadna-forum/db:password-user~"
