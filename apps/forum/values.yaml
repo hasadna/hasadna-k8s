@@ -1,5 +1,5 @@
 discourse:
-  kubeVersion: "1.19.16"
+  kubeVersion: "1.19"
   auth:
     username: devops
     email: devops@hasadna.org.il
@@ -31,6 +31,7 @@ discourse:
 #  volumePermissions:
 #    enabled: true
   postgresql:
+    kubeVersion: "1.19"
     auth:
       existingSecret: discourse-passwords
       secretKeys:
@@ -39,6 +40,7 @@ discourse:
         userPasswordKey: postgres-password-user
 
   redis:
+    kubeVersion: "1.19"
     auth:
       enabled: false
 
