@@ -11,11 +11,6 @@ discourse:
     port: 2525
     existingSecret: discourse-passwords
     user: daonb
-  externalDatabase:
-    existingSecret: discourse-passwords
-    user: discourse
-    host: forum-postgresql
-    database: discourse
   discourse:
     skipInstall: true
   persistence:
@@ -39,6 +34,7 @@ discourse:
     kubeVersion: "1.19"
     auth:
       existingSecret: discourse-passwords
+      database: discourse
 
   redis:
     kubeVersion: "1.19"
