@@ -1,0 +1,11 @@
+enabled: true
+
+ingresses:
+  - name: kikar-redirect
+    ssl: true
+    permanentRedirect: https://www.hasadna.org.il/%d7%9b%d7%99%d7%9b%d7%a8-%d7%94%d7%9e%d7%93%d7%99%d7%a0%d7%94/
+    rules:
+      - host: kikar.org.il
+      - host: www.kikar.org.il
+      - host: kikar.org
+      - host: www.kikar.org

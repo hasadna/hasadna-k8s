@@ -408,3 +408,14 @@ apps:
       path: apps/forum
     sourceVaultPluginHelmValueFiles:
       - values.yaml
+
+  - name: hasadna
+    disableAutoSync: true
+    project: default
+    destinationNamespace: default
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/hasadna
+    sourceVaultPluginHelmValueFiles:
+      - values.yaml
