@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redirector-nginx
+spec:
+  selector:
+    matchLabels:
+      app: redirector-nginx
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: redirector-nginx
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/redirector-nginx-configmap.yaml") . | sha256sum }}
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: nginx
+        # Pulled on Oct 10, 2021
+        image: nginx@sha256:06e4235e95299b1d6d595c5ef4c41a9b12641f6683136c18394b858967cd1506
+        resources:
+          requests:
+            cpu: 20m
+            memory: 32Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+        - name: conf
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: default.conf
+      volumes:
+      - name: conf
+        configMap:
+          name: redirector-nginx

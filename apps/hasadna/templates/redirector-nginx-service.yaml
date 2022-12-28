@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redirector-nginx
+spec:
+  selector:
+    app: redirector-nginx
+  ports:
+  - name: "80"
+    port: 80
