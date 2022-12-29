@@ -15,6 +15,9 @@ spec:
       labels:
         app: siri-requester
     spec:
+      nodeSelector:
+        # this node's IP is allows on MOT side, so we must use it
+        kubernetes.io/hostname: hasadna-worker1
       terminationGracePeriodSeconds: 30
       containers:
         - name: app
@@ -29,16 +32,17 @@ spec:
           env:
             - name: OPEN_BUS_SIRI_STORAGE_ROOTPATH
               value: "/siri_requester_storage"
-            - name: OPEN_BUS_SSH_TUNNEL_PRIVATE_KEY_FILE
-              value: "/ssh_tunnel_private_key/key"
+            # we connect to MOT directly from specific nodes whose IPs are allows in MOT, so we don't need the proxy
+            # - name: OPEN_BUS_SSH_TUNNEL_PRIVATE_KEY_FILE
+            #   value: "/ssh_tunnel_private_key/key"
           envFrom:
             - secretRef:
                 name: {{ .Values.siriRequesterSecretName }}
           volumeMounts:
             - name: sirirequester
               mountPath: /siri_requester_storage
-            - name: sshtunnelsecret
-              mountPath: /ssh_tunnel_private_key
+            # - name: sshtunnelsecret
+            #   mountPath: /ssh_tunnel_private_key
         - name: health
           image: {{ .Values.siriRequesterImage }}
           resources: {{ .Values.siriRequesterHealthResources }}
@@ -54,7 +58,7 @@ spec:
           nfs:
             server: {{ .Values.nfsServer | quote }}
             path: {{ .Values.siriRequesterNfsPath | quote }}
-        - name: sshtunnelsecret
-          secret:
-            secretName: {{ .Values.sshTunnelSecretName }}
-            defaultMode: 0400
+        # - name: sshtunnelsecret
+        #   secret:
+        #     secretName: {{ .Values.sshTunnelSecretName }}
+        #     defaultMode: 0400
