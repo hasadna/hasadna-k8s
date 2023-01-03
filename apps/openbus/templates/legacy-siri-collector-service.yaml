@@ -1,3 +1,4 @@
+{{ if .Values.legacy.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -8,3 +9,4 @@ spec:
   ports:
   - name: "8080"
     port: 8080
+{{ end }}

@@ -43,6 +43,9 @@ strideApiResources: {"requests": {"cpu": "1000m", "memory": "1000Mi"}, "limits":
 gtfsNfsPath: "/openbus/gtfs"
 
 legacy:
+  # legacy collectors don't generate any new data or data that isn't generated
+  # from the stride data, so there is no reason to keep running them
+  enabled: false
   siriCollectorResources: {"requests": {"cpu": "500m", "memory": "500Mi"}, "limits": {"memory": "2000Mi"}}
   gtfsCollectorResources: {"requests": {"cpu": "500m", "memory": "500Mi"}, "limits": {"memory": "2000Mi"}}
   nfsPath: "/openbus/legacy/openbus"
