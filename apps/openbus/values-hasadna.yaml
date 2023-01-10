@@ -76,6 +76,8 @@ secrets:
       OPEN_BUS_PIPELINES_ALERT_EMAILS: "~vault:Projects/OBus/k8s-secrets:OPEN_BUS_PIPELINES_ALERT_EMAILS~"
       OPEN_BUS_STRIDE_PUBLIC_S3_WRITE_ACCESS_KEY_ID: "~vault:Projects/OBus/k8s-secrets:OPEN_BUS_STRIDE_PUBLIC_S3_WRITE_ACCESS_KEY_ID~"
       OPEN_BUS_STRIDE_PUBLIC_S3_WRITE_SECRET_ACCESS_KEY: "~vault:Projects/OBus/k8s-secrets:OPEN_BUS_STRIDE_PUBLIC_S3_WRITE_SECRET_ACCESS_KEY~"
+      WASABI_ACCESS_KEY_ID: "~vault:Projects/OBus/storage_credentials:wasabi-stride-uploader-access-key~"
+      WASABI_SECRET_ACCESS_KEY: "~vault:Projects/OBus/storage_credentials:wasabi-stride-uploader-secret-key~"
   - name: airflow-db
     data:
       POSTGRES_PASSWORD: "~vault:Projects/OBus/k8s-secrets:AIRFLOW_DB_POSTGRES_PASSWORD~"
