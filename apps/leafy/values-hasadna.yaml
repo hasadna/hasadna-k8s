@@ -1,0 +1,47 @@
+enabled: true
+
+nfsServer: "~iac:hasadna_nfs1_internal_ip~"
+db:
+  # Pulled Jan 12, 2023
+  image: postgres:15@sha256:6b07fc4fbcf551ea4546093e90cecefc9dc60d7ea8c56a4ace704940b6d6b7a3
+  nfsPath: "/leafy/db"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 200m
+      memory: 512Mi
+
+web:
+  resources:
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 200m
+      memory: 512Mi
+
+bot:
+  resources:
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 200m
+      memory: 512Mi
+
+secrets:
+  - name: app
+    data:
+      DJANGO_SECRET_KEY: "~vault:Projects/leafy/k8s-secrets:DJANGO_SECRET_KEY~"
+      DJANGO_DATABASE_PASSWORD: "~vault:Projects/leafy/k8s-secrets:DJANGO_DATABASE_PASSWORD~"
+      TELEGRAM_TOKEN: "~vault:Projects/leafy/k8s-secrets:TELEGRAM_TOKEN~"
+
+ingresses:
+  - name: webapp
+    ssl: true
+    rules:
+      - host: "~iac:ingress-leafy-webapp~"
+        serviceName: web
+        servicePort: 80

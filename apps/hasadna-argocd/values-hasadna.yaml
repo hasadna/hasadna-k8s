@@ -136,6 +136,15 @@ projects:
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
 
+  - name: leafy
+    spec:
+      destinations:
+        - name: '*'
+          namespace: leafy
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+
 apps:
 
   - name: cluster-admin
@@ -419,3 +428,15 @@ apps:
       path: apps/hasadna
     sourceVaultPluginHelmValueFiles:
       - values.yaml
+
+  - name: leafy
+    disableAutoSync: true
+    project: leafy
+    destinationNamespace: leafy
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/leafy
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
+      - values-hasadna-auto-updated.yaml

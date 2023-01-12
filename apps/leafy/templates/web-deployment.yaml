@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  selector:
+    matchLabels:
+      app: web
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: web
+        image: {{ .Values.appImage }}
+        resources: {{ toYaml .Values.web.resources | nindent 10 }}
+        env:
+        - name: DJANGO_SECRET_KEY
+          valueFrom: {"secretKeyRef":{"name":"app", "key":"DJANGO_SECRET_KEY"}}
+        - name: DEBUG
+          value: "False"
+        - name: DJANGO_DATABASE_ENGINE
+          value: "postgres"
+        - name: DJANGO_DATABASE_NAME
+          value: "postgres"
+        - name: DJANGO_DATABASE_USER
+          value: "postgres"
+        - name: DJANGO_DATABASE_PASSWORD
+          valueFrom: {"secretKeyRef":{"name":"app", "key":"DJANGO_DATABASE_PASSWORD"}}
+        - name: DJANGO_DATABASE_HOST
+          value: "db"
+        - name: DJANGO_DATABASE_PORT
+          value: "5432"
