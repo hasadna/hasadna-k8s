@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: bot
-  replicas: 1
+  replicas: 0
   revisionHistoryLimit: 2
   template:
     metadata:

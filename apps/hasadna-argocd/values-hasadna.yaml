@@ -430,7 +430,7 @@ apps:
       - values.yaml
 
   - name: leafy
-    disableAutoSync: true
+    disableAutoSync: false
     project: leafy
     destinationNamespace: leafy
     source:
