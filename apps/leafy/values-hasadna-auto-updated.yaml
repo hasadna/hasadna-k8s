@@ -1,1 +1,1 @@
-appImage: leafy:latest
+appImage: ghcr.io/hasadna/leafy/leafy-app:258ef97d8d23f71988eb0e9103da81da9a6c641e
