@@ -6,28 +6,28 @@ db:
   image: postgres:15@sha256:6b07fc4fbcf551ea4546093e90cecefc9dc60d7ea8c56a4ace704940b6d6b7a3
   nfsPath: "/leafy/db"
   resources:
-    limits:
+    requests:
       cpu: 100m
       memory: 256Mi
-    requests:
+    limits:
       cpu: 200m
       memory: 512Mi
 
 web:
   resources:
-    limits:
+    requests:
       cpu: 100m
       memory: 256Mi
-    requests:
+    limits:
       cpu: 200m
       memory: 512Mi
 
 bot:
   resources:
-    limits:
+    requests:
       cpu: 100m
       memory: 256Mi
-    requests:
+    limits:
       cpu: 200m
       memory: 512Mi
 
