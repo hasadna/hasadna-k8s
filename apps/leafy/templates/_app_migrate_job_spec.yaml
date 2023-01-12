@@ -9,7 +9,7 @@ template:
       env:
         - name: DJANGO_SECRET_KEY
           valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_SECRET_KEY"}}
-        - name: DEBUG
+        - name: DJANGO_DEBUG
           value: "False"
         - name: DJANGO_DATABASE_ENGINE
           value: "postgres"
