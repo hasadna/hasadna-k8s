@@ -8,7 +8,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: create-superuser
-          image: {{ .Values.appImage }}
+          image: ghcr.io/hasadna/leafy/leafy-app:62f49bb15fec0e69e1f56147542a9e50f0b3491b
           command:
             - bash
             - -c
@@ -17,7 +17,23 @@ spec:
                 --username "${DJANGO_SUPERUSER_NAME}" --email "${DJANGO_SUPERUSER_EMAIL}" &&\
               python manage.py shell -c \
                 "from django.contrib.auth.models import User; User.objects.filter(username='${DJANGO_SUPERUSER_NAME}').update(password='${DJANGO_SUPERUSER_PASSWORD}')"
-          env: {{- include "app.common.env" . | nindent 8 }}
+          env:
+          - name: DJANGO_SECRET_KEY
+            valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_SECRET_KEY"}}
+          - name: DJANGO_DEBUG
+            value: "False"
+          - name: DJANGO_DATABASE_ENGINE
+            value: "postgres"
+          - name: DJANGO_DATABASE_NAME
+            value: "postgres"
+          - name: DJANGO_DATABASE_USER
+            value: "postgres"
+          - name: DJANGO_DATABASE_PASSWORD
+            valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_DATABASE_PASSWORD"}}
+          - name: DJANGO_DATABASE_HOST
+            value: "db"
+          - name: DJANGO_DATABASE_PORT
+            value: "5432"
           - name: DJANGO_SUPERUSER_NAME
             valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_SUPERUSER_NAME"}}
           - name: DJANGO_SUPERUSER_EMAIL
