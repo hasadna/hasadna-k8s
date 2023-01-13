@@ -13,10 +13,7 @@ spec:
             - bash
             - -c
             - |
-              python manage.py createsuperuser --noinput \
-                --username "${DJANGO_SUPERUSER_NAME}" --email "${DJANGO_SUPERUSER_EMAIL}" &&\
-              python manage.py shell -c \
-                "from django.contrib.auth.models import User; User.objects.filter(username='${DJANGO_SUPERUSER_NAME}').update(password='${DJANGO_SUPERUSER_PASSWORD}')"
+              echo "from django.contrib.auth.models import User; User.objects.filter(email='${DJANGO_SUPERUSER_EMAIL}').delete(); User.objects.create_superuser('${DJANGO_SUPERUSER_NAME}', '${DJANGO_SUPERUSER_EMAIL}', '${DJANGO_SUPERUSER_PASSWORD}')" | python manage.py shell
           env:
           - name: DJANGO_SECRET_KEY
             valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_SECRET_KEY"}}
