@@ -22,5 +22,5 @@ spec:
         args: ["bot"]
         resources: {{ toYaml .Values.bot.resources | nindent 10 }}
         env: {{- include "app.common.env" . | nindent 6 }}
-          - name: TELEGRAM_TOKEN
-            valueFrom: {"secretKeyRef":{"name":"app", "key":"TELEGRAM_TOKEN"}}
+        - name: TELEGRAM_TOKEN
+          valueFrom: {"secretKeyRef":{"name":"app", "key":"TELEGRAM_TOKEN"}}
