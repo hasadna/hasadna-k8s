@@ -4,5 +4,11 @@ metadata:
   name: argocd-rbac-cm
 data:
   policy.csv: |
+    p, role:leafy-admin, applications, override, leafy/*, allow
+    p, role:leafy-admin, applications, sync, leafy/*, allow
+    p, role:leafy-admin, applications, update, leafy/*, allow
+    p, role:leafy-admin, exec, create, leafy/*, allow
+    
     g, hasadna:argocd-admins, role:admin
+    g, hasadna:argocd-leafy-admins, role:leafy-admin
   policy.default: 'role:readonly'
