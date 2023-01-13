@@ -6,22 +6,6 @@ template:
     - name: migrate
       image: {{ .Values.appImage }}
       args: ["migrate"]
-      env:
-        - name: DJANGO_SECRET_KEY
-          valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_SECRET_KEY"}}
-        - name: DJANGO_DEBUG
-          value: "False"
-        - name: DJANGO_DATABASE_ENGINE
-          value: "postgres"
-        - name: DJANGO_DATABASE_NAME
-          value: "postgres"
-        - name: DJANGO_DATABASE_USER
-          value: "postgres"
-        - name: DJANGO_DATABASE_PASSWORD
-          valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_DATABASE_PASSWORD"}}
-        - name: DJANGO_DATABASE_HOST
-          value: "db"
-        - name: DJANGO_DATABASE_PORT
-          value: "5432"
+      env: {{- include "app.common.env" . | nindent 6 }}
     restartPolicy: Never
 {{- end }}
