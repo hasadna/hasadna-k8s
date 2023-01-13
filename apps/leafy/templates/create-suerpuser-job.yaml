@@ -16,7 +16,7 @@ spec:
                 --username "${DJANGO_SUPERUSER_NAME}" --email "${DJANGO_SUPERUSER_EMAIL}" &&\
               python manage.py shell -c \
                 "from django.contrib.auth.models import User; User.objects.filter(username='${DJANGO_SUPERUSER_NAME}').update(password='${DJANGO_SUPERUSER_PASSWORD}')"
-          env: {{- include "app.common.env" . | nindent 6 }}
+          env: {{- include "app.common.env" . | nindent 8 }}
           - name: DJANGO_SUPERUSER_NAME
             valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_SUPERUSER_NAME"}}
           - name: DJANGO_SUPERUSER_EMAIL
