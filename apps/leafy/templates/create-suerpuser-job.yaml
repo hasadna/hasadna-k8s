@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-superuser
+spec:
+  template:
+    spec:
+      containers:
+        - name: create-superuser
+          image: {{ .Values.appImage }}
+          command:
+            - bash
+            - -c
+            - |
+              python manage.py createsuperuser --noinput \
+                --username "${DJANGO_SUPERUSER_NAME}" --email "${DJANGO_SUPERUSER_EMAIL}" &&\
+              python manage.py shell -c \
+                "from django.contrib.auth.models import User; User.objects.filter(username='${DJANGO_SUPERUSER_NAME}').update(password='${DJANGO_SUPERUSER_PASSWORD}')"
+          env: {{- include "app.common.env" . | nindent 6 }}
+          - name: DJANGO_SUPERUSER_NAME
+            valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_SUPERUSER_NAME"}}
+          - name: DJANGO_SUPERUSER_EMAIL
+            valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_SUPERUSER_EMAIL"}}
+          - name: DJANGO_SUPERUSER_PASSWORD
+            valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_SUPERUSER_PASSWORD"}}

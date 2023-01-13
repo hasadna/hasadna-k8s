@@ -46,6 +46,9 @@ secrets:
       DJANGO_SECRET_KEY: "~vault:Projects/leafy/k8s-secrets:DJANGO_SECRET_KEY~"
       DJANGO_DATABASE_PASSWORD: "~vault:Projects/leafy/k8s-secrets:DJANGO_DATABASE_PASSWORD~"
       TELEGRAM_TOKEN: "~vault:Projects/leafy/k8s-secrets:TELEGRAM_TOKEN~"
+      DJANGO_SUPERUSER_NAME: "~vault:Projects/leafy/k8s-secrets:DJANGO_SUPERUSER_NAME~"
+      DJANGO_SUPERUSER_PASSWORD: "~vault:Projects/leafy/k8s-secrets:DJANGO_SUPERUSER_PASSWORD~"
+      DJANGO_SUPERUSER_EMAIL: "~vault:Projects/leafy/k8s-secrets:DJANGO_SUPERUSER_EMAIL~"
 
 appIngress:
   host: "~iac:ingress-leafy-webapp~"
