@@ -13,7 +13,7 @@ spec:
       labels:
         app: web
     spec:
-      terminationGracePeriodSeconds: 30
+      terminationGracePeriodSeconds: 5
       serviceAccountName: leafy
       initContainers: {{- include "app.waitForMigrations" . | nindent 6 }}
       containers:
