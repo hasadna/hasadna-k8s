@@ -9,3 +9,5 @@ patchesStrategicMerge:
 - argocd-repo-server-deploy.yaml
 - argocd-cm.yaml
 - argocd-rbac-cm.yaml
+- patch-argocd-server-role.yaml
+- patch-argocd-server-cluster-role.yaml

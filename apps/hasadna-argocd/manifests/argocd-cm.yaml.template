@@ -4,6 +4,7 @@ metadata:
   name: argocd-cm
 data:
   url: "https://argocd.hasadna.org.il"
+  exec.enabled: "true"
   dex.config: |
     connectors:
       - type: github
@@ -17,6 +18,7 @@ data:
             teams:
             - argocd-admins
             - argocd-users
+            - argocd-leafy-admins
   configManagementPlugins: |
     - name: argocd-vault-plugin-helm-with-args
       init:
