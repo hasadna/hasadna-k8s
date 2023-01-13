@@ -2,7 +2,7 @@
   - name: DJANGO_SECRET_KEY
     valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_SECRET_KEY"}}
   - name: DJANGO_DEBUG
-    value: "False"
+    value: "True"
   - name: DJANGO_DATABASE_ENGINE
     value: "postgres"
   - name: DJANGO_DATABASE_NAME
