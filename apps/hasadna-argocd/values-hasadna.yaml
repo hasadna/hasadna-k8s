@@ -124,18 +124,6 @@ projects:
       orphanedResources:
         warn: true
 
-  - name: anyway
-    spec:
-      destinations:
-        - name: '*'
-          namespace: anyway
-          server: 'https://kubernetes.default.svc'
-        - name: '*'
-          namespace: anyway-dev
-          server: 'https://kubernetes.default.svc'
-      sourceRepos:
-        - 'https://github.com/hasadna/hasadna-k8s.git'
-
   - name: leafy
     spec:
       destinations:
@@ -362,30 +350,6 @@ apps:
       path: helm/ckan-backups
     sourceVaultPluginHelmValueFiles:
       - values.yaml
-
-  - name: anyway-prod
-    disableAutoSync: true
-    project: anyway
-    destinationNamespace: anyway
-    source:
-      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
-      targetRevision: master
-      path: apps/anyway
-    sourceVaultPluginHelmValueFiles:
-      - values-anyway-prod.yaml
-      - values-anyway-auto-updated.yaml
-
-  - name: anyway-dev
-    disableAutoSync: true
-    project: anyway
-    destinationNamespace: anyway-dev
-    source:
-      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
-      targetRevision: master
-      path: apps/anyway
-    sourceVaultPluginHelmValueFiles:
-      - values-anyway-dev.yaml
-      - values-anyway-auto-updated.yaml
 
   - name: argo-install
     disableAutoSync: true
