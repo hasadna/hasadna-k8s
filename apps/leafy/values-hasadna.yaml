@@ -31,6 +31,15 @@ bot:
       cpu: 200m
       memory: 512Mi
 
+nginx:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+
 secrets:
   - name: app
     data:
@@ -38,10 +47,5 @@ secrets:
       DJANGO_DATABASE_PASSWORD: "~vault:Projects/leafy/k8s-secrets:DJANGO_DATABASE_PASSWORD~"
       TELEGRAM_TOKEN: "~vault:Projects/leafy/k8s-secrets:TELEGRAM_TOKEN~"
 
-ingresses:
-  - name: webapp
-    ssl: true
-    rules:
-      - host: "~iac:ingress-leafy-webapp~"
-        serviceName: web
-        servicePort: 80
+appIngress:
+  host: "~iac:ingress-leafy-webapp~"
