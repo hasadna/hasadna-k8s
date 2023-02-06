@@ -254,7 +254,7 @@ apps:
       - values-hasadna.yaml
 
   - name: oknesset-pipelines
-    disableAutoSync: true
+    disableAutoSync: false
     project: oknesset
     destinationNamespace: oknesset
     source:
