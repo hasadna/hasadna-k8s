@@ -16,8 +16,8 @@ spec:
         app: siri-requester
     spec:
       nodeSelector:
-        # this node's IP is allows on MOT side, so we must use it
-        kubernetes.io/hostname: hasadna-worker1
+        # This node label is updated by apps/openbus/bin/update_node_allowed_ips.py script
+        open-bus-allowed-ip: "true"
       terminationGracePeriodSeconds: 30
       containers:
         - name: app

@@ -264,3 +264,14 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO stride_reado
 CREATE USER redash WITH PASSWORD '*****';
 GRANT stride_readonly TO redash;
 ```
+
+## Update MOT Node Allowed IPs
+
+Some operations have to run from allowed IPs on MOT. The following command updates the node labels according to the
+latest requested allowed IPs:
+
+```
+python3 apps/openbus/bin/update_node_allowed_ips.py
+```
+
+If you need to request or change the allowed IPs, edit that file and set the `ALLOWED_IPS` constant.
