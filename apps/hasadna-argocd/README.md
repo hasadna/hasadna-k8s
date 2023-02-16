@@ -132,3 +132,15 @@ spec:
 All argocd data is stored in Kubernetes CRDs under `argocd` namespace.
 
 Backup using `argocd admin export --namespace argocd`
+
+## Permissions Management
+
+ArgoCD user/group permissions are defined in `apps/hasadna-argocd/manifests/argocd-rbac-cm.yaml`, 
+see [ArgoCD RBAC](https://argoproj.github.io/argo-cd/operator-manual/rbac/) for more details.
+
+Authorization is handled via GitHub, and the permission groups have to be defined in the Hasadna GitHub organization
+as teams. All the team names which are used in the RBAC configuration have to also be defined in 
+`apps/hasadna-argocd/manifests/argocd-cm.yaml.template` under the `teams` key.
+
+Once you made the relevant changes, deployment needs to be done manually as described above in the 
+`Install ArgoCD` section.

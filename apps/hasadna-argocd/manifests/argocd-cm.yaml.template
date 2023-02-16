@@ -19,6 +19,7 @@ data:
             - argocd-admins
             - argocd-users
             - argocd-leafy-admins
+            - argocd-dear-diary-admins
   configManagementPlugins: |
     - name: argocd-vault-plugin-helm-with-args
       init:
