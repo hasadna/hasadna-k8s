@@ -1,0 +1,5 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ddmg-{{ include "app.migrate.job.spec" . | sha1sum }}
+spec: {{- include "app.migrate.job.spec" . | nindent 2 }}

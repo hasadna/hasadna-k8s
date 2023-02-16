@@ -1,0 +1,44 @@
+enabled: true
+
+nfsServer: "~iac:hasadna_nfs1_internal_ip~"
+db:
+  # Pulled Feb 16, 2023
+  image: postgres:15@sha256:901df890146ec46a5cab7a33f4ac84e81bac2fe92b2c9a14fd649502c4adf954
+  nfsPath: "/dear-diary/db"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+
+web:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+
+nginx:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+
+secrets:
+  - name: app
+    data:
+      DJANGO_SECRET_KEY: "~vault:Projects/dear-diary/k8s-secrets:DJANGO_SECRET_KEY~"
+      DJANGO_DATABASE_PASSWORD: "~vault:Projects/dear-diary/k8s-secrets:DJANGO_DATABASE_PASSWORD~"
+      DJANGO_SUPERUSER_NAME: "~vault:Projects/dear-diary/k8s-secrets:DJANGO_SUPERUSER_NAME~"
+      DJANGO_SUPERUSER_PASSWORD: "~vault:Projects/dear-diary/k8s-secrets:DJANGO_SUPERUSER_PASSWORD~"
+      DJANGO_SUPERUSER_EMAIL: "~vault:Projects/dear-diary/k8s-secrets:DJANGO_SUPERUSER_EMAIL~"
+
+appIngress:
+  host: "~iac:ingress-dear-diary-webapp~"

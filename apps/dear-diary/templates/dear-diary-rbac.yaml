@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dear-diary
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dear-diary
+rules:
+- apiGroups: [batch]
+  resources: [jobs]
+  verbs: [list, get]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dear-diary
+subjects:
+- kind: ServiceAccount
+  name: dear-diary
+roleRef:
+  kind: Role
+  name: dear-diary
+  apiGroup: rbac.authorization.k8s.io

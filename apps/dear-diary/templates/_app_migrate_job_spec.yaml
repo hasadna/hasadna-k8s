@@ -1,0 +1,11 @@
+{{- define "app.migrate.job.spec" }}
+backoffLimit: 1
+template:
+  spec:
+    containers:
+    - name: migrate
+      image: {{ .Values.appImage }}
+      args: ["migrations"]
+      env: {{- include "app.common.env" . | nindent 6 }}
+    restartPolicy: Never
+{{- end }}

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  selector:
+    matchLabels:
+      app: web
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      terminationGracePeriodSeconds: 5
+      serviceAccountName: dear-diary
+      initContainers: {{- include "app.waitForMigrations" . | nindent 6 }}
+      containers:
+      - name: web
+        image: {{ .Values.appImage }}
+        args: ["web"]
+        resources: {{ toYaml .Values.web.resources | nindent 10 }}
+        env: {{- include "app.common.env" . | nindent 6 }}

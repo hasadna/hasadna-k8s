@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: app
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  rules:
+  - host: {{ .Values.appIngress.host }}
+    http:
+      paths:
+      - path: /static
+        backend:
+          serviceName: nginx
+          servicePort: 80
+      - path: /
+        backend:
+          serviceName: web
+          servicePort: 80
+  tls:
+  - hosts:
+    - {{ .Values.appIngress.host }}
+    secretName: app-cert

@@ -133,6 +133,15 @@ projects:
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
 
+  - name: dear-diary
+    spec:
+      destinations:
+        - name: '*'
+          namespace: dear-diary
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+
 apps:
 
   - name: cluster-admin
@@ -402,6 +411,18 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/leafy
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
+      - values-hasadna-auto-updated.yaml
+
+  - name: dear-diary
+    disableAutoSync: false
+    project: dear-diary
+    destinationNamespace: dear-diary
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/dear-diary
     sourceVaultPluginHelmValueFiles:
       - values-hasadna.yaml
       - values-hasadna-auto-updated.yaml

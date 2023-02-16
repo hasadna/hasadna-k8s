@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-superuser
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: create-superuser
+          image: ghcr.io/hasadna/dear-diary/dear-diary-app:48b710a682d3f6a8289aa3bc1f5cc77c5d2b2baa
+          command:
+            - bash
+            - -c
+            - |
+              echo "from django.contrib.auth.models import User; User.objects.filter(email='${DJANGO_SUPERUSER_EMAIL}').delete(); User.objects.create_superuser('${DJANGO_SUPERUSER_NAME}', '${DJANGO_SUPERUSER_EMAIL}', '${DJANGO_SUPERUSER_PASSWORD}')" | python manage.py shell
+          env:
+          - name: DJANGO_SECRET_KEY
+            valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_SECRET_KEY"}}
+          - name: DJANGO_DEBUG
+            value: "False"
+          - name: DJANGO_DATABASE_ENGINE
+            value: "postgres"
+          - name: DJANGO_DATABASE_NAME
+            value: "postgres"
+          - name: DJANGO_DATABASE_USER
+            value: "postgres"
+          - name: DJANGO_DATABASE_PASSWORD
+            valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_DATABASE_PASSWORD"}}
+          - name: DJANGO_DATABASE_HOST
+            value: "db"
+          - name: DJANGO_DATABASE_PORT
+            value: "5432"
+          - name: DJANGO_SUPERUSER_NAME
+            valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_SUPERUSER_NAME"}}
+          - name: DJANGO_SUPERUSER_EMAIL
+            valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_SUPERUSER_EMAIL"}}
+          - name: DJANGO_SUPERUSER_PASSWORD
+            valueFrom: {"secretKeyRef": {"name": "app", "key": "DJANGO_SUPERUSER_PASSWORD"}}
