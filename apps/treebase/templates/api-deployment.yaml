@@ -1,0 +1,27 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  selector:
+    matchLabels:
+      app: api
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: api
+        image: {{ .Values.apiImage | default "budgetkey/open-budget-data-api" | quote }}
+        resources: {"requests": {"cpu": "25m", "memory": "309Mi"}, "limits": {"cpu": "78m", "memory": "1000Mi"}}
+        env:
+          - name: DATABASE_URL
+            value: postgresql://readonly:readonly@db.treebase.org.il/datasets
+          - name: MAX_ROWS
+            value: "25000"
+{{ end }}

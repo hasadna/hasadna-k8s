@@ -1,0 +1,32 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: importer-db
+spec:
+  selector:
+    matchLabels:
+      app: importer-db
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: importer-db
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: importer-db
+        image: {{ .Values.dgpAppDbImage | default "akariv/dgp-app-db" | quote }}
+        resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "2Gi"}}
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+          subPath: postgres_data
+      volumes:
+      - name: data
+        nfs:
+          server: {{ .Values.importer.nfsServer | quote }}
+          path: {{ .Values.importer.nfsPath | quote }}
+
+{{ end }}

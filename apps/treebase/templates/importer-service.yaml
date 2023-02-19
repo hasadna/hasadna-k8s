@@ -1,0 +1,12 @@
+{{ if .Values.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: importer
+spec:
+  selector:
+    app: importer
+  ports:
+  - name: "5000"
+    port: 5000
+{{ end }}
