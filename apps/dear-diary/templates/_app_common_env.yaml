@@ -20,5 +20,5 @@
   - name: DJANGO_CSRF_TRUSTED_ORIGINS
     value: "https://{{ .Values.appIngress.host }}"
   - name: DJANGO_Q_CLUSTER_SETTINGS_JSON
-    value: '{"workers": {{ .Values.qcluster.workers }}}'
+    value: {{ .Values.qcluster.settingsJson | quote }}
 {{- end }}

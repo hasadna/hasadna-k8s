@@ -23,7 +23,7 @@ web:
       memory: 512Mi
 
 qcluster:
-  workers: 2
+  settingsJson: '{"workers": 2}'
   resources:
     requests:
       cpu: 100m
