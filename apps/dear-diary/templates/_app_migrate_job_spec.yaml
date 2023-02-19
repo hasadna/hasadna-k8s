@@ -5,7 +5,7 @@ template:
     containers:
     - name: migrate
       image: {{ .Values.appImage }}
-      args: ["migrations"]
+      args: ["migrate"]
       env: {{- include "app.common.env" . | nindent 6 }}
     restartPolicy: Never
 {{- end }}

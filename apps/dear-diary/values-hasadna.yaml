@@ -22,6 +22,16 @@ web:
       cpu: 200m
       memory: 512Mi
 
+qcluster:
+  workers: 2
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+
 nginx:
   resources:
     requests:
