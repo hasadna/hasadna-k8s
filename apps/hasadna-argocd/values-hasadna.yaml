@@ -439,6 +439,9 @@ apps:
       - values-hasadna-auto-updated.yaml
 
   - name: treebase
+    disableAutoSync: false
+    project: treebase
+    destinationNamespace: treebase
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
