@@ -426,3 +426,15 @@ apps:
     sourceVaultPluginHelmValueFiles:
       - values-hasadna.yaml
       - values-hasadna-auto-updated.yaml
+
+
+  - name: treebase
+    spec:
+      destinations:
+        - name: '*'
+          namespace: treebase
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+      orphanedResources:
+        warn: true
