@@ -442,7 +442,7 @@ apps:
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
-      path: apps/datacity
+      path: apps/treebase
     sourceVaultPluginHelmValueFiles:
       - values-hasadna.yaml
       - values-hasadna-auto-updated.yaml
