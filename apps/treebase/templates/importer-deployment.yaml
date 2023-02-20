@@ -44,10 +44,10 @@ spec:
           valueFrom: {"secretKeyRef":{"name":"treebase", "key":"PUBLIC_KEY"}}
         - name: PRIVATE_KEY
           valueFrom: {"secretKeyRef":{"name":"treebase", "key":"PRIVATE_KEY"}}
-        - name: GITHUB_KEY
-          valueFrom: {"secretKeyRef":{"name":"treebase", "key":"GITHUB_KEY"}}
-        - name: GITHUB_SECRET
-          valueFrom: {"secretKeyRef":{"name":"treebase", "key":"GITHUB_SECRET"}}
+        - name: GOOGLE_KEY
+          valueFrom: {"secretKeyRef":{"name":"treebase", "key":"GOOGLE_KEY"}}
+        - name: GOOGLE_SECRET
+          valueFrom: {"secretKeyRef":{"name":"treebase", "key":"GOOGLE_SECRET"}}
         - name: BUCKET_NAME
           valueFrom: {"secretKeyRef":{"name":"treebase", "key":"BUCKET_NAME"}}
         - name: AWS_ACCESS_KEY_ID
