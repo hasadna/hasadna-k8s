@@ -150,8 +150,6 @@ projects:
           server: 'https://kubernetes.default.svc'
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
-      orphanedResources:
-        warn: true
 
 apps:
 
