@@ -32,8 +32,6 @@ spec:
           value: SequentialExecutor
         - name: DATABASE_URL
           valueFrom: {"secretKeyRef":{"name":"treebase", "key":"AUTH_DATABASE_URL"}}
-        - name: GOOGLE_MAPS_API_KEY
-          valueFrom: {"secretKeyRef":{"name":"treebase", "key":"GOOGLE_MAPS_API_KEY"}}
         - name: ETLS_DATABASE_URL
           valueFrom: {"secretKeyRef":{"name":"treebase", "key":"ETLS_DATABASE_URL"}}
         - name: DATASETS_DATABASE_URL
