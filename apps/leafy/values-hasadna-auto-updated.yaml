@@ -1,2 +1,2 @@
-appImage: ghcr.io/hasadna/leafy/leafy-app:7028347dd7c22f47db2f9e801715c5ac778a2561
-nginxImage: ghcr.io/hasadna/leafy/leafy-nginx:7028347dd7c22f47db2f9e801715c5ac778a2561
+appImage: ghcr.io/hasadna/leafy/leafy-app:8dbbddfa674891346e7f3a831d6fc37623ea3f93
+nginxImage: ghcr.io/hasadna/leafy/leafy-nginx:8dbbddfa674891346e7f3a831d6fc37623ea3f93
