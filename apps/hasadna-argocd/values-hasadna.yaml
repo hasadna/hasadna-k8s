@@ -313,7 +313,7 @@ apps:
 
   - name: srm-etl-production
     project: srm
-    disableAutoSync: true
+    disableAutoSync: false
     source:
       repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
       targetRevision: main
