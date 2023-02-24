@@ -22,7 +22,7 @@ spec:
         ports:
         - containerPort: 5000
         volumeMounts:
-        - name: data
+        - name: geodata
           mountPath: /geodata/
           subPath: geodata
         env:
