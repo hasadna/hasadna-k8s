@@ -66,4 +66,6 @@ spec:
           valueFrom: {"secretKeyRef":{"name":"treebase", "key":"WASABI_SECRET_ACCESS_KEY"}}
         - name: WASABI_REGION
           valueFrom: {"secretKeyRef":{"name":"treebase", "key":"WASABI_REGION"}}
+        - name: MAPBOX_ACCESS_TOKEN
+          valueFrom: {"secretKeyRef":{"name":"treebase", "key":"MAPBOX_ACCESS_TOKEN"}}
 {{ end }}
