@@ -56,4 +56,14 @@ spec:
           valueFrom: {"secretKeyRef":{"name":"treebase", "key":"AWS_REGION"}}
         - name: S3_ENDPOINT_URL
           valueFrom: {"secretKeyRef":{"name":"treebase", "key":"S3_ENDPOINT_URL"}}
+        - name: WASABI_ENDPOINT_URL
+          valueFrom: {"secretKeyRef":{"name":"treebase", "key":"WASABI_ENDPOINT_URL"}}
+        - name: WASABI_BUCKET_NAME
+          valueFrom: {"secretKeyRef":{"name":"treebase", "key":"WASABI_BUCKET_NAME"}}
+        - name: WASABI_ACCESS_KEY_ID
+          valueFrom: {"secretKeyRef":{"name":"treebase", "key":"WASABI_ACCESS_KEY_ID"}}
+        - name: WASABI_SECRET_ACCESS_KEY
+          valueFrom: {"secretKeyRef":{"name":"treebase", "key":"WASABI_SECRET_ACCESS_KEY"}}
+        - name: WASABI_REGION
+          valueFrom: {"secretKeyRef":{"name":"treebase", "key":"WASABI_REGION"}}
 {{ end }}
