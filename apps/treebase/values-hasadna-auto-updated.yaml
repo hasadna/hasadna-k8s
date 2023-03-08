@@ -1,2 +1,2 @@
 dgpAppDbImage: akariv/dgp-app-db@sha256:8ebf03009fb6c6e42308c2579b4ac2d979325a492fffd5942af0de3fc709ce28
-dgpAppImage: docker.pkg.github.com/hasadna/treebase-importer/server:d8dd55533ed4a58497d7ab5eb61be1e5a41f42c9
+dgpAppImage: docker.pkg.github.com/hasadna/treebase-importer/server:c8878cc0085451761547146ed83ee3acd64fdbc2
