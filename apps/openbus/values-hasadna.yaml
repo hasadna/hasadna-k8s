@@ -50,6 +50,7 @@ legacy:
   gtfsCollectorResources: {"requests": {"cpu": "500m", "memory": "500Mi"}, "limits": {"memory": "2000Mi"}}
   nfsPath: "/openbus/legacy/openbus"
 
+mapSearchResources: '{"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}'
 
 secrets:
   - name: sshtunnel
@@ -116,3 +117,9 @@ ingresses:
       - host: "~iac:ingress-open-bus-webmon~"
         serviceName: webmon
         servicePort: 8901
+  - name: map-search
+    ssl: true
+    rules:
+      - host: "~iac:ingress-open-bus-map-search~"
+        serviceName: map-search
+        servicePort: 80

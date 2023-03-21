@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: map-search
+spec:
+  selector:
+    matchLabels:
+      app: map-search
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: map-search
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+      - name: map-search
+        image: {{ .Values.mapSearchImage | quote }}
+        resources: {{ toYaml .Values.mapSearchResources | nindent 10 }}
