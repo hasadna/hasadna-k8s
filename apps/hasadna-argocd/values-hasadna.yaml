@@ -308,6 +308,8 @@ apps:
       repoURL: 'https://github.com/OriHoch/knesset-data-k8s.git'
       targetRevision: master
       path: apps/site
+    sourceVaultPluginHelmValueFiles:
+      - values-auto-updated.yaml
 
   - name: budgetkey
     source:
