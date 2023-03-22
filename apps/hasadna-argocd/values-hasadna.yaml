@@ -301,6 +301,14 @@ apps:
       targetRevision: master
       path: apps/workflows
 
+  - name: oknesset-site
+    project: oknesset
+    destinationNamespace: oknesset
+    source:
+      repoURL: 'https://github.com/OriHoch/knesset-data-k8s.git'
+      targetRevision: master
+      path: apps/site
+
   - name: budgetkey
     source:
       repoURL: 'https://github.com/OpenBudget/budgetkey-k8s.git'
