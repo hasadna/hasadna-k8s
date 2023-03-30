@@ -1,2 +1,2 @@
-appImage: ghcr.io/hasadna/dear-diary/dear-diary-app:c273b75a560b4ff22226ee8b3f8466c51d24903c
-nginxImage: ghcr.io/hasadna/dear-diary/dear-diary-nginx:c273b75a560b4ff22226ee8b3f8466c51d24903c
+appImage: ghcr.io/hasadna/dear-diary/dear-diary-app:110829dee88c612cf82969775fd85a895f826f21
+nginxImage: ghcr.io/hasadna/dear-diary/dear-diary-nginx:110829dee88c612cf82969775fd85a895f826f21
