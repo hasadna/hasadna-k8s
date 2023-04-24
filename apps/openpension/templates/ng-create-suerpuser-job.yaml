@@ -8,7 +8,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: create-superuser
-          image: ghcr.io/hasadna/open-pension-ng/open-pension-ng:5fbafad2d64d46d89c261c1b74fff190cec9f3ea
+          image: ghcr.io/hasadna/open-pension-ng/open-pension-ng-app:5fbafad2d64d46d89c261c1b74fff190cec9f3ea
           command:
             - bash
             - -c
