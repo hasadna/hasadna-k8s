@@ -28,7 +28,7 @@ spec:
           - name: DJANGO_DATABASE_PASSWORD
             valueFrom: {"secretKeyRef": {"name": "ng-app", "key": "DJANGO_DATABASE_PASSWORD"}}
           - name: DJANGO_DATABASE_HOST
-            value: "db"
+            value: "ng-db"
           - name: DJANGO_DATABASE_PORT
             value: "5432"
           - name: DJANGO_SUPERUSER_NAME
