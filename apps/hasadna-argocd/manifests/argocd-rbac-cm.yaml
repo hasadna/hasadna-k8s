@@ -14,7 +14,13 @@ data:
     p, role:dear-diary-admin, applications, update, dear-diary/*, allow
     p, role:dear-diary-admin, exec, create, dear-diary/*, allow
     
+    p, role:openpension-admin, applications, override, openpension/*, allow
+    p, role:openpension-admin, applications, sync, openpension/*, allow
+    p, role:openpension-admin, applications, update, openpension/*, allow
+    p, role:openpension-admin, exec, create, openpension/*, allow
+    
     g, hasadna:argocd-admins, role:admin
     g, hasadna:argocd-leafy-admins, role:leafy-admin
     g, hasadna:argocd-dear-diary-admins, role:dear-diary-admin
+    g, hasadna:argocd-openpension-admins, role:openpension-admin
   policy.default: 'role:readonly'
