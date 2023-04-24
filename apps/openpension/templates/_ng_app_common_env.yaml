@@ -19,6 +19,8 @@
     value: {{ .Values.ngAppIngress.host | quote }}
   - name: DJANGO_CSRF_TRUSTED_ORIGINS
     value: "https://{{ .Values.ngAppIngress.host }}"
-#  - name: DJANGO_Q_CLUSTER_SETTINGS_JSON
-#    value: {{ .Values.qcluster.settingsJson | quote }}
+  {{ if false}}
+  - name: DJANGO_Q_CLUSTER_SETTINGS_JSON
+    value: {{ .Values.qcluster.settingsJson | quote }}
+  {{ end }}
 {{- end }}
