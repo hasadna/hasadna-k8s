@@ -1,0 +1,8 @@
+{{- define "ngApp.waitForMigrations" }}
+  - name: wait-for-migrations
+    # Pulled Apr 20, 2022
+    image: groundnuty/k8s-wait-for:1.3@sha256:23ac494f2ab4dc027c7fbb24f3fcab9a05f1271b81a12bad1b27fe0d7fd4a458
+    args:
+      - job
+      - ddmg-{{ include "ngApp.migrate.job.spec" . | sha1sum }}
+{{- end }}

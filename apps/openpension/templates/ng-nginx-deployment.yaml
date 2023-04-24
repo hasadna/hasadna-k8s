@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ng-nginx
+spec:
+  selector:
+    matchLabels:
+      app: ng-nginx
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: ng-nginx
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: nginx
+        image: {{ .Values.ngNginxImage }}
+        resources: {{ toYaml .Values.ngNginx.resources | nindent 10 }}

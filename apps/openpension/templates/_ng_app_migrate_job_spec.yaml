@@ -1,0 +1,11 @@
+{{- define "ngApp.migrate.job.spec" }}
+backoffLimit: 1
+template:
+  spec:
+    containers:
+    - name: migrate
+      image: {{ .Values.ngAppImage }}
+      args: ["migrate"]
+      env: {{- include "ngApp.common.env" . | nindent 6 }}
+    restartPolicy: Never
+{{- end }}

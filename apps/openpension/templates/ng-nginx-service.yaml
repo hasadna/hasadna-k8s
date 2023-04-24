@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ng-nginx
+spec:
+  selector:
+    app: ng-nginx
+  ports:
+  - name: "80"
+    port: 80

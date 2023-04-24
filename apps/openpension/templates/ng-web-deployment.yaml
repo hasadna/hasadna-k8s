@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ng-web
+spec:
+  selector:
+    matchLabels:
+      app: ng-web
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: ng-web
+    spec:
+      terminationGracePeriodSeconds: 5
+      serviceAccountName: ng
+      initContainers: {{- include "ngApp.waitForMigrations" . | nindent 6 }}
+      containers:
+      - name: web
+        image: {{ .Values.ngAppImage }}
+        args: ["web"]
+        resources: {{ toYaml .Values.ngWeb.resources | nindent 10 }}
+        env: {{- include "ngApp.common.env" . | nindent 6 }}
