@@ -12,11 +12,11 @@ spec:
       paths:
       - path: /static
         backend:
-          serviceName: nginx
+          serviceName: ng-nginx
           servicePort: 80
       - path: /
         backend:
-          serviceName: web
+          serviceName: ng-web
           servicePort: 80
   tls:
   - hosts:
