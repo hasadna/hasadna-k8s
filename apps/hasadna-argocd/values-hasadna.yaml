@@ -206,6 +206,7 @@ apps:
       path: apps/openpension
     sourceVaultPluginHelmValueFiles:
       - values-hasadna.yaml
+      - values-hasadna-auto-updated.yaml
 
   - name: redash
     project: default
