@@ -53,7 +53,7 @@ ngNginx:
       memory: 512Mi
 
 secrets:
-  - name: app
+  - name: ng-app
     data:
       DJANGO_SECRET_KEY: "~vault:Projects/open-pension/k8s-secrets:DJANGO_SECRET_KEY~"
       DJANGO_DATABASE_PASSWORD: "~vault:Projects/open-pension/k8s-secrets:DJANGO_DATABASE_PASSWORD~"
