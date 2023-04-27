@@ -449,7 +449,7 @@ apps:
       - values-hasadna-auto-updated.yaml
 
   - name: treebase
-    disableAutoSync: true
+    disableAutoSync: false
     project: treebase
     destinationNamespace: treebase
     source:
