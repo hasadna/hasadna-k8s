@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  selector:
+    matchLabels:
+      app: db
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: db
+        image: {{ .Values.db.image }}
+        resources: {{ toYaml .Values.db.resources | nindent 10 }}
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom: {"secretKeyRef":{"name":"db", "key":"POSTGRES_PASSWORD"}}
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+          subPath: db
+      volumes:
+      - name: data
+        nfs:
+          server: {{ .Values.db.nfsServer | quote }}
+          path: {{ .Values.db.nfsPath | quote }}
