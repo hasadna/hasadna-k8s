@@ -50,5 +50,5 @@ secrets:
       DJANGO_SUPERUSER_PASSWORD: "~vault:Projects/open-law/k8s-secrets:DJANGO_SUPERUSER_PASSWORD~"
       DJANGO_SUPERUSER_EMAIL: "~vault:Projects/open-law/k8s-secrets:DJANGO_SUPERUSER_EMAIL~"
 
-ngAppIngress:
+archiveAppIngress:
   host: "~iac:ingress-open-law-archive-webapp~"
