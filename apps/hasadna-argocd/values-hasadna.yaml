@@ -151,6 +151,15 @@ projects:
       sourceRepos:
         - 'https://github.com/hasadna/hasadna-k8s.git'
 
+  - name: openlaw
+    spec:
+      destinations:
+        - name: '*'
+          namespace: openlaw
+          server: 'https://kubernetes.default.svc'
+      sourceRepos:
+        - 'https://github.com/hasadna/hasadna-k8s.git'
+
 apps:
 
   - name: cluster-admin
@@ -457,6 +466,18 @@ apps:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
       path: apps/treebase
+    sourceVaultPluginHelmValueFiles:
+      - values-hasadna.yaml
+      - values-hasadna-auto-updated.yaml
+
+  - name: openlaw
+    disableAutoSync: false
+    project: openlaw
+    destinationNamespace: openlaw
+    source:
+      repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
+      targetRevision: master
+      path: apps/openlaw
     sourceVaultPluginHelmValueFiles:
       - values-hasadna.yaml
       - values-hasadna-auto-updated.yaml
