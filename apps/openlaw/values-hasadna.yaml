@@ -1,0 +1,54 @@
+enabled: true
+nfsServer: "~iac:hasadna_nfs1_internal_ip~"
+
+archiveDb:
+  # Pulled Apr 24, 2023
+  image: postgres:15@sha256:6cc97262444f1c45171081bc5a1d4c28b883ea46a6e0d1a45a8eac4a7f4767ab
+  nfsPath: "/openlaw/archive_db"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+
+archiveWeb:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+
+#qcluster:
+#  settingsJson: '{"workers": 1}'
+#  resources:
+#    requests:
+#      cpu: 100m
+#      memory: 512Mi
+#    limits:
+#      cpu: 200m
+#      memory: 1024Mi
+
+archiveNginx:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+
+secrets:
+  - name: archive-app
+    data:
+      DJANGO_SECRET_KEY: "~vault:Projects/open-law/k8s-secrets:DJANGO_SECRET_KEY~"
+      DJANGO_DATABASE_PASSWORD: "~vault:Projects/open-law/k8s-secrets:DJANGO_DATABASE_PASSWORD~"
+      DJANGO_SUPERUSER_NAME: "~vault:Projects/open-law/k8s-secrets:DJANGO_SUPERUSER_NAME~"
+      DJANGO_SUPERUSER_PASSWORD: "~vault:Projects/open-law/k8s-secrets:DJANGO_SUPERUSER_PASSWORD~"
+      DJANGO_SUPERUSER_EMAIL: "~vault:Projects/open-law/k8s-secrets:DJANGO_SUPERUSER_EMAIL~"
+
+ngAppIngress:
+  host: "~iac:ingress-open-law-archive-webapp~"

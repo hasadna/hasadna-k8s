@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: archive-create-superuser
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: create-superuser
+          image: ghcr.io/hasadna/openlaw-archive/openlaw-archive-app:69cf469ec23e4bbaadfd3114c43acb2515e4dae1
+          command:
+            - bash
+            - -c
+            - |
+              echo "from django.contrib.auth.models import User; User.objects.filter(email='${DJANGO_SUPERUSER_EMAIL}').delete(); User.objects.create_superuser('${DJANGO_SUPERUSER_NAME}', '${DJANGO_SUPERUSER_EMAIL}', '${DJANGO_SUPERUSER_PASSWORD}')" | python manage.py shell
+          env:
+          - name: DJANGO_SECRET_KEY
+            valueFrom: {"secretKeyRef": {"name": "archive-app", "key": "DJANGO_SECRET_KEY"}}
+          - name: DJANGO_DEBUG
+            value: "False"
+          - name: DJANGO_DATABASE_ENGINE
+            value: "postgres"
+          - name: DJANGO_DATABASE_NAME
+            value: "postgres"
+          - name: DJANGO_DATABASE_USER
+            value: "postgres"
+          - name: DJANGO_DATABASE_PASSWORD
+            valueFrom: {"secretKeyRef": {"name": "archive-app", "key": "DJANGO_DATABASE_PASSWORD"}}
+          - name: DJANGO_DATABASE_HOST
+            value: "archive-db"
+          - name: DJANGO_DATABASE_PORT
+            value: "5432"
+          - name: DJANGO_SUPERUSER_NAME
+            valueFrom: {"secretKeyRef": {"name": "archive-app", "key": "DJANGO_SUPERUSER_NAME"}}
+          - name: DJANGO_SUPERUSER_EMAIL
+            valueFrom: {"secretKeyRef": {"name": "archive-app", "key": "DJANGO_SUPERUSER_EMAIL"}}
+          - name: DJANGO_SUPERUSER_PASSWORD
+            valueFrom: {"secretKeyRef": {"name": "archive-app", "key": "DJANGO_SUPERUSER_PASSWORD"}}

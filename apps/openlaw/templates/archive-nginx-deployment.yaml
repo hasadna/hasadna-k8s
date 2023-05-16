@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: archive-nginx
+spec:
+  selector:
+    matchLabels:
+      app: archive-nginx
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: archive-nginx
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: nginx
+        image: {{ .Values.archiveNginxImage }}
+        resources: {{ toYaml .Values.archiveNginx.resources | nindent 10 }}

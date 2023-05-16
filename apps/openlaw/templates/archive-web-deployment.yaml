@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: archive-web
+spec:
+  selector:
+    matchLabels:
+      app: archive-web
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: archive-web
+    spec:
+      terminationGracePeriodSeconds: 5
+      serviceAccountName: archive
+      initContainers: {{- include "archiveApp.waitForMigrations" . | nindent 6 }}
+      containers:
+      - name: web
+        image: {{ .Values.archiveAppImage }}
+        args: ["web"]
+        resources: {{ toYaml .Values.archiveWeb.resources | nindent 10 }}
+        env: {{- include "archiveApp.common.env" . | nindent 6 }}

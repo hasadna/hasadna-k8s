@@ -1,0 +1,28 @@
+{{ if false }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qcluster
+spec:
+  selector:
+    matchLabels:
+      app: qcluster
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: qcluster
+    spec:
+      terminationGracePeriodSeconds: 5
+      serviceAccountName: dear-diary
+      initContainers: {{- include "app.waitForMigrations" . | nindent 6 }}
+      containers:
+      - name: qcluster
+        image: {{ .Values.appImage }}
+        args: ["qcluster"]
+        resources: {{ toYaml .Values.qcluster.resources | nindent 10 }}
+        env: {{- include "app.common.env" . | nindent 6 }}
+{{ end }}

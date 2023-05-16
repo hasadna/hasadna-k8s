@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: archive-web
+spec:
+  selector:
+    app: archive-web
+  ports:
+  - name: "80"
+    port: 80
