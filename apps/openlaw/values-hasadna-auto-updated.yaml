@@ -1,2 +1,2 @@
-archiveAppImage: ghcr.io/hasadna/openlaw-archive/openlaw-archive-app:d8a36b4a7bfcb58e9b0a8f93c3276f8ca4bf40a1
-archiveNginxImage: ghcr.io/hasadna/openlaw-archive/openlaw-archive-nginx:d8a36b4a7bfcb58e9b0a8f93c3276f8ca4bf40a1
+archiveAppImage: ghcr.io/hasadna/openlaw-archive/openlaw-archive-app:ae8d03a7535d55347e6d127f7124275fa72c218b
+archiveNginxImage: ghcr.io/hasadna/openlaw-archive/openlaw-archive-nginx:ae8d03a7535d55347e6d127f7124275fa72c218b
