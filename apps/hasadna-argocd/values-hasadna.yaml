@@ -174,7 +174,7 @@ apps:
       - values-hasadna.yaml
 
   - name: openbus
-    disableAutoSync: false
+    disableAutoSync: true
     source:
       repoURL: 'https://github.com/hasadna/hasadna-k8s.git'
       targetRevision: master
