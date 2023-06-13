@@ -21,6 +21,8 @@ data:
             - argocd-leafy-admins
             - argocd-dear-diary-admins
             - argocd-openpension-admins
+            - argocd-openlaw-admins
+            - argocd-openbus-admins
   configManagementPlugins: |
     - name: argocd-vault-plugin-helm-with-args
       init:

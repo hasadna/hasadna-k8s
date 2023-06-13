@@ -19,8 +19,20 @@ data:
     p, role:openpension-admin, applications, update, openpension/*, allow
     p, role:openpension-admin, exec, create, openpension/*, allow
     
+    p, role:openlaw-admin, applications, override, openlaw/*, allow
+    p, role:openlaw-admin, applications, sync, openlaw/*, allow
+    p, role:openlaw-admin, applications, update, openlaw/*, allow
+    p, role:openlaw-admin, exec, create, openlaw/*, allow
+    
+    p, role:openbus-admin, applications, override, openbus/*, allow
+    p, role:openbus-admin, applications, sync, openbus/*, allow
+    p, role:openbus-admin, applications, update, openbus/*, allow
+    p, role:openbus-admin, exec, create, openbus/*, allow
+    
     g, hasadna:argocd-admins, role:admin
     g, hasadna:argocd-leafy-admins, role:leafy-admin
     g, hasadna:argocd-dear-diary-admins, role:dear-diary-admin
     g, hasadna:argocd-openpension-admins, role:openpension-admin
+    g, hasadna:argocd-openlaw-admins, role:openlaw-admin
+    g, hasadna:argocd-openbus-admins, role:openbus-admin
   policy.default: 'role:readonly'
