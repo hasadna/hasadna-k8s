@@ -371,7 +371,7 @@ apps:
 
   - name: srm-site-staging
     project: srm
-    disableAutoSync: true
+    # disableAutoSync: true
     destinationClusterName: datacity
     source:
       repoURL: 'https://github.com/whiletrue-industries/srm-devops.git'
