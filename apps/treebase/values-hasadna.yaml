@@ -14,8 +14,9 @@ ingresses:
         serviceName: api
         servicePort: 8000
 db:
-  # Pulled Apr 27, 2023
-  image: postgres:14@sha256:19c87e38a0b13def945579f5d8fcd68aadfd0060816ea6991cb009b7d8da0c89
+  # Pulled Jul 14, 2023
+  # image: postgres:14@sha256:19c87e38a0b13def945579f5d8fcd68aadfd0060816ea6991cb009b7d8da0c89
+  image: postgis/postgis:14-3.3@sha256:d7c09eb3597caecad34803ff8266ab7300f226da324c07fcec564325e311221c
   nfsServer: "~iac:hasadna_nfs1_internal_ip~"
   nfsPath: "/treebase/db"
   resources:
