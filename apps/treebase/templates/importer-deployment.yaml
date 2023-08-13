@@ -40,8 +40,8 @@ spec:
           valueFrom: {"secretKeyRef":{"name":"treebase", "key":"ETLS_DATABASE_URL"}}
         - name: DATASETS_DATABASE_URL
           valueFrom: {"secretKeyRef":{"name":"treebase", "key":"DATASETS_DATABASE_URL"}}
-        - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
-          valueFrom: {"secretKeyRef":{"name":"treebase", "key":"AIRFLOW__CORE__SQL_ALCHEMY_CONN"}}
+        - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
+          valueFrom: {"secretKeyRef":{"name":"treebase", "key":"AIRFLOW__DATABASE__SQL_ALCHEMY_CONN"}}
         - name: PUBLIC_KEY
           valueFrom: {"secretKeyRef":{"name":"treebase", "key":"PUBLIC_KEY"}}
         - name: PRIVATE_KEY
