@@ -27,7 +27,7 @@ spec:
               value: "/var/siri-storage"
             - name: GTFS_ETL_ROOT_ARCHIVES_FOLDER
               value: "/var/gtfs-storage"
-            - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+            - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
               valueFrom: {"secretKeyRef":{"name":"airflow-db", "key":"SQLALCHEMY_URL"}}
             - name: SQLALCHEMY_URL
               valueFrom: { "secretKeyRef": { "name": "db", "key": "SQLALCHEMY_URL" } }

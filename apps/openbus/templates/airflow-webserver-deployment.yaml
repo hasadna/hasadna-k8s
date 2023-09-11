@@ -25,7 +25,7 @@ spec:
               value: "yes"
             - name: OPEN_BUS_PIPELINES_AIRFLOW_ROLE
               value: "webserver"
-            - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+            - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
               valueFrom: {"secretKeyRef":{"name":"airflow-db", "key":"SQLALCHEMY_URL"}}
           envFrom:
             - secretRef:

@@ -38,6 +38,10 @@ airflow:
   AIRFLOW__SMTP__SMTP_MAIL_FROM: "Open Bus Airflow <open-bus-airflow@hasadna.org.il>"
   AIRFLOW__WEBSERVER__BASE_URL: "https://~iac:ingress-open-bus-airflow~"
 
+redis:
+  resources: '{"requests": {"cpu": "50m", "memory": "300Mi"}, "limits": {"memory": "500Mi"}}'
+  image: redis:6@sha256:43fa7d538f0dbe2151ff38d4b69b7dbea6f80223cfd85d10f7a9f8cb6447872e
+
 strideApiResources: {"requests": {"cpu": "1000m", "memory": "1000Mi"}, "limits": {"memory": "2000Mi"}}
 
 gtfsNfsPath: "/openbus/gtfs"
