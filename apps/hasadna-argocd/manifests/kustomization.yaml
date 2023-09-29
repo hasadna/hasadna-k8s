@@ -14,3 +14,7 @@ patchesStrategicMerge:
 - patch-argocd-server-cluster-role.yaml
 - patch-argocd-repo-server-deploy.yaml
 - patch-argocd-rbac-cm.yaml
+
+patches:
+  - target: {kind: Deployment, name: "argocd-repo-server"}
+    patch: '[{"op": "remove", "path": "/spec/template/spec/containers/1/securityContext/seccompProfile"}]'
