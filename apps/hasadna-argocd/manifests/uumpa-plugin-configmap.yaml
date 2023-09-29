@@ -10,6 +10,9 @@ data:
     metadata:
       name: uumpa
     spec:
+      init:
+        command: [uumpa-argocd-plugin]
+        args: [init]
       generate:
         command: [uumpa-argocd-plugin]
         args: [generate]

@@ -1,4 +1,4 @@
-FROM ghcr.io/orihoch/uumpa-argocd-plugin/plugin:56fc6251c88f85b46a59e6b583a216f18acb4769
+FROM ghcr.io/orihoch/uumpa-argocd-plugin/plugin:a159a8fefd14343d3fd9addd4ec7e2b0542ba937
 COPY global_uumpa_generators.yaml /opt/hasadna-argocd-plugin/
 COPY setup.py /opt/hasadna-argocd-plugin/
 COPY hasadna_argocd_plugin /opt/hasadna-argocd-plugin/hasadna_argocd_plugin
