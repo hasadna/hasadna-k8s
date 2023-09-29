@@ -11,7 +11,7 @@ spec:
         - name: uumpa
           command: ["/var/run/argocd/argocd-cmp-server"]
           # Built from apps/hasadna-argocd/plugin. Tag is commit hash from hasadna-k8s repository
-          image: ghcr.io/hasadna/hasadna-k8s/hasadna-argocd-plugin:240f3982e948a5bb9304ce6ddec0cef0bec0e8eb
+          image: ghcr.io/hasadna/hasadna-k8s/hasadna-argocd-plugin:733f9d6011a4cdda6bf35322f25f8dfc07c8afea
           env:
             - name: VAULT_ROLE_ID
               valueFrom:
