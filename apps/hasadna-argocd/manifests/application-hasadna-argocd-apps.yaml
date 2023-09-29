@@ -14,8 +14,7 @@ spec:
     path: apps/hasadna-argocd
     repoURL: https://github.com/hasadna/hasadna-k8s.git
     targetRevision: master
-# TODO: enable autosync after we finish the argocd upgrade
-#  syncPolicy:
-#    automated:
-#      prune: true
-#      selfHeal: true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
