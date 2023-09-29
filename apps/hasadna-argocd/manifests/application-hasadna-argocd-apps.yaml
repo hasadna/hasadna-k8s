@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hasadna-argocd-apps
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - values.yaml
+    path: apps/hasadna-argocd
+    repoURL: https://github.com/hasadna/hasadna-k8s.git
+    targetRevision: master
+# TODO: enable autosync after we finish the argocd upgrade
+#  syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true

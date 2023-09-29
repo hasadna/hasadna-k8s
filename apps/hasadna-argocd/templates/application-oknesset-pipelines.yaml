@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: oknesset-pipelines
+spec:
+  destination:
+    namespace: oknesset
+    server: https://kubernetes.default.svc
+  project: oknesset
+  source:
+    path: apps/pipelines
+    plugin:
+      name: uumpa
+    repoURL: https://github.com/OriHoch/knesset-data-k8s.git
+    targetRevision: master
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true

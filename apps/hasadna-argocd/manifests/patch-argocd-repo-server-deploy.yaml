@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-repo-server
+spec:
+  template:
+    spec:
+      automountServiceAccountToken: true
+      serviceAccountName: argocd-repo-server
+      containers:
+        - name: uumpa
+          command: ["/var/run/argocd/argocd-cmp-server"]
+          # Built from apps/hasadna-argocd/plugin. Tag is commit hash from hasadna-k8s repository
+          image: ghcr.io/hasadna/hasadna-k8s/hasadna-argocd-plugin:abaa1c4edea073745e22eb984f82c6dd2b5440ec
+          env:
+            - name: VAULT_ROLE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: argocd-vault-plugin-credentials
+                  key: AVP_ROLE_ID
+            - name: VAULT_SECRET_ID
+              valueFrom:
+                secretKeyRef:
+                  name: argocd-vault-plugin-credentials
+                  key: AVP_SECRET_ID
+            - name: VAULT_ADDR
+              valueFrom:
+                secretKeyRef:
+                  name: argocd-vault-plugin-credentials
+                  key: VAULT_ADDR
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 999
+          volumeMounts:
+            - mountPath: /var/run/argocd
+              name: var-files
+            - mountPath: /home/argocd/cmp-server/plugins
+              name: plugins
+            - mountPath: /.cache
+              name: uumpa-cache
+            - mountPath: /tmp
+              name: uumpa-temp
+            - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+              subPath: plugin.yaml
+              name: uumpa-plugin-config
+      volumes:
+        - name: uumpa-cache
+          emptyDir: {}
+        - name: uumpa-temp
+          emptyDir: {}
+        - name: uumpa-plugin-config
+          configMap:
+            name: uumpa-plugin

@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: srm
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - name: '*'
+    namespace: srm-etl-production
+    server: https://kubernetes.default.svc
+  - name: '*'
+    namespace: srm-etl-staging
+    server: https://kubernetes.default.svc
+  - name: datacity
+    namespace: srm-site-staging
+    server: '*'
+  - name: datacity
+    namespace: srm-site-production
+    server: '*'
+  - name: datacity
+    namespace: srm-e664cac9300c
+    server: '*'
+  orphanedResources:
+    warn: true
+  sourceRepos:
+  - https://github.com/whiletrue-industries/srm-devops.git

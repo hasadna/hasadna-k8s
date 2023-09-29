@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+data:
+  url: "https://argocd.hasadna.org.il"
+  exec.enabled: "true"
+  dex.config: |
+    connectors:
+      - type: github
+        id: github
+        name: GitHub
+        config:
+          clientID: "d1c8d2d5b38d704ba970"
+          clientSecret: "2a2e22ec1d8a4786ddd12ee844f5ad28ba04c7a8"
+          orgs:
+          - name: hasadna
+            teams:
+            - argocd-admins
+            - argocd-users
+            - argocd-leafy-admins
+            - argocd-dear-diary-admins
+            - argocd-openpension-admins
+            - argocd-openlaw-admins
+            - argocd-openbus-admins
+  configManagementPlugins: |
+    - name: argocd-vault-plugin-helm-with-args
+      init:
+        command: ["argocd-hasadna-plugin", "init", "."]
+      generate:
+        command: ["sh", "-c"]
+        args: ['argocd-hasadna-plugin generate . "$ARGOCD_APP_NAME" ${helm_args}']

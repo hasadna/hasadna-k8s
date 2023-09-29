@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: redash
+spec:
+  destination:
+    namespace: redash
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: apps/redash
+    plugin:
+      name: uumpa
+    repoURL: https://github.com/hasadna/hasadna-k8s.git
+    targetRevision: master
+  syncPolicy:
+    {{ if .Values.allowAutoSync }}
+    automated:
+      prune: true
+      selfHeal: true
+    {{ end }}
+    syncOptions:
+    - CreateNamespace=true

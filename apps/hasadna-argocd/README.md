@@ -4,15 +4,6 @@ Contains ArgoCD definitions
 
 For general usage instructions see [/docs/argocd.md](/docs/argocd.md)
 
-## Migrating to argocd from helm
-
-Old helm releases can be migrated to argocd with minimal disruption using the following procedure:
-
-* Move relevant chart + valuse to `apps/`
-* Add the app to `hasadna-argocd/values-hasadna.yaml`
-* Delete all Helm secrets in the app namespace - this removes the helm releases without deleting the resources
-* Commit the changes and sync the argocd app
-
 ## Install ArgoCD
 
 Create namespace
@@ -71,6 +62,18 @@ apps/hasadna-argocd/manifests/render_templates.sh
 ```
 
 Make sure you are connected to Hasadna's cluster (`kubectl get nodes`)
+
+Render manifests to review
+
+```
+kubectl kustomize -n argocd apps/hasadna-argocd/manifests
+```
+
+Dry Run on the server
+
+```
+kubectl apply --dry-run=server -n argocd -k apps/hasadna-argocd/manifests
+```
 
 Deploy
 
@@ -135,12 +138,12 @@ Backup using `argocd admin export --namespace argocd`
 
 ## Permissions Management
 
-ArgoCD user/group permissions are defined in `apps/hasadna-argocd/manifests/argocd-rbac-cm.yaml`, 
+ArgoCD user/group permissions are defined in `apps/hasadna-argocd/manifests/patch-argocd-rbac-cm.yaml`, 
 see [ArgoCD RBAC](https://argoproj.github.io/argo-cd/operator-manual/rbac/) for more details.
 
 Authorization is handled via GitHub, and the permission groups have to be defined in the Hasadna GitHub organization
 as teams. All the team names which are used in the RBAC configuration have to also be defined in 
-`apps/hasadna-argocd/manifests/argocd-cm.yaml.template` under the `teams` key.
+`apps/hasadna-argocd/manifests/patch-argocd-cm.yaml.template` under the `teams` key.
 
 Once you made the relevant changes, deployment needs to be done manually as described above in the 
 `Install ArgoCD` section.

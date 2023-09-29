@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: oknesset-workflows
+spec:
+  destination:
+    namespace: oknesset
+    server: https://kubernetes.default.svc
+  project: oknesset
+  source:
+    path: apps/workflows
+    repoURL: https://github.com/OriHoch/knesset-data-k8s.git
+    targetRevision: master
+  syncPolicy:
+    {{ if .Values.allowAutoSync }}
+    automated:
+      prune: true
+      selfHeal: true
+    {{ end }}
+    syncOptions:
+    - CreateNamespace=true

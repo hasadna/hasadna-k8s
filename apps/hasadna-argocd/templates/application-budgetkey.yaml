@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: budgetkey
+spec:
+  destination:
+    namespace: budgetkey
+    server: https://kubernetes.default.svc
+  project: budgetkey
+  source:
+    path: .
+    plugin:
+      name: uumpa
+    repoURL: https://github.com/OpenBudget/budgetkey-k8s.git
+    targetRevision: master
+  syncPolicy:
+    {{ if .Values.allowAutoSync }}
+    automated:
+      prune: true
+      selfHeal: true
+    {{ end }}
+    syncOptions:
+    - CreateNamespace=true

@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: srm-etl-staging
+spec:
+  destination:
+    namespace: srm-etl-staging
+    server: https://kubernetes.default.svc
+  project: srm
+  source:
+    path: helm/etl
+    plugin:
+      env:
+      - name: ENVIRONMENT
+        value: staging
+      name: uumpa
+    repoURL: https://github.com/whiletrue-industries/srm-devops.git
+    targetRevision: main
+  syncPolicy:
+    {{ if .Values.allowAutoSync }}
+    automated:
+      prune: true
+      selfHeal: true
+    {{ end }}
+    syncOptions:
+    - CreateNamespace=true

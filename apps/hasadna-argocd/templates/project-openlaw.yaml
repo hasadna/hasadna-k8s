@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: openlaw
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - name: '*'
+    namespace: openlaw
+    server: https://kubernetes.default.svc
+  sourceRepos:
+  - https://github.com/hasadna/hasadna-k8s.git

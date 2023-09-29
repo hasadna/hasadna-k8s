@@ -3,11 +3,14 @@ kind: Kustomization
 
 resources:
 - install.yaml
+- uumpa-plugin-configmap.yaml
+- argocd-repo-server-rbac.yaml
+- application-hasadna-argocd-apps.yaml
 
 patchesStrategicMerge:
-- argocd-server-deployment.yaml
-- argocd-repo-server-deploy.yaml
-- argocd-cm.yaml
-- argocd-rbac-cm.yaml
+- patch-argocd-cm.yaml
+- patch-argocd-cmd-params-cm.yaml
 - patch-argocd-server-role.yaml
 - patch-argocd-server-cluster-role.yaml
+- patch-argocd-repo-server-deploy.yaml
+- patch-argocd-rbac-cm.yaml

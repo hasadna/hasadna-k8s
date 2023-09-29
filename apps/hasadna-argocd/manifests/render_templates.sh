@@ -8,7 +8,7 @@
 DATA="$(vault read kv/data/Projects/k8s/argocd -format=json | jq .data.data)" &&\
 GITHUB_CLIENT_ID="$(echo "${DATA}" | jq -r .github_client_id)" &&\
 GITHUB_CLIENT_SECRET="$(echo "${DATA}" | jq -r .github_client_secret)" &&\
-cp -f apps/hasadna-argocd/manifests/argocd-cm.yaml.template apps/hasadna-argocd/manifests/argocd-cm.yaml &&\
-sed -i "s/__dex.config.connectors.github.clientID__/${GITHUB_CLIENT_ID}/" apps/hasadna-argocd/manifests/argocd-cm.yaml &&\
-sed -i "s/__dex.config.connectors.github.clientSecret__/${GITHUB_CLIENT_SECRET}/" apps/hasadna-argocd/manifests/argocd-cm.yaml &&\
+cp -f apps/hasadna-argocd/manifests/patch-argocd-cm.yaml.template apps/hasadna-argocd/manifests/patch-argocd-cm.yaml &&\
+sed -i "s/__dex.config.connectors.github.clientID__/${GITHUB_CLIENT_ID}/" apps/hasadna-argocd/manifests/patch-argocd-cm.yaml &&\
+sed -i "s/__dex.config.connectors.github.clientSecret__/${GITHUB_CLIENT_SECRET}/" apps/hasadna-argocd/manifests/patch-argocd-cm.yaml &&\
 echo OK
