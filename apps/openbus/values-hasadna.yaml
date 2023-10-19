@@ -3,13 +3,16 @@ nfsServer: "~iac:hasadna_nfs1_internal_ip~"
 sshTunnelSecretName: sshtunnel
 
 # siriRequesterPauseForDebug: true
-siriRequesterResources: '{"requests": {"cpu": "200m", "memory": "1000Mi"}, "limits": {"memory": "1500Mi"}}'
+siriRequesterResources: '{"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}'
 siriRequesterNginxResources: '{"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}'
 siriRequesterHealthResources: '{"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}'
 siriRequesterNfsPath: "/openbus/siri-requester"
 siriRequesterSecretName: siri-requester
 
-siriEtlProcessNewSnapshotsResources: '{"requests": {"cpu": "3000m", "memory": "4000Mi"}, "limits": {"memory": "8000Mi"}}'
+# if we have many new snapshots to process, we need to increase the resources
+# siriEtlProcessNewSnapshotsResources: '{"requests": {"cpu": "3000m", "memory": "4000Mi"}, "limits": {"memory": "8000Mi"}}'
+# for normal operation, we can use much less resources
+siriEtlProcessNewSnapshotsResources: '{"requests": {"cpu": "500m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}'
 
 db:
   enabled: false
@@ -26,12 +29,12 @@ db:
 airflowHomeNfsPath: "/openbus/airflow-home"
 airflowDb:
   image: "postgres:13"
-  resources: '{"requests": {"cpu": "200m", "memory": "1000Mi"}, "limits": {"memory": "2000Mi"}}'
+  resources: '{"requests": {"cpu": "100m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}'
   nfsPath: "/openbus/airflow-db"
 airflowWebserver:
-  resources: '{"requests": {"cpu": "250m", "memory": "1000Mi"}, "limits": {"memory": "2000Mi"}}'
+  resources: '{"requests": {"cpu": "100m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}'
 airflowScheduler:
-  resources: '{"requests": {"cpu": "600m", "memory": "8000Mi"}, "limits": {"memory": "12000Mi"}}'
+  resources: '{"requests": {"cpu": "3000m", "memory": "12000Mi"}, "limits": {"memory": "16000Mi"}}'
 
 airflow:
   enableEmails: true
@@ -39,12 +42,13 @@ airflow:
   AIRFLOW__WEBSERVER__BASE_URL: "https://~iac:ingress-open-bus-airflow~"
 
 redis:
-  resources: '{"requests": {"cpu": "50m", "memory": "300Mi"}, "limits": {"memory": "500Mi"}}'
+  resources: '{"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}'
   image: redis:6@sha256:43fa7d538f0dbe2151ff38d4b69b7dbea6f80223cfd85d10f7a9f8cb6447872e
 
 strideApiResources: {"requests": {"cpu": "1000m", "memory": "1000Mi"}, "limits": {"memory": "2000Mi"}}
 
 gtfsNfsPath: "/openbus/gtfs"
+gtfsNginxResources: {"requests": {"cpu": "50m", "memory": "50Mi"}, "limits": {"memory": "200Mi"}}
 
 legacy:
   # legacy collectors don't generate any new data or data that isn't generated
@@ -54,7 +58,7 @@ legacy:
   gtfsCollectorResources: {"requests": {"cpu": "500m", "memory": "500Mi"}, "limits": {"memory": "2000Mi"}}
   nfsPath: "/openbus/legacy/openbus"
 
-mapSearchResources: {"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}
+mapSearchResources: {"requests": {"cpu": "50m", "memory": "50Mi"}, "limits": {"memory": "200Mi"}}
 
 secrets:
   - name: sshtunnel
