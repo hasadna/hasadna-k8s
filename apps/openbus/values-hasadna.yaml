@@ -34,7 +34,7 @@ airflowDb:
 airflowWebserver:
   resources: '{"requests": {"cpu": "100m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}'
 airflowScheduler:
-  resources: '{"requests": {"cpu": "3000m", "memory": "12000Mi"}, "limits": {"memory": "16000Mi"}}'
+  resources: '{"requests": {"cpu": "2000m", "memory": "12000Mi"}, "limits": {"memory": "16000Mi"}}'
 
 airflow:
   enableEmails: true
