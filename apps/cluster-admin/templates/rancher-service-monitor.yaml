@@ -20,4 +20,4 @@ spec:
     matchLabels:
       name: rancher
   endpoints:
-  - port: 9796
+  - port: "9796"
