@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: jenkins
   namespace: cattle-monitoring-system
+  labels:
+    name: jenkins
 spec:
   ports:
   - port: 9796

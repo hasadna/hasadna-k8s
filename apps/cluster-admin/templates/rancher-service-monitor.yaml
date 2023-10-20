@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: rancher
   namespace: cattle-monitoring-system
+  labels:
+    name: rancher
 spec:
   ports:
   - port: 9796
