@@ -28,6 +28,12 @@ spec:
         ports:
         - containerPort: 80
         env:
+        - name: SECRET_KEY
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"BASEROW_SECRET_KEY"}}
+        - name: DATABASE_PASSWORD
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"BASEROW_DATABASE_PASSWORD"}}
+        - name: REDIS_PASSWORD
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"BASEROW_REDIS_PASSWORD"}}
         - name: BASEROW_PUBLIC_URL
           value: https://baserow.datacity.org.il
         - name: EMAIL_SMTP
