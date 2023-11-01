@@ -42,7 +42,7 @@ spec:
           value: smtp.sendgrid.net
         - name: EMAIL_SMTP_PORT
           value: "465"
-        - name: EMAIL_SMTP_USE_TLS
+        - name: EMAIL_SMTP_USE_SSL
           value: "yes"
         - name: EMAIL_SMTP_USER
           value: apikey
