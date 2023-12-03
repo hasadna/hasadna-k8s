@@ -1,0 +1,59 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baserow
+spec:
+  selector:
+    matchLabels:
+      app: baserow
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: baserow
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: server
+        image: {{ .Values.baserowImage | default "baserow/baserow:1.21.2" | quote }}
+        # resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "2Gi"}}
+        volumeMounts:
+          - name: data
+            mountPath: /baserow/data
+            subPath: baserow_data
+        ports:
+        - containerPort: 80
+        env:
+        - name: SECRET_KEY
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"BASEROW_SECRET_KEY"}}
+        - name: DATABASE_PASSWORD
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"BASEROW_DATABASE_PASSWORD"}}
+        - name: REDIS_PASSWORD
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"BASEROW_REDIS_PASSWORD"}}
+        - name: BASEROW_PUBLIC_URL
+          value: https://baserow.datacity.org.il
+        - name: EMAIL_SMTP
+          value: "yes"
+        - name: EMAIL_SMTP_HOST
+          value: smtp.sendgrid.net
+        - name: EMAIL_SMTP_PORT
+          value: "465"
+        - name: EMAIL_SMTP_USE_SSL
+          value: "yes"
+        - name: EMAIL_SMTP_USER
+          value: apikey
+        - name: EMAIL_SMTP_PASSWORD
+          valueFrom: {"secretKeyRef":{"name":"datacity", "key":"BASEROW_SENDGRID_API_KEY"}}
+        - name: FROM_EMAIL
+          value: "noreply@baserow.datacity.org.il"
+      volumes:
+        - name: data
+          nfs:
+            server: {{ .Values.baserowNfsServer | quote }}
+            path: {{ .Values.baserowNfsPath | quote }}
+
+{{ end }}

@@ -27,6 +27,8 @@ spec:
               value: "webserver"
             - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
               valueFrom: {"secretKeyRef":{"name":"airflow-db", "key":"SQLALCHEMY_URL"}}
+            - name: AIRFLOW__WEBSERVER__SHOW_TRIGGER_FORM_IF_NO_PARAMS
+              value: "true"
           envFrom:
             - secretRef:
                 name: "airflow"

@@ -5,6 +5,8 @@ ckanDgpLogsNfsServer: "~iac:hasadna_nfs1_internal_ip~"
 ckanDgpLogsNfsPath: "/datacity/ckan-dgp-logs"
 mapaliDbNfsServer: "~iac:hasadna_nfs1_internal_ip~"
 mapaliDbNfsPath: "/datacity/mapali"
+baserowNfsServer: "~iac:hasadna_nfs1_internal_ip~"
+baserowNfsPath: "/datacity/baserow"
 importer:
   nfsServer: "~iac:hasadna_nfs1_internal_ip~"
   nfsPath: "/datacity/importer"
@@ -39,6 +41,11 @@ ingresses:
       - host: mapali.datacity.org.il
         serviceName: mapali
         servicePort: 5000
+  - name: baserow
+    rules:
+      - host: baserow.datacity.org.il
+        serviceName: baserow
+        servicePort: 80
 
 vertical_pod_autoscalers:
 - apiVersion: apps/v1
@@ -56,3 +63,6 @@ vertical_pod_autoscalers:
 - apiVersion: apps/v1
   kind: deployment
   name: tabula
+- apiVersion: apps/v1
+  kind: deployment
+  name: baserow
