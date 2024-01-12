@@ -30,6 +30,8 @@ ingresses:
 
 label-studio:
   app:
+    extraEnvironmentVars:
+      LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK: "true"
     ingress:
       enabled: true
       className: nginx
