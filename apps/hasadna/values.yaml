@@ -27,3 +27,16 @@ ingresses:
       - host: www.otrain.org
         serviceName: redirector-nginx
         servicePort: 80
+
+label-studio:
+  app:
+    ingress:
+      enabled: true
+      className: nginx
+      host: label-studio.k8s.hasadna.org.il
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+      tls:
+        - hosts:
+            - label-studio.k8s.hasadna.org.il
+          secretName: label-studio-tls
