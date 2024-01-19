@@ -118,6 +118,12 @@ ingresses:
       - host: "~iac:ingress-open-bus-stride-api~"
         serviceName: stride-api
         servicePort: 80
+  - name: backend
+    ssl: true
+    rules:
+      - host: "open-bus-backend.k8s.hasadna.org.il"
+        serviceName: backend
+        servicePort: 3001
   - name: gtfs
     ssl: true
     rules:
