@@ -47,6 +47,8 @@ redis:
 
 strideApiResources: {"requests": {"cpu": "1000m", "memory": "1000Mi"}, "limits": {"memory": "2000Mi"}}
 
+backendResources: {"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}
+
 gtfsNfsPath: "/openbus/gtfs"
 gtfsNginxResources: {"requests": {"cpu": "50m", "memory": "50Mi"}, "limits": {"memory": "200Mi"}}
 
@@ -91,6 +93,9 @@ secrets:
     data:
       POSTGRES_PASSWORD: "~vault:Projects/OBus/k8s-secrets:AIRFLOW_DB_POSTGRES_PASSWORD~"
       SQLALCHEMY_URL: "~vault:Projects/OBus/k8s-secrets:AIRFLOW_DB_SQLALCHEMY_URL~"
+  - name: backend
+    data:
+      GITHUB_TOKEN: "~vault:Projects/OBus/backend-secrets:GITHUB_TOKEN~"
 
 ingresses:
   - name: siri-requester

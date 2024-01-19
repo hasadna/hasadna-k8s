@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  replicas: 1
+  revisionHistoryLimit: 5
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: backend
+          image: {{ .Values.backendImage }}
+          resources: {{ toYaml .Values.backendResources | nindent 12 }}
+          env:
+            - name: GITHUB_TOKEN
+              valueFrom: {"secretKeyRef":{"name":"backend", "key":"GITHUB_TOKEN"}}
+            - name: GITHUB_OWNER
+              value: hasadna
+            - name: GITHUB_REPO
+              value: open-bus-map-search
