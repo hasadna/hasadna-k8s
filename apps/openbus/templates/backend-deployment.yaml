@@ -25,3 +25,9 @@ spec:
               value: hasadna
             - name: GITHUB_REPO
               value: open-bus-map-search
+            - name: ENV
+              value: production
+            - name: S3_COMPLAINTS_AWS_KEY_ID
+              value: {"secretKeyRef":{"name":"backend", "key":"S3_COMPLAINTS_AWS_KEY_ID"}}
+            - name: S3_COMPLAINTS_AWS_SECRET_ACCESS_KEY
+              value: {"secretKeyRef":{"name":"backend", "key":"S3_COMPLAINTS_AWS_SECRET_ACCESS_KEY"}}
