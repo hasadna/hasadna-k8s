@@ -96,6 +96,8 @@ secrets:
   - name: backend
     data:
       GITHUB_TOKEN: "~vault:Projects/OBus/backend-secrets:GITHUB_TOKEN~"
+      S3_COMPLAINTS_AWS_KEY_ID: "~vault:Projects/OBus/backend-secrets:S3_COMPLAINTS_AWS_KEY_ID~"
+      S3_COMPLAINTS_AWS_SECRET_ACCESS_KEY: "~vault:Projects/OBus/backend-secrets:S3_COMPLAINTS_AWS_SECRET_ACCESS_KEY~"
 
 ingresses:
   - name: siri-requester
