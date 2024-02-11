@@ -81,7 +81,7 @@ spec:
                 exit 0
               fi
       - name: monitor
-        image: python:alpine
+        image: python:3.8-alpine@sha256:2f5c766f8daec633ef7bb56076bfc352e97c19f76555ecf1f2b1f54db4367ef4
         env:
         - name: SLEEP_SECONDS
           value: "5"
