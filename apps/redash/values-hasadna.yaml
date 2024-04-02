@@ -3,7 +3,7 @@ redashImage: redash/redash:8.0.0.b32245
 redashInitialize: ""
 
 server:
-  resources: {"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
+  resources: {"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "2000Mi"}}
   REDASH_WEB_WORKERS: "4"
 
 scheduler:
@@ -13,7 +13,7 @@ scheduledWorker:
   resources: {"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
 
 adhocWorker:
-  resources: {"requests": {"cpu": "200m", "memory": "1000Mi"}, "limits": {"memory": "2000Mi"}}
+  resources: {"requests": {"cpu": "200m", "memory": "1000Mi"}, "limits": {"memory": "4000Mi"}}
   WORKERS_COUNT: 4
 
 redis:
