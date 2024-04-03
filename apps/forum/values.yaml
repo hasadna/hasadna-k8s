@@ -7,10 +7,10 @@ discourse:
   host: forum.hasadna.org.il
   smtp:
     enabled: true
-    host: smtp.sendgrid.com
-    port: 2525
+    host: smtp.mailgun.org
+    port: 587
     existingSecret: discourse-passwords
-    user: daonb
+    user: forum@hasadna.org.il
   discourse:
     skipInstall: true
   persistence:
