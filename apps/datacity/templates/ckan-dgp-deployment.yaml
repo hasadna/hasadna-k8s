@@ -27,7 +27,7 @@ spec:
             subPath: postgres_data2
       - name: server
         image: {{ .Values.ckanDgpServerImage | default "docker.pkg.github.com/hasadna/datacity-ckan-dgp/server" | quote }}
-        resources: {"requests": {"cpu": "1500m", "memory": "2500Mi"}, "limits": {"cpu": "1500m", "memory": "4000Mi"}}
+        resources: {"requests": {"cpu": "2500m", "memory": "2500Mi"}, "limits": {"cpu": "3000m", "memory": "4000Mi"}}
         command:
           - sh
           - -c
