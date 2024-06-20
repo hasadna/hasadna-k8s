@@ -32,7 +32,7 @@ spec:
           - sh
           - -c
           - |
-            chown -R etl:etl /app/airflow &&\
+            # chown -R etl:etl /app/airflow &&\
             HOME=/app exec su etl -mc /app/datacity_ckan_entrypoint.sh
         securityContext:
           runAsGroup: 0
