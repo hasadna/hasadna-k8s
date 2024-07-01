@@ -1,0 +1,2 @@
+- name: HELM_ARGS
+  value: -f values-hasadna.yaml
