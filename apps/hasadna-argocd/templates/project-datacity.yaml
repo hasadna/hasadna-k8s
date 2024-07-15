@@ -14,3 +14,4 @@ spec:
     warn: true
   sourceRepos:
   - https://github.com/hasadna/hasadna-k8s.git
+  - https://github.com/hasadna/datacity-k8s.git
