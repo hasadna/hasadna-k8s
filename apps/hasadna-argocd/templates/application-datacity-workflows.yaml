@@ -13,11 +13,6 @@ spec:
       name: uumpa
     repoURL: https://github.com/hasadna/datacity-k8s.git
     targetRevision: master
-  ignoreDifferences:
-    - group: argoproj.io/v1alpha1
-      kind: CronWorkflow
-      jsonPointers:
-        - /spec/schedule
   syncPolicy:
     {{ if .Values.allowAutoSync }}
     automated:
