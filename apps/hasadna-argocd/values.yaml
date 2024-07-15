@@ -1,1 +1,7 @@
 allowAutoSync: true
+
+secrets:
+  - name: argo-workflows-sso
+    data:
+      client-id: "~vault:Projects/k8s/argo-sso:client-id~"
+      client-secret: "~vault:Projects/k8s/argo-sso:client-secret~"
