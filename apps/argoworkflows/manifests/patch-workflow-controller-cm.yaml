@@ -17,6 +17,5 @@ data:
      - groups
      - email
      - profile
-     - roles
     rbac:
       enabled: true
