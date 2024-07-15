@@ -15,5 +15,8 @@ data:
     redirectUrl: https://argo.hasadna.org.il/oauth2/callback
     scopes:
      - groups
+     - email
+     - profile
+     - roles
     rbac:
       enabled: true
