@@ -54,7 +54,7 @@ If you want the rendered templates to replace variables, you need relevant acces
 
 You can also apply the rendered templates to the cluster -
 
-* Make sure to diable auto sync for the app so that ArgoCD won't revert your changes
+* Make sure to disable auto sync for the app so that ArgoCD won't revert your changes
 * Make sure to set all relevant env vars in your shell so that the rendered templates will match the argocd rendered templates
 
 You can apply the rendered templates:
