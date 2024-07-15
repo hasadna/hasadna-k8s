@@ -14,6 +14,7 @@ patchesStrategicMerge:
 - patch-argocd-server-cluster-role.yaml
 - patch-argocd-repo-server-deploy.yaml
 - patch-argocd-rbac-cm.yaml
+- patch-argocd-dex-server-deployment.yaml
 
 patches:
   - target: {kind: Deployment, name: "argocd-repo-server"}

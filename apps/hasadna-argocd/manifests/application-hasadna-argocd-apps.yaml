@@ -8,10 +8,9 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    helm:
-      valueFiles:
-      - values.yaml
     path: apps/hasadna-argocd
+    plugin:
+      name: uumpa
     repoURL: https://github.com/hasadna/hasadna-k8s.git
     targetRevision: master
   syncPolicy:
