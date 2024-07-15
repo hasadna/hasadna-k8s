@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: datacity-workflows
+spec:
+  destination:
+    namespace: datacity
+    server: https://kubernetes.default.svc
+  project: datacity
+  source:
+    path: workflows
+    plugin:
+      name: uumpa
+    repoURL: https://github.com/hasadna/datacity-k8s.git
+    targetRevision: master
+  syncPolicy:
+    {{ if .Values.allowAutoSync }}
+    automated:
+      prune: true
+      selfHeal: true
+    {{ end }}
+    syncOptions:
+    - CreateNamespace=true
