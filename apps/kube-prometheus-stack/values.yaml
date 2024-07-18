@@ -1,130 +1,131 @@
-alertmanager:
-  alertmanagerSpec:
+kube-prometheus-stack:
+  alertmanager:
+    alertmanagerSpec:
+      image:
+        registry: quay.io
+        repository: prometheus/alertmanager
+        tag: v0.27.0
+
+      retention: 120h
+
+      ## Storage is the definition of how storage will be used by the Alertmanager instances.
+      ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
+      ##
+      storage: {}
+      # volumeClaimTemplate:
+      #   spec:
+      #     storageClassName: gluster
+      #     accessModes: ["ReadWriteOnce"]
+      #     resources:
+      #       requests:
+      #         storage: 50Gi
+      #     selector: {}
+
+
+      # Additional volumes on the output StatefulSet definition.
+      volumes: []
+
+      # Additional VolumeMounts on the output StatefulSet definition.
+      volumeMounts: []
+
+  # grafana:
+  #   persistence:
+  #     enabled: true
+  #     type: sts
+  #     storageClassName: "storageClassName"
+  #     accessModes:
+  #       - ReadWriteOnce
+  #     size: 20Gi
+  #     finalizers:
+  #       - kubernetes.io/pvc-protection
+
+  kubeApiServer:
+    enabled: true
+
+  kubelet:
+    enabled: true
+
+  kubeControllerManager:
+    enabled: true
+
+  coreDns:
+    enabled: true
+
+  kubeEtcd:
+    enabled: true
+
+  kubeScheduler:
+    enabled: true
+
+  kubeProxy:
+    enabled: true
+
+  kubeStateMetrics:
+    enabled: true
+
+  nodeExporter:
+    enabled: true
+
+  prometheusOperator:
+    resources: {}
+    # limits:
+    #   cpu: 200m
+    #   memory: 200Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 100Mi
+
     image:
       registry: quay.io
-      repository: prometheus/alertmanager
-      tag: v0.27.0
-
-    retention: 30d
-
-    ## Storage is the definition of how storage will be used by the Alertmanager instances.
-    ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
-    ##
-    storage: {}
-    # volumeClaimTemplate:
-    #   spec:
-    #     storageClassName: gluster
-    #     accessModes: ["ReadWriteOnce"]
-    #     resources:
-    #       requests:
-    #         storage: 50Gi
-    #     selector: {}
-
-
-    # Additional volumes on the output StatefulSet definition.
-    volumes: []
-
-    # Additional VolumeMounts on the output StatefulSet definition.
-    volumeMounts: []
-
-grafana:
-  # persistence:
-  #   enabled: true
-  #   type: sts
-  #   storageClassName: "storageClassName"
-  #   accessModes:
-  #     - ReadWriteOnce
-  #   size: 20Gi
-  #   finalizers:
-  #     - kubernetes.io/pvc-protection
-
-kubeApiServer:
-  enabled: true
-
-kubelet:
-  enabled: true
-
-kubeControllerManager:
-  enabled: true
-
-coreDns:
-  enabled: true
-
-kubeEtcd:
-  enabled: true
-
-kubeScheduler:
-  enabled: true
-
-kubeProxy:
-  enabled: true
-
-kubeStateMetrics:
-  enabled: true
-
-nodeExporter:
-  enabled: true
-
-prometheusOperator:
-  resources: {}
-  # limits:
-  #   cpu: 200m
-  #   memory: 200Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 100Mi
-
-  image:
-    registry: quay.io
-    repository: prometheus-operator/prometheus-operator
-    tag: ""
-
-  prometheusConfigReloader:
-    image:
-      registry: quay.io
-      repository: prometheus-operator/prometheus-config-reloader
+      repository: prometheus-operator/prometheus-operator
       tag: ""
 
-    resources: {}
+    prometheusConfigReloader:
+      image:
+        registry: quay.io
+        repository: prometheus-operator/prometheus-config-reloader
+        tag: ""
+
+      resources: {}
+        # requests:
+        #   cpu: 200m
+        #   memory: 50Mi
+        # limits:
+        #   cpu: 200m
+        #   memory: 50Mi
+
+  prometheus:
+    enabled: true
+
+    prometheusSpec:
+      image:
+        registry: quay.io
+        repository: prometheus/prometheus
+        tag: v2.53.1
+
+      retention: 30d
+
+      resources: {}
       # requests:
-      #   cpu: 200m
-      #   memory: 50Mi
-      # limits:
-      #   cpu: 200m
-      #   memory: 50Mi
+      #   memory: 400Mi
 
-prometheus:
-  enabled: true
+      ## Prometheus StorageSpec for persistent data
+      ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
+      ##
+      storageSpec: {}
+      ## Using PersistentVolumeClaim
+      ##
+      #  volumeClaimTemplate:
+      #    spec:
+      #      storageClassName: gluster
+      #      accessModes: ["ReadWriteOnce"]
+      #      resources:
+      #        requests:
+      #          storage: 50Gi
+      #    selector: {}
 
-  prometheusSpec:
-    image:
-      registry: quay.io
-      repository: prometheus/prometheus
-      tag: v2.53.1
+      # Additional volumes on the output StatefulSet definition.
+      volumes: []
 
-    retention: 30d
-
-    resources: {}
-    # requests:
-    #   memory: 400Mi
-
-    ## Prometheus StorageSpec for persistent data
-    ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
-    ##
-    storageSpec: {}
-    ## Using PersistentVolumeClaim
-    ##
-    #  volumeClaimTemplate:
-    #    spec:
-    #      storageClassName: gluster
-    #      accessModes: ["ReadWriteOnce"]
-    #      resources:
-    #        requests:
-    #          storage: 50Gi
-    #    selector: {}
-
-    # Additional volumes on the output StatefulSet definition.
-    volumes: []
-
-    # Additional VolumeMounts on the output StatefulSet definition.
-    volumeMounts: []
+      # Additional VolumeMounts on the output StatefulSet definition.
+      volumeMounts: []
