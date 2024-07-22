@@ -1,4 +1,4 @@
-# kube-prometheus-stack
+# monitoring
 
 Chart is taken from:\
 https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
