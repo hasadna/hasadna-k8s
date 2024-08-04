@@ -1,5 +1,5 @@
 baserowImage: docker.pkg.github.com/hasadna/datacity-baserow/server:a0ce72140d92ac0abfe0ac7a6eb7310a37702af6
-ckanDgpServerImage: docker.pkg.github.com/hasadna/datacity-ckan-dgp/server:be6ae23c0a3d4448bc2a6ab66beff83a5daf7ef8
+ckanDgpServerImage: docker.pkg.github.com/hasadna/datacity-ckan-dgp/server:8410998b372ed884648a8c5f59a8e62a00ed703c
 dgpAppDbImage: akariv/dgp-app-db@sha256:8ebf03009fb6c6e42308c2579b4ac2d979325a492fffd5942af0de3fc709ce28
 dgpAppImage: docker.pkg.github.com/hasadna/datacity-dgp-importer/server:37184a42c327c304c08b4e5c764aceea2317dcbb
 mapaliImage: docker.pkg.github.com/hasadna/datacity-mapali/server:1d3d0ef4fa350d85ead898ad2084e71488d5e94f
