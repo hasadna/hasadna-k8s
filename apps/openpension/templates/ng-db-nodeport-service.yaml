@@ -9,4 +9,4 @@ spec:
   ports:
   - name: "5432"
     port: 5432
-    nodePort: {{ .Values.db.nodePort }}
+    nodePort: {{ .Values.ngDb.nodePort }}
