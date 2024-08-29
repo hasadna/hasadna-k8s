@@ -1,2 +1,2 @@
-ngAppImage: ghcr.io/hasadna/open-pension-ng/open-pension-ng-app:8f9fa21d67a4db9317269488ba8ae0de5307ba09
-ngNginxImage: ghcr.io/hasadna/open-pension-ng/open-pension-ng-nginx:8f9fa21d67a4db9317269488ba8ae0de5307ba09
+ngAppImage: ghcr.io/hasadna/open-pension-ng/open-pension-ng-app:e88e90e7aeb7d08ff3980013085a9e41dd820075
+ngNginxImage: ghcr.io/hasadna/open-pension-ng/open-pension-ng-nginx:e88e90e7aeb7d08ff3980013085a9e41dd820075
