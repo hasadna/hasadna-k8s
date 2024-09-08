@@ -25,4 +25,4 @@ spec:
   orphanedResources:
     warn: true
   sourceRepos:
-  - https://github.com/whiletrue-industries/srm-devops.git
+  - https://github.com/kolzchut/srm-devops.git

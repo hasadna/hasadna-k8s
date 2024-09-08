@@ -11,7 +11,7 @@ spec:
     path: helm/ckan-backups
     plugin:
       name: uumpa
-    repoURL: https://github.com/whiletrue-industries/srm-devops.git
+    repoURL: https://github.com/kolzchut/srm-devops.git
     targetRevision: main
   syncPolicy:
     {{ if .Values.allowAutoSync }}
