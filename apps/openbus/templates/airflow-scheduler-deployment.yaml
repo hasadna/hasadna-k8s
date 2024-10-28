@@ -52,7 +52,7 @@ spec:
             - name: OPEN_BUS_STRIDE_PUBLIC_S3_OBJECT_PREFIX
               value: "__production__"
             - name: AIRFLOW__CORE__PARALLELISM
-              value: "8"
+              value: "0"
           envFrom:
             - secretRef:
                 name: "airflow"
