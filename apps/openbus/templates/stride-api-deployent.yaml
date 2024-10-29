@@ -13,6 +13,11 @@ spec:
       labels:
         app: stride-api
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: "kubernetes.io/hostname"
+              labelSelector: {"matchExpressions": [{"key": "app", "operator": "In", "values": ["airflow-scheduler", "siri-etl"]}]}
       terminationGracePeriodSeconds: 240
       containers:
         - name: api
