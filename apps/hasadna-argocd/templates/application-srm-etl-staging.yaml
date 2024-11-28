@@ -14,7 +14,7 @@ spec:
       - name: ENVIRONMENT
         value: staging
       name: uumpa
-    repoURL: https://github.com/kolzchut/srm-devops.git
+    repoURL: https://github.com/hasadna/srm-devops.git
     targetRevision: main
   syncPolicy:
     {{ if .Values.allowAutoSync }}
