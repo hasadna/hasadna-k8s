@@ -1,3 +1,5 @@
+enabled: true
+
 ingresses:
   - name: argoevents-github-eventsource
     ssl: true
