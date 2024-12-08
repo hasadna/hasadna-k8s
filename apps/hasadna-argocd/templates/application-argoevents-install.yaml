@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argoevents-install
+spec:
+  destination:
+    namespace: argoevents
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: apps/argoevents/manifests
+    repoURL: https://github.com/hasadna/hasadna-k8s.git
+    targetRevision: master
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
