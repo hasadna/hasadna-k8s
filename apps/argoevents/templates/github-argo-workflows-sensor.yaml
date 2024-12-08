@@ -37,4 +37,4 @@ spec:
                     container:
                       image: docker/whalesay:latest
                       command: [cowsay]
-                      args: ["{{inputs.parameters.body}}"]
+                      args: ["{{`{{inputs.parameters.body}}`}}"]
