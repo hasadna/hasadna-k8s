@@ -6,6 +6,7 @@ resources:
 - uumpa-plugin-configmap.yaml
 - argocd-repo-server-rbac.yaml
 - application-hasadna-argocd-apps.yaml
+- github-secret.yaml
 
 patchesStrategicMerge:
 - patch-argocd-cm.yaml

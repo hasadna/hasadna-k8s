@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: github-argo-workflows
+spec:
+  dependencies:
+    - name: github
+      eventSourceName: github
+      eventName: hasadna
+  triggers:
+    - template:
+        name: argo-workflow
+        argoWorkflow:
+          operation: submit
+          parameters:
+            - src:
+                dependencyName: github
+                dataKey: body
+              dest: spec.arguments.parameters.0.value
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                name: github-push
+              spec:
+                entrypoint: whalesay
+                arguments:
+                  parameters:
+                    - name: body
+                      value: ""
+                templates:
+                  - name: whalesay
+                    inputs:
+                      parameters:
+                        - name: body
+                    container:
+                      image: docker/whalesay:latest
+                      command: [cowsay]
+                      args: ["{{inputs.parameters.body}}"]

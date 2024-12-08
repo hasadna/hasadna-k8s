@@ -37,3 +37,4 @@ data:
       generate:
         command: ["sh", "-c"]
         args: ['argocd-hasadna-plugin generate . "$ARGOCD_APP_NAME" ${helm_args}']
+  webhook.github.secret: "$github:webhooksecret"
