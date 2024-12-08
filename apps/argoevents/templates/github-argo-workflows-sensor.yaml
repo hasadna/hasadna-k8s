@@ -24,7 +24,7 @@ spec:
               apiVersion: argoproj.io/v1alpha1
               kind: Workflow
               metadata:
-                generateName: github-push
+                generateName: github-push-
               spec:
                 entrypoint: main
                 arguments:
@@ -38,10 +38,13 @@ spec:
                         - name: body
                     container:
                       image: python:latest
+                      env:
+                        - name: BODY
+                          value: "{{`{{inputs.parameters.body}}`}}"
                       command:
                         - python
                         - -c
                         - |
-                          import json, sys
-                          data = json.load(sys.stdin)
+                          import json, os
+                          data = json.loads(os.environ['BODY'])
                           print(json.dumps(data, indent=2))
