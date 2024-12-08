@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: github
+spec:
+  service:
+    ports:
+      - name: hasadna
+        port: 13000
+        targetPort: 13000
+  github:
+    hasadna:
+      events:
+        - "*"
+      repositories:
+        - owner: hasadna
+          names:
+            - open-bus-stride-api
