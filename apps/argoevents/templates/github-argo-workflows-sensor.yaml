@@ -24,22 +24,24 @@ spec:
               apiVersion: argoproj.io/v1alpha1
               kind: Workflow
               metadata:
-                name: github-push
+                generateName: github-push
               spec:
-                entrypoint: whalesay
+                entrypoint: main
                 arguments:
                   parameters:
                     - name: body
                       value: ""
                 templates:
-                  - name: whalesay
+                  - name: main
                     inputs:
                       parameters:
                         - name: body
                     container:
-                      image: ubuntu:latest
+                      image: python:latest
                       command:
-                        - bash
+                        - python
                         - -c
                         - |
-                          echo "{{`{{inputs.parameters.body}}`}}"
+                          import json, sys
+                          data = json.load(sys.stdin)
+                          print(json.dumps(data, indent=2))
