@@ -10,6 +10,11 @@ spec:
         targetPort: 13000
   github:
     hasadna:
+      webhook:
+        endpoint: /push
+        method: POST
+        port: "13000"
+        url: "https://argo-events-github.hasadna.org.il/push"
       events:
         - "*"
       repositories:
