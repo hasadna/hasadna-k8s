@@ -17,3 +17,6 @@ spec:
         url: "https://argo-events-github.k8s.hasadna.org.il/push"
       organizations:
         - hasadna
+      webhookSecret:
+        name: github
+        key: webhooksecret
