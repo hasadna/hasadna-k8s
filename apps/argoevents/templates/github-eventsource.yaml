@@ -17,7 +17,5 @@ spec:
         url: "https://argo-events-github.k8s.hasadna.org.il/push"
 #      events:
 #        - "*"
-#      repositories:
-#        - owner: hasadna
-#          names:
-#            - open-bus-stride-api
+      organizations:
+        - hasadna
