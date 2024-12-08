@@ -15,8 +15,8 @@ spec:
         method: POST
         port: "13000"
         url: "https://argo-events-github.k8s.hasadna.org.il/push"
-      events:
-        - "*"
+#      events:
+#        - "*"
       repositories:
         - owner: hasadna
           names:
