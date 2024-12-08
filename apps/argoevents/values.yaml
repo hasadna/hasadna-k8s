@@ -1,0 +1,7 @@
+ingresses:
+  - name: argoevents-github-eventsource
+    ssl: true
+    rules:
+      - host: "argo-events-github.k8s.hasadna.org.il"
+        serviceName: github-eventsource-svc
+        servicePort: 13000

@@ -14,7 +14,7 @@ spec:
         endpoint: /push
         method: POST
         port: "13000"
-        url: "https://argo-events-github.hasadna.org.il/push"
+        url: "https://argo-events-github.k8s.hasadna.org.il/push"
       events:
         - "*"
       repositories:
