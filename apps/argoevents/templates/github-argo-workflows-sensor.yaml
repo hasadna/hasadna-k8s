@@ -24,27 +24,46 @@ spec:
               apiVersion: argoproj.io/v1alpha1
               kind: Workflow
               metadata:
-                generateName: github-push-
+                generateName: github-pusher-
               spec:
                 entrypoint: main
                 arguments:
                   parameters:
                     - name: body
                       value: ""
+                volumes:
+                  - name: github-pusher-config
+                    configMap:
+                      name: github-pusher-config
                 templates:
                   - name: main
                     inputs:
                       parameters:
                         - name: body
                     container:
-                      image: python:latest
+                      image: docker pull ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:dfbd7711991181683c2f2e569f0213923a3fbb17
+                      args: [github-pusher, run, --env, BODY]
                       env:
                         - name: BODY
                           value: "{{`{{inputs.parameters.body}}`}}"
-                      command:
-                        - python
-                        - -c
-                        - |
-                          import json, os
-                          data = json.loads(os.environ['BODY'])
-                          print(json.dumps(data, indent=2))
+                        - name: GITHUB_APP_ID
+                          valueFrom:
+                            secretKeyRef:
+                              name: github
+                              key: app_id
+                        - name: GITHUB_APP_INSTALLATION_ID
+                          valueFrom:
+                              secretKeyRef:
+                              name: github
+                              key: app_installation_id
+                        - name: GITHUB_APP_PRIVATE_KEY_B64
+                          valueFrom:
+                              secretKeyRef:
+                                name: github
+                                key: app_private_key_b64
+                        - name: GITHUB_PUSHER_CONFIG_YAML_PATH
+                          value: /etc/github-pusher/config.yaml
+                      mounts:
+                        - name: github-pusher-config
+                          mountPath: /etc/github-pusher
+                          readOnly: true
