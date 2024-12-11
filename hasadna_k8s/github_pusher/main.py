@@ -17,6 +17,7 @@ GITHUB_APP_INSTALLATION_ID = os.environ.get('GITHUB_APP_INSTALLATION_ID')
 GITHUB_APP_PRIVATE_KEY_B64 = os.environ.get('GITHUB_APP_PRIVATE_KEY_B64')
 GITHUB_APP_PRIVATE_KEY = base64.b64decode(GITHUB_APP_PRIVATE_KEY_B64).decode() if GITHUB_APP_PRIVATE_KEY_B64 else None
 GITHUB_PUSHER_CONFIG_YAML_PATH = os.environ.get('GITHUB_PUSHER_CONFIG_YAML_PATH') or 'hasadna_k8s/github_pusher/config.example.yaml'
+GITHUB_PUSHER_DEBUG = os.environ.get('GITHUB_PUSHER_DEBUG') == 'yes'
 
 
 @dataclasses.dataclass(frozen=True)
@@ -51,8 +52,9 @@ def parse_config(config):
 
 def parse_configs(configs):
     configs = [parse_config(config) for config in configs]
-    for config in configs:
-        print(config)
+    if GITHUB_PUSHER_DEBUG:
+        for config in configs:
+            print(config)
     return configs
 
 
@@ -105,10 +107,12 @@ def process_github_pusher_copy_config_files(pconfig: GithubPusherCopyConfig, fil
 
 def get_github_token():
     if GITHUB_TOKEN:
-        print('Using GITHUB_TOKEN')
+        if GITHUB_PUSHER_DEBUG:
+            print('Using GITHUB_TOKEN')
         return GITHUB_TOKEN
     else:
-        print('Using GITHUB_APP_*')
+        if GITHUB_PUSHER_DEBUG:
+            print('Using GITHUB_APP_*')
         assert GITHUB_APP_ID and GITHUB_APP_INSTALLATION_ID and GITHUB_APP_PRIVATE_KEY
         now = int(time.time())
         payload = {
@@ -144,7 +148,8 @@ def process(repository_name, repository_organization, ref, files, commit_message
 
 
 def run(event):
-    print(json.dumps(event))
+    if GITHUB_PUSHER_DEBUG:
+        print(json.dumps(event))
     x_github_event = event.get('X-GitHub-Event')
     assert x_github_event == 'push', f'Unexpected X-GitHub-Event: {x_github_event}'
     repository_name = event.get('repository', {}).get('name')
