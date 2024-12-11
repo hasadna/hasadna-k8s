@@ -1,6 +1,12 @@
 name: ci
 on:
   push:
+    paths:
+      - .github/workflows/ci.yaml
+      - Dockerfile
+      - pyproject.toml
+      - uv.lock
+      - hasadna_k8s/**
 jobs:
   ci:
     runs-on: ubuntu-24.04
