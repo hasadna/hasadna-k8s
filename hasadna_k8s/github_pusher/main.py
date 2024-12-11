@@ -64,7 +64,7 @@ def get_configs():
     ]
 
 
-def process_github_pusher_copy_config_files(pconfig: GithubPusherCopyConfig, files, requests_options, commit_context):
+def process_github_pusher_copy_config_files(pconfig: GithubPusherCopyConfig, files, requests_options, commit_message):
     print(f'Processing {pconfig.source.org}/{pconfig.source.name} {pconfig.source.branch} ({",".join(files)})')
     num_updates = 0
     for file, file_config in {k: v for k, v in pconfig.files.items() if k in files}.items():
@@ -90,7 +90,7 @@ def process_github_pusher_copy_config_files(pconfig: GithubPusherCopyConfig, fil
                 res = requests.put(
                     f'https://api.github.com/repos/{pconfig.target.org}/{pconfig.target.name}/contents/{file}',
                     json={
-                        'message': f'hasadna-k8s github pusher update from {pconfig.source.org}/{pconfig.source.name} {pconfig.source.branch}\n{commit_context}',
+                        'message': commit_message,
                         'content': base64.b64encode(target_content.to_yaml().encode()).decode(),
                         'sha': target_file['sha'],
                         'branch': pconfig.target.branch,
@@ -125,12 +125,12 @@ def get_github_token():
         return response.json()["token"]
 
 
-def process(repository_name, repository_organization, ref, files, commit_context):
+def process(repository_name, repository_organization, ref, files, commit_message):
     requests_options = {'headers': {'Authorization': f'token {get_github_token()}'}}
     with open(GITHUB_PUSHER_CONFIG_YAML_PATH) as f:
         data = benedict(f.read(), format='yaml', keypath_separator=None)
     configs = parse_configs(data['configs'])
-    print(f'process {repository_organization}/{repository_name} {ref} ({",".join(files)}) {commit_context}')
+    print(f'process {repository_organization}/{repository_name} {ref} ({",".join(files)})')
     if ref.startswith('refs/heads/') and files:
         branch = ref.replace('refs/heads/', '')
         for config in configs:
@@ -140,7 +140,7 @@ def process(repository_name, repository_organization, ref, files, commit_context
                 and repository_name == config.source.name
                 and branch == config.source.branch
             ):
-                process_github_pusher_copy_config_files(config, files, requests_options, commit_context)
+                process_github_pusher_copy_config_files(config, files, requests_options, commit_message)
 
 
 def run(event):
@@ -158,5 +158,10 @@ def run(event):
         files.update(commit.get('added', []))
         files.update(commit.get('modified', []))
         files.update(commit.get('removed', []))
-    commit_context = f'commits: {commit_hashes}'
-    process(repository_name, repository_organization, ref, files, commit_context)
+    commit_message = '\n'.join([
+        'hasadna-k8s automated update',
+        f'source repo: {repository_organization}/{repository_name}',
+        f'source ref: {ref}',
+        f'source commits: {commit_hashes}'
+    ])
+    process(repository_name, repository_organization, ref, files, commit_message)
