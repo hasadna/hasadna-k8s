@@ -63,7 +63,7 @@ spec:
                                 key: app_private_key_b64
                         - name: GITHUB_PUSHER_CONFIG_YAML_PATH
                           value: /etc/github-pusher/config.yaml
-                      mounts:
+                      volumeMounts:
                         - name: github-pusher-config
                           mountPath: /etc/github-pusher
                           readOnly: true
