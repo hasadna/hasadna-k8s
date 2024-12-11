@@ -22,23 +22,6 @@ spec:
         - owner: kolzchut
           names:
             - srm-devops
-#      filter:
-#        expression: |
-#          any(
-#            reduce(
-#              map(
-#                body.commits,
-#                concat(#.added, #.modified, #.removed)
-#              ),
-#              concat(#, #acc)
-#            ),
-#            (
-#              # endsWith ".yml"
-#              or # endsWith ".yaml"
-#            )
-#            and # contains "values.auto-updated"
-#            and # startsWith "helm/"
-#          )
       webhookSecret:
         name: github
         key: webhooksecret
