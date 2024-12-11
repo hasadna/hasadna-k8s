@@ -13,6 +13,7 @@ Prerequisites:
 
 ```
 uv sync
+uv run hasadna-k8s
 ```
 
 ## Deleted code

@@ -56,7 +56,7 @@ def get_configs():
     ]
 
 
-def process_github_pusher_copy_config_files(pconfig: GithubPusherCopyConfig, files, requests_options):
+def process_github_pusher_copy_config_files(pconfig: GithubPusherCopyConfig, files, requests_options, commit_context):
     print(f'Processing {pconfig.source.org}/{pconfig.source.name} {pconfig.source.branch} ({",".join(files)})')
     num_updates = 0
     for file, file_config in {k: v for k, v in pconfig.files.items() if k in files}.items():
@@ -77,12 +77,12 @@ def process_github_pusher_copy_config_files(pconfig: GithubPusherCopyConfig, fil
             if target_updates:
                 for image_key, image in target_updates.items():
                     num_updates += 1
-                    print(f'Updating {file} in {pconfig.target.org}/{pconfig.target.name} {pconfig.target.branch} with {target_updates}')
                     target_content[image_key] = image
+                print(f'Updating {file} in {pconfig.target.org}/{pconfig.target.name} {pconfig.target.branch} with {target_updates}')
                 res = requests.put(
                     f'https://api.github.com/repos/{pconfig.target.org}/{pconfig.target.name}/contents/{file}',
                     json={
-                        'message': f'hasadna-k8s github pusher update from {pconfig.source.org}/{pconfig.source.name} {pconfig.source.branch}',
+                        'message': f'hasadna-k8s github pusher update from {pconfig.source.org}/{pconfig.source.name} {pconfig.source.branch}\n{commit_context}',
                         'content': base64.b64encode(target_content.to_yaml().encode()).decode(),
                         'sha': target_file['sha'],
                         'branch': pconfig.target.branch,
@@ -117,10 +117,10 @@ def get_github_token():
         return response.json()["token"]
 
 
-def process(repository_name, repository_organization, ref, files):
+def process(repository_name, repository_organization, ref, files, commit_context):
     requests_options = {'headers': {'Authorization': f'token {get_github_token()}'}}
     with open(GITHUB_PUSHER_CONFIG_YAML_PATH) as f:
-        data = benedict(f.read(), format='yaml')
+        data = benedict(f.read(), format='yaml', keypath_separator=None)
     configs = [parse_config(config) for config in data['configs']]
     if ref.startswith('refs/heads/') and files:
         branch = ref.replace('refs/heads/', '')
@@ -131,7 +131,7 @@ def process(repository_name, repository_organization, ref, files):
                 and repository_name == config.source.name
                 and branch == config.source.branch
             ):
-                process_github_pusher_copy_config_files(config, files, requests_options)
+                process_github_pusher_copy_config_files(config, files, requests_options, commit_context)
 
 
 def run(event):
@@ -142,8 +142,11 @@ def run(event):
     ref = event.get('ref')
     commits = event.get('commits')
     files = set()
+    commit_hashes = set()
     for commit in commits:
+        commit_hashes.add(commit.get('id'))
         files.update(commit.get('added', []))
         files.update(commit.get('modified', []))
         files.update(commit.get('removed', []))
-    process(repository_name, repository_organization, ref, files)
+    commit_context = f'commits: {commit_hashes}'
+    process(repository_name, repository_organization, ref, files, commit_context)

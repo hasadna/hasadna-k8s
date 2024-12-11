@@ -2,8 +2,11 @@ import importlib
 
 import click
 
+from .version import version
+
 
 @click.group()
+@click.version_option(message=version)
 def main():
     pass
 
