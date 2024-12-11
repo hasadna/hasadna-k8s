@@ -1,5 +1,6 @@
 import os
 import time
+import json
 import base64
 import dataclasses
 
@@ -46,6 +47,13 @@ def parse_config(config):
         )
     else:
         raise Exception(f'Unknown config type: {config["type"]}')
+
+
+def parse_configs(configs):
+    configs = [parse_config(config) for config in configs]
+    for config in configs:
+        print(config)
+    return configs
 
 
 def get_configs():
@@ -121,7 +129,7 @@ def process(repository_name, repository_organization, ref, files, commit_context
     requests_options = {'headers': {'Authorization': f'token {get_github_token()}'}}
     with open(GITHUB_PUSHER_CONFIG_YAML_PATH) as f:
         data = benedict(f.read(), format='yaml', keypath_separator=None)
-    configs = [parse_config(config) for config in data['configs']]
+    configs = parse_configs(data['configs'])
     print(f'process {repository_organization}/{repository_name} {ref} ({",".join(files)}) {commit_context}')
     if ref.startswith('refs/heads/') and files:
         branch = ref.replace('refs/heads/', '')
@@ -136,6 +144,7 @@ def process(repository_name, repository_organization, ref, files, commit_context
 
 
 def run(event):
+    print(json.dumps(event))
     x_github_event = event.get('X-GitHub-Event')
     assert x_github_event == 'push', f'Unexpected X-GitHub-Event: {x_github_event}'
     repository_name = event.get('repository', {}).get('name')
