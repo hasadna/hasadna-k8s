@@ -7,13 +7,13 @@ data:
     configs:
       - type: copy
         source:
-          org: hasadna  # kolzchut
+          org: kolzchut
           name: srm-devops
-          branch: github-pusher-test-source
+          branch: main
         target:
           org: hasadna
           name: srm-devops
-          branch: OriHoch-patch-2
+          branch: main
         files:
           "helm/site/values.auto-updated.yaml": {image_keys: ["site.image"]}
           "helm/site/values.auto-updated.production.yaml": {image_keys: ['site.image']}

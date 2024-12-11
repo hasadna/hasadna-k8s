@@ -16,9 +16,6 @@ spec:
         port: "13000"
         url: "https://argo-events-github.k8s.hasadna.org.il/push"
       repositories:
-        - owner: hasadna
-          names:
-            - srm-devops
         - owner: kolzchut
           names:
             - srm-devops
