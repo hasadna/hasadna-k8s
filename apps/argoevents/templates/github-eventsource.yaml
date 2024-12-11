@@ -24,13 +24,11 @@ spec:
             - srm-devops
       filter:
         expression: |
-          get(body, "commits") != nil and
-          len(body.commits ?? []) > 0 and
           any(
             reduce(
               map(
                 body.commits,
-                concat((# ?? {}).added ?? [], (# ?? {}).modified ?? [], (# ?? {}).removed ?? [])
+                concat(.added, .modified, .removed)
               ),
               concat(#, #acc, [])
             ),
