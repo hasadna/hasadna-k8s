@@ -10,11 +10,15 @@ def main():
 
 @main.command()
 @click.argument('EVENT_JSON')
-def run(event_json):
+@click.option('--file', is_flag=True)
+@click.option('--env', is_flag=True)
+def run(event_json, file, env):
     from . import main
-    if os.path.exists(event_json):
+    if file:
         with open(event_json) as f:
             event_json = f.read()
+    elif env:
+        event_json = os.environ[event_json]
     main.run(json.loads(event_json))
     print("OK")
 
