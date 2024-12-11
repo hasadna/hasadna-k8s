@@ -1,0 +1,20 @@
+{
+  "X-GitHub-Event": "push",
+  "repository": {
+    "name": "srm-devops",
+    "organization": "kolzchut"
+  },
+  "ref": "refs/heads/main",
+  "commits": [
+    {
+      "id": "aaaaaaaaaaaaaaaaaaaaa",
+      "added": [
+        "helm/site/values.auto-updated.yaml",
+        "helm/etl/values.auto-updated.production.yaml"
+      ],
+      "modified": [
+        "helm/site/values.auto-updated.production.yaml"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+[project]
+name = "hasadna-k8s"
+version = "0.0.0"
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.1.7",
+    "cryptography>=44.0.0",
+    "pyjwt>=2.10.1",
+    "python-benedict[yaml]>=0.34.0",
+    "python-dotenv>=1.0.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+hasadna-k8s = "hasadna_k8s.cli:main"

@@ -1,0 +1,15 @@
+configs:
+  - type: copy
+    source:
+      org: kolzchut
+      name: srm-devops
+      branch: main
+    target:
+      org: hasadna
+      name: srm-devops
+      branch: OriHoch-patch-2
+    files:
+      "helm/site/values.auto-updated.yaml": {image_keys: ["site.image"]}
+      "helm/site/values.auto-updated.production.yaml": {image_keys: ['site.image']}
+      "helm/etl/values.auto-updated.yaml": {image_keys: ['api.image', 'etl.image']}
+      "helm/etl/values.auto-updated.production.yaml": {image_keys: ['api.image', 'etl.image']}

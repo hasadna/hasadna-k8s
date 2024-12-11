@@ -1,0 +1,25 @@
+name: ci
+on:
+  push:
+jobs:
+  ci:
+    runs-on: ubuntu-24.04
+    env:
+      DOCKER_APP_IMAGE_NAME: "ghcr.io/hasadna/hasadna-k8s/hasadna-k8s"
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+    - uses: actions/checkout@v4
+    - run: |
+        echo "${GITHUB_TOKEN}" | docker login ghcr.io -u hasadna --password-stdin &&\
+        if docker pull "${DOCKER_APP_IMAGE_NAME}:latest"; then
+          CACHE_FROM_ARG="--cache-from ${DOCKER_APP_IMAGE_NAME}:latest"
+        else
+          CACHE_FROM_ARG=""
+        fi &&\
+        docker build $CACHE_FROM_ARG --build-arg VERSION=${GITHUB_SHA} -t app . &&\
+        docker tag app "${DOCKER_APP_IMAGE_NAME}:${GITHUB_SHA}" &&\
+        docker push "${DOCKER_APP_IMAGE_NAME}:${GITHUB_SHA}" &&\
+        if [ "${GITHUB_REF}" == "refs/heads/master" ]; then
+          docker tag app "${DOCKER_APP_IMAGE_NAME}:latest" &&\
+          docker push "${DOCKER_APP_IMAGE_NAME}:latest"
+        fi
