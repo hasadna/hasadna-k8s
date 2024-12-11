@@ -10,4 +10,4 @@ RUN uv sync --frozen
 ARG VERSION=docker-development
 RUN echo "version = '$VERSION'" > hasadna_k8s/version.py
 USER hasadna
-ENTRYPOINT ["uv", "run", "hasadna-k8s"]
+ENTRYPOINT [".venv/bin/hasadna-k8s"]
