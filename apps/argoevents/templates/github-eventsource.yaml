@@ -16,10 +16,12 @@ spec:
         port: "13000"
         url: "https://argo-events-github.k8s.hasadna.org.il/push"
       repositories:
-        hasadna:
-          - srm-devops
-        kolzchut:
-          - srm-devops
+        - owner: hasadna
+          names:
+            - srm-devops
+        - owner: kolzchut
+          names:
+            - srm-devops
       filter:
         expression: |
           any(
