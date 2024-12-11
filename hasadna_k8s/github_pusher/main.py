@@ -16,7 +16,7 @@ GITHUB_APP_ID = os.environ.get('GITHUB_APP_ID')
 GITHUB_APP_INSTALLATION_ID = os.environ.get('GITHUB_APP_INSTALLATION_ID')
 GITHUB_APP_PRIVATE_KEY_B64 = os.environ.get('GITHUB_APP_PRIVATE_KEY_B64')
 GITHUB_APP_PRIVATE_KEY = base64.b64decode(GITHUB_APP_PRIVATE_KEY_B64).decode() if GITHUB_APP_PRIVATE_KEY_B64 else None
-GITHUB_PUSHER_CONFIG_YAML_PATH = os.environ.get('CONFIG_YAML_PATH') or 'hasadna_k8s/github_pusher/config.example.yaml'
+GITHUB_PUSHER_CONFIG_YAML_PATH = os.environ.get('GITHUB_PUSHER_CONFIG_YAML_PATH') or 'hasadna_k8s/github_pusher/config.example.yaml'
 
 
 @dataclasses.dataclass(frozen=True)
