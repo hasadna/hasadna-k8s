@@ -15,8 +15,28 @@ spec:
         method: POST
         port: "13000"
         url: "https://argo-events-github.k8s.hasadna.org.il/push"
-      organizations:
-        - hasadna
+      repositories:
+        hasadna:
+          - srm-devops
+        kolzchut:
+          - srm-devops
+      filter:
+        expression: |
+          any(
+            reduce(
+              map(
+                body.commits,
+                concat(.added ?? [], .modified ?? [], .removed ?? [])
+              ),
+              concat(#acc, #)
+            ),
+            (
+              # endsWith ".yml" 
+              or # endsWith ".yaml"
+            )
+            and # contains "values.auto-updated"
+            and # startsWith "helm/"
+          )
       webhookSecret:
         name: github
         key: webhooksecret
