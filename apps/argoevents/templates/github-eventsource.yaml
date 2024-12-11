@@ -30,7 +30,7 @@ spec:
             reduce(
               map(
                 body.commits,
-                concat(($ ?? {}).added ?? [], ($ ?? {}).modified ?? [], ($ ?? {}).removed ?? [])
+                concat((# ?? {}).added ?? [], (# ?? {}).modified ?? [], (# ?? {}).removed ?? [])
               ),
               concat(#, #acc, [])
             ),
