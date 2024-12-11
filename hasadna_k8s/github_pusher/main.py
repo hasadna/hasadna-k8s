@@ -122,6 +122,7 @@ def process(repository_name, repository_organization, ref, files, commit_context
     with open(GITHUB_PUSHER_CONFIG_YAML_PATH) as f:
         data = benedict(f.read(), format='yaml', keypath_separator=None)
     configs = [parse_config(config) for config in data['configs']]
+    print(f'process {repository_organization}/{repository_name} {ref} ({",".join(files)}) {commit_context}')
     if ref.startswith('refs/heads/') and files:
         branch = ref.replace('refs/heads/', '')
         for config in configs:

@@ -15,10 +15,14 @@ def main():
 def run(event_json, file, env):
     from . import main
     if file:
+        print(f'Reading event from file: {event_json}')
         with open(event_json) as f:
             event_json = f.read()
     elif env:
+        print(f'Reading event from env: {event_json}')
         event_json = os.environ[event_json]
+    else:
+        print('Reading event from argument')
     main.run(json.loads(event_json))
     print("OK")
 
