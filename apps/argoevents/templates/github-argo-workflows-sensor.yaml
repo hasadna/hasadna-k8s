@@ -41,7 +41,7 @@ spec:
                       parameters:
                         - name: body
                     container:
-                      image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:457f95d566cfe856756f2d8b74bd4b8b6f45840d
+                      image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:57b0ac7a52ff9252cf01e85c5d8c60876d03ddae
                       args: [github-pusher, run, --env, BODY]
                       env:
                         - name: BODY
