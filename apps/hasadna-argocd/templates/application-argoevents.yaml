@@ -14,5 +14,10 @@ spec:
     repoURL: https://github.com/hasadna/hasadna-k8s.git
     targetRevision: master
   syncPolicy:
+    {{ if .Values.allowAutoSync }}
+    automated:
+      prune: true
+      selfHeal: true
+    {{ end }}
     syncOptions:
     - CreateNamespace=true
