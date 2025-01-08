@@ -4,6 +4,16 @@ metadata:
   name: workflow-controller-configmap
   namespace: argo
 data:
+  workflowDefaults: |
+    spec:
+      activeDeadlineSeconds: 432000  # 5 days - duration in seconds relative to the workflow start time which the workflow is allowed to run before the controller terminates
+      parallelism: 2
+      ttlStrategy:
+        secondsAfterSuccess: 300  # 5 minutes
+        secondsAfterFailure: 86400  # 1 day
+      podGC:
+        strategy: OnWorkflowCompletion
+        deleteDelayDuration: 86400s  # 1 day
   sso: |
     issuer: https://argocd.hasadna.org.il/api/dex
     clientId:
