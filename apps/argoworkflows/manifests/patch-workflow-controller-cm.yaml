@@ -13,7 +13,6 @@ data:
         secondsAfterFailure: 86400  # 1 day
       podGC:
         strategy: OnWorkflowCompletion
-        deleteDelayDuration: 86400s  # 1 day
   sso: |
     issuer: https://argocd.hasadna.org.il/api/dex
     clientId:
