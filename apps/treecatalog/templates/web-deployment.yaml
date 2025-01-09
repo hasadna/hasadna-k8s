@@ -17,6 +17,6 @@ spec:
       terminationGracePeriodSeconds: 2
       containers:
       - name: web
-        image: {{ .Values.webImage | default "whiletrue-industries/treecat" | quote }}
+        image: {{ .Values.webImage | default "ghcr.io/whiletrue-industries/treecat" | quote }}
         resources: {"requests": {"cpu": "25m", "memory": "309Mi"}, "limits": {"cpu": "78m", "memory": "1000Mi"}}
 {{ end }}
