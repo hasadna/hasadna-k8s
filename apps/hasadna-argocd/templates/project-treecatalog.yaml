@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: treecatalog
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - name: '*'
+    namespace: treecatalog
+    server: https://kubernetes.default.svc
+  sourceRepos:
+  - https://github.com/hasadna/hasadna-k8s.git

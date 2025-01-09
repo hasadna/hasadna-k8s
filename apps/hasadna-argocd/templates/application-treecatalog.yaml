@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: treecatalog
+spec:
+  destination:
+    namespace: treecatalog
+    server: https://kubernetes.default.svc
+  project: treecatalog
+  source:
+    path: apps/treecatalog
+    plugin:
+      name: uumpa
+    repoURL: https://github.com/hasadna/hasadna-k8s.git
+    targetRevision: master
+  syncPolicy:
+    {{ if .Values.allowAutoSync }}
+    automated:
+      prune: true
+      selfHeal: true
+    {{ end }}
+    syncOptions:
+    - CreateNamespace=true
