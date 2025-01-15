@@ -28,6 +28,11 @@ data:
     p, role:openbus-admin, applications, sync, openbus/*, allow
     p, role:openbus-admin, applications, update, openbus/*, allow
     p, role:openbus-admin, exec, create, openbus/*, allow
+
+    p, role:srm-admin, applications, override, srm/*, allow
+    p, role:srm-admin, applications, sync, srm/*, allow
+    p, role:srm-admin, applications, update, srm/*, allow
+    p, role:srm-admin, exec, create, srm/*, allow
     
     g, hasadna:argocd-admins, role:admin
     g, hasadna:argocd-leafy-admins, role:leafy-admin
@@ -35,4 +40,5 @@ data:
     g, hasadna:argocd-openpension-admins, role:openpension-admin
     g, hasadna:argocd-openlaw-admins, role:openlaw-admin
     g, hasadna:argocd-openbus-admins, role:openbus-admin
+    g, hasadna:argocd-srm-admins, role:srm-admin
   policy.default: 'role:readonly'
