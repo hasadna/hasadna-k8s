@@ -17,8 +17,10 @@ def delete_old_files(root_path, cutoff_date, dry_run=True):
                 else:
                     os.remove(file_path)
         if not os.listdir(root) and root != root_path:
-            print(f'rmtree: {root}')
-            shutil.rmtree(root)
+            if dry_run:
+                print(f'rmtree: {root}')
+            else:
+                shutil.rmtree(root)
 
 
 def find_log_paths(root_path, log_path_prefixes):
