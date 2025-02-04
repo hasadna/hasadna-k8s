@@ -30,6 +30,7 @@ data:
             - argocd-openpension-admins
             - argocd-openlaw-admins
             - argocd-openbus-admins
+            - argocd-srm-admins
   configManagementPlugins: |
     - name: argocd-vault-plugin-helm-with-args
       init:
