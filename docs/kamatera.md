@@ -76,3 +76,16 @@ spec:
 * rsync:
   * `rsync -az /media/root/var/lib/kubelet/pods/POD_UID/volumes/... /media/root/var/kamatera-nfs/TARGET/`
   * if rsync fails or connection is dropped, you can run `toolbox` and then run the rsync command again
+
+## Upgrading cert-manager
+
+Make sure to use kubectl client in the same version as the cluster with latest patch version
+
+```
+# v0.13 to v1.10
+kubectl delete -n cert-manager deployment cert-manager cert-manager-cainjector cert-manager-webhook
+kubectl delete --all --all-namespaces clusterissuers challenges certificaterequests certificaterequests challenges orders
+kubectl delete crd clusterissuers.cert-manager.io challenges.acme.cert-manager.io certificaterequests.cert-manager.io issuers.cert-manager.io certificates.cert-manager.io orders.acme.cert-manager.io
+kubectl replace -f https://github.com/cert-manager/cert-manager/releases/download/v1.10.2/cert-manager.crds.yaml
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.10.2/cert-manager.yaml
+```
