@@ -3,35 +3,26 @@ kind: ConfigMap
 metadata:
   name: argocd-rbac-cm
 data:
+  policy.default: role:unauthorized
   policy.csv: |
-    p, role:leafy-admin, applications, override, leafy/*, allow
-    p, role:leafy-admin, applications, sync, leafy/*, allow
-    p, role:leafy-admin, applications, update, leafy/*, allow
+    p, role:unauthorized, applications, get, */*, deny
+    
+    p, role:leafy-admin, applications, *, leafy/*, allow
     p, role:leafy-admin, exec, create, leafy/*, allow
     
-    p, role:dear-diary-admin, applications, override, dear-diary/*, allow
-    p, role:dear-diary-admin, applications, sync, dear-diary/*, allow
-    p, role:dear-diary-admin, applications, update, dear-diary/*, allow
+    p, role:dear-diary-admin, applications, *, dear-diary/*, allow
     p, role:dear-diary-admin, exec, create, dear-diary/*, allow
     
-    p, role:openpension-admin, applications, override, openpension/*, allow
-    p, role:openpension-admin, applications, sync, openpension/*, allow
-    p, role:openpension-admin, applications, update, openpension/*, allow
+    p, role:openpension-admin, applications, *, openpension/*, allow
     p, role:openpension-admin, exec, create, openpension/*, allow
     
-    p, role:openlaw-admin, applications, override, openlaw/*, allow
-    p, role:openlaw-admin, applications, sync, openlaw/*, allow
-    p, role:openlaw-admin, applications, update, openlaw/*, allow
+    p, role:openlaw-admin, applications, *, openlaw/*, allow
     p, role:openlaw-admin, exec, create, openlaw/*, allow
     
-    p, role:openbus-admin, applications, override, openbus/*, allow
-    p, role:openbus-admin, applications, sync, openbus/*, allow
-    p, role:openbus-admin, applications, update, openbus/*, allow
+    p, role:openbus-admin, applications, *, openbus/*, allow
     p, role:openbus-admin, exec, create, openbus/*, allow
-
-    p, role:srm-admin, applications, override, srm/*, allow
-    p, role:srm-admin, applications, sync, srm/*, allow
-    p, role:srm-admin, applications, update, srm/*, allow
+    
+    p, role:srm-admin, applications, *, srm/*, allow
     p, role:srm-admin, exec, create, srm/*, allow
     
     g, hasadna:argocd-admins, role:admin
@@ -41,4 +32,3 @@ data:
     g, hasadna:argocd-openlaw-admins, role:openlaw-admin
     g, hasadna:argocd-openbus-admins, role:openbus-admin
     g, hasadna:argocd-srm-admins, role:srm-admin
-  policy.default: 'role:readonly'
