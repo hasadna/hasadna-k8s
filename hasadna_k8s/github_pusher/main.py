@@ -29,7 +29,8 @@ class GithubPusherRepoBranchConfig:
 
 @dataclasses.dataclass(frozen=True)
 class GithubPusherFileConfig:
-    image_keys: list[str]
+    image_keys: list[str] = dataclasses.field(default_factory=list)
+    keys: list[str] = dataclasses.field(default_factory=list)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -60,27 +61,49 @@ def parse_configs(configs):
 
 def get_configs():
     with open(GITHUB_PUSHER_CONFIG_YAML_PATH) as f:
-        data = benedict(f.read(), format='yaml')
-    return [
-        parse_config(config) for config in data['configs']
-    ]
+        data = benedict(f.read(), format='yaml', keypath_separator=None)
+    return parse_configs(data['configs'])
+
+
+def get_github_file(org, name, file, branch, requests_options):
+    return benedict(
+        f'https://api.github.com/repos/{org}/{name}/contents/{file}?ref=refs/heads/{branch}',
+        requests_options=requests_options
+    )
+
+
+def get_github_file_content(org, name, file, branch, requests_options):
+    return get_github_file(org, name, file, branch, requests_options)['content']
+
+
+def get_github_yaml_file_content(org, name, file, branch, requests_options):
+    content = get_github_file_content(org, name, file, branch, requests_options)
+    return benedict(base64.b64decode(content).decode(), format='yaml')
+
+
+def update_github_file(org, name, file, branch, requests_options, commit_message, content, sha):
+    res = requests.put(
+        f'https://api.github.com/repos/{org}/{name}/contents/{file}',
+        json={
+            'message': commit_message,
+            'content': base64.b64encode(content.to_yaml().encode()).decode(),
+            'sha': sha,
+            'branch': branch,
+        },
+        **requests_options,
+    )
+    if res.status_code != 200:
+        raise Exception(f'Failed to update {file} in {org}/{name} {branch}: {res.status_code} {res.text}')
 
 
 def process_github_pusher_copy_config_files(pconfig: GithubPusherCopyConfig, files, requests_options, commit_message):
     print(f'Processing {pconfig.source.org}/{pconfig.source.name} {pconfig.source.branch} ({",".join(files)})')
     num_updates = 0
     for file, file_config in {k: v for k, v in pconfig.files.items() if k in files}.items():
-        content = benedict(
-            f'https://api.github.com/repos/{pconfig.source.org}/{pconfig.source.name}/contents/{file}?ref=refs/heads/{pconfig.source.branch}',
-            requests_options=requests_options
-        )['content']
-        content = benedict(base64.b64decode(content).decode(), format='yaml')
+        content = get_github_yaml_file_content(pconfig.source.org, pconfig.source.name, file, pconfig.source.branch, requests_options)
         images = {image_key: content.get(image_key) for image_key in file_config.image_keys if content.get(image_key)}
         if images:
-            target_file = benedict(
-                f'https://api.github.com/repos/{pconfig.target.org}/{pconfig.target.name}/contents/{file}?ref=refs/heads/{pconfig.target.branch}',
-                requests_options=requests_options
-            )
+            target_file = get_github_file(pconfig.target.org, pconfig.target.name, file, pconfig.target.branch, requests_options)
             target_content = target_file['content']
             target_content = benedict(base64.b64decode(target_content).decode(), format='yaml')
             target_updates = {image_key: image for image_key, image in images.items() if target_content.get(image_key) != image}
@@ -89,18 +112,17 @@ def process_github_pusher_copy_config_files(pconfig: GithubPusherCopyConfig, fil
                     num_updates += 1
                     target_content[image_key] = image
                 print(f'Updating {file} in {pconfig.target.org}/{pconfig.target.name} {pconfig.target.branch} with {target_updates}')
-                res = requests.put(
-                    f'https://api.github.com/repos/{pconfig.target.org}/{pconfig.target.name}/contents/{file}',
-                    json={
-                        'message': commit_message,
-                        'content': base64.b64encode(target_content.to_yaml().encode()).decode(),
-                        'sha': target_file['sha'],
-                        'branch': pconfig.target.branch,
-                    },
-                    **requests_options,
-                )
-                if res.status_code != 200:
-                    raise Exception(f'Failed to update {file} in {pconfig.target.org}/{pconfig.target.name} {pconfig.target.branch}: {res.status_code} {res.text}')
+                update_github_file(pconfig.target.org, pconfig.target.name, file, pconfig.target.branch, requests_options, commit_message, target_content, target_file['sha'])
+        keys = {key: content.get(key) for key in file_config.keys if content.get(key)}
+        if keys:
+            target_file = get_github_file(pconfig.target.org, pconfig.target.name, file, pconfig.target.branch, requests_options)
+            target_content = target_file['content']
+            target_content = benedict(base64.b64decode(target_content).decode(), format='yaml')
+            for key, val in keys.items():
+                num_updates += 1
+                target_content[key] = val
+            print(f'Updating {file} in {pconfig.target.org}/{pconfig.target.name} {pconfig.target.branch} with {keys}')
+            update_github_file(pconfig.target.org, pconfig.target.name, file, pconfig.target.branch, requests_options, commit_message, target_content, target_file['sha'])
     if num_updates == 0:
         print('No updates')
 
@@ -131,9 +153,7 @@ def get_github_token():
 
 def process(repository_name, repository_organization, ref, files, commit_message):
     requests_options = {'headers': {'Authorization': f'token {get_github_token()}'}}
-    with open(GITHUB_PUSHER_CONFIG_YAML_PATH) as f:
-        data = benedict(f.read(), format='yaml', keypath_separator=None)
-    configs = parse_configs(data['configs'])
+    configs = get_configs()
     print(f'process {repository_organization}/{repository_name} {ref} ({",".join(files)})')
     if ref.startswith('refs/heads/') and files:
         branch = ref.replace('refs/heads/', '')

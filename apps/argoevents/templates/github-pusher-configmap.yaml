@@ -19,3 +19,5 @@ data:
           "helm/site/values.auto-updated.production.yaml": {image_keys: ['site.image']}
           "helm/etl/values.auto-updated.yaml": {image_keys: ['api.image', 'etl.image']}
           "helm/etl/values.auto-updated.production.yaml": {image_keys: ['api.image', 'etl.image']}
+          "helm/etl/values.staging-envvars.yaml": {keys: ['etl.env']}
+          "helm/etl/values.production-envvars.yaml": {keys: ['etl.env']}
