@@ -60,10 +60,8 @@ def parse_configs(configs):
 
 def get_configs():
     with open(GITHUB_PUSHER_CONFIG_YAML_PATH) as f:
-        data = benedict(f.read(), format='yaml')
-    return [
-        parse_config(config) for config in data['configs']
-    ]
+        data = benedict(f.read(), format='yaml', keypath_separator=None)
+    return parse_configs(data['configs'])
 
 
 def process_github_pusher_copy_config_files(pconfig: GithubPusherCopyConfig, files, requests_options, commit_message):
@@ -131,9 +129,7 @@ def get_github_token():
 
 def process(repository_name, repository_organization, ref, files, commit_message):
     requests_options = {'headers': {'Authorization': f'token {get_github_token()}'}}
-    with open(GITHUB_PUSHER_CONFIG_YAML_PATH) as f:
-        data = benedict(f.read(), format='yaml', keypath_separator=None)
-    configs = parse_configs(data['configs'])
+    configs = get_configs()
     print(f'process {repository_organization}/{repository_name} {ref} ({",".join(files)})')
     if ref.startswith('refs/heads/') and files:
         branch = ref.replace('refs/heads/', '')
