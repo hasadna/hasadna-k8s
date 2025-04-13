@@ -25,6 +25,11 @@ spec:
           - name: data
             mountPath: /var/lib/postgresql/data
             subPath: postgres_data2
+        command:
+          - sh
+          - -c
+          - |
+            sleep 86400
       - name: server
         image: {{ .Values.ckanDgpServerImage | default "docker.pkg.github.com/hasadna/datacity-ckan-dgp/server" | quote }}
         resources: {"requests": {"cpu": "2500m", "memory": "2500Mi"}, "limits": {"cpu": "3000m", "memory": "4000Mi"}}
@@ -32,6 +37,7 @@ spec:
           - sh
           - -c
           - |
+            sleep 86400 &&\
             chown etl:etl /app/airflow &&\
             chown etl:etl /app/airflow/logs &&\
             HOME=/app exec su etl -mc /app/datacity_ckan_entrypoint.sh
