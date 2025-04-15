@@ -24,10 +24,10 @@ discourse:
     apiVersion: extensions/v1beta1
     hostname: forum.hasadna.org.il
     tls: true
-    extraTls:
-      - hosts:
-          - forum.hasadna.org.il
-        secretName: forum.hasadna.org.il-tls
+    # extraTls:
+    #   - hosts:
+    #       - forum.hasadna.org.il
+    #     secretName: forum.hasadna.org.il-tls
 #  volumePermissions:
 #    enabled: true
   postgresql:
