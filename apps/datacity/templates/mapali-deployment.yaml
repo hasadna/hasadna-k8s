@@ -25,6 +25,16 @@ spec:
           - name: data
             mountPath: /var/lib/postgresql/data
             subPath: postgres_data2
+        command:
+          - bash
+          - -c
+          - |
+            if [ -f /var/lib/postgresql/data/__do_resetwal ]; then
+              date >> /var/lib/postgresql/data/__do_resetwal.log
+              su postgres -c "pg_resetwal -D /var/lib/postgresql/data/"
+              rm /var/lib/postgresql/data/__do_resetwal
+            fi
+            exec docker-entrypoint.sh postgres
       - name: server
         image: {{ .Values.mapaliImage | default "docker.pkg.github.com/hasadna/mapali/server" | quote }}
         resources: {"requests": {"cpu": "250m", "memory": "2Gi"}, "limits": {"cpu": "1000m", "memory": "4Gi"}}
