@@ -6,4 +6,4 @@ RUN cd /opt &&\
     tar -xf google-cloud-cli-linux-x86_64.tar.gz &&\
     ./google-cloud-sdk/install.sh -q &&\
     /opt/google-cloud-sdk/bin/gcloud components install gke-gcloud-auth-plugin -q
-USER argocd
+USER 999
