@@ -1,7 +1,9 @@
 ARG ARGOCD_VERSION=2.8.2
-ARG GCLOUD_VERSION=519.0.0
-
-FROM google/cloud-sdk:$GCLOUD_VERSION as gcloud
-
 FROM quay.io/argoproj/argocd:v$ARGOCD_VERSION
-COPY --from=gcloud /usr/bin/gke-gcloud-auth-plugin /usr/bin/gke-gcloud-auth-plugin
+USER root
+ADD https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz /opt/google-cloud-cli-linux-x86_64.tar.gz
+RUN cd /opt &&\
+    tar -xf google-cloud-cli-linux-x86_64.tar.gz &&\
+    ./google-cloud-sdk/install.sh -q &&\
+    /opt/google-cloud-sdk/bin/gcloud components install gke-gcloud-auth-plugin -q
+USER argocd
