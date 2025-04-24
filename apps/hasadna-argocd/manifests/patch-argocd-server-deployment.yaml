@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-server
+spec:
+  template:
+    spec:
+      volumes:
+        - name: google-credentials
+          secret:
+            secretName: gke-auth-datacity
+      containers:
+        - name: argocd-server
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/google/auth.json
+          volumeMounts:
+            - name: google-credentials
+              mountPath: /var/google

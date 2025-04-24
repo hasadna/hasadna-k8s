@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: argocd-application-controller
+spec:
+  template:
+    spec:
+      volumes:
+        - name: google-credentials
+          secret:
+            secretName: gke-auth-datacity
+      containers:
+        - name: argocd-application-controller
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/google/auth.json
+          volumeMounts:
+            - name: google-credentials
+              mountPath: /var/google

@@ -8,15 +8,21 @@ resources:
 - application-hasadna-argocd-apps.yaml
 - github-secret.yaml
 
-patchesStrategicMerge:
-- patch-argocd-cm.yaml
-- patch-argocd-cmd-params-cm.yaml
-- patch-argocd-server-role.yaml
-- patch-argocd-server-cluster-role.yaml
-- patch-argocd-repo-server-deploy.yaml
-- patch-argocd-rbac-cm.yaml
-- patch-argocd-dex-server-deployment.yaml
-
 patches:
+  - path: patch-argocd-cm.yaml
+  - path: patch-argocd-cmd-params-cm.yaml
+  - path: patch-argocd-server-role.yaml
+  - path: patch-argocd-server-cluster-role.yaml
+  - path: patch-argocd-repo-server-deploy.yaml
+  - path: patch-argocd-rbac-cm.yaml
+  - path: patch-argocd-dex-server-deployment.yaml
+  - path: patch-argocd-application-controller-statefulset.yaml
+  - path: patch-argocd-server-deployment.yaml
   - target: {kind: Deployment, name: "argocd-repo-server"}
     patch: '[{"op": "remove", "path": "/spec/template/spec/containers/1/securityContext/seccompProfile"}]'
+
+images:
+  - name: quay.io/argoproj/argocd
+    tagSuffix: v2.8.2
+    newName: ghcr.io/hasadna/hasadna-k8s/hasadna-argocd
+    newTag: 86472ca8c41364acd1f119379208a15aae779d07

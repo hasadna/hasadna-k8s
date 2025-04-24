@@ -43,6 +43,13 @@ spec:
             - mountPath: /home/argocd/cmp-server/config/plugin.yaml
               subPath: plugin.yaml
               name: uumpa-plugin-config
+        - name: argocd-repo-server
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/google/auth.json
+          volumeMounts:
+            - name: google-credentials
+              mountPath: /var/google
       volumes:
         - name: uumpa-cache
           emptyDir: {}
@@ -51,3 +58,6 @@ spec:
         - name: uumpa-plugin-config
           configMap:
             name: uumpa-plugin
+        - name: google-credentials
+          secret:
+            secretName: gke-auth-datacity
