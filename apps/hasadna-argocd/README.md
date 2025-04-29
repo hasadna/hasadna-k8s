@@ -66,19 +66,19 @@ Make sure you are connected to Hasadna's cluster (`kubectl get nodes`)
 Render manifests to review
 
 ```
-kubectl kustomize -n argocd apps/hasadna-argocd/manifests
+kustomize build apps/hasadna-argocd/manifests
 ```
 
 Dry Run on the server
 
 ```
-kubectl apply --dry-run=server -n argocd -k apps/hasadna-argocd/manifests
+kustomize build apps/hasadna-argocd/manifests | kubectl apply --dry-run=server -n argocd -f -
 ```
 
 Deploy
 
 ```
-kubectl apply -n argocd -k apps/hasadna-argocd/manifests
+kustomize build apps/hasadna-argocd/manifests | kubectl apply -n argocd -f -
 ```
 
 Deploy ingresses
