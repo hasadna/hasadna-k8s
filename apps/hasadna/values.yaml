@@ -1,22 +1,15 @@
 enabled: true
 
 ingresses:
-  # - name: kikar-redirect
-  #   ssl: true
-  #   permanentRedirect: https://www.hasadna.org.il/%d7%9b%d7%99%d7%9b%d7%a8-%d7%94%d7%9e%d7%93%d7%99%d7%a0%d7%94/
-  #   rules:
-  #     - host: kikar.org.il
-  #       serviceName: redirector-nginx
-  #       servicePort: 80
-  #     - host: www.kikar.org.il
-  #       serviceName: redirector-nginx
-  #       servicePort: 80
-  #     - host: kikar.org
-  #       serviceName: redirector-nginx
-  #       servicePort: 80
-  #     - host: www.kikar.org
-  #       serviceName: redirector-nginx
-  #       servicePort: 80
+  - name: kikar-redirect
+    permanentRedirect: https://www.hasadna.org.il/%d7%9b%d7%99%d7%9b%d7%a8-%d7%94%d7%9e%d7%93%d7%99%d7%a0%d7%94/
+    rules:
+      - host: kikar.org
+        serviceName: redirector-nginx
+        servicePort: 80
+      - host: www.kikar.org
+        serviceName: redirector-nginx
+        servicePort: 80
   - name: otrain-redirect
     ssl: true
     permanentRedirect: https://www.hasadna.org.il/%d7%94%d7%9e%d7%a2%d7%91%d7%93%d7%94-%d7%a9%d7%9c%d7%a0%d7%95/%d7%a8%d7%9b%d7%91%d7%aa-%d7%a4%d7%aa%d7%95%d7%97%d7%94/
