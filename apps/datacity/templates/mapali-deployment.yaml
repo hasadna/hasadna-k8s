@@ -16,7 +16,7 @@ spec:
       labels:
         app: mapali
     spec:
-      terminationGracePeriodSeconds: 10
+      terminationGracePeriodSeconds: 60
       containers:
       - name: db
         image: "docker.pkg.github.com/hasadna/datacity-ckan-dgp/datacity-ckan-dgp-db:210085d803fd866c24f2d644920dd276527d74f1"
