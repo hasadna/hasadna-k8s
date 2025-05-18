@@ -7,6 +7,8 @@ spec:
   selector:
     matchLabels:
       app: importer-db
+  strategy:
+    type: Recreate
   replicas: 1
   revisionHistoryLimit: 2
   template:
@@ -14,7 +16,7 @@ spec:
       labels:
         app: importer-db
     spec:
-      terminationGracePeriodSeconds: 10
+      terminationGracePeriodSeconds: 60
       containers:
       - name: importer-db
         image: {{ .Values.dgpAppDbImage | default "akariv/dgp-app-db" | quote }}
