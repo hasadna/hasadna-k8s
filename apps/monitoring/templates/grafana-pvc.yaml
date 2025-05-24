@@ -25,5 +25,9 @@ spec:
               operator: In
               values:
                 - worker1
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 10Gi
   local:
     path: /srv/storage/monitoring/grafana
