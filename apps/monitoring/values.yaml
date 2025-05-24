@@ -62,18 +62,12 @@ kube-prometheus-stack:
                 app.kubernetes.io/name: prometheus
 
 ingresses:
-  - name: alertmanager
-    ssl: true
-    rules:
-      - host: "alertmanager.~iac:rke2_catchall_hostname~"
-        serviceName: http-web
-        servicePort: 3000
   - name: grafana
     ssl: true
     rules:
       - host: "grafana.~iac:rke2_catchall_hostname~"
-        serviceName: http-web
-        servicePort: 9093
+        serviceName: monitoring-grafana
+        servicePort: 80
 
 secrets:
   - name: grafana-admin-password
