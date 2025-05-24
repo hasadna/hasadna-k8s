@@ -77,12 +77,25 @@ ingresses:
       - host: "grafana.~iac:rke2_catchall_hostname~"
         serviceName: monitoring-grafana
         servicePort: 80
+  - name: prometheus
+    ssl: true
+    httpauth:
+      secretName: "prometheus-http-auth"
+      message: "Prometheus Authentication Required"
+    rules:
+      - host: "prometheus.~iac:rke2_catchall_hostname~"
+        serviceName: prometheus-operated
+        servicePort: 9090
 
 secrets:
   - name: alertmanager-http-auth
     data:
       # htpasswd -nb username password
       auth: "~vault:Projects/k8s/alertmanager:httpauth~"
+  - name: prometheus-http-auth
+    data:
+      # htpasswd -nb username password
+      auth: "~vault:Projects/k8s/prometheus:httpauth~"
   - name: grafana-admin-password
     data:
       admin-user: "~vault:Projects/k8s/grafana-admin:admin-user~"
