@@ -61,6 +61,11 @@ kube-prometheus-stack:
               matchLabels:
                 app.kubernetes.io/name: prometheus
 
+  kubeProxy:
+    service:
+      selector:
+        component: kube-proxy
+
 ingresses:
   - name: alertmanager
     ssl: true
