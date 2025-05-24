@@ -68,4 +68,4 @@ ingresses:
 secrets:
   - name: grafana-admin-password
     data:
-      GRAFANA_ADMIN_PASSWORD: "~vault:Projects/monitoring/k8s-secrets:GRAFANA_ADMIN_PASSWORD~"
+      GRAFANA_ADMIN_PASSWORD: "~vault:Projects/k8s/grafana-admin:admin-password~"
