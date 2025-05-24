@@ -10,6 +10,11 @@ kube-prometheus-stack:
       storage:
         volumeClaimTemplate:
           spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 10Gi
             selector:
               matchLabels:
                 app.kubernetes.io/name: alertmanager
@@ -47,6 +52,11 @@ kube-prometheus-stack:
       storageSpec:
         volumeClaimTemplate:
           spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 10Gi
             selector:
               matchLabels:
                 app.kubernetes.io/name: prometheus
