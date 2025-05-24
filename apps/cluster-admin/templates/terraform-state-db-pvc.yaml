@@ -32,4 +32,4 @@ spec:
   capacity:
     storage: 10Gi
   local:
-    path: /srv/storage/infra/terraform-state-db
+    path: /srv/storage/infra/terraform-state-db/state_db
