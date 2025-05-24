@@ -66,6 +66,18 @@ kube-prometheus-stack:
       selector:
         component: kube-proxy
 
+  nodeExporter:
+    operatingSystems:
+      aix:
+        enabled: false
+      darwin:
+        enabled: false
+
+  prometheus-node-exporter:
+    tolerations:
+      - effect: NoExecute
+        operator: Exists
+
 ingresses:
   - name: alertmanager
     ssl: true
