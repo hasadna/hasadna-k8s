@@ -19,8 +19,8 @@ terraformStateDb:
     limits:
       memory: 500Mi
       cpu: 100m
-  nfsServer: "~iac:hasadna_nfs1_internal_ip~"
-  nfsPath: "/terraform/state_db"
+#  nfsServer: "~iac:hasadna_nfs1_internal_ip~"
+#  nfsPath: "/terraform/state_db"
 
 secrets:
   - name: terraform-state-db
