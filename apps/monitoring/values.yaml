@@ -62,6 +62,15 @@ kube-prometheus-stack:
                 app.kubernetes.io/name: prometheus
 
 ingresses:
+  - name: alertmanager
+    ssl: true
+    httpauth:
+      secretName: "alertmanager-http-auth"
+      message: "Alertmanager Authentication Required"
+    rules:
+      - host: "alertmanager.~iac:rke2_catchall_hostname~"
+        serviceName: alertmanager-operated
+        servicePort: 9093
   - name: grafana
     ssl: true
     rules:
@@ -70,6 +79,10 @@ ingresses:
         servicePort: 80
 
 secrets:
+  - name: alertmanager-http-auth
+    data:
+      # htpasswd -nb username password
+      auth: "~vault:Projects/k8s/alertmanager:httpauth~"
   - name: grafana-admin-password
     data:
       admin-user: "~vault:Projects/k8s/grafana-admin:admin-user~"
