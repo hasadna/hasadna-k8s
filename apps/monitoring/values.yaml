@@ -10,11 +10,10 @@ kube-prometheus-stack:
       storage:
         volumeClaimTemplate:
           spec:
-            storageClassName: nfs-client
-            accessModes: ["ReadWriteOnce"]
-            resources:
-              requests:
-                storage: 50Gi
+            selector:
+              matchLabels:
+                app.kubernetes.io/name: alertmanager
+
   grafana:
     resources:
       requests:
@@ -24,7 +23,7 @@ kube-prometheus-stack:
         memory: 800Mi
     persistence:
       enabled: true
-      storageClassName: nfs-client
+      volumeName: "grafana"
     admin:
       existingSecret: "grafana-admin-password"
 
@@ -45,18 +44,24 @@ kube-prometheus-stack:
           memory: 600Mi
         limits:
           memory: 1200Mi
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            selector:
+              matchLabels:
+                app.kubernetes.io/name: prometheus
 
 ingresses:
   - name: alertmanager
     ssl: true
     rules:
-      - host: xxx
+      - host: "alertmanager.~iac:rke2_catchall_hostname~"
         serviceName: http-web
         servicePort: 3000
   - name: grafana
     ssl: true
     rules:
-      - host: xxx
+      - host: "grafana.~iac:rke2_catchall_hostname~"
         serviceName: http-web
         servicePort: 9093
 
