@@ -1,6 +1,6 @@
 {{ if .Values.ingresses }}
 {{ range .Values.ingresses }}
-apiVersion: networking.k8s.io/Ingress
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .name }}
