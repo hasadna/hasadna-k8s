@@ -61,9 +61,14 @@ spec:
               mountPath: /opt/secured_ssl
       volumes:
         - name: data
+          {{ if .Values.terraformStateDb.nfsServer }}
           nfs:
             server: {{ .Values.terraformStateDb.nfsServer | quote }}
             path: {{ .Values.terraformStateDb.nfsPath | quote }}
+          {{ else }}
+          persistentVolumeClaim:
+            claimName: terraform-state-db
+          {{ end }}
         - name: ssl
           secret:
             secretName: terraform-state-db
