@@ -13,8 +13,10 @@ spec:
       - pathType: Prefix
         path: "/"
         backend:
-          serviceName: argocd-server
-          servicePort: http
+          service:
+            name: argocd-server
+            port:
+              name: http
   tls:
   - hosts:
     - "argocd.~iac:rke2_catchall_hostname~"
