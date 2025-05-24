@@ -16,6 +16,8 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: grafana
+  labels:
+    app.kubernetes.io/name: grafana
 spec:
   nodeAffinity:
     required:
