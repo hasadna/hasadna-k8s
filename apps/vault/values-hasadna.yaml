@@ -3,9 +3,9 @@ resources: '{"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory":
 #nfsServer: "~iac:hasadna_nfs1_internal_ip~"
 #nfsPath: "/hasadna/vault"
 ingresses:
-  - name: vault
+  - name: hasadna-vault
     ssl: true
     rules:
-      - host: vault.~iac:rke2_catchall_hostname~
+      - host: vault.hasadna.org.il
         serviceName: vault
         servicePort: 8200
