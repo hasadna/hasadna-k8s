@@ -56,7 +56,7 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /var/lib/postgresql/data
-              subPath: terraform_state_db_postgres
+              subPath: state_db/terraform_state_db_postgres
             - name: secured-ssl
               mountPath: /opt/secured_ssl
       volumes:
