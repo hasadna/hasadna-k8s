@@ -61,6 +61,14 @@ kube-prometheus-stack:
               matchLabels:
                 app.kubernetes.io/name: prometheus
 
+  kubeScheduler:
+    endpoints:
+      - 172.16.0.17
+
+  kubeControllerManager:
+    endpoints:
+      - 172.16.0.17
+
   kubeProxy:
     service:
       selector:
