@@ -40,7 +40,7 @@ spec:
 To use, add an ingress, for example (replace NAME, NAMESPACE, HOSTNAME, SERVICENAME):
 
 ```
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
@@ -52,9 +52,13 @@ spec:
   - host: HOSTNAME
     http:
       paths:
-      - backend:
-          serviceName: SERVICENAME
-          servicePort: 80
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: SERVICENAME
+            port:
+              number: 80
   tls:
   - hosts:
     - HOSTNAME

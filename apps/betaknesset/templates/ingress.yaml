@@ -1,24 +1,31 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: betaknesset-elasticsearch-kibana
   annotations:
-    kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
   rules:
   - host: betaknesset-elasticsearch.hasadna.org.il
     http:
       paths:
-      - backend:
-          serviceName: betaknesset-elasticsearch-es-http
-          servicePort: 9200
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: betaknesset-elasticsearch-es-http
+            port:
+              number: 9200
   - host: betaknesset-kibana.hasadna.org.il
     http:
       paths:
-      - backend:
-          serviceName: betaknesset-kibana-kb-http
-          servicePort: 5601
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: betaknesset-kibana-kb-http
+            port:
+              number: 5601
   tls:
   - hosts:
     - betaknesset-elasticsearch.hasadna.org.il
