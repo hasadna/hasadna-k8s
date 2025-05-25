@@ -67,7 +67,7 @@ spec:
             path: {{ .Values.terraformStateDb.nfsPath | quote }}
           {{ else }}
           persistentVolumeClaim:
-            claimName: terraform-state-db
+            claimName: terraformstatedb
           {{ end }}
         - name: ssl
           secret:
