@@ -29,7 +29,7 @@ kube-prometheus-stack:
         memory: 800Mi
     persistence:
       enabled: true
-      existingClaim: "monitoring-grafana"
+      existingClaim: "grafana"
     admin:
       existingSecret: "grafana-admin-password"
 
