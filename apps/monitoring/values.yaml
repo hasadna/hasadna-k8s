@@ -10,6 +10,7 @@ kube-prometheus-stack:
       storage:
         volumeClaimTemplate:
           spec:
+            storageClassName: "local-storage"
             accessModes:
               - ReadWriteMany
             resources:
@@ -53,6 +54,7 @@ kube-prometheus-stack:
       storageSpec:
         volumeClaimTemplate:
           spec:
+            storageClassName: "local-storage"
             accessModes:
               - ReadWriteMany
             resources:
