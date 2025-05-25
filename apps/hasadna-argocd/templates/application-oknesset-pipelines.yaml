@@ -12,7 +12,7 @@ spec:
     plugin:
       name: uumpa
     repoURL: https://github.com/OriHoch/knesset-data-k8s.git
-    targetRevision: master
+    targetRevision: codex/upgrade-ingresses-to-v1-templates
   syncPolicy:
     syncOptions:
     - CreateNamespace=true
