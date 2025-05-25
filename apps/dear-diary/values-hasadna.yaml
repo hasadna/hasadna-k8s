@@ -33,6 +33,7 @@ qcluster:
       memory: 1024Mi
 
 nginx:
+  workerProcesses: 2
   resources:
     requests:
       cpu: 100m
