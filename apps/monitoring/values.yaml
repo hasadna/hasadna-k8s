@@ -62,17 +62,13 @@ kube-prometheus-stack:
                 app.kubernetes.io/name: prometheus
 
   kubeScheduler:
-    endpoints:
-      - 172.16.0.17
+    enabled: false
 
   kubeControllerManager:
-    endpoints:
-      - 172.16.0.17
+    enabled: false
 
   kubeProxy:
-    service:
-      selector:
-        component: kube-proxy
+    enabled: false
 
   nodeExporter:
     operatingSystems:
