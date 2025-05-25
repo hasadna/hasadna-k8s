@@ -1,5 +1,4 @@
 enabled: true
-githubSecretEnabled: false
 
 terraformStateDb:
   nodePort: 32162
