@@ -13,7 +13,7 @@ spec:
       name: uumpa
     repoURL: https://github.com/hasadna/hasadna-k8s.git
     targetRevision: rke2-upgrade
-#  syncPolicy:
-#    automated:
-#      prune: true
-#      selfHeal: true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
