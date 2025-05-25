@@ -15,7 +15,7 @@ spec:
         value: production
       name: uumpa
     repoURL: https://github.com/hasadna/srm-devops.git
-    targetRevision: main
+    targetRevision: codex/upgrade-ingresses-to-v1
   syncPolicy:
     {{ if .Values.allowAutoSync }}
     automated:
