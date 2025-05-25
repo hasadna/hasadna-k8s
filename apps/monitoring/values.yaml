@@ -17,7 +17,8 @@ kube-prometheus-stack:
                 storage: 10Gi
             selector:
               matchLabels:
-                app.kubernetes.io/name: alertmanager
+                app.kubernetes.io/name: monitoring-alertmanager
+                app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
 
   grafana:
     resources:
@@ -28,7 +29,7 @@ kube-prometheus-stack:
         memory: 800Mi
     persistence:
       enabled: true
-      existingClaim: "grafana"
+      existingClaim: "monitoring-grafana"
     admin:
       existingSecret: "grafana-admin-password"
 
@@ -59,7 +60,8 @@ kube-prometheus-stack:
                 storage: 10Gi
             selector:
               matchLabels:
-                app.kubernetes.io/name: prometheus
+                app.kubernetes.io/name: monitoring-prometheus
+                app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
 
   kubeScheduler:
     enabled: false
