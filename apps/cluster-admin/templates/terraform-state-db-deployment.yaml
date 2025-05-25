@@ -37,7 +37,6 @@ spec:
               mountPath: /opt/secured_ssl
             - name: data
               mountPath: /var/lib/postgresql/data
-              subPath: terraform_state_db_postgres
       containers:
         - name: postgres
           # pulled Jun 15, 2022
