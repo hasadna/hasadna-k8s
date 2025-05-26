@@ -72,6 +72,8 @@ kube-prometheus-stack:
               labels:
                 instance: hasadna-nfs
                 role: nfs
+                node: 172.16.0.9
+                port: 9796
 
   kubeScheduler:
     enabled: false
