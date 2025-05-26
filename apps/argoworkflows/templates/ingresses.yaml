@@ -5,7 +5,7 @@ kind: Ingress
 metadata:
   name: {{ .name }}
   annotations:
-    x-kubeversion: "{{ $.Capabilities.KubeVersion.Major }}"
+    x-kubeversion: "{{ $.Capabilities.KubeVersion.Minor }}"
     kubernetes.io/ingress.class: "nginx"
   {{ if .ssl }}
     cert-manager.io/cluster-issuer: letsencrypt
