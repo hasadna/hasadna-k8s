@@ -4,10 +4,8 @@ apiVersion: {{ if $.Values.isRke2 }}networking.k8s.io/v1{{ else }}extensions/v1b
 kind: Ingress
 metadata:
   name: {{ .name }}
-  {{- if not $.Values.isRke2 }}
   annotations:
     kubernetes.io/ingress.class: "nginx"
-  {{- end }}
 spec:
   rules:
   {{ range .rules }}
