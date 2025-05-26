@@ -64,6 +64,14 @@ kube-prometheus-stack:
               matchLabels:
                 app.kubernetes.io/name: monitoring-prometheus
                 app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
+      additionalScrapeConfigs:
+        - job_name: nfs-node-exporter
+          honor_labels: true
+          static_configs:
+            - targets: [ '172.168.0.9:9796' ]
+              labels:
+                instance: hasadna-nfs
+                role: nfs
 
   kubeScheduler:
     enabled: false
