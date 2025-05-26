@@ -69,12 +69,9 @@ kube-prometheus-stack:
           honor_labels: true
           scrape_interval: 5s
           static_configs:
-            - targets: [ '172.16.0.9:9796' ]
+            - targets: ['172.16.0.9:9796']
               labels:
-                instance: hasadna-nfs
-                role: nfs
-                node: 172.16.0.9
-                port: 9796
+                instance: '172.16.0.9:9796'
 
   kubeScheduler:
     enabled: false
