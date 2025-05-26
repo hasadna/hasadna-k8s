@@ -1,9 +1,12 @@
 {{ if and .Values.enabled .Values.ingress.enabled }}
-apiVersion: networking.k8s.io/v1
+apiVersion: {{ if .Values.isRke2 }}networking.k8s.io/v1{{ else }}extensions/v1beta1{{ end }}
 kind: Ingress
 metadata:
   name: nginx
   annotations:
+    {{- if not .Values.isRke2 }}
+    kubernetes.io/ingress.class: "nginx"
+    {{- end }}
     nginx.ingress.kubernetes.io/proxy-body-size: "300m"
 spec:
   rules:
@@ -11,6 +14,7 @@ spec:
   - host: {{ . }}
     http:
       paths:
+      {{- if .Values.isRke2 }}
       - path: "/"
         pathType: Prefix
         backend:
@@ -18,5 +22,10 @@ spec:
             name: nginx
             port:
               number: 80
+      {{- else }}
+      - backend:
+          serviceName: nginx
+          servicePort: 80
+      {{- end }}
   {{ end }}
 {{ end }}
