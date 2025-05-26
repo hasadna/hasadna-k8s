@@ -91,7 +91,10 @@ spec:
         configMap:
           name: ckan
       - name: ckan-data
-        {{ if .Values.hostPath }}
+        {{ if .Values.ckanJobsPersistentVolumeClaimName }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.ckanJobsPersistentVolumeClaimName | quote }}
+        {{ else if .Values.hostPath }}
         hostPath:
           path: {{ .Values.hostPath | quote }}
           type: DirectoryOrCreate
