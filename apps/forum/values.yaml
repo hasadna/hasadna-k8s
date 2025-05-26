@@ -15,7 +15,7 @@ discourse:
     skipInstall: true
   persistence:
     enabled: true
-    storageClass: "nfs-client"
+    existingClaim: "discourse"
   ingress:
     enabled: true
     annotations:
@@ -35,10 +35,14 @@ discourse:
     auth:
       existingSecret: discourse-passwords
       database: discourse
+    persistence:
+      existingClaim: "postgres"
   redis:
     kubeVersion: "1.19"
     auth:
       enabled: false
+    persistence:
+      existingClaim: "redis"
 
 secrets:
   - name: discourse-passwords
