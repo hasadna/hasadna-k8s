@@ -67,6 +67,7 @@ kube-prometheus-stack:
       additionalScrapeConfigs:
         - job_name: node-exporter
           honor_labels: true
+          scrape_interval: 5s
           static_configs:
             - targets: [ '172.16.0.9:9796' ]
               labels:
