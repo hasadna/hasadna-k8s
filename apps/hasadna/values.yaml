@@ -39,3 +39,7 @@ label-studio:
         - hosts:
             - label-studio.k8s.hasadna.org.il
           secretName: label-studio-tls
+  postgresql:
+    primary:
+      persistence:
+        existingClaim: "lspostgres"
