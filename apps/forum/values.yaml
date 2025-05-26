@@ -21,7 +21,7 @@ discourse:
     annotations:
       kubernetes.io/ingress.class: "nginx"
       cert-manager.io/cluster-issuer: letsencrypt
-    apiVersion: extensions/v1beta1
+    apiVersion: networking.k8s.io/v1
     hostname: forum.hasadna.org.il
     tls: true
     # extraTls:
