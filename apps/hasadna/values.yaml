@@ -2,7 +2,7 @@ enabled: true
 
 ingresses:
   - name: kikar-redirect
-    permanentRedirect: https://www.hasadna.org.il/%d7%9b%d7%99%d7%9b%d7%a8-%d7%94%d7%9e%d7%93%d7%99%d7%a0%d7%94/
+    permanentRedirect: https://www.hasadna.org.il/%D7%9B%D7%99%D7%9B%D7%A8-%D7%94%D7%9E%D7%93%D7%99%D7%A0%D7%94/
     rules:
       - host: kikar.org
         serviceName: redirector-nginx
