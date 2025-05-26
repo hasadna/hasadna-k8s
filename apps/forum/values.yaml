@@ -40,9 +40,7 @@ discourse:
         storageClass: "local-storage"
         accessModes:
           - ReadWriteMany
-        resources:
-          requests:
-            storage: 500Gi
+        size: 500Gi
         selector:
           matchLabels:
             app.kubernetes.io/name: forum-postgres
@@ -56,9 +54,7 @@ discourse:
         storageClass: "local-storage"
         accessModes:
           - ReadWriteMany
-        resources:
-          requests:
-            storage: 500Gi
+        size: 500Gi
         selector:
           matchLabels:
             app.kubernetes.io/name: forum-redis
