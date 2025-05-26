@@ -27,7 +27,7 @@ spec:
       paths:
       {{- if (gt (atoi $.Capabilities.KubeVersion.Minor) 30) }}
       - path: "/"
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: {{ .serviceName }}
