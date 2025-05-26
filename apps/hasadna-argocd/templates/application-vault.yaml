@@ -1,4 +1,4 @@
-{{ if .Values.isRke2 }}
+{{ if $.Values.isRke2 }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
