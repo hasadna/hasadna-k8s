@@ -12,9 +12,7 @@ spec:
     plugin:
       name: uumpa
     repoURL: https://github.com/OriHoch/knesset-data-k8s.git
-    # https://github.com/OriHoch/knesset-data-k8s/pull/5
-    # https://github.com/OriHoch/knesset-data-k8s/pull/6
-    targetRevision: codex/update-storage-from-nfs-to-pvc
+    targetRevision: master
   syncPolicy:
     syncOptions:
     - CreateNamespace=true
