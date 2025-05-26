@@ -35,7 +35,9 @@ airflowWebserver:
   resources: '{"requests": {"cpu": "100m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}'
 airflowScheduler:
   resources: '{"requests": {"cpu": "2000m", "memory": "12000Mi"}, "limits": {"memory": "16000Mi"}}'
-  persistentVolumeClaimName: airflow-scheduler
+
+  # TODO: uncomment on rke2
+  # persistentVolumeClaimName: airflow-scheduler
 
 airflow:
   enableEmails: true
@@ -51,7 +53,10 @@ strideApiResources: {"requests": {"cpu": "1000m", "memory": "1000Mi"}, "limits":
 backendResources: {"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}
 
 gtfsNfsPath: "/openbus/gtfs"
-gtfsNginxPersistentVolumeClaimName: gtfs-nginx
+
+# TODO: uncomment on rke2
+#gtfsNginxPersistentVolumeClaimName: gtfs-nginx
+
 gtfsNginxResources: {"requests": {"cpu": "50m", "memory": "50Mi"}, "limits": {"memory": "200Mi"}}
 
 legacy:
