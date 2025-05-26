@@ -13,6 +13,10 @@ spec:
       name: uumpa
     repoURL: https://github.com/hasadna/datacity-k8s.git
     targetRevision: master
+    helm:
+      parameters:
+        - name: isRke2
+          value: "true"
   syncPolicy:
     {{ if .Values.allowAutoSync }}
     automated:

@@ -10,7 +10,11 @@ spec:
   source:
     path: apps/argoworkflows/manifests
     repoURL: https://github.com/hasadna/hasadna-k8s.git
-    targetRevision: rke2-upgrade
+    targetRevision: master
+    helm:
+      parameters:
+        - name: isRke2
+          value: "true"
   syncPolicy:
     syncOptions:
     - CreateNamespace=true
