@@ -68,7 +68,7 @@ kube-prometheus-stack:
         - job_name: nfs-node-exporter
           honor_labels: true
           static_configs:
-            - targets: [ '172.168.0.9:9796' ]
+            - targets: [ '172.16.0.9:9796' ]
               labels:
                 instance: hasadna-nfs
                 role: nfs
