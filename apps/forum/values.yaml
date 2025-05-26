@@ -36,13 +36,31 @@ discourse:
       existingSecret: discourse-passwords
       database: discourse
     persistence:
-      existingClaim: "postgres"
+      storageClass: "local-storage"
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: 500Gi
+      selector:
+        matchLabels:
+          app.kubernetes.io/name: forum-postgres
+          app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
   redis:
     kubeVersion: "1.19"
     auth:
       enabled: false
     persistence:
-      existingClaim: "redis"
+      storageClass: "local-storage"
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: 500Gi
+      selector:
+        matchLabels:
+          app.kubernetes.io/name: forum-redis
+          app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
 
 secrets:
   - name: discourse-passwords
