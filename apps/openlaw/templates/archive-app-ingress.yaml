@@ -1,14 +1,18 @@
-apiVersion: networking.k8s.io/v1
+apiVersion: {{ if .Values.isRke2 }}networking.k8s.io/v1{{ else }}extensions/v1beta1{{ end }}
 kind: Ingress
 metadata:
   name: archive-app
   annotations:
+    {{- if not .Values.isRke2 }}
+    kubernetes.io/ingress.class: "nginx"
+    {{- end }}
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
   rules:
   - host: {{ .Values.archiveAppIngress.host }}
     http:
       paths:
+      {{- if .Values.isRke2 }}
       - path: /static
         pathType: Prefix
         backend:
@@ -23,6 +27,16 @@ spec:
             name: archive-web
             port:
               number: 80
+      {{- else }}
+      - path: /static
+        backend:
+          serviceName: archive-nginx
+          servicePort: 80
+      - path: /
+        backend:
+          serviceName: archive-web
+          servicePort: 80
+      {{- end }}
   tls:
   - hosts:
     - {{ .Values.archiveAppIngress.host }}
