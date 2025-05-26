@@ -180,7 +180,10 @@ spec:
         - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
       volumes:
       - name: ckan-data
-        {{ if .Values.hostPath }}
+        {{ if .Values.pipelinesPersistentVolumeClaimName }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.pipelinesPersistentVolumeClaimName | quote }}
+        {{ else if .Values.hostPath }}
         hostPath:
           path: {{ .Values.hostPath | quote }}
           type: DirectoryOrCreate

@@ -36,6 +36,9 @@ airflowWebserver:
 airflowScheduler:
   resources: '{"requests": {"cpu": "2000m", "memory": "12000Mi"}, "limits": {"memory": "16000Mi"}}'
 
+  # TODO: uncomment on rke2
+  # persistentVolumeClaimName: airflow-scheduler
+
 airflow:
   enableEmails: true
   AIRFLOW__SMTP__SMTP_MAIL_FROM: "Open Bus Airflow <open-bus-airflow@hasadna.org.il>"
@@ -50,6 +53,10 @@ strideApiResources: {"requests": {"cpu": "1000m", "memory": "1000Mi"}, "limits":
 backendResources: {"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}
 
 gtfsNfsPath: "/openbus/gtfs"
+
+# TODO: uncomment on rke2
+#gtfsNginxPersistentVolumeClaimName: gtfs-nginx
+
 gtfsNginxResources: {"requests": {"cpu": "50m", "memory": "50Mi"}, "limits": {"memory": "200Mi"}}
 
 legacy:

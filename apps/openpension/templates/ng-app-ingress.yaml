@@ -1,15 +1,33 @@
-apiVersion: extensions/v1beta1
+apiVersion: {{ if .Values.isRke2 }}networking.k8s.io/v1{{ else }}extensions/v1beta1{{ end }}
 kind: Ingress
 metadata:
   name: ng-app
   annotations:
+    {{- if not .Values.isRke2 }}
     kubernetes.io/ingress.class: "nginx"
+    {{- end }}
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
   rules:
   - host: {{ .Values.ngAppIngress.host }}
     http:
       paths:
+      {{- if .Values.isRke2 }}
+      - path: /static
+        pathType: Prefix
+        backend:
+          service:
+            name: ng-nginx
+            port:
+              number: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ng-web
+            port:
+              number: 80
+      {{- else }}
       - path: /static
         backend:
           serviceName: ng-nginx
@@ -18,6 +36,7 @@ spec:
         backend:
           serviceName: ng-web
           servicePort: 80
+      {{- end }}
   tls:
   - hosts:
     - {{ .Values.ngAppIngress.host }}

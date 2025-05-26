@@ -21,4 +21,6 @@
     value: "https://{{ .Values.appIngress.host }}"
   - name: DJANGO_Q_CLUSTER_SETTINGS_JSON
     value: {{ .Values.qcluster.settingsJson | quote }}
+  - name: WEB_CONCURRENCY
+    value: {{ .Values.web.concurrency | quote }}
 {{- end }}
