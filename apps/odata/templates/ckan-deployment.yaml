@@ -130,7 +130,10 @@ spec:
         configMap:
           name: ckan
       - name: ckan-data
-        {{ if .Values.hostPath }}
+        {{ if .Values.ckanPersistentVolumeClaimName }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.ckanPersistentVolumeClaimName | quote }}
+        {{ else if .Values.hostPath }}
         hostPath:
           path: {{ .Values.hostPath | quote }}
           type: DirectoryOrCreate

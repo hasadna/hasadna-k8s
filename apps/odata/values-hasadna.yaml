@@ -10,6 +10,10 @@ nginxResources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu
 #  ckanDbPersistentDiskName: odata-db
 ckanDataNfsServer: "~iac:hasadna_nfs1_internal_ip~"
 ckanDataNfsPath: "/odata"
+nginxPersistentVolumeClaimName: pipelines
+pipelinesPersistentVolumeClaimName: pipelines
+ckanPersistentVolumeClaimName: ckan
+ckanJobsPersistentVolumeClaimName: ckan-jobs
 ckanSecretName: ckan-secrets-2
 envVarsSecretName: env-vars
 #  dbNfsEnabled: true

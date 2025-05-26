@@ -56,7 +56,10 @@ spec:
         emptyDir: {}
         {{ end }}
       - name: ckan-data
-        {{ if .Values.hostPath }}
+        {{ if .Values.nginxPersistentVolumeClaimName }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.nginxPersistentVolumeClaimName | quote }}
+        {{ else if .Values.hostPath }}
         hostPath:
           path: {{ .Values.hostPath | quote }}
           type: DirectoryOrCreate

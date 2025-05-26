@@ -65,14 +65,29 @@ spec:
               mountPath: /var/gtfs-storage
       volumes:
         - name: airflow-home
+          {{ if .Values.airflowScheduler.persistentVolumeClaimName }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.airflowScheduler.persistentVolumeClaimName | quote }}
+          {{ else }}
           nfs:
             server: {{ .Values.nfsServer | quote }}
             path: {{ .Values.airflowHomeNfsPath | quote }}
+          {{ end }}
         - name: sirirequester
+          {{ if .Values.airflowScheduler.persistentVolumeClaimName }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.airflowScheduler.persistentVolumeClaimName | quote }}
+          {{ else }}
           nfs:
             server: {{ .Values.nfsServer | quote }}
             path: {{ .Values.siriRequesterNfsPath | quote }}
+          {{ end }}
         - name: gtfs
+          {{ if .Values.airflowScheduler.persistentVolumeClaimName }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.airflowScheduler.persistentVolumeClaimName | quote }}
+          {{ else }}
           nfs:
             server: {{ .Values.nfsServer | quote }}
             path: {{ .Values.gtfsNfsPath | quote }}
+          {{ end }}
