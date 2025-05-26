@@ -23,4 +23,6 @@
   - name: DJANGO_Q_CLUSTER_SETTINGS_JSON
     value: {{ .Values.qcluster.settingsJson | quote }}
   {{ end }}
+  - name: WEB_CONCURRENCY
+    value: "2"
 {{- end }}
