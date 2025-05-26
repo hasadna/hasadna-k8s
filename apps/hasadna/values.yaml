@@ -21,6 +21,11 @@ ingresses:
         servicePort: 80
 
 label-studio:
+  global:
+    persistence:
+      config:
+        volume:
+          existingClaim: "labelstudio"
   app:
     extraEnvironmentVars:
       LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK: "true"
