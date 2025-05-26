@@ -1,11 +1,10 @@
 {{ if and .Values.enabled .Values.ingresses }}
 {{ range .Values.ingresses }}
-apiVersion: {{ if $.Values.isRke2 }}networking.k8s.io/v1{{ else }}extensions/v1beta1{{ end }}
+apiVersion: {{ if $.Capabilities.KubeVersion.Minor > 30 }}networking.k8s.io/v1{{ else }}extensions/v1beta1{{ end }}
 kind: Ingress
 metadata:
   name: {{ .name }}
   annotations:
-    x-kubeversion: "{{ $.Capabilities.KubeVersion.Minor }}"
     kubernetes.io/ingress.class: "nginx"
   {{ if .ssl }}
     cert-manager.io/cluster-issuer: letsencrypt
@@ -29,7 +28,7 @@ spec:
   - host: {{ .host }}
     http:
       paths:
-      {{- if $.Values.isRke2 }}
+      {{- if $.Capabilities.KubeVersion.Minor > 30 }}
       - path: "/"
         pathType: Prefix
         backend:
