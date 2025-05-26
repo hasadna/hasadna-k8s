@@ -2,6 +2,7 @@
 {{ range .Values.ingresses }}
 apiVersion: {{ if $.Values.isRke2 }}networking.k8s.io/v1{{ else }}extensions/v1beta1{{ end }}
 kind: Ingress
+# {{ .Capabilities.KubeVersion.Major }}
 metadata:
   name: {{ .name }}
   annotations:
