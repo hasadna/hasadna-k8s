@@ -1,0 +1,93 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: cluster-admin
+spec:
+  selector:
+    matchLabels:
+      name: cluster-admin
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: '100%'
+  template:
+    metadata:
+      labels:
+        name: cluster-admin
+    spec:
+      tolerations:
+        - key: controlplane
+          operator: Equal
+          value: 'true'
+          effect: NoSchedule
+      volumes:
+        - name: host-sys
+          hostPath:
+            path: /sys
+        - name: hostfs
+          hostPath:
+            path: /
+        - name: pullsecret
+          secret:
+            secretName: github
+      initContainers:
+      - name: dockerconf
+        image: busybox:1.26.2
+        command:
+          - sh
+          - -c
+          - |
+            cp /tmp/config.json /host/var/lib/kubelet/config.json &&\
+            mkdir -p /host/root/.docker &&\
+            cp /tmp/config.json /host/root/.docker/config.json &&\
+            echo '{{ toJson .Values.dockerDaemonConfig }}' > /host/etc/docker/daemon.json
+        volumeMounts:
+          - name: hostfs
+            mountPath: /host
+          - name: pullsecret
+            mountPath: "/tmp/config.json"
+            subPath: ".dockerconfigjson"
+      - name: sysctl-conf
+        image: busybox:1.26.2
+        command: ["sh", "-c", "sysctl -w vm.max_map_count=262144"]
+        securityContext:
+          privileged: true
+      - name: disable-hugepages
+        image: busybox:1.26.2
+        volumeMounts:
+          - name: host-sys
+            mountPath: /host-sys
+        command: ["sh", "-c", "echo never > /host-sys/kernel/mm/transparent_hugepage/enabled"]
+        securityContext:
+          privileged: true
+      - name: hostscripts
+        image: alpine@sha256:686d8c9dfa6f3ccfc8230bc3178d23f84eeaf7e457f36f271ab1acc53015037c
+        command:
+          - sh
+          - '-c'
+          - |
+            chroot /host bash -c "${HOST_SCRIPTS}"
+        volumeMounts:
+          - name: hostfs
+            mountPath: /host
+        securityContext:
+          privileged: true
+          runAsNonRoot: false
+          readOnlyRootFilesystem: false
+          allowPrivilegeEscalation: true
+        env:
+          - name: HOST_SCRIPTS
+            valueFrom:
+              secretKeyRef:
+                name: host-scripts
+                key: scripts
+      containers:
+      - name: pause
+        image: busybox:1.26.2
+        command: ["sh", "-c", "while true; do sleep 86400; done"]
+        resources:
+          requests:
+            cpu: 1m
+            memory: 5Mi
+{{ end }}

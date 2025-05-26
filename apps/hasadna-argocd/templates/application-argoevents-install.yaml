@@ -10,7 +10,7 @@ spec:
   source:
     path: apps/argoevents/manifests
     repoURL: https://github.com/hasadna/hasadna-k8s.git
-    targetRevision: rke2-upgrade
+    targetRevision: master
   syncPolicy:
     syncOptions:
     - CreateNamespace=true

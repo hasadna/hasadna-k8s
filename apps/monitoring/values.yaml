@@ -10,17 +10,11 @@ kube-prometheus-stack:
       storage:
         volumeClaimTemplate:
           spec:
-            storageClassName: "local-storage"
-            accessModes:
-              - ReadWriteMany
+            storageClassName: nfs-client
+            accessModes: ["ReadWriteOnce"]
             resources:
               requests:
-                storage: 500Gi
-            selector:
-              matchLabels:
-                app.kubernetes.io/name: monitoring-alertmanager
-                app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
-
+                storage: 50Gi
   grafana:
     resources:
       requests:
@@ -30,9 +24,7 @@ kube-prometheus-stack:
         memory: 800Mi
     persistence:
       enabled: true
-      existingClaim: "grafana"
-    admin:
-      existingSecret: "grafana-admin-password"
+      storageClassName: nfs-client
 
   prometheusOperator:
     resources:
@@ -51,85 +43,3 @@ kube-prometheus-stack:
           memory: 600Mi
         limits:
           memory: 1200Mi
-      storageSpec:
-        volumeClaimTemplate:
-          spec:
-            storageClassName: "local-storage"
-            accessModes:
-              - ReadWriteMany
-            resources:
-              requests:
-                storage: 500Gi
-            selector:
-              matchLabels:
-                app.kubernetes.io/name: monitoring-prometheus
-                app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
-      additionalScrapeConfigs:
-        - job_name: node-exporter
-          honor_labels: true
-          scrape_interval: 5s
-          static_configs:
-            - targets: ['172.16.0.9:9796']
-              labels:
-                instance: '172.16.0.9:9796'
-
-  kubeScheduler:
-    enabled: false
-
-  kubeControllerManager:
-    enabled: false
-
-  kubeProxy:
-    enabled: false
-
-  nodeExporter:
-    operatingSystems:
-      aix:
-        enabled: false
-      darwin:
-        enabled: false
-
-  prometheus-node-exporter:
-    tolerations:
-      - effect: NoExecute
-        operator: Exists
-
-ingresses:
-  - name: alertmanager
-    ssl: true
-    httpauth:
-      secretName: "alertmanager-http-auth"
-      message: "Alertmanager Authentication Required"
-    rules:
-      - host: "alertmanager.~iac:rke2_catchall_hostname~"
-        serviceName: alertmanager-operated
-        servicePort: 9093
-  - name: grafana
-    ssl: true
-    rules:
-      - host: "grafana.~iac:rke2_catchall_hostname~"
-        serviceName: monitoring-grafana
-        servicePort: 80
-  - name: prometheus
-    ssl: true
-    httpauth:
-      secretName: "prometheus-http-auth"
-      message: "Prometheus Authentication Required"
-    rules:
-      - host: "prometheus.~iac:rke2_catchall_hostname~"
-        serviceName: prometheus-operated
-        servicePort: 9090
-
-secrets:
-  - name: alertmanager-http-auth
-    data:
-      # htpasswd -nb username password
-      auth: "~vault:Projects/k8s/alertmanager:httpauth~"
-  - name: prometheus-http-auth
-    data:
-      # htpasswd -nb username password
-      auth: "~vault:Projects/k8s/prometheus:httpauth~"
-  - name: grafana-admin-password
-    data:
-      admin-user: "~vault:Projects/k8s/grafana-admin:admin-user~"
-      admin-password: "~vault:Projects/k8s/grafana-admin:admin-password~"

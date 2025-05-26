@@ -23,6 +23,6 @@ patches:
 
 images:
   - name: quay.io/argoproj/argocd
-    tagSuffix: v3.0.3
+    tagSuffix: v2.8.2
     newName: ghcr.io/hasadna/hasadna-k8s/hasadna-argocd
-    newTag: a7265b7649201164aaf7e19abb85583131215e70
+    newTag: 86472ca8c41364acd1f119379208a15aae779d07

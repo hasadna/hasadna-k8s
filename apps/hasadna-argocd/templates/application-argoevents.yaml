@@ -12,11 +12,7 @@ spec:
     plugin:
       name: uumpa
     repoURL: https://github.com/hasadna/hasadna-k8s.git
-    targetRevision: rke2-upgrade
-    helm:
-      parameters:
-        - name: isRke2
-          value: "true"
+    targetRevision: master
   syncPolicy:
     {{ if .Values.allowAutoSync }}
     automated:

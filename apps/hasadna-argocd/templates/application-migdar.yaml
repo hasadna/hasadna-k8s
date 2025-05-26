@@ -12,7 +12,7 @@ spec:
     plugin:
       name: uumpa
     repoURL: https://github.com/hasadna/migdar-k8s.git
-    targetRevision: codex/upgrade-ingresses-to-v1
+    targetRevision: master
   syncPolicy:
     {{ if .Values.allowAutoSync }}
     automated:
