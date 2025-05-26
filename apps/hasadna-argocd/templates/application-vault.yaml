@@ -1,4 +1,4 @@
-{{ if $.Values.isRke2 }}
+{{ if (gt (atoi $.Capabilities.KubeVersion.Minor) 30) }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:

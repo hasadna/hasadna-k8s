@@ -1,9 +1,9 @@
-apiVersion: {{ if $.Values.isRke2 }}networking.k8s.io/v1{{ else }}extensions/v1beta1{{ end }}
+apiVersion: {{ if (gt (atoi $.Capabilities.KubeVersion.Minor) 30) }}networking.k8s.io/v1{{ else }}extensions/v1beta1{{ end }}
 kind: Ingress
 metadata:
   name: betaknesset-elasticsearch-kibana
   annotations:
-    {{- if not $.Values.isRke2 }}
+    {{- if not (gt (atoi $.Capabilities.KubeVersion.Minor) 30) }}
     kubernetes.io/ingress.class: "nginx"
     {{- end }}
     cert-manager.io/cluster-issuer: letsencrypt
@@ -12,7 +12,7 @@ spec:
   - host: betaknesset-elasticsearch.hasadna.org.il
     http:
       paths:
-      {{- if $.Values.isRke2 }}
+      {{- if (gt (atoi $.Capabilities.KubeVersion.Minor) 30) }}
       - path: "/"
         pathType: Prefix
         backend:
@@ -28,7 +28,7 @@ spec:
   - host: betaknesset-kibana.hasadna.org.il
     http:
       paths:
-      {{- if $.Values.isRke2 }}
+      {{- if (gt (atoi $.Capabilities.KubeVersion.Minor) 30) }}
       - path: "/"
         pathType: Prefix
         backend:
