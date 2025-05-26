@@ -51,14 +51,7 @@ discourse:
       enabled: false
     master:
       persistence:
-        storageClass: "local-storage"
-        accessModes:
-          - ReadWriteMany
-        size: 500Gi
-        selector:
-          matchLabels:
-            app.kubernetes.io/name: forum-redis
-            app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
+        existingClaim: "redis"
 
 secrets:
   - name: discourse-passwords
