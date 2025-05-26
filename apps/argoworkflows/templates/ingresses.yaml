@@ -2,10 +2,10 @@
 {{ range .Values.ingresses }}
 apiVersion: {{ if $.Values.isRke2 }}networking.k8s.io/v1{{ else }}extensions/v1beta1{{ end }}
 kind: Ingress
-# {{ $.Capabilities.KubeVersion.Major }}
 metadata:
   name: {{ .name }}
   annotations:
+    x-kubeversion: "{{ $.Capabilities.KubeVersion.Major }}"
     kubernetes.io/ingress.class: "nginx"
   {{ if .ssl }}
     cert-manager.io/cluster-issuer: letsencrypt
