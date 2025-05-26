@@ -13,5 +13,3 @@ secrets:
     data:
       client-id: "~vault:Projects/k8s/argo-sso:client-id~"
       client-secret: "~vault:Projects/k8s/argo-sso:client-secret~"
-
-isRke2: true
