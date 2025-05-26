@@ -17,7 +17,8 @@ metadata:
     nginx.ingress.kubernetes.io/auth-realm: {{ .httpauth.message | quote }}
   {{ end }}
   {{ if .permanentRedirect }}
-    nginx.ingress.kubernetes.io/permanent-redirect: {{ .permanentRedirect | quote }}
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      return 301 {{ .permanentRedirect }};
   {{ end }}
 spec:
   rules:
