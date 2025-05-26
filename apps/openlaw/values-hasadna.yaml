@@ -14,6 +14,7 @@ archiveDb:
       memory: 512Mi
 
 archiveWeb:
+  concurrency: "2"
   resources:
     requests:
       cpu: 100m
@@ -33,6 +34,7 @@ archiveWeb:
 #      memory: 1024Mi
 
 archiveNginx:
+  workerProcesses: 2
   resources:
     requests:
       cpu: 100m
