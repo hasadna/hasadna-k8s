@@ -37,14 +37,7 @@ discourse:
       database: discourse
     primary:
       persistence:
-        storageClass: "local-storage"
-        accessModes:
-          - ReadWriteMany
-        size: 500Gi
-        selector:
-          matchLabels:
-            app.kubernetes.io/name: forum-postgres
-            app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
+        existingClaim: "postgres"
   redis:
     kubeVersion: "1.19"
     auth:
