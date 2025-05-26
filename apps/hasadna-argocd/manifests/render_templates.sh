@@ -4,6 +4,7 @@
 ! which jq >/dev/null && echo missing jq binary && exit 1
 [ "${VAULT_ADDR}" == "" ] && echo missing VAULT_ADDR env var && exit 1
 [ "${VAULT_TOKEN}" == "" ] && echo missing VAULT_TOKEN env var && exit 1
+! vault read kv/data/Projects/k8s/argocd && echo invalid vault addr or token && exit 1
 
 DATA="$(vault read kv/data/Projects/k8s/argocd -format=json | jq .data.data)" &&\
 GITHUB_CLIENT_ID="$(echo "${DATA}" | jq -r .rke2_github_client_id)" &&\
