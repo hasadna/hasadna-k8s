@@ -12,7 +12,9 @@ spec:
     plugin:
       name: uumpa
     repoURL: https://github.com/OpenBudget/budgetkey-k8s.git
-    targetRevision: codex/upgrade-ingresses-to-v1
+    # https://github.com/OpenBudget/budgetkey-k8s/pull/30
+    # https://github.com/OpenBudget/budgetkey-k8s/pull/29
+    targetRevision: "codex/update-storage-to-pvc-for-postgres,-pipelines,-and-elasticse"
   syncPolicy:
     {{ if .Values.allowAutoSync }}
     automated:

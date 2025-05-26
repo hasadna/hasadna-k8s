@@ -10,7 +10,9 @@ spec:
   source:
     path: apps/workflows
     repoURL: https://github.com/OriHoch/knesset-data-k8s.git
-    targetRevision: codex/upgrade-ingresses-to-v1-templates
+    # https://github.com/OriHoch/knesset-data-k8s/pull/5
+    # https://github.com/OriHoch/knesset-data-k8s/pull/6
+    targetRevision: codex/update-storage-from-nfs-to-pvc
   syncPolicy:
     {{ if .Values.allowAutoSync }}
     automated:
