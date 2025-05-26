@@ -11,10 +11,6 @@ spec:
     path: apps/argoevents/manifests
     repoURL: https://github.com/hasadna/hasadna-k8s.git
     targetRevision: master
-    helm:
-      parameters:
-        - name: isRke2
-          value: "true"
   syncPolicy:
     syncOptions:
     - CreateNamespace=true
