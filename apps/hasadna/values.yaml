@@ -42,4 +42,4 @@ label-studio:
   postgresql:
     primary:
       persistence:
-        existingClaim: "lspostgres"
+        existingClaim: "labelstudio-postgres"
