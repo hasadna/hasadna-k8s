@@ -1,4 +1,4 @@
-allowAutoSync: true
+allowAutoSync: false
 isRke2: false
 
 secrets:
