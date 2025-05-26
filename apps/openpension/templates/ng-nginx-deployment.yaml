@@ -18,3 +18,9 @@ spec:
       - name: nginx
         image: {{ .Values.ngNginxImage }}
         resources: {{ toYaml .Values.ngNginx.resources | nindent 10 }}
+        command:
+          - /bin/bash
+          - -c
+          - |
+            sed -i 's|worker_processes  auto|worker_processes 2|' /etc/nginx/nginx.conf
+            exec /docker-entrypoint.sh nginx -g 'daemon off;'
