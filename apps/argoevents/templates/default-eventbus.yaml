@@ -3,5 +3,5 @@ kind: EventBus
 metadata:
   name: default
 spec:
-  jetstream:
-    version: "2.10.10"
+  nats:
+    native: {}
