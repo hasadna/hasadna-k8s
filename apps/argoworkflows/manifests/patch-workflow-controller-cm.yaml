@@ -13,15 +13,16 @@ data:
         secondsAfterFailure: 86400  # 1 day
       podGC:
         strategy: OnWorkflowCompletion
+  # TODO: change domains after upgrade to RKE2
   sso: |
-    issuer: https://argocd.hasadna.org.il/api/dex
+    issuer: https://argocd.rke2.hasadna.org.il/api/dex
     clientId:
       name: argo-workflows-sso
       key: client-id
     clientSecret:
       name: argo-workflows-sso
       key: client-secret
-    redirectUrl: https://argo.hasadna.org.il/oauth2/callback
+    redirectUrl: https://argo.rke2.hasadna.org.il/oauth2/callback
     scopes:
      - groups
      - email
