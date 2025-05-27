@@ -4,8 +4,8 @@ ingresses:
   - name: argo
     ssl: true
     rules:
-      - host: "argo.hasadna.org.il"
-        serviceName: argo-server
+      # TODO: change host after upgrade to RKE2 is complete
+      - serviceName: argo-server
         servicePort: 2746
 
 secrets:
