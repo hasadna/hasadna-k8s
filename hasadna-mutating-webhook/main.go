@@ -20,6 +20,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
+	"sigs.k8s.io/controller-runtime/pkg/webhook"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
@@ -52,12 +54,16 @@ func main() {
 	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts)))
 
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
-		Scheme:                 scheme,
-		MetricsBindAddress:     metricsAddr,
+		Scheme: scheme,
+		Metrics: metricsserver.Options{
+			BindAddress: metricsAddr,
+		},
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,
 		LeaderElectionID:       "hasadna-mutating-webhook",
-		Port:                   9443, // webhook server port
+		WebhookServer: webhook.NewServer(webhook.Options{
+			Port: 9443,
+		}),
 	})
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
@@ -76,11 +82,7 @@ func main() {
 		setupLog.Error(err, "vault client disabled")
 	}
 
-	dec, err := admission.NewDecoder(scheme)
-	if err != nil {
-		setupLog.Error(err, "unable to create decoder")
-		os.Exit(1)
-	}
+	dec := admission.NewDecoder(scheme)
 
 	placeholderWebhook := &PlaceholderWebhook{
 		decoder:     dec,
@@ -253,12 +255,6 @@ type PlaceholderWebhook struct {
 }
 
 var _ admission.Handler = &PlaceholderWebhook{}
-var _ admission.DecoderInjector = &PlaceholderWebhook{}
-
-func (w *PlaceholderWebhook) InjectDecoder(d *admission.Decoder) error {
-	w.decoder = d
-	return nil
-}
 
 func (w *PlaceholderWebhook) Handle(ctx context.Context, req admission.Request) admission.Response {
 	// decode to map[string]interface{} so we can walk generically

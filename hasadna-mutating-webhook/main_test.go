@@ -39,8 +39,8 @@ func TestReplacePlaceholdersVault(t *testing.T) {
 func TestReplacePlaceholdersInvalidVault(t *testing.T) {
 	v := newTestVault(map[string]map[string]string{"p": {"k": "val"}})
 	out, changed := replacePlaceholders("pre ~vault:invalid~ post", nil, v)
-	if changed {
-		t.Fatalf("did not expect change")
+	if !changed {
+		t.Fatalf("expected change")
 	}
 	if out != "pre  post" {
 		t.Fatalf("got %q", out)
