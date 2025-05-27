@@ -2,8 +2,8 @@ name: haadna_mutating_webhook_tests
 on:
   push:
     paths:
-      - hasadna_mutating_webhook_tests.yaml
-      - ../../hasadna-mutating-webhook/**
+      - .github/workflows/hasadna_mutating_webhook_tests.yaml
+      - hasadna-mutating-webhook/**
 jobs:
   tests:
     runs-on: ubuntu-24.04
