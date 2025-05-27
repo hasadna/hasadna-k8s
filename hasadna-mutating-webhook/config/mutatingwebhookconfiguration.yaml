@@ -3,15 +3,15 @@ kind: MutatingWebhookConfiguration
 metadata:
   name: haadna-mutating-webhook
   annotations:
-    cert-manager.io/inject-ca-from: haadna-mutating-webhook/haadna-mutating-webhook-tls
+    cert-manager.io/inject-ca-from: hasadna-mutating-webhook/hasadna-mutating-webhook-tls
 webhooks:
   - name: placeholders.haadna.org
     admissionReviewVersions: ["v1", "v1beta1"]
     sideEffects: None
     clientConfig:
       service:
-        name: haadna-mutating-webhook
-        namespace: haadna-mutating-webhook
+        name: hasadna-mutating-webhook
+        namespace: hasadna-mutating-webhook
         path: /mutate-placeholders
         port: 443
     rules:

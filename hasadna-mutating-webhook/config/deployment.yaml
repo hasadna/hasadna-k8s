@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: haadna-mutating-webhook
-  namespace: haadna-mutating-webhook
+  namespace: hasadna-mutating-webhook
 spec:
   replicas: 2
   selector:
@@ -13,7 +13,7 @@ spec:
       labels:
         app: haadna-mutating-webhook
     spec:
-      serviceAccountName: haadna-mutating-webhook
+      serviceAccountName: hasadna-mutating-webhook
       containers:
         - name: webhook
           image: ghcr.io/hasadna/hasadna-mutating-webhook:latest
@@ -47,4 +47,4 @@ spec:
       volumes:
         - name: cert
           secret:
-            secretName: haadna-mutating-webhook-tls
+            secretName: hasadna-mutating-webhook-tls

@@ -5,9 +5,9 @@ metadata:
   namespace: argocd
 subjects:
   - kind: ServiceAccount
-    name: haadna-mutating-webhook
-    namespace: haadna-mutating-webhook
+    name: hasadna-mutating-webhook
+    namespace: hasadna-mutating-webhook
 roleRef:
   kind: Role
-  name: haadna-mutating-webhook
+  name: hasadna-mutating-webhook
   apiGroup: rbac.authorization.k8s.io
