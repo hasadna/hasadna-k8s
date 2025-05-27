@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haadna-mutating-webhook
+  namespace: haadna-mutating-webhook
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: haadna-mutating-webhook
+  template:
+    metadata:
+      labels:
+        app: haadna-mutating-webhook
+    spec:
+      serviceAccountName: haadna-mutating-webhook
+      containers:
+        - name: webhook
+          image: ghcr.io/hasadna/hasadna-mutating-webhook:latest
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--metrics-bind-address=0"
+          ports:
+            - name: webhook
+              containerPort: 9443
+              protocol: TCP
+          env:
+            - name: VAULT_ADDR
+              valueFrom:
+                secretKeyRef:
+                  name: argocd-vault-plugin-credentials
+                  key: VAULT_ADDR
+            - name: VAULT_ROLE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: argocd-vault-plugin-credentials
+                  key: AVP_ROLE_ID
+            - name: VAULT_SECRET_ID
+              valueFrom:
+                secretKeyRef:
+                  name: argocd-vault-plugin-credentials
+                  key: AVP_SECRET_ID
+          volumeMounts:
+            - name: cert
+              mountPath: /tmp/k8s-webhook-server/serving-certs
+              readOnly: true
+      volumes:
+        - name: cert
+          secret:
+            secretName: haadna-mutating-webhook-tls
