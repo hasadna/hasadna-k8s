@@ -1,4 +1,4 @@
-# Haadna Mutating Webhook
+# Hasadna Mutating Webhook
 
 Kubernetes admission webhook that replaces the `~iac:` and `~vault:`
 place-holders used in the Hasadna charts.
@@ -20,12 +20,14 @@ Kustomize manifests under `config/` install:
 * Deployment + Service.
 * Certificate and MutatingWebhookConfiguration.
 
-Build & deploy (outline):
+## Local Development
 
-```bash
-# build container (requires ko or a standard docker build pipeline)
-KO_DOCKER_REPO=ghcr.io/hasadna/hasadna-mutating-webhook kubebuilder build .
-
-# apply manifests
-kustomize build config | kubectl apply -f -
+```
+cd hasadna-mutating-webhook
+go mod tidy
+go fmt
+go vet ./...
+go test ./...
+go build
+./hasadna-mutating-webhook --help
 ```

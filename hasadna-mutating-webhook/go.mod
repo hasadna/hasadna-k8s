@@ -1,4 +1,4 @@
-module github.com/hasadna/hasadna-k8s/haadna-mutating-webhook
+module github.com/hasadna/hasadna-k8s/hasadna-mutating-webhook
 
 go 1.21
 
