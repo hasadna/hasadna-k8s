@@ -25,6 +25,8 @@ kube-prometheus-stack:
     persistence:
       enabled: true
       storageClassName: nfs-client
+    admin:
+      existingSecret: "grafana-admin-password"
 
   prometheusOperator:
     resources:
@@ -43,3 +45,22 @@ kube-prometheus-stack:
           memory: 600Mi
         limits:
           memory: 1200Mi
+
+ingresses:
+  - name: alertmanager
+    ssl: true
+    rules:
+      - host: xxx
+        serviceName: http-web
+        servicePort: 3000
+  - name: grafana
+    ssl: true
+    rules:
+      - host: xxx
+        serviceName: http-web
+        servicePort: 9093
+
+secrets:
+  - name: grafana-admin-password
+    data:
+      GRAFANA_ADMIN_PASSWORD: "~vault:Projects/monitoring/k8s-secrets:GRAFANA_ADMIN_PASSWORD~"
