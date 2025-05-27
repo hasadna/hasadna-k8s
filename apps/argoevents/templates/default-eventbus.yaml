@@ -5,3 +5,4 @@ metadata:
 spec:
   jetstream:
     version: "2.10.10"
+    configReloaderImage: natsio/nats-server-config-reloader:0.14.1
