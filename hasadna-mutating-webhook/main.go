@@ -12,6 +12,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/hashicorp/go-tfe"
 	vaultapi "github.com/hashicorp/vault/api"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -23,6 +24,7 @@ import (
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
+	"github.com/hashicorp/go-tfe"
 )
 
 // -----------------------------------------------------------------------------
