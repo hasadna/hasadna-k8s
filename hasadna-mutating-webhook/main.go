@@ -16,15 +16,12 @@ import (
 	vaultapi "github.com/hashicorp/vault/api"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
-	"github.com/hashicorp/go-tfe"
 )
 
 // -----------------------------------------------------------------------------
@@ -72,9 +69,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	// initialise IAC source (tf-outputs ConfigMap)
-	iac := NewIACSource("argocd", "tf-outputs", mgr.GetClient())
-	if err := iac.Start(context.Background()); err != nil {
+	// initialise IAC source from Terraform Cloud
+	iac, err := NewIACSourceFromEnv()
+	if err != nil {
+		setupLog.Error(err, "failed to init IAC source; continuing, but IAC substitutions will be empty")
+		iac = &IACSource{data: map[string]string{}}
+	} else if err := iac.Start(context.Background()); err != nil {
 		setupLog.Error(err, "failed to start IAC source; continuing, but IAC substitutions will be empty")
 	}
 
@@ -115,30 +115,65 @@ func main() {
 // IAC source implementation
 // -----------------------------------------------------------------------------
 
-type IACSource struct {
-	namespace string
-	name      string
+type tfeWorkspaces interface {
+	Read(ctx context.Context, organization, workspace string) (*tfe.Workspace, error)
+}
 
-	client client.Client
+type tfeStateVersions interface {
+	ReadCurrent(ctx context.Context, workspaceID string) (*tfe.StateVersion, error)
+}
+
+type IACSource struct {
+	organization string
+	workspace    string
+
+	workspaces    tfeWorkspaces
+	stateVersions tfeStateVersions
 
 	mu   sync.RWMutex
 	data map[string]string
 }
 
-func NewIACSource(ns, name string, c client.Client) *IACSource {
+func NewIACSource(org, workspace string, client *tfe.Client) *IACSource {
+	var ws tfeWorkspaces
+	var sv tfeStateVersions
+	if client != nil {
+		ws = client.Workspaces
+		sv = client.StateVersions
+	}
 	return &IACSource{
-		namespace: ns,
-		name:      name,
-		client:    c,
-		data:      map[string]string{},
+		organization:  org,
+		workspace:     workspace,
+		workspaces:    ws,
+		stateVersions: sv,
+		data:          map[string]string{},
 	}
 }
 
+func NewIACSourceFromEnv() (*IACSource, error) {
+	org := os.Getenv("TFE_ORGANIZATION")
+	workspace := os.Getenv("TFE_WORKSPACE")
+	if org == "" || workspace == "" {
+		return nil, fmt.Errorf("TFE_ORGANIZATION or TFE_WORKSPACE not set")
+	}
+	cfg := tfe.DefaultConfig()
+	if cfg.Token == "" {
+		return nil, fmt.Errorf("TFE_TOKEN not set")
+	}
+	client, err := tfe.NewClient(cfg)
+	if err != nil {
+		return nil, err
+	}
+	return NewIACSource(org, workspace, client), nil
+}
+
 func (s *IACSource) Start(ctx context.Context) error {
+	if s.workspaces == nil || s.stateVersions == nil {
+		return nil
+	}
 	if err := s.refresh(ctx); err != nil {
 		return err
 	}
-	// refresh every 2 minutes in background
 	go func() {
 		ticker := time.NewTicker(2 * time.Minute)
 		defer ticker.Stop()
@@ -155,13 +190,30 @@ func (s *IACSource) Start(ctx context.Context) error {
 }
 
 func (s *IACSource) refresh(ctx context.Context) error {
-	cm := &corev1.ConfigMap{}
-	if err := s.client.Get(ctx, types.NamespacedName{Namespace: s.namespace, Name: s.name}, cm); err != nil {
+	if s.workspaces == nil || s.stateVersions == nil {
+		return nil
+	}
+	ws, err := s.workspaces.Read(ctx, s.organization, s.workspace)
+	if err != nil {
 		return err
 	}
+	sv, err := s.stateVersions.ReadCurrent(ctx, ws.ID)
+	if err != nil {
+		return err
+	}
+	data := map[string]string{}
+	for _, item := range sv.Outputs {
+		switch v := item.Value.(type) {
+		case string:
+			data[item.Name] = v
+		default:
+			b, _ := json.Marshal(v)
+			data[item.Name] = string(b)
+		}
+	}
 	s.mu.Lock()
-	defer s.mu.Unlock()
-	s.data = cm.Data
+	s.data = data
+	s.mu.Unlock()
 	return nil
 }
 
@@ -222,7 +274,7 @@ func (v *VaultClient) get(path string) (map[string]string, error) {
 	}
 	v.mu.RUnlock()
 
-	secret, err := v.client.Logical().Read(fmt.Sprintf("v1/kv/data/%s", path))
+	secret, err := v.client.Logical().Read(fmt.Sprintf("kv/data/%s", path))
 	if err != nil {
 		return nil, err
 	}

@@ -7,7 +7,8 @@ It is implemented with controller-runtime (kubebuilder-style layout) and
 exposes a single mutating endpoint `/mutate-placeholders`.
 
 Runtime behaviour
-* `~iac:<terraform-output-key>~` → value from ConfigMap `argocd/tf-outputs`.
+* `~iac:<terraform-output-key>~` → value read via `go-tfe` from the workspace's
+  Terraform state backend (`TFE_ORGANIZATION`/`TFE_WORKSPACE`).
 * `~vault:<path>:<field>~`      → base-64 of the field from Vault KV v2.
 
 TLS certificates are issued automatically by cert-manager (`Certificate`
