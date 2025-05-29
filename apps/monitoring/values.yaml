@@ -73,6 +73,9 @@ kube-prometheus-stack:
               labels:
                 instance: '172.16.0.9:9796'
 
+  kubeEtcd:
+    enabled: false
+
   kubeScheduler:
     enabled: false
 
