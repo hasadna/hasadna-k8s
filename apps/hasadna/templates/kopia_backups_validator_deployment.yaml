@@ -21,7 +21,7 @@ spec:
       containers:
       - name: validator
         image: ghcr.io/hasadna/hasadna-k8s/validator_kopia:b4f34a177e4726b9e1adf318eb8f6dae6d418a91
-        environment:
+        env:
         - name: AWS_ACCESS_KEY_ID
           valueFrom:
             secretKeyRef:
