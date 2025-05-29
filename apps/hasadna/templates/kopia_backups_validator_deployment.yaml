@@ -18,6 +18,10 @@ spec:
         - name: kopia-backups-validator-config
           configMap:
             name: kopia-backups-validator
+        - name: kopia-backups-snapshots
+          configMap:
+            # this configmap is updated from Terraform with all the snapshots to check
+            name: kopia-backups-snapshots
       containers:
       - name: validator
         image: ghcr.io/hasadna/hasadna-k8s/validator_kopia:b4f34a177e4726b9e1adf318eb8f6dae6d418a91
@@ -47,8 +51,13 @@ spec:
             secretKeyRef:
                 name: kopia
                 key: password
+        - name: KOPIA_CHECK_FOR_UPDATES
+          value: "false"
         volumeMounts:
           - name: kopia-backups-validator-config
             mountPath: /home/validator/validate.sh
             subPath: validate.sh
+          - name: kopia-backups-snapshots
+            mountPath: /home/validator/snapshots
+            subPath: snapshots
 {{ end }}

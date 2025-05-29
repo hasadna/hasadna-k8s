@@ -8,4 +8,41 @@ data:
     set -e
     kopia repository connect s3 --bucket=$BUCKET --region=$REGION
     kopia repository status
+    for snapshot in $(cat snapshots); do
+      LATEST_SNAPSHOT=$(kopia snapshot list "${snapshot}" --all --show-identical --reverse | head -n2 | tail -1 | cut -d" " -f3-6)
+      if [ "${LATEST_SNAPSHOT}" == "" ]; then
+        echo "No snapshots found for path: ${path}"
+        exit 1
+      fi
+      LATEST_SNAPSHOT_ID=$(echo $LATEST_SNAPSHOT | cut -d" " -f4)
+      if [ "${LATEST_SNAPSHOT_ID}" == "" ]; then
+        echo "No snapshot ID found for path: ${path}"
+        exit 1
+      fi
+      LATEST_SNAPSHOT_DATE=$(echo $LATEST_SNAPSHOT | cut -d" " -f1)
+      if [ "${LATEST_SNAPSHOT_DATE}" == "" ]; then
+        echo "No snapshot date found for path: ${path}"
+        exit 1
+      fi
+      # SNAPSHOTDATE=2025-10-02
+      # check that it's at least 2 days old
+      SNAPSHOTDATE=$(date -d "${LATEST_SNAPSHOT_DATE}" +%s)
+      NOW=$(date +%s)
+      DIFF=$(( (NOW - SNAPSHOTDATE) / 86400 ))
+      RET=0
+      if [ $DIFF -le 2 ]; then
+        echo "${snapshot}: OK ${LATEST_SNAPSHOT}"
+      else
+        echo "${snapshot}: TOO OLD ${LATEST_SNAPSHOT}"
+        RET=1
+      fi
+    done
+    if [ $RET -eq 0 ]; then
+      echo "All snapshots are up to date."
+      echo "OK"
+    else
+      echo "Some snapshots are too old."
+      echo "FAILURE"
+    fi
+    exit $RET
 {{ end }}
