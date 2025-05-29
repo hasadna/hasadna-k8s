@@ -21,6 +21,12 @@ spec:
       - name: nginx
         # Pulled on May 20, 2025
         image: nginx@sha256:fb39280b7b9eba5727c884a3c7810002e69e8f961cc373b89c92f14961d903a0
+        command:
+          - /bin/bash
+          - -c
+          - |
+            sed -i 's|worker_processes  auto|worker_processes 1|' /etc/nginx/nginx.conf
+            exec /docker-entrypoint.sh nginx -g 'daemon off;'
         resources:
           requests:
             cpu: 20m
@@ -31,4 +37,19 @@ spec:
         volumeMounts:
         - name: html
           mountPath: /usr/share/nginx/html
+      - name: validator
+        image: python:3.12-slim
+        command:
+          - python
+          - -c
+          - |
+            import time
+            
+            while true:
+              with open ('/srv/html/index.html', 'w') as f:
+                f.write(f'hello, world {time.time()}')
+              time.sleep(5)
+        volumeMounts:
+        - name: html
+          mountPath: /srv/html
 {{ end }}
