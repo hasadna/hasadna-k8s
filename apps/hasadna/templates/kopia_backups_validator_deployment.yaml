@@ -1,0 +1,28 @@
+{{ if (gt (atoi $.Capabilities.KubeVersion.Minor) 30) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kopia-backups-validator
+spec:
+  selector:
+    matchLabels:
+      app: kopia-backups-validator
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kopia-backups-validator
+    spec:
+      terminationGracePeriodSeconds: 1
+      volumes:
+        - name: kopia-backups-validator-config
+          configMap:
+            name: kopia-backups-validator
+      containers:
+      - name: validator
+        image: ghcr.io/hasadna/hasadna-k8s/validator_kopia:a5eec57400b4a94576dcc8b6ccdb9d535520fa6d
+        volumeMounts:
+          - name: kopia-backups-validator-config
+            mountPath: /home/validator/validate.sh
+            subPath: validate.sh
+{{ end }}

@@ -1,0 +1,11 @@
+{{ if (gt (atoi $.Capabilities.KubeVersion.Minor) 30) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kopia-backups-validator
+data:
+  validate.sh: |
+    set -e
+    kopia repository connect s3 --bucket=$BUCKET --region=$REGION
+    kopia repository status
+{{ end }}
