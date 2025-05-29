@@ -45,7 +45,7 @@ spec:
           - |
             import time
             
-            while true:
+            while True:
               with open ('/srv/html/index.html', 'w') as f:
                 f.write(f'hello, world {time.time()}')
               time.sleep(5)
