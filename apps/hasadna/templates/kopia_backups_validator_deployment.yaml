@@ -20,7 +20,7 @@ spec:
             name: kopia-backups-validator
       containers:
       - name: validator
-        image: ghcr.io/hasadna/hasadna-k8s/validator_kopia:a5eec57400b4a94576dcc8b6ccdb9d535520fa6d
+        image: ghcr.io/hasadna/hasadna-k8s/validator_kopia:b4f34a177e4726b9e1adf318eb8f6dae6d418a91
         volumeMounts:
           - name: kopia-backups-validator-config
             mountPath: /home/validator/validate.sh
