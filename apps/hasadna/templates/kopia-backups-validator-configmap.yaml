@@ -8,7 +8,7 @@ data:
     set -e
     kopia repository connect s3 --bucket=$BUCKET --region=$REGION --disable-tls-verification
     kopia repository status
-    for snapshot in $(cat snapshots); do
+    for snapshot in $(cat /home/validator/snapshots); do
       LATEST_SNAPSHOT=$(kopia snapshot list "${snapshot}" --all --show-identical --reverse | head -n2 | tail -1 | cut -d" " -f3-6)
       if [ "${LATEST_SNAPSHOT}" == "" ]; then
         echo "No snapshots found for path: ${path}"
