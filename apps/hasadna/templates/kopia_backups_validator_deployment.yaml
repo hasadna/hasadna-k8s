@@ -21,6 +21,32 @@ spec:
       containers:
       - name: validator
         image: ghcr.io/hasadna/hasadna-k8s/validator_kopia:b4f34a177e4726b9e1adf318eb8f6dae6d418a91
+        environment:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+                name: kopia
+                key: aws_access_key_id
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+                name: kopia
+                key: aws_secret_access_key
+        - name: BUCKET
+          valueFrom:
+            secretKeyRef:
+                name: kopia
+                key: bucket_name
+        - name: REGION
+          valueFrom:
+            secretKeyRef:
+                name: kopia
+                key: bucket_region
+        - name: KOPIA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+                name: kopia
+                key: password
         volumeMounts:
           - name: kopia-backups-validator-config
             mountPath: /home/validator/validate.sh
