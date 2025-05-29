@@ -1,4 +1,4 @@
-FROM busybox
+FROM busybox:musl
 RUN adduser -D validator
 WORKDIR /home/validator
 COPY index.cgi web/cgi-bin/index.cgi
