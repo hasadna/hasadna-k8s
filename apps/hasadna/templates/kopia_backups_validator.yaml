@@ -19,10 +19,9 @@ spec:
         emptyDir: {}
       containers:
       - name: nginx
-        # Pulled on May 20, 2025
-        image: nginx@sha256:fb39280b7b9eba5727c884a3c7810002e69e8f961cc373b89c92f14961d903a0
+        image: nginx:1.27-alpine
         command:
-          - /bin/bash
+          - /bin/sh
           - -c
           - |
             sed -i 's|worker_processes  auto|worker_processes 1|' /etc/nginx/nginx.conf
