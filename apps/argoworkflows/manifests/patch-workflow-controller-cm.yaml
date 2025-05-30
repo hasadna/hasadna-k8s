@@ -4,10 +4,10 @@ metadata:
   name: workflow-controller-configmap
   namespace: argo
 data:
-#  nodeEvents: |
-#    enabled: false
-#  workflowEvents: |
-#    enabled: false
+  nodeEvents: |
+    enabled: false
+  workflowEvents: |
+    enabled: false
   workflowDefaults: |
     spec:
       activeDeadlineSeconds: 432000  # 5 days - duration in seconds relative to the workflow start time which the workflow is allowed to run before the controller terminates
