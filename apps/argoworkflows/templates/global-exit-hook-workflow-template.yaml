@@ -54,7 +54,7 @@ spec:
                     {"title": "Creation Timestamp", "value": os.environ['CREATION_TIMESTAMP'], "short": True},
                     {"title": "Labels", "value": os.environ['LABELS'], "short": False},
                     {"title": "Annotations", "value": os.environ['ANNOTATIONS'], "short": False},
-                    {"title": "Parameters", "value": os.environ['PARAMETERS'], indent=2), "short": False}
+                    {"title": "Parameters", "value": os.environ['PARAMETERS'], "short": False}
                   ]
                 }
               ]
