@@ -12,20 +12,20 @@ spec:
         env:
           - name: SLACK_WEBHOOK_URL_B64
             value: "~vault:Projects/k8s/argo-workflows:slack_notifications_url~"
-          - name: STATUS
-            value: '{{ "{{workflow.status}}" }}'
-          - name: FAILURES
-            value: '{{ "{{workflow.failures}}" }}'
-          - name: NAME
-            value: '{{ "{{workflow.name}}" }}'
-          - name: NAMESPACE
-            value: '{{ "{{workflow.namespace}}" }}'
-          - name: MAIN_ENTRYPOINT
-            value: '{{ "{{workflow.mainEntryPoint}}" }}'
-          - name: DURATION
-            value: '{{ "{{workflow.duration}}" }}'
-          - name: CREATION_TIMESTAMP
-            value: '{{ "{{workflow.creationTimestamp}}" }}'
+#          - name: STATUS
+#            value: '{{ "{{workflow.status}}" }}'
+#          - name: FAILURES
+#            value: '{{ "{{workflow.failures}}" }}'
+#          - name: NAME
+#            value: '{{ "{{workflow.name}}" }}'
+#          - name: NAMESPACE
+#            value: '{{ "{{workflow.namespace}}" }}'
+#          - name: MAIN_ENTRYPOINT
+#            value: '{{ "{{workflow.mainEntryPoint}}" }}'
+#          - name: DURATION
+#            value: '{{ "{{workflow.duration}}" }}'
+#          - name: CREATION_TIMESTAMP
+#            value: '{{ "{{workflow.creationTimestamp}}" }}'
 #          - name: LABELS
 #            value: '{{ "{{workflow.labels.json}}" }}'
 #          - name: ANNOTATIONS
@@ -38,5 +38,5 @@ spec:
           - |
             set -euo pipefail
             wget -q -O - \
-              --post-data "payload={\"channel\":\"argo-workflows-notifications\",\"username\":\"argo\",\"text\": \"Workflow *$NAME* in namespace *$NAMESPACE* has finished with status *$STATUS* after $DURATION seconds.\\nMain entrypoint: $MAIN_ENTRYPOINT\\nCreation timestamp: $CREATION_TIMESTAMP\\nLabels: $LABELS\\nAnnotations: $ANNOTATIONS\\nParameters: $PARAMETERS\\nFailures: $FAILURES\"}" \
+              --post-data "payload={\"channel\":\"argo-workflows-notifications\",\"username\":\"argo\",\"text\": \"hi\"}" \
               $(echo $SLACK_WEBHOOK_URL_B64 | base64 -d)
