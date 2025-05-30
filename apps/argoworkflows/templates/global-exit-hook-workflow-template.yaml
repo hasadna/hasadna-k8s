@@ -31,6 +31,7 @@ spec:
           - name: PARAMETERS
             value: '{{ "{{workflow.parameters.json}}" }}'
         source: |
+          #!/bin/sh
           set -euo pipefail
           wget -q -O - https://hooks.slack.com/services/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 \
             --post-data "payload={\"text\": \"Workflow *$NAME* in namespace *$NAMESPACE* has finished with status *$STATUS* after $DURATION seconds.\\nMain entrypoint: $MAIN_ENTRYPOINT\\nCreation timestamp: $CREATION_TIMESTAMP\\nLabels: $LABELS\\nAnnotations: $ANNOTATIONS\\nParameters: $PARAMETERS\\nFailures: $FAILURES\"}"
