@@ -11,25 +11,25 @@ spec:
         image: busybox@sha256:f64ff79725d0070955b368a4ef8dc729bd8f3d8667823904adcb299fe58fc3da
         env:
           - name: STATUS
-            value: "{{workflow.status}}"
+            value: {{ "{{workflow.status}}" }}
           - name: FAILURES
-            value: "{{workflow.failures}}"
+            value: {{ "{{workflow.failures}}" }}
           - name: NAME
-            value: "{{workflow.name}}"
+            value: {{ "{{workflow.name}}" }}
           - name: NAMESPACE
-            value: "{{workflow.namespace}}"
+            value: {{ "{{workflow.namespace}}" }}
           - name: MAIN_ENTRYPOINT
-            value: "{{workflow.mainEntryPoint}}"
+            value: {{ "{{workflow.mainEntryPoint}}" }}
           - name: DURATION
-            value: "{{workflow.duration}}"
+            value: {{ "{{workflow.duration}}" }}
           - name: CREATION_TIMESTAMP
-            value: "{{workflow.creationTimestamp}}"
+            value: {{ "{{workflow.creationTimestamp}}" }}
           - name: LABELS
-            value: "{{workflow.labels}}"
+            value: {{ "{{workflow.labels}}" }}
           - name: ANNOTATIONS
-            value: "{{workflow.annotations}}"
+            value: {{ "{{workflow.annotations}}" }}
           - name: PARAMETERS
-            value: "{{workflow.parameters}}"
+            value: {{ "{{workflow.parameters}}" }}
         source: |
           set -euo pipefail
           wget -q -O - https://hooks.slack.com/services/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 \
