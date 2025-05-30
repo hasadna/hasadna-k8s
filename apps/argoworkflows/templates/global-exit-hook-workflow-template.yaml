@@ -10,10 +10,6 @@ spec:
         # Pulled May 30, 2025
         image: busybox@sha256:f64ff79725d0070955b368a4ef8dc729bd8f3d8667823904adcb299fe58fc3da
         env:
-          - name: STATUS
-            value: {{ "{{workflow.status}}" }}
-          - name: FAILURES
-            value: {{ "{{workflow.failures}}" }}
           - name: NAME
             value: {{ "{{workflow.name}}" }}
           - name: NAMESPACE
@@ -33,4 +29,4 @@ spec:
         source: |
           set -euo pipefail
           wget -q -O - https://hooks.slack.com/services/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 \
-            --post-data "payload={\"text\": \"Workflow *$NAME* in namespace *$NAMESPACE* has finished with status *$STATUS* after $DURATION seconds.\\nMain entrypoint: $MAIN_ENTRYPOINT\\nCreation timestamp: $CREATION_TIMESTAMP\\nLabels: $LABELS\\nAnnotations: $ANNOTATIONS\\nParameters: $PARAMETERS\\nFailures: $FAILURES\"}"
+            --post-data "payload={\"text\": \"Workflow *$NAME* in namespace *$NAMESPACE* has finished with status ** after $DURATION seconds.\\nMain entrypoint: $MAIN_ENTRYPOINT\\nCreation timestamp: $CREATION_TIMESTAMP\\nLabels: $LABELS\\nAnnotations: $ANNOTATIONS\\nParameters: $PARAMETERS\\nFailures: \"}"
