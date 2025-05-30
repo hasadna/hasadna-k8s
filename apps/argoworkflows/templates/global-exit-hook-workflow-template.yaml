@@ -8,35 +8,57 @@ spec:
     - name: global-exit-hook
       container:
         # Pulled May 30, 2025
-        image: alpine@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c
+        image: python:3.12-alpine@sha256:9c51ecce261773a684c8345b2d4673700055c513b4d54bc0719337d3e4ee552e
         env:
           - name: SLACK_WEBHOOK_URL_B64
             value: "~vault:Projects/k8s/argo-workflows:slack_notifications_url~"
-#          - name: STATUS
-#            value: '{{ "{{workflow.status}}" }}'
-#          - name: FAILURES
-#            value: '{{ "{{workflow.failures}}" }}'
-#          - name: NAME
-#            value: '{{ "{{workflow.name}}" }}'
-#          - name: NAMESPACE
-#            value: '{{ "{{workflow.namespace}}" }}'
-#          - name: MAIN_ENTRYPOINT
-#            value: '{{ "{{workflow.mainEntryPoint}}" }}'
-#          - name: DURATION
-#            value: '{{ "{{workflow.duration}}" }}'
-#          - name: CREATION_TIMESTAMP
-#            value: '{{ "{{workflow.creationTimestamp}}" }}'
-#          - name: LABELS
-#            value: '{{ "{{workflow.labels.json}}" }}'
-#          - name: ANNOTATIONS
-#            value: '{{ "{{workflow.annotations.json}}" }}'
-#          - name: PARAMETERS
-#            value: '{{ "{{workflow.parameters.json}}" }}'
+          - name: STATUS
+            value: '{{ "{{workflow.status}}" }}'
+          - name: FAILURES
+            value: '{{ "{{workflow.failures}}" }}'
+          - name: NAME
+            value: '{{ "{{workflow.name}}" }}'
+          - name: NAMESPACE
+            value: '{{ "{{workflow.namespace}}" }}'
+          - name: MAIN_ENTRYPOINT
+            value: '{{ "{{workflow.mainEntryPoint}}" }}'
+          - name: DURATION
+            value: '{{ "{{workflow.duration}}" }}'
+          - name: CREATION_TIMESTAMP
+            value: '{{ "{{workflow.creationTimestamp}}" }}'
+          - name: LABELS
+            value: '{{ "{{workflow.labels.json}}" }}'
+          - name: ANNOTATIONS
+            value: '{{ "{{workflow.annotations.json}}" }}'
+          - name: PARAMETERS
+            value: '{{ "{{workflow.parameters.json}}" }}'
         command:
-          - sh
+          - python
           - -c
           - |
-            set -euo pipefail
-            wget -q -O - \
-              --post-data "payload={\"channel\":\"argo-workflows-notifications\",\"username\":\"argo\",\"text\": \"hi\"}" \
-              $(echo $SLACK_WEBHOOK_URL_B64 | base64 -d)
+            import os
+            import json
+            import base64
+            import subprocess
+            url = base64.b64decode(os.environ['SLACK_WEBHOOK_URL_B64']).decode('utf-8')
+            post_data = {
+              "channel": "argo-workflows-notifications",
+              "username": "argo",
+              "text": f"Workflow {os.environ['NAME']} in namespace {os.environ['NAMESPACE']} has completed with status {os.environ['STATUS']}.",
+              "attachments": [
+                {
+                  "fields": [
+                    {"title": "Failures", "value": os.environ['FAILURES'], "short": True},
+                    {"title": "Main EntryPoint", "value": os.environ['MAIN_ENTRYPOINT'], "short": True},
+                    {"title": "Duration", "value": os.environ['DURATION'], "short": True},
+                    {"title": "Creation Timestamp", "value": os.environ['CREATION_TIMESTAMP'], "short": True},
+                    {"title": "Labels", "value": os.environ['LABELS'], "short": False},
+                    {"title": "Annotations", "value": os.environ['ANNOTATIONS'], "short": False},
+                    {"title": "Parameters", "value": os.environ['PARAMETERS'], indent=2), "short": False}
+                  ]
+                }
+              ]
+            }
+            subprocess.check_call([
+              "wget", "-q", "-O", "-", "--post-data", json.dumps(post_data), url
+            ])
