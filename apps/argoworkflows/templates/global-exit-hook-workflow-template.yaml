@@ -8,8 +8,13 @@ spec:
     - name: global-exit-hook
       container:
         # Pulled May 30, 2025
-        image: busybox@sha256:f64ff79725d0070955b368a4ef8dc729bd8f3d8667823904adcb299fe58fc3da
+        image: alpine@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c
         env:
+          - name: SLACK_WEBHOOK_URL
+            valueFrom:
+              secretKeyRef:
+                name: argo-workflows-slack-webhook
+                key: url
           - name: STATUS
             value: '{{ "{{workflow.status}}" }}'
           - name: FAILURES
@@ -36,6 +41,5 @@ spec:
           - |
             set -euo pipefail
             wget -q -O - \
-              --no-check-certificate \
-              --post-data "payload={\"text\": \"Workflow *$NAME* in namespace *$NAMESPACE* has finished with status *$STATUS* after $DURATION seconds.\\nMain entrypoint: $MAIN_ENTRYPOINT\\nCreation timestamp: $CREATION_TIMESTAMP\\nLabels: $LABELS\\nAnnotations: $ANNOTATIONS\\nParameters: $PARAMETERS\\nFailures: $FAILURES\"}" \
-              https://hooks.slack.com/services/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
+              --post-data "payload={\"channel\":\"argo-workflows-notifications\",\"username\":\"argo\",\"text\": \"Workflow *$NAME* in namespace *$NAMESPACE* has finished with status *$STATUS* after $DURATION seconds.\\nMain entrypoint: $MAIN_ENTRYPOINT\\nCreation timestamp: $CREATION_TIMESTAMP\\nLabels: $LABELS\\nAnnotations: $ANNOTATIONS\\nParameters: $PARAMETERS\\nFailures: $FAILURES\"}" \
+              $SLACK_WEBHOOK_URL
