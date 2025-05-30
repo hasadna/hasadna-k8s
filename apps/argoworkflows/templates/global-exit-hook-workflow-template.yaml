@@ -26,12 +26,12 @@ spec:
             value: '{{ "{{workflow.duration}}" }}'
           - name: CREATION_TIMESTAMP
             value: '{{ "{{workflow.creationTimestamp}}" }}'
-          - name: LABELS
-            value: '{{ "{{workflow.labels.json}}" }}'
-          - name: ANNOTATIONS
-            value: '{{ "{{workflow.annotations.json}}" }}'
-          - name: PARAMETERS
-            value: '{{ "{{workflow.parameters.json}}" }}'
+#          - name: LABELS
+#            value: '{{ "{{workflow.labels.json}}" }}'
+#          - name: ANNOTATIONS
+#            value: '{{ "{{workflow.annotations.json}}" }}'
+#          - name: PARAMETERS
+#            value: '{{ "{{workflow.parameters.json}}" }}'
         command:
           - sh
           - -c
