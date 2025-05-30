@@ -3,9 +3,9 @@ kind: Kustomization
 
 resources:
 - install.yaml
-- postgres-service.yaml
-- postgres-secret.yaml
-- postgres-deployment.yaml
+#- postgres-service.yaml
+#- postgres-secret.yaml
+#- postgres-deployment.yaml
 
 patchesStrategicMerge:
 - patch-argo-server-deployment.yaml
