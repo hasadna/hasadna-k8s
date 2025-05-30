@@ -25,11 +25,11 @@ spec:
           - name: CREATION_TIMESTAMP
             value: {{ "{{workflow.creationTimestamp}}" }}
           - name: LABELS
-            value: {{ "{{workflow.labels}}" }}
+            value: {{ "{{workflow.labels.json}}" }}
           - name: ANNOTATIONS
-            value: {{ "{{workflow.annotations}}" }}
+            value: {{ "{{workflow.annotations.json}}" }}
           - name: PARAMETERS
-            value: {{ "{{workflow.parameters}}" }}
+            value: {{ "{{workflow.parameters.json}}" }}
         source: |
           set -euo pipefail
           wget -q -O - https://hooks.slack.com/services/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 \
