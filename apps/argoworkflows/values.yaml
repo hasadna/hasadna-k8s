@@ -13,6 +13,3 @@ secrets:
     data:
       client-id: "~vault:Projects/k8s/argo-sso:client-id~"
       client-secret: "~vault:Projects/k8s/argo-sso:client-secret~"
-  - name: argo-workflows-slack-webhook
-    data:
-      url: "~vault:Projects/k8s/argo-workflows:slack_notifications_url~"
