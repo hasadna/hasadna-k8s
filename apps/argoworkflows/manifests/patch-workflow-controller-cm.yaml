@@ -4,8 +4,8 @@ metadata:
   name: workflow-controller-configmap
   namespace: argo
 data:
-#  nodeEvents: |
-#    enabled: false
+  nodeEvents: |
+    enabled: false
 #  workflowEvents: |
 #    enabled: false
   workflowDefaults: |
