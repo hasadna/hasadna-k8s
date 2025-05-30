@@ -32,18 +32,18 @@ data:
      - profile
     rbac:
       enabled: true
-  persistence: |
-    nodeStatusOffLoad: true
-    archive: true
-    archiveTTL: 180d
-    postgresql:
-      host: argo-postgres
-      port: 5432
-      database: postgres
-      tableName: argo_workflows
-      userNameSecret:
-        name: argo-postgres
-        key: user
-      passwordSecret:
-        name: argo-postgres
-        key: password
+#  persistence: |
+#    nodeStatusOffLoad: true
+#    archive: true
+#    archiveTTL: 180d
+#    postgresql:
+#      host: argo-postgres
+#      port: 5432
+#      database: postgres
+#      tableName: argo_workflows
+#      userNameSecret:
+#        name: argo-postgres
+#        key: user
+#      passwordSecret:
+#        name: argo-postgres
+#        key: password
