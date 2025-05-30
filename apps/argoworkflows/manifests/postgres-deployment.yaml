@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argo-postgres
+spec:
+  selector:
+    matchLabels:
+      app: argo-postgres
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: argo-postgres
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: postgres
+        # Pulled May 30, 2025
+        image: postgres:16@sha256:47053cd4ee3f096afc744e53e3280de7b29b3670d2f2196c2acc0c6470923c99
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 150m
+          limits:
+            memory: 512Mi
+        env:
+          - name: POSTGRES_PASSWORD
+            value: "12345678"  # only used from this namespace
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+          # postgres doesn't let you use the root of a disk (complaints about having lost+found directory)
+          subPath: dbdata
+      volumes:
+      - name: data
+        nfs:
+          server: "172.16.0.9"
+          path: "/argo/postgres"

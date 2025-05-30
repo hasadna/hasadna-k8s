@@ -4,6 +4,8 @@ metadata:
   name: workflow-controller-configmap
   namespace: argo
 data:
+  nodeEvents: "enabled: false"
+  workflowEvents: "enabled: false"
   workflowDefaults: |
     spec:
       activeDeadlineSeconds: 432000  # 5 days - duration in seconds relative to the workflow start time which the workflow is allowed to run before the controller terminates
@@ -28,4 +30,18 @@ data:
      - profile
     rbac:
       enabled: true
-
+  persistence: |
+    nodeStatusOffLoad: true
+    archive: true
+    archiveTTL: 180d
+    postgresql:
+      host: argo-postgres
+      port: 5432
+      database: postgres
+      tableName: argo_workflows
+      userNameSecret:
+        name: argo-postgres
+        key: user
+      passwordSecret:
+        name: argo-postgres
+        key: password
