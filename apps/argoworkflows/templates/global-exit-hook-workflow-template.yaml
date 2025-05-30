@@ -20,8 +20,6 @@ spec:
             value: '{{ "{{workflow.name}}" }}'
           - name: NAMESPACE
             value: '{{ "{{workflow.namespace}}" }}'
-          - name: MAIN_ENTRYPOINT
-            value: '{{ "{{workflow.mainEntryPoint}}" }}'
           - name: DURATION
             value: '{{ "{{workflow.duration}}" }}'
           - name: CREATION_TIMESTAMP
@@ -40,25 +38,25 @@ spec:
             import json
             import base64
             import subprocess
-            url = base64.b64decode(os.environ['SLACK_WEBHOOK_URL_B64']).decode('utf-8')
-            post_data = {
-              "channel": "argo-workflows-notifications",
-              "username": "argo",
-              "text": f"Workflow {os.environ['NAME']} in namespace {os.environ['NAMESPACE']} has completed with status {os.environ['STATUS']}.",
-              "attachments": [
-                {
-                  "fields": [
-                    {"title": "Failures", "value": os.environ['FAILURES'], "short": True},
-                    {"title": "Main EntryPoint", "value": os.environ['MAIN_ENTRYPOINT'], "short": True},
-                    {"title": "Duration", "value": os.environ['DURATION'], "short": True},
-                    {"title": "Creation Timestamp", "value": os.environ['CREATION_TIMESTAMP'], "short": True},
-                    {"title": "Labels", "value": os.environ['LABELS'], "short": False},
-                    {"title": "Annotations", "value": os.environ['ANNOTATIONS'], "short": False},
-                    {"title": "Parameters", "value": os.environ['PARAMETERS'], "short": False}
-                  ]
-                }
-              ]
-            }
-            subprocess.check_call([
-              "wget", "-q", "-O", "-", "--post-data", json.dumps(post_data), url
-            ])
+            if os.environ['STATUS'] != 'Succeeded':
+              url = base64.b64decode(os.environ['SLACK_WEBHOOK_URL_B64']).decode('utf-8')
+              post_data = {
+                "channel": "argo-workflows-notifications",
+                "username": "argo",
+                "text": f"Workflow {os.environ['NAME']} in namespace {os.environ['NAMESPACE']} has completed with status {os.environ['STATUS']}.",
+                "attachments": [
+                  {
+                    "fields": [
+                      {"title": "Failures", "value": os.environ['FAILURES'], "short": True},
+                      {"title": "Duration", "value": os.environ['DURATION'], "short": True},
+                      {"title": "Creation Timestamp", "value": os.environ['CREATION_TIMESTAMP'], "short": True},
+                      {"title": "Labels", "value": os.environ['LABELS'], "short": False},
+                      {"title": "Annotations", "value": os.environ['ANNOTATIONS'], "short": False},
+                      {"title": "Parameters", "value": os.environ['PARAMETERS'], "short": False}
+                    ]
+                  }
+                ]
+              }
+              subprocess.check_call([
+                "wget", "-q", "-O", "-", "--post-data", json.dumps(post_data), url
+              ])
