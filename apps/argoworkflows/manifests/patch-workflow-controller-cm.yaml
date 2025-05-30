@@ -21,6 +21,8 @@ data:
         exit:
           templateRef:
             name: global-exit-hook
+            template: global-exit-hook
+            clusterScope: true
   sso: |
     issuer: https://argocd.hasadna.org.il/api/dex
     clientId:
