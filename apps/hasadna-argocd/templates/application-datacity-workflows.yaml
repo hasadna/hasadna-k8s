@@ -9,15 +9,15 @@ spec:
   project: datacity
   source:
     path: workflows
-    plugin:
-      name: uumpa
+#    plugin:
+#      name: uumpa
     repoURL: https://github.com/hasadna/datacity-k8s.git
     targetRevision: master
   syncPolicy:
-    {{ if .Values.allowAutoSync }}
-    automated:
-      prune: true
-      selfHeal: true
-    {{ end }}
+#    {{ if .Values.allowAutoSync }}
+#    automated:
+#      prune: true
+#      selfHeal: true
+#    {{ end }}
     syncOptions:
     - CreateNamespace=true
