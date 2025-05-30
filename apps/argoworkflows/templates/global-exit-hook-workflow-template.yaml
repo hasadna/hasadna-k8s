@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: global-exit-hook
+spec:
+  entrypoint: global-exit-hook
+  templates:
+    - name: global-exit-hook
+      script:
+        # Pulled May 30, 2025
+        image: busybox@sha256:f64ff79725d0070955b368a4ef8dc729bd8f3d8667823904adcb299fe58fc3da
+        env:
+          - name: STATUS
+            value: "{{workflow.status}}"
+          - name: FAILURES
+            value: "{{workflow.failures}}"
+          - name: NAME
+            value: "{{workflow.name}}"
+          - name: NAMESPACE
+            value: "{{workflow.namespace}}"
+          - name: MAIN_ENTRYPOINT
+            value: "{{workflow.mainEntryPoint}}"
+          - name: DURATION
+            value: "{{workflow.duration}}"
+          - name: CREATION_TIMESTAMP
+            value: "{{workflow.creationTimestamp}}"
+          - name: LABELS
+            value: "{{workflow.labels}}"
+          - name: ANNOTATIONS
+            value: "{{workflow.annotations}}"
+          - name: PARAMETERS
+            value: "{{workflow.parameters}}"
+        source: |
+          set -euo pipefail
+          wget -q -O - https://hooks.slack.com/services/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 \
+            --post-data "payload={\"text\": \"Workflow *$NAME* in namespace *$NAMESPACE* has finished with status *$STATUS* after $DURATION seconds.\\nMain entrypoint: $MAIN_ENTRYPOINT\\nCreation timestamp: $CREATION_TIMESTAMP\\nLabels: $LABELS\\nAnnotations: $ANNOTATIONS\\nParameters: $PARAMETERS\\nFailures: $FAILURES\"}"
