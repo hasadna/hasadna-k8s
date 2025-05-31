@@ -8,7 +8,7 @@ spec:
     - name: global-exit-hook
       container:
         image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:32029424128a4e99811bf5f4aa67416584c3374f
-        args: ["global-exit-hook"]
+        args: ["workflows", "global-exit-hook"]
         env:
           # we need to embed the secrets here because the exit handler is global for all namespaces
           - name: SLACK_WEBHOOK_URL_B64
