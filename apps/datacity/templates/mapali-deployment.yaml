@@ -87,6 +87,8 @@ spec:
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_AWS_REGION"}}
         - name: DGP_APP_DEFAULT_ROLE
           value: "2"
+        - name: WEB_CONCURRENCY
+          value: "4"
 
       volumes:
         - name: data

@@ -62,4 +62,6 @@ spec:
           valueFrom: {"secretKeyRef":{"name":"ckan-dgp-instances", "key":"CKAN_INSTANCE_HASADNA_URL"}}
         - name: CKAN_API_KEY
           valueFrom: {"secretKeyRef":{"name":"ckan-dgp-instances", "key":"CKAN_INSTANCE_HASADNA_API_KEY"}}
+        - name: WEB_CONCURRENCY
+          value: "4"
 {{ end }}
