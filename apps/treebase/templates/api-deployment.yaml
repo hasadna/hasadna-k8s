@@ -24,6 +24,4 @@ spec:
             value: postgresql://readonly:readonly@db/datasets
           - name: MAX_ROWS
             value: "25000"
-          - name: WEB_CONCURRENCY
-            value: "4"
 {{ end }}
