@@ -104,6 +104,11 @@ kube-prometheus-stack:
     tolerations:
       - effect: NoExecute
         operator: Exists
+    extraHostVolumeMounts:
+      - name: dbus
+        hostPath: /var/run/dbus
+        mountPath: /var/run/dbus
+        readOnly: true
 
 ingresses:
   - name: alertmanager
