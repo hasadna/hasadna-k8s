@@ -1,8 +1,12 @@
 # Pulled May 30, 2025
 ARG BASE_IMAGE=python:3.12@sha256:12e60b9c62151e59de29ec7e1836c63080b382415f2b0083a8b7e27e3049dc83
-ARG UV_VERSION=0.7.8
 FROM $BASE_IMAGE AS builder
-RUN curl -LsSf https://astral.sh/uv/${UV_VERSION}/install.sh | sh
+ARG KUBECTL_VERSION=v1.20.15
+ADD https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl /usr/local/bin/kubectl
+ARG UV_VERSION=0.7.8
+ADD https://astral.sh/uv/${UV_VERSION}/install.sh uv_install.sh
+RUN sh uv_install.sh &&\
+    chmod +x /usr/local/bin/kubectl
 WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN ~/.local/bin/uv sync --no-install-project --frozen &&\
@@ -10,6 +14,7 @@ RUN ~/.local/bin/uv sync --no-install-project --frozen &&\
     chown -R 1000:1000 /app
 
 FROM $BASE_IMAGE
+COPY --from=builder /usr/local/bin/kubectl /usr/local/bin/kubectl
 RUN useradd -m -s /bin/bash hasadna
 RUN mkdir /home/hasadna/app
 WORKDIR /home/hasadna/app
