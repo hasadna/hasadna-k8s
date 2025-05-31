@@ -17,6 +17,6 @@ spec:
       terminationGracePeriodSeconds: 2
       containers:
       - name: nominatim
-        image: {{ .Values.nominatimImage | default "akariv/nominatim-israel" | quote }}
+        image: {{ .Values.nominatimImage | default "akariv/nominatim-israel" | replace "docker.pkg.github.com" "ghcr.io" | quote }}
         resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "600Mi"}}
 {{ end }}
