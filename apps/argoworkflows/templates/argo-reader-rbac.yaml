@@ -5,26 +5,24 @@ metadata:
   namespace: argo
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
   name: argo-reader
-  namespace: argo
 rules:
   - apiGroups: ["argoproj.io"]
     resources: ["workflows", "cronworkflows"]
     verbs: ["get", "list"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
   name: argo-reader
-  namespace: argo
 subjects:
   - kind: ServiceAccount
     name: argo-reader
     namespace: argo
 roleRef:
-  kind: Role
+  kind: ClusterRole
   name: argo-reader
   apiGroup: rbac.authorization.k8s.io
 ---
