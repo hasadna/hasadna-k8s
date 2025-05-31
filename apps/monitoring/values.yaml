@@ -100,7 +100,7 @@ kube-prometheus-stack:
       # additional collectors for hasadna
       - --collector.systemd
       - --collector.mountstats
-      - --collector.systemd.unit-include=ufw.service|nfs-server.service
+      - --collector.systemd.unit-include=ufw.service|rke2-server.service|rke2-agent.service
     tolerations:
       - effect: NoExecute
         operator: Exists
