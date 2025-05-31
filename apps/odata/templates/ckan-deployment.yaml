@@ -74,14 +74,14 @@ spec:
         - name: GUNICORN_WORKERS
           value: {{ .Values.ckanGunicornWorkers | default "2" | quote }}
         volumeMounts:
-        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
+        - {mountPath: /var/lib/ckan, name: ckan}
         - name: ckan-conf-secrets
           mountPath: /etc/ckan-conf/secrets
           readOnly: true
         - name: ckan-conf-templates
           mountPath: /etc/ckan-conf/templates
           readOnly: true
-        - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
+        - {mountPath: /var/ckan/pipelines, name: pipelines}
       {{ end }}
       containers:
       - name: ckan
