@@ -30,18 +30,11 @@ spec:
         resources: {{ .Values.ckanJobsDbResources }}
         volumeMounts:
         - mountPath: /var/lib/postgresql/data
-          name: data
-          subPath: ckan-jobs-db
+          name: ckan-jobs-db
       volumes:
-      - name: data
-        {{ if .Values.hostPath }}
-        hostPath:
-          path: {{ .Values.hostPath | quote }}
-          type: DirectoryOrCreate
-        {{ else }}
+      - name: ckan-jobs-db
         nfs:
           server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
-        {{ end }}
+          path: /odata/ckan-jobs-db
 {{ end }}
 {{ end }}

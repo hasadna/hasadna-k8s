@@ -49,7 +49,6 @@ spec:
         volumeMounts:
         - name: db
           mountPath: /var/lib/postgresql/data
-          subPath: postgresql-data
         {{ if .Values.dbOps.enabled }}
         - name: backups
           mountPath: /db-backup
@@ -90,18 +89,7 @@ spec:
           secretName: {{ .Values.dbOps.secretName | default "ckan-db-backups" | quote }}
       {{ end }}
       - name: db
-        {{ if .Values.ckanDbPersistentDiskName }}
-        gcePersistentDisk:
-          pdName: {{ .Values.ckanDbPersistentDiskName | quote }}
-        {{ else }}
-        {{ if .Values.hostPath }}
-        hostPath:
-          path: {{ .Values.hostPath | quote }}
-          type: DirectoryOrCreate
-        {{ else }}
         nfs:
           server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
-        {{ end }}
-        {{ end }}
+          path: /odata/postgresql-data
 {{ end }}

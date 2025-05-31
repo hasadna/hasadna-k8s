@@ -94,14 +94,14 @@ spec:
         - containerPort: 8888
         resources: {{ .resources }}
         volumeMounts:
-        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
+        - {mountPath: /var/lib/ckan, name: ckan}
         - name: ckan-conf-secrets
           mountPath: /etc/ckan-conf/secrets
           readOnly: true
         - name: ckan-conf-templates
           mountPath: /etc/ckan-conf/templates
           readOnly: true
-        - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
+        - {mountPath: /var/ckan/pipelines, name: pipelines}
 #        readinessProbe:
 #          httpGet:
 #            path: /
@@ -124,14 +124,11 @@ spec:
       - name: ckan-conf-templates
         configMap:
           name: ckan
-      - name: ckan-data
-        {{ if $.Values.hostPath }}
-        hostPath:
-          path: {{ $.Values.hostPath | quote }}
-          type: DirectoryOrCreate
-        {{ else }}
+      - name: ckan
+        persistentVolumeClaim:
+          claimName: ckan
+      - name: pipelines
         nfs:
-          server: {{ $.Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
-        {{ end }}
+          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
+          path: /odata/pipelines
 {{ end }}

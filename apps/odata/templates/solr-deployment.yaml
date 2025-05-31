@@ -29,9 +29,8 @@ spec:
         securityContext:
           runAsUser: 0
         volumeMounts:
-        - name: data
+        - name: solr
           mountPath: /opt/solr/server/solr/ckan/data
-          subPath: solr
       {{ end }}
       - name: permissions
         image: alpine
@@ -44,9 +43,8 @@ spec:
         securityContext:
           runAsUser: 0
         volumeMounts:
-        - name: data
+        - name: solr
           mountPath: /opt/solr/server/solr/ckan/data
-          subPath: solr
       containers:
       - image: {{ .Values.solrImage | quote }}
         name: solr
@@ -54,18 +52,11 @@ spec:
         - containerPort: 8983
         resources: {{ .Values.solrResources }}
         volumeMounts:
-        - name: data
+        - name: solr
           mountPath: /opt/solr/server/solr/ckan/data
-          subPath: solr
       volumes:
-      - name: data
-        {{ if .Values.hostPath }}
-        hostPath:
-          path: {{ .Values.hostPath | quote }}
-          type: DirectoryOrCreate
-        {{ else }}
+      - name: solr
         nfs:
           server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
-        {{ end }}
+          path: /odata/solr
 {{ end }}
