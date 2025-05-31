@@ -17,6 +17,8 @@ spec:
         app: baserow
     spec:
       terminationGracePeriodSeconds: 10
+      imagePullSecrets:
+        - name: imagepullsecret
       containers:
       - name: server
         image: {{ .Values.baserowImage | default "baserow/baserow:1.21.2" | quote }}
