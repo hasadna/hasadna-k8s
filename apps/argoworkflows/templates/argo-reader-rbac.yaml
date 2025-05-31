@@ -27,3 +27,12 @@ roleRef:
   kind: Role
   name: argo-reader
   apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argo-reader-token
+  namespace: argo
+  annotations:
+    kubernetes.io/service-account.name: argo-reader
+type: kubernetes.io/service-account-token
