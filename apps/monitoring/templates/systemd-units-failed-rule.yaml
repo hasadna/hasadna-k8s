@@ -13,6 +13,6 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Systemd unit(s) failed on {{ $labels.instance }}"
+            summary: "Systemd unit(s) failed on {{ "{{ $labels.instance }}" }}"
             description: |
-              One or more systemd units are in a failed state on {{ $labels.instance }}.
+              One or more systemd units are in a failed state on {{ "{{ $labels.instance }}" }}.
