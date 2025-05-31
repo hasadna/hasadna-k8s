@@ -7,11 +7,16 @@ spec:
   templates:
     - name: global-exit-hook
       container:
-        # Pulled May 30, 2025
-        image: python:3.12-alpine@sha256:9c51ecce261773a684c8345b2d4673700055c513b4d54bc0719337d3e4ee552e
+        image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:32029424128a4e99811bf5f4aa67416584c3374f
+        args: ["global-exit-hook"]
         env:
+          # we need to embed the secrets here because the exit handler is global for all namespaces
           - name: SLACK_WEBHOOK_URL_B64
             value: "~vault:Projects/k8s/argo-workflows:slack_notifications_url~"
+          - name: ARGO_WORKFLOWS_TOKEN_B64
+            value: "~vault:Projects/k8s/argo-workflows:reader_automation_token~"
+          - name: ARGO_WORKFLOWS_URL
+            value: "http://argo-server.argo:2746"
           - name: STATUS
             value: '{{ "{{workflow.status}}" }}'
           - name: FAILURES
@@ -30,33 +35,3 @@ spec:
             value: '{{ "{{workflow.annotations.json}}" }}'
           - name: PARAMETERS
             value: '{{ "{{workflow.parameters.json}}" }}'
-        command:
-          - python
-          - -c
-          - |
-            import os
-            import json
-            import base64
-            import subprocess
-            if os.environ['STATUS'] != 'Succeeded':
-              url = base64.b64decode(os.environ['SLACK_WEBHOOK_URL_B64']).decode('utf-8')
-              post_data = {
-                "channel": "argo-workflows-notifications",
-                "username": "argo",
-                "text": f"Workflow {os.environ['NAME']} in namespace {os.environ['NAMESPACE']} has completed with status {os.environ['STATUS']}.",
-                "attachments": [
-                  {
-                    "fields": [
-                      {"title": "Failures", "value": os.environ['FAILURES'], "short": True},
-                      {"title": "Duration", "value": os.environ['DURATION'], "short": True},
-                      {"title": "Creation Timestamp", "value": os.environ['CREATION_TIMESTAMP'], "short": True},
-                      {"title": "Labels", "value": os.environ['LABELS'], "short": False},
-                      {"title": "Annotations", "value": os.environ['ANNOTATIONS'], "short": False},
-                      {"title": "Parameters", "value": os.environ['PARAMETERS'], "short": False}
-                    ]
-                  }
-                ]
-              }
-              subprocess.check_call([
-                "wget", "-q", "-O", "-", "--post-data", json.dumps(post_data), url
-              ])
