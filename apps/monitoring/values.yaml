@@ -94,6 +94,10 @@ kube-prometheus-stack:
 
   prometheus-node-exporter:
     extraArgs:
+      # defaults from kube-prometheus-stack/values.yaml
+      - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+      - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
+      # additional collectors for hasadna
       - --collector.systemd
       - --collector.mountstats
     tolerations:
