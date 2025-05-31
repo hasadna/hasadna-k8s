@@ -25,7 +25,7 @@ metadata:
 spec:
   rules:
   {{ range .rules }}
-  - host: {{ if gt (atoi $.Capabilities.KubeVersion.Minor) 30 }}argo.rke2.hasadna.org.il{{ else }}argo.hasadna.org.il{{ end }}
+  - host: {{ .Values.host | quote }}
     http:
       paths:
       {{- if gt (atoi $.Capabilities.KubeVersion.Minor) 30 }}
@@ -46,7 +46,7 @@ spec:
   tls:
   - hosts:
     {{ range .rules }}
-    - {{ if gt (atoi $.Capabilities.KubeVersion.Minor) 30 }}argo.rke2.hasadna.org.il{{ else }}argo.hasadna.org.il{{ end }}
+    - {{ .Values.host | quote }}
     {{ end }}
     secretName: {{ .name }}-cert
   {{ end }}
