@@ -11,7 +11,7 @@ data:
       - id: argo-workflows-sso
         name: Argo Workflow
         redirectURIs:
-          - https://argo.rke2.hasadna.org.il/oauth2/callback
+          - https://argo.hasadna.org.il/oauth2/callback
         secretEnv: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
     connectors:
       - type: github
