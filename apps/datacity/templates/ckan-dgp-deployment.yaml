@@ -26,7 +26,7 @@ spec:
             mountPath: /var/lib/postgresql/data
             subPath: postgres_data2
       - name: server
-        image: {{ .Values.ckanDgpServerImage | default "docker.pkg.github.com/hasadna/datacity-ckan-dgp/server" | quote }}
+        image: {{ .Values.ckanDgpServerImage | default "docker.pkg.github.com/hasadna/datacity-ckan-dgp/server" | replace "docker.pkg.github.com" "ghcr.io" | quote }}
         resources: {"requests": {"cpu": "2500m", "memory": "2500Mi"}, "limits": {"cpu": "3000m", "memory": "4000Mi"}}
         command:
           - sh
