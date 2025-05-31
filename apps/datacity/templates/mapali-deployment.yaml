@@ -36,7 +36,7 @@ spec:
             fi
             exec docker-entrypoint.sh postgres
       - name: server
-        image: {{ .Values.mapaliImage | default "docker.pkg.github.com/hasadna/mapali/server" | quote }}
+        image: {{ .Values.mapaliImage | default "docker.pkg.github.com/hasadna/mapali/server" | replace "docker.pkg.github.com" "ghcr.io" | quote }}
         resources: {"requests": {"cpu": "250m", "memory": "2Gi"}, "limits": {"cpu": "1000m", "memory": "4Gi"}}
         securityContext:
           runAsGroup: 0
