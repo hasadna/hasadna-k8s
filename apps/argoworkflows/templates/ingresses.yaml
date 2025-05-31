@@ -25,7 +25,7 @@ metadata:
 spec:
   rules:
   {{ range .rules }}
-  - host: {{ .Values.host | quote }}
+  - host: {{ .host | quote }}
     http:
       paths:
       {{- if gt (atoi $.Capabilities.KubeVersion.Minor) 30 }}
@@ -46,7 +46,7 @@ spec:
   tls:
   - hosts:
     {{ range .rules }}
-    - {{ .Values.host | quote }}
+    - {{ .host | quote }}
     {{ end }}
     secretName: {{ .name }}-cert
   {{ end }}
