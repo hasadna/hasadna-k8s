@@ -86,6 +86,9 @@ kube-prometheus-stack:
     enabled: false
 
   nodeExporter:
+    extraArgs:
+      - --collector.systemd
+      - --collector.mountstats
     operatingSystems:
       aix:
         enabled: false
