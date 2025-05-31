@@ -56,8 +56,8 @@ spec:
         securityContext:
           runAsUser: 0
         volumeMounts:
-        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
-        - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
+        - {mountPath: /var/lib/ckan, name: ckan}
+        - {mountPath: /var/ckan/pipelines, name: pipelines}
         - name: ckan-conf-secrets
           mountPath: /etc/ckan-conf/secrets
       {{ if .Values.ckanSolrRebuild }}
