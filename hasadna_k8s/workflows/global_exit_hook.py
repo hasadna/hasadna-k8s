@@ -6,7 +6,8 @@ import requests
 
 
 SLACK_WEBHOOK_URL_B64 = os.environ.get('SLACK_WEBHOOK_URL_B64')
-ARGO_WORKFLOWS_TOKEN = os.environ.get('ARGO_WORKFLOWS_TOKEN')
+ARGO_WORKFLOWS_TOKEN_B64 = os.environ.get('ARGO_WORKFLOWS_TOKEN_B64')
+ARGO_WORKFLOWS_TOKEN = base64.b64decode(ARGO_WORKFLOWS_TOKEN_B64.encode()).decode() if ARGO_WORKFLOWS_TOKEN_B64 else os.environ.get('ARGO_WORKFLOWS_TOKEN')
 ARGO_WORKFLOWS_URL = os.environ.get('ARGO_WORKFLOWS_URL')
 
 STATUS = os.environ.get('STATUS')
