@@ -16,8 +16,11 @@ loki:
     auth_enabled: false
     storage:
       type: s3
+      bucketNames:
+        chunks: hasadna-rke2-logging-loki
+        ruler: hasadna-rke2-logging-loki-ruler
+        admin: hasadna-rke2-logging-loki-admin
       s3:
-        s3: "s3://eu-west-3/hasadna-rke2-logging-loki"
         region: eu-west-3
         accessKeyId: "${GRAFANA_LOKI_S3_ACCESKEYID}"
         secretAccessKey: "${GRAFANA_LOKI_S3_SECRETACCESSKEY}"
