@@ -1,1 +1,3 @@
-appImage: "ghcr.io/hasadna/mapathataf:latest"
+adminImage: ghcr.io/whiletrue-industries/mapathataf-admin:77cf68ad159ce7964aa4923f279707b99d8990eb
+appImage: ghcr.io/whiletrue-industries/mapathataf-app:77cf68ad159ce7964aa4923f279707b99d8990eb
+landingImage: ghcr.io/whiletrue-industries/mapathataf-landing:77cf68ad159ce7964aa4923f279707b99d8990eb
