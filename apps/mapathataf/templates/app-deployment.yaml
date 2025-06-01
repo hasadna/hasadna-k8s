@@ -17,6 +17,6 @@ spec:
       terminationGracePeriodSeconds: 2
       containers:
       - name: web
-        image: {{ .Values.webImage | default "ghcr.io/whiletrue-industries/mapathataf" | quote }}
+        image: {{ .Values.appImage | default "ghcr.io/whiletrue-industries/mapathataf" | quote }}
         resources: {"requests": {"cpu": "25m", "memory": "309Mi"}, "limits": {"cpu": "78m", "memory": "1000Mi"}}
 {{ end }}
