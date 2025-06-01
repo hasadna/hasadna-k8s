@@ -1,0 +1,29 @@
+{{ if and .Values.enabled .Values.ingresses }}
+{{ range .Values.ingresses }}
+apiVersion: {{ if (gt (atoi $.Capabilities.KubeVersion.Minor) 30) }}networking.k8s.io/v1{{ else }}extensions/v1beta1{{ end }}
+kind: Ingress
+metadata:
+  name: {{ .name }}
+spec:
+  rules:
+  {{ range .rules }}
+  - host: {{ .host }}
+    http:
+      paths:
+      {{- if (gt (atoi $.Capabilities.KubeVersion.Minor) 30) }}
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .serviceName }}
+            port:
+              number: {{ .servicePort }}
+      {{- else }}
+      - backend:
+          serviceName: {{ .serviceName }}
+          servicePort: {{ .servicePort }}
+      {{- end }}
+  {{ end }}
+---
+{{ end }}
+{{ end }}
