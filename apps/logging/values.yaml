@@ -77,6 +77,9 @@ loki:
      replicas: 0
   singleBinary:
      replicas: 0
+  gateway:
+    nginxConfig:
+      resolver: rke2-coredns-rke2-coredns.kube-system.svc.cluster.local
 
 secrets:
   - name: loki-s3-credentials
