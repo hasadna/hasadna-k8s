@@ -1,0 +1,25 @@
+{{ if .Values.isRke2 }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: treecatalog
+spec:
+  destination:
+    namespace: mapathataf
+    server: https://kubernetes.default.svc
+  project: mapathataf
+  source:
+    path: apps/mapathataf
+    plugin:
+      name: uumpa
+    repoURL: https://github.com/hasadna/hasadna-k8s.git
+    targetRevision: master
+  syncPolicy:
+    {{ if .Values.allowAutoSync }}
+    automated:
+      prune: true
+      selfHeal: true
+    {{ end }}
+    syncOptions:
+    - CreateNamespace=true
+{{ end }}
