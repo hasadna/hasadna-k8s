@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web
+  name: app
 spec:
   selector:
     matchLabels:
-      app: web
+      app: app
   replicas: 1
   revisionHistoryLimit: 2
   template:
     metadata:
       labels:
-        app: web
+        app: app
     spec:
       terminationGracePeriodSeconds: 2
       containers:
-      - name: web
+      - name: app
         image: {{ .Values.appImage | default "ghcr.io/whiletrue-industries/mapathataf" | quote }}
         resources: {"requests": {"cpu": "25m", "memory": "309Mi"}, "limits": {"cpu": "78m", "memory": "1000Mi"}}
 {{ end }}
