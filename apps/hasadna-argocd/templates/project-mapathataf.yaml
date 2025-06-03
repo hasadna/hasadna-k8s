@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: mapathataf
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - name: '*'
+    namespace: mapathataf
+    server: https://kubernetes.default.svc
+  sourceRepos:
+  - https://github.com/hasadna/hasadna-k8s.git
