@@ -18,9 +18,9 @@ spec:
     targetRevision: main
   syncPolicy:
     {{ if .Values.allowAutoSync }}
-    automated:
-      prune: true
-      selfHeal: true
+    #automated:
+    #  prune: true
+    #  selfHeal: true
     {{ end }}
     syncOptions:
     - CreateNamespace=true
