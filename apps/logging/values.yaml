@@ -126,7 +126,6 @@ alloy:
           }
           rule {
             source_labels = ["__meta_kubernetes_pod_controller_kind", "__meta_kubernetes_pod_controller_name"]
-            target_label  = "service_name"
             separator = "_"
             regex = "(.+)_(.+)"
             target_label = "service_name"
