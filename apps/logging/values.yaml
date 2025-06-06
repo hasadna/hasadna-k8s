@@ -22,7 +22,7 @@ loki:
         admin: hasadna-rke2-logging-loki-admin
       s3:
         region: eu-west-3
-        accessKeyId: "${GRAFANA_LOKI_S3_ACCESKEYID}"
+        accessKeyId: "${GRAFANA_LOKI_S3_ACCESSKEYID}"
         secretAccessKey: "${GRAFANA_LOKI_S3_SECRETACCESSKEY}"
     schemaConfig:
       configs:
