@@ -81,6 +81,20 @@ loki:
     nginxConfig:
       resolver: rke2-coredns-rke2-coredns.kube-system.svc.cluster.local
 
+alloy:
+  clustering:
+    enabled: true
+  configMap:
+    content: |
+      loki.write "default" {
+        endpoint {
+          url = "http://logging-loki-gateway:3100/loki/api/v1/push"
+        }
+      }
+      discovery.kubernetes "pod" {
+        role = "pod"
+      }
+
 secrets:
   - name: loki-s3-credentials
     data:
