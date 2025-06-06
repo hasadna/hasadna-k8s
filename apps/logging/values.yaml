@@ -128,6 +128,10 @@ alloy:
         local.file_match "pod" {
           path_targets = discovery.relabel.pod.targets
         }
+        loki.source.file "pod" {
+          targets    = local.file_match.pod.targets
+          forward_to = [loki.write.default]
+        }
 
 secrets:
   - name: loki-s3-credentials
