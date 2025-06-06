@@ -130,7 +130,7 @@ alloy:
         }
         loki.source.file "pod" {
           targets    = local.file_match.pod.targets
-          forward_to = [loki.write.default]
+          forward_to = [loki.write.default.receiver]
         }
 
 secrets:
