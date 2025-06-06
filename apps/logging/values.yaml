@@ -11,6 +11,16 @@ loki:
           secretKeyRef:
             name: loki-s3-credentials
             key: secretaccesskey
+      - name: AWS_ACCESS_KEY_ID
+        valueFrom:
+          secretKeyRef:
+            name: loki-s3-credentials
+            key: accesskeyid
+      - name: AWS_SECRET_ACCESS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: loki-s3-credentials
+            key: secretaccesskey
   deploymentMode: Distributed
   loki:
     auth_enabled: false
