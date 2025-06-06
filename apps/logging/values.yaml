@@ -91,7 +91,7 @@ alloy:
       content: |
         loki.write "default" {
           endpoint {
-            url = "http://logging-loki-gateway:3100/loki/api/v1/push"
+            url = "http://logging-loki-gateway/loki/api/v1/push"
           }
         }
         discovery.kubernetes "pod" {

@@ -36,7 +36,7 @@ kube-prometheus-stack:
     additionalDataSources:
       - name: "Loki"
         type: loki
-        url: "http://logging-loki-gateway.logging:3100"
+        url: "http://logging-loki-gateway.logging"
         jsonData:
           maxLines: 1000
           timeout: 60
