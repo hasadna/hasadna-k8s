@@ -126,7 +126,7 @@ alloy:
           }
         }
         local.file_match "pod" {
-          path_targets = discovery.relabel.pod.targets
+          path_targets = discovery.relabel.pod.output
         }
         loki.source.file "pod" {
           targets    = local.file_match.pod.targets
