@@ -84,9 +84,14 @@ loki:
       resolver: rke2-coredns-rke2-coredns.kube-system.svc.cluster.local
 
 alloy:
+  controller:
+    tolerations:
+      - key: "CriticalAddonsOnly"
+        operator: "Exists"
+        effect: "NoExecute"
   alloy:
-    clustering:
-      enabled: true
+    mounts:
+      varlog: true
     configMap:
       content: |
         loki.write "default" {
