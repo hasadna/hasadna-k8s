@@ -1,5 +1,7 @@
 loki:
   global:
+    extraArgs:
+      - -config.expand-env=true
     extraEnv:
       - name: GRAFANA_LOKI_S3_ACCESSKEYID
         valueFrom:
