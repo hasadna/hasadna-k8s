@@ -33,6 +33,13 @@ kube-prometheus-stack:
       existingClaim: "grafana"
     admin:
       existingSecret: "grafana-admin-password"
+    additionalDataSources:
+      - name: "Loki"
+        type: loki
+        url: "http://logging-loki-gateway.logging:3100"
+        jsonData:
+          maxLines: 1000
+          timeout: 60
 
   prometheusOperator:
     resources:
