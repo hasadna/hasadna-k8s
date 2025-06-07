@@ -108,6 +108,10 @@ loki:
   gateway:
     nginxConfig:
       resolver: rke2-coredns-rke2-coredns.kube-system.svc.cluster.local
+  test:
+    enabled: false
+  lokiCanary:
+    enabled: false
 
 alloy:
   controller:
