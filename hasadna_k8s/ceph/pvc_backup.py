@@ -78,7 +78,7 @@ def main_pvc(namespace, pvc_name, pvc):
 def main_all():
     print('Fetching all PVCs eligible for backup in all namespaces...')
     for pvc in json.loads(subprocess.check_output([
-        'kubectl', 'get', 'pvc', '--all-namespaces', '-l', 'app.kubernetes.io/managed-by=terraform-hasadna-rke2-storage' '-o', 'json'
+        'kubectl', 'get', 'pvc', '--all-namespaces', '-l', 'app.kubernetes.io/managed-by=terraform-hasadna-rke2-storage', '-o', 'json'
     ]))['items']:
         namespace = pvc['metadata']['namespace']
         pvc_name = pvc['metadata']['name']
