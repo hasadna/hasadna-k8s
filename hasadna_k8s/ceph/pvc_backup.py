@@ -56,7 +56,7 @@ def main_shared(namespace, pvc_name, pv):
     print("Kopia snapshot created successfully.")
     print('Unmounting and cleaning up...')
     subprocess.check_call(['umount', f'/tmp{backup_path}'])
-    subprocess.check_call(['ceph', 'fs', 'subvolume', 'rm', fs_name, backup_name])
+    subprocess.check_call(['ceph', 'fs', 'subvolume', 'rm', fs_name, clone_name])
     subprocess.check_call(['ceph', 'fs', 'subvolume', 'snapshot', 'rm', fs_name, sub_volume_name, backup_name, 'csi'])
     print('Backup completed successfully.')
 
