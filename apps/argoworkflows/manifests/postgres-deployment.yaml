@@ -36,6 +36,8 @@ spec:
           subPath: dbdata
       volumes:
       - name: data
-        nfs:
-          server: "172.16.0.9"
-          path: "/argo/postgres"
+        persistentVolumeClaim:
+          claimName: postgres2
+#        nfs:
+#          server: "172.16.0.9"
+#          path: "/argo/postgres"
