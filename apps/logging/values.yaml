@@ -4,8 +4,8 @@ loki:
       - -config.expand-env=true
       - -ruler.storage.s3.access-key-id=$(GRAFANA_LOKI_S3_ACCESSKEYID_RULER)
       - -ruler.storage.s3.secret-access-key=$(GRAFANA_LOKI_S3_SECRETACCESSKEY_RULER)
-      - -admin.storage.s3.access-key-id=$(GRAFANA_LOKI_S3_ACCESSKEYID_ADMIN)
-      - -admin.storage.s3.secret-access-key=$(GRAFANA_LOKI_S3_SECRETACCESSKEY_ADMIN)
+#      - -admin.storage.s3.access-key-id=$(GRAFANA_LOKI_S3_ACCESSKEYID_ADMIN)
+#      - -admin.storage.s3.secret-access-key=$(GRAFANA_LOKI_S3_SECRETACCESSKEY_ADMIN)
     extraEnv:
       - name: GRAFANA_LOKI_S3_ACCESSKEYID
         valueFrom:
