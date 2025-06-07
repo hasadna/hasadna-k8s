@@ -11,6 +11,6 @@ def main():
 @main.command()
 @click.argument('namespace')
 @click.argument('pvc_name')
-def rbd_backup(namespace, pvc_name):
-    from .rbd_backup import main
+def pvc_backup(namespace, pvc_name):
+    from .pvc_backup import main
     main(namespace, pvc_name)
