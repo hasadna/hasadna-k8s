@@ -42,6 +42,10 @@ kube-prometheus-stack:
           timeout: 60
 
   prometheusOperator:
+    namespaces:
+      releaseNamespace: true
+      additional:
+        - "rook-ceph"
     resources:
       requests:
         cpu: 200m
