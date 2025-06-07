@@ -174,9 +174,3 @@ alloy:
           targets    = local.file_match.pod.targets
           forward_to = [loki.write.default.receiver]
         }
-
-secrets:
-  - name: loki-s3-credentials
-    data:
-      accesskeyid: "~vault:Projects/iac/loki:aws_access_key_id~"
-      secretaccesskey: "~vault:Projects/iac/loki:aws_secret_access_key~"
