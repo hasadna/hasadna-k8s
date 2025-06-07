@@ -80,7 +80,7 @@ spec:
 
               # the cluster init script
               
-              ceph osd pool set .mgr size 1
+              ceph osd pool set .mgr size 1 --yes-i-really-mean-it
           securityContext:
             runAsNonRoot: true
             runAsUser: 2016
