@@ -16,4 +16,4 @@ secrets:
       bucket_name: "~vault:Projects/iac/kopia:bucket_name~"
       bucket_region: "~vault:Projects/iac/kopia:bucket_region~"
       aws_access_key_id: "~vault:Projects/iac/kopia:aws_access_key_id~"
-      aws_secret_access_key: "~vault:Projects/iac/kopia:aws_secret_access_key~"
+      password: "~vault:Projects/iac/kopia:password~"

@@ -35,6 +35,13 @@ spec:
         image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:latest
         imagePullPolicy: Always
         env:
+          - name: KOPIA_CHECK_FOR_UPDATES
+            value: "false"
+          - name: KOPIA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: kopia
+                key: password
           - name: KOPIA_S3_BUCKET
             valueFrom:
               secretKeyRef:
