@@ -8,6 +8,7 @@ spec:
     spec:
       dnsPolicy: ClusterFirstWithHostNet
       serviceAccountName: rook-ceph-default
+      restartPolicy: OnFailure
       containers:
         - name: cluster-init
           image: quay.io/ceph/ceph:v19
