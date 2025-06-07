@@ -3,6 +3,9 @@ kind: CephCluster
 metadata:
   name: rook-ceph
 spec:
+  cephConfig:
+    global:
+      osd_pool_default_size: "1"
   cephVersion:
     # The container image used to launch the Ceph daemon pods (mon, mgr, osd, mds, rgw).
     # v18 is Reef, v19 is Squid
