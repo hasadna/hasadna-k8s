@@ -18,7 +18,7 @@ spec:
               parameters:
                 - name: exec_script
                   value: |
-                    {{ "{{workflow.parameters.exec_script}}" }}"
+                    {{ "{{workflow.parameters.exec_script}}" }}
     - name: script
       serviceAccountName: workflow-runner
       inputs:
