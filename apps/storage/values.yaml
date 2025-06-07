@@ -1,3 +1,11 @@
 rook-ceph:
   monitoring:
     enabled: true
+
+ingresses:
+  - name: ceph
+    ssl: true
+    rules:
+      - host: "ceph.~iac:rke2_catchall_hostname~"
+        serviceName: rook-ceph-mgr-dashboard
+        servicePort: 7000
