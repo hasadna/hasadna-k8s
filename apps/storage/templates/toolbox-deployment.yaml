@@ -28,9 +28,7 @@ spec:
               echo "[${ROOK_CEPH_USERNAME}]
               key = ${ROOK_CEPH_KEYRING}" > /etc/ceph/keyring
 
-              while true; do
-                do sleep 9999999
-              done
+              while true; do sleep 86400; done
           securityContext:
             privileged: true
           env:
