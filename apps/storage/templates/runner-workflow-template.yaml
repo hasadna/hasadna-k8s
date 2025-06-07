@@ -1,0 +1,82 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: runner
+spec:
+  arguments:
+    parameters:
+      - name: exec_script
+        default: "ceph status"
+  entrypoint: dag
+  templates:
+    - name: dag
+      dag:
+        tasks:
+          - name: script
+            template: script
+            arguments:
+              parameters:
+                - name: exec_script
+                  value: |
+                    {{ "{{workflow.parameters.exec_script}}" }}"
+    - name: script
+      serviceAccountName: workflow-runner
+      inputs:
+        parameters:
+          - name: exec_script
+      volumes:
+        - name: host-dev
+          hostPath:
+            path: /dev
+        - name: host-modules
+          hostPath:
+            path: /lib/modules
+        - name: tmp
+          emptyDir: {}
+      script:
+        image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:latest
+        imagePullPolicy: Always
+        env:
+          - name: KOPIA_S3_BUCKET
+            valueFrom:
+              secretKeyRef:
+                name: kopia
+                key: bucket_name
+          - name: KOPIA_S3_REGION
+            valueFrom:
+              secretKeyRef:
+                name: kopia
+                key: bucket_region
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: kopia
+                key: aws_access_key_id
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: kopia
+                key: aws_secret_access_key
+        volumeMounts:
+          - name: host-dev
+            mountPath: /dev
+          - name: host-modules
+            mountPath: /lib/modules
+          - name: tmp
+            mountPath: /tmp
+        source: |
+          set -euo pipefail
+          (
+            kopia repository connect s3 --bucket=$KOPIA_S3_BUCKET --region=$KOPIA_S3_REGION
+          ) 2>&1 | tee /var/log.txt
+          cat <<'EOF' > /var/exec_script.sh
+          {{ "{{inputs.parameters.exec_script}}" }}
+          EOF
+          chmod +x /var/exec_script.sh
+          /var/exec_script.sh 2>&1 | tee /var/log.txt
+          echo "Execution completed successfully" 2>&1 | tee /var/log.txt
+      outputs:
+        parameters:
+          - name: log
+            valueFrom:
+              path: /var/log.txt
