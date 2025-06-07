@@ -55,6 +55,16 @@ spec:
               secretKeyRef:
                 name: kopia
                 key: aws_secret_access_key
+          - name: ROOK_CEPH_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: rook-ceph-mon
+                key: ceph-username
+          - name: ROOK_CEPH_KEYRING
+            valueFrom:
+              secretKeyRef:
+                name: rook-ceph-mon
+                key: ceph-secret
         volumeMounts:
           - name: host-dev
             mountPath: /dev
@@ -76,15 +86,15 @@ spec:
             echo "[${ROOK_CEPH_USERNAME}]
           key = ${ROOK_CEPH_KEYRING}" > /etc/ceph/keyring
             kopia repository connect s3 --bucket=$KOPIA_S3_BUCKET --region=$KOPIA_S3_REGION
-          ) 2>&1 | tee /var/log.txt
-          cat <<'EOF' > /var/exec_script.sh
+          ) 2>&1 | tee /tmp/log.txt
+          cat <<'EOF' > /tmp/exec_script.sh
           {{ "{{inputs.parameters.exec_script}}" }}
           EOF
-          chmod +x /var/exec_script.sh
-          /var/exec_script.sh 2>&1 | tee /var/log.txt
-          echo "Execution completed successfully" 2>&1 | tee /var/log.txt
+          chmod +x /tmp/exec_script.sh
+          /tmp/exec_script.sh 2>&1 | tee /tmp/log.txt
+          echo "Execution completed successfully" 2>&1 | tee /tmp/log.txt
       outputs:
         parameters:
           - name: log
             valueFrom:
-              path: /var/log.txt
+              path: /tmp/log.txt
