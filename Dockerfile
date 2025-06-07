@@ -7,6 +7,7 @@ ARG UV_VERSION=0.7.8
 ADD https://astral.sh/uv/${UV_VERSION}/install.sh uv_install.sh
 RUN sh uv_install.sh &&\
     chmod +x /usr/local/bin/kubectl
+RUN apt update && apt install -y rsync
 WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN ~/.local/bin/uv sync --no-install-project --frozen &&\
