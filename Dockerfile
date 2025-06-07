@@ -14,7 +14,14 @@ RUN ~/.local/bin/uv sync --no-install-project --frozen &&\
     chown -R 1000:1000 /app
 
 FROM $BASE_IMAGE
-RUN apt update && apt install -y rsync git
+ARG CEPH_VERSION=19.2.2
+ARG CEPH_RELEASE=squid
+RUN apt update && apt install -y rsync git gnupg2 curl ca-certificates lsb-release &&\
+    curl -fsSL https://download.ceph.com/keys/release.asc | gpg --dearmor -o /usr/share/keyrings/ceph.gpg &&\
+    echo "deb [signed-by=/usr/share/keyrings/ceph.gpg] https://download.ceph.com/debian-${CEPH_RELEASE}/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/ceph.list &&\
+    apt update &&\
+    apt install -y ceph-common=${CEPH_VERSION}-1* &&\
+    rm -rf /var/lib/apt/lists/*
 COPY --from=builder /usr/local/bin/kubectl /usr/local/bin/kubectl
 RUN useradd -m -s /bin/bash hasadna
 RUN mkdir /home/hasadna/app
