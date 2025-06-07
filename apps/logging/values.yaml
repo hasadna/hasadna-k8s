@@ -2,28 +2,53 @@ loki:
   global:
     extraArgs:
       - -config.expand-env=true
+      - -ruler.storage.s3.access-key-id=$(GRAFANA_LOKI_S3_ACCESSKEYID_RULER)
+      - -ruler.storage.s3.secret-access-key=$(GRAFANA_LOKI_S3_SECRETACCESSKEY_RULER)
+      - -admin.storage.s3.access-key-id=$(GRAFANA_LOKI_S3_ACCESSKEYID_ADMIN)
+      - -admin.storage.s3.secret-access-key=$(GRAFANA_LOKI_S3_SECRETACCESSKEY_ADMIN)
     extraEnv:
       - name: GRAFANA_LOKI_S3_ACCESSKEYID
         valueFrom:
           secretKeyRef:
-            name: loki-s3-credentials
-            key: accesskeyid
+            name: bucket-chunks
+            key: AWS_ACCESS_KEY_ID
       - name: GRAFANA_LOKI_S3_SECRETACCESSKEY
         valueFrom:
           secretKeyRef:
-            name: loki-s3-credentials
-            key: secretaccesskey
+            name: bucket-chunks
+            key: AWS_SECRET_ACCESS_KEY
+      - name: GRAFANA_LOKI_S3_ACCESSKEYID_RULER
+        valueFrom:
+          secretKeyRef:
+            name: bucket-ruler
+            key: AWS_ACCESS_KEY_ID
+      - name: GRAFANA_LOKI_S3_SECRETACCESSKEY_RULER
+        valueFrom:
+          secretKeyRef:
+            name: bucket-ruler
+            key: AWS_SECRET_ACCESS_KEY
+      - name: GRAFANA_LOKI_S3_ACCESSKEYID_ADMIN
+        valueFrom:
+          secretKeyRef:
+            name: bucket-lokiadmin
+            key: AWS_ACCESS_KEY_ID
+      - name: GRAFANA_LOKI_S3_SECRETACCESSKEY_ADMIN
+        valueFrom:
+          secretKeyRef:
+            name: bucket-lokiadmin
+            key: AWS_SECRET_ACCESS_KEY
   deploymentMode: Distributed
   loki:
     auth_enabled: false
     storage:
       type: s3
       bucketNames:
-        chunks: hasadna-rke2-logging-loki
-        ruler: hasadna-rke2-logging-loki-ruler
-        admin: hasadna-rke2-logging-loki-admin
+        chunks: chunks
+        ruler: ruler
+        admin: lokiadmin
       s3:
-        region: eu-west-3
+        endpoint: "rook-ceph-rgw-logging.rook-ceph"
+        insecure: true
         accessKeyId: "${GRAFANA_LOKI_S3_ACCESSKEYID}"
         secretAccessKey: "${GRAFANA_LOKI_S3_SECRETACCESSKEY}"
     schemaConfig:
