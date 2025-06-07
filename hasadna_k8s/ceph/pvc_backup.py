@@ -61,11 +61,8 @@ def main_shared(namespace, pvc_name, pv):
     print('Backup completed successfully.')
 
 
-def main(namespace, pvc_name):
+def main_pvc(namespace, pvc_name, pvc):
     print(f'Creating backup for PVC {pvc_name} in namespace {namespace}...')
-    pvc = json.loads(subprocess.check_output([
-        'kubectl', '-n', namespace, 'get', 'pvc', pvc_name, '-o', 'json'
-    ]))
     storage_class_name = pvc['spec']['storageClassName']
     volume_name = pvc['spec']['volumeName']
     print(f'Volume name: {volume_name}')
@@ -74,3 +71,31 @@ def main(namespace, pvc_name):
         main_shared(namespace, pvc_name, pv)
     elif storage_class_name == 'rook-ceph-block':
         main_block(namespace, pvc_name, pv)
+    else:
+        raise Exception(f'Unexpected storage class name: {storage_class_name}')
+
+
+def main_all():
+    print('Fetching all PVCs eligible for backup in all namespaces...')
+    for pvc in json.loads(subprocess.check_output([
+        'kubectl', 'get', 'pvc', '--all-namespaces', '-l', 'app.kubernetes.io/managed-by=terraform-hasadna-rke2-storage' '-o', 'json'
+    ]))['items']:
+        namespace = pvc['metadata']['namespace']
+        pvc_name = pvc['metadata']['name']
+        phase = pvc['status']['phase']
+        storage_class_name = pvc['spec']['storageClassName']
+        if phase == 'Bound':
+            if storage_class_name in ['rook-cephfs-shared', 'rook-ceph-block']:
+                main_pvc(namespace, pvc_name, pvc)
+            else:
+                print(f'Skipping PVC {pvc_name} in namespace {namespace} with storage class {storage_class_name}. Only rook-cephfs-shared and rook-ceph-block are eligible for backup.')
+        else:
+            print(f'Skipping PVC {pvc_name} in namespace {namespace} with phase {phase}. Only Bound PVCs are eligible for backup.')
+
+
+def main(namespace, pvc_name):
+    print(f'Fetching PVC {pvc_name} in namespace {namespace}...')
+    pvc = json.loads(subprocess.check_output([
+        'kubectl', '-n', namespace, 'get', 'pvc', pvc_name, '-o', 'json'
+    ]))
+    main_pvc(namespace, pvc_name, pvc)
