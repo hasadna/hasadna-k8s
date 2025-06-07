@@ -48,6 +48,7 @@ loki:
         admin: lokiadmin
       s3:
         endpoint: "rook-ceph-rgw-logging.rook-ceph"
+        s3ForcePathStyle: true
         insecure: true
         accessKeyId: "${GRAFANA_LOKI_S3_ACCESSKEYID}"
         secretAccessKey: "${GRAFANA_LOKI_S3_SECRETACCESSKEY}"
