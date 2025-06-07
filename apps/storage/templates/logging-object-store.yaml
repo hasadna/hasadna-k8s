@@ -10,7 +10,6 @@ spec:
       requireSafeReplicaSize: false
   dataPool:
     failureDomain: host
-    requireSafeReplicaSize: false
     replicated:
       size: 1
       requireSafeReplicaSize: false
