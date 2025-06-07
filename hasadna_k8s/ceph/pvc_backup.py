@@ -31,7 +31,7 @@ def main_block(namespace, pvc_name, pv):
 def main_shared(namespace, pvc_name, pv):
     pool = pv['spec']['csi']['volumeAttributes']['pool']
     fs_name = pv['spec']['csi']['volumeAttributes']['fsName']
-    sub_volume_name = pv['spec']['csi']['volumeAttributes']['subVolumeName']
+    sub_volume_name = pv['spec']['csi']['volumeAttributes']['subvolumeName']
     backup_datestr = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
     backup_name = f'hasadna-k8s-pvc-backup-{backup_datestr}'
     print(f'Pool: {pool}, Filesystem name: {fs_name}, Subvolume name: {sub_volume_name}')
