@@ -1,3 +1,4 @@
+import time
 import json
 import datetime
 import subprocess
@@ -34,11 +35,18 @@ def main_shared(namespace, pvc_name, pv):
     sub_volume_name = pv['spec']['csi']['volumeAttributes']['subvolumeName']
     backup_datestr = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
     backup_name = f'hasadna-k8s-pvc-backup-{backup_datestr}'
+    clone_name = f'hasadna-k8s-pvc-backup-{sub_volume_name}-{backup_datestr}'
     print(f'Pool: {pool}, Filesystem name: {fs_name}, Subvolume name: {sub_volume_name}')
     print(f'Backup name: {backup_name}')
+    print(f'Clone name: {clone_name}')
     subprocess.check_call(['ceph', 'fs', 'subvolume', 'snapshot', 'create', fs_name, sub_volume_name, backup_name, 'csi'])
-    subprocess.check_call(['ceph', 'fs', 'subvolume', 'snapshot', 'clone', fs_name, sub_volume_name, backup_name, backup_name, pool, 'csi'])
-    backup_path = subprocess.check_output(['ceph', 'fs', 'subvolume', 'getpath', fs_name, backup_name]).decode().strip()
+    subprocess.check_call(['ceph', 'fs', 'subvolume', 'snapshot', 'clone', fs_name, sub_volume_name, backup_name, clone_name, pool, 'csi'])
+    i = 0
+    while json.loads(subprocess.check_output(['ceph', 'fs', 'clone', 'status', fs_name, clone_name])).get('status', {}).get('state', '') != 'complete':
+        assert i < 360
+        time.sleep(1)
+        i += 1
+    backup_path = subprocess.check_output(['ceph', 'fs', 'subvolume', 'getpath', fs_name, clone_name]).decode().strip()
     print(f'Backup path: {backup_path}')
     subprocess.check_call(['mkdir', '-p', f'/tmp{backup_path}'])
     subprocess.check_call(['ceph-fuse', f'/tmp{backup_path}', '--client-mountpoint', backup_path])
