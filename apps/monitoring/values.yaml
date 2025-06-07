@@ -55,7 +55,9 @@ kube-prometheus-stack:
 
   prometheus:
     prometheusSpec:
-      retention: 2d
+      serviceMonitorSelectorNilUsesHelmValues: false
+      podMonitorSelectorNilUsesHelmValues: false
+      retention: 7d
       resources:
         requests:
           cpu: 400m
