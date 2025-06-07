@@ -156,13 +156,6 @@ alloy:
             target_label  = "service_name"
           }
           rule {
-            source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_controller_kind", "__meta_kubernetes_pod_controller_name"]
-            separator = "_"
-            regex = "(.+)_(.+)_(.+)"
-            replacement = "$1_$2_$3"
-            target_label = "service_name"
-          }
-          rule {
             source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_name", "__meta_kubernetes_pod_uid"]
             target_label  = "__log_pods_subpath"
             separator     = "_"
