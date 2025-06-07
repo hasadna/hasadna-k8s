@@ -20,3 +20,4 @@ spec:
   preservePoolsOnDelete: true
   gateway:
     instances: 1
+    port: 80
