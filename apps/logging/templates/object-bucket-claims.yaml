@@ -1,4 +1,4 @@
-{{- range (list "chunks" "ruler" "admin") }}
+{{- range (list "chunks" "ruler" "lokiadmin") }}
 apiVersion: objectbucket.io/v1alpha1
 kind: ObjectBucketClaim
 metadata:
