@@ -5,14 +5,15 @@ metadata:
 spec:
   metadataPool:
     failureDomain: host
+    requireSafeReplicaSize: false
     replicated:
       size: 1
-      requireSafeReplicaSize: false
+
   dataPool:
     failureDomain: host
+    requireSafeReplicaSize: false
     replicated:
       size: 1
-      requireSafeReplicaSize: false
     # For production it is recommended to use more chunks, such as 4+2 or 8+4
 #    erasureCoded:
 #      dataChunks: 2
