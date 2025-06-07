@@ -23,6 +23,13 @@ RUN apt update && apt install -y rsync git gnupg2 curl ca-certificates lsb-relea
     apt install -y ceph-common=${CEPH_VERSION}-1* &&\
     rm -rf /var/lib/apt/lists/*
 COPY --from=builder /usr/local/bin/kubectl /usr/local/bin/kubectl
+ARG KOPIA_VERSION=0.20.1
+ADD https://github.com/kopia/kopia/releases/download/v${KOPIA_VERSION}/kopia-${KOPIA_VERSION}-linux-x64.tar.gz /tmp/kopia.tar.gz
+RUN cd /tmp &&\
+    tar -xzvf kopia.tar.gz &&\
+    mv kopia-${KOPIA_VERSION}-linux-x64/kopia /usr/local/bin/ &&\
+    chmod +x /usr/local/bin/kopia &&\
+    rm -rf kopia-${KOPIA_VERSION}-linux-x64 kopia.tar.gz
 RUN useradd -m -s /bin/bash hasadna
 RUN mkdir /home/hasadna/app
 WORKDIR /home/hasadna/app
