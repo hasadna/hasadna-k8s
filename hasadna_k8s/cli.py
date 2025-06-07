@@ -15,5 +15,6 @@ for submodule in [
     'github_pusher',
     'storage',
     'workflows',
+    'ceph',
 ]:
     main.add_command(getattr(importlib.import_module(f'.{submodule}.cli', __package__), 'main'), name=submodule.replace('_', '-'))
