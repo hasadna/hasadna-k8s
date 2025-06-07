@@ -32,7 +32,7 @@ parameters:
   objectStoreName: logging
   objectStoreNamespace: rook-ceph
 ---
-{{- range ["chunks", "ruler", "admin"]}}
+{{- range (list "chunks" "ruler" "admin") }}
 apiVersion: objectbucket.io/v1alpha1
 kind: ObjectBucketClaim
 metadata:
