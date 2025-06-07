@@ -38,7 +38,7 @@ kind: ObjectBucketClaim
 metadata:
   name: ceph-logging-bucket-{{ . }}
 spec:
-  BucketName: {{ . }}
+  bucketName: {{ . }}
   storageClassName: rook-ceph-logging-bucket
 ---
 {{- end }}
