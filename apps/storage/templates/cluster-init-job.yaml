@@ -16,7 +16,7 @@ spec:
             - /bin/bash
             - -c
             - |
-              set -euo pipefail
+              set -eo pipefail
               
               # Replicate the script from toolbox.sh inline so the ceph image
               # can be run directly, instead of requiring the rook toolbox
