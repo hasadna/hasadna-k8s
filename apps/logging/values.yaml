@@ -147,13 +147,14 @@ alloy:
             target_label  = "node_name"
           }
           rule {
-            source_labels = ["__meta_kubernetes_pod_name"]
+            source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_name"]
+            separator = "_"
             target_label  = "service_name"
           }
           rule {
-            source_labels = ["__meta_kubernetes_pod_controller_kind", "__meta_kubernetes_pod_controller_name"]
+            source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_controller_kind", "__meta_kubernetes_pod_controller_name"]
             separator = "_"
-            regex = "(.+)_(.+)"
+            regex = "(.+)_(.+)_(.+)"
             target_label = "service_name"
           }
           rule {
