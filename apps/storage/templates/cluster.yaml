@@ -42,18 +42,19 @@ spec:
     count: 3
     # The mons should be on unique nodes. For production, at least 3 nodes are recommended for this reason.
     # Mons should only be allowed on the same node for test environments where data loss is acceptable.
-    allowMultiplePerNode: false
+#    allowMultiplePerNode: false
   mgr:
     # When higher availability of the mgr is needed, increase the count to 2.
     # In that case, one mgr will be active and one in standby. When Ceph updates which
     # mgr is active, Rook will update the mgr services to match the active mgr.
     count: 2
-    allowMultiplePerNode: false
+#    allowMultiplePerNode: false
     modules:
       # List of modules to optionally enable or disable.
       # Note the "dashboard" and "monitoring" modules are already configured by other settings in the cluster CR.
       - name: rook
         enabled: true
+        settings: {}
   # enable the ceph dashboard for viewing cluster status
   dashboard:
     enabled: true
@@ -73,7 +74,7 @@ spec:
     enabled: true
     # Whether to disable the metrics reported by Ceph. If false, the prometheus mgr module and Ceph exporter are enabled.
     # If true, the prometheus mgr module and Ceph exporter are both disabled. Default is false.
-    metricsDisabled: false
+#    metricsDisabled: false
     # Ceph exporter metrics config.
     exporter:
       # Specifies which performance counters are exported.
@@ -100,7 +101,7 @@ spec:
       # Whether to require communication over msgr2. If true, the msgr v1 port (6789) will be disabled
       # and clients will be required to connect to the Ceph cluster with the v2 port (3300).
       # Requires a kernel that supports msgr v2 (kernel 5.11 or CentOS 8.4 or newer).
-      requireMsgr2: false
+#      requireMsgr2: false
     # enable host networking
     #provider: host
     # enable the Multus network provider
@@ -208,7 +209,7 @@ spec:
   #       kubed.appscode.com/sync: "true"
   # If no mgr annotations are set, prometheus scrape annotations will be set by default.
   #   mgr:
-  labels:
+  # labels:
   #   all:
   #   mon:
   #   osd:
@@ -268,6 +269,7 @@ spec:
     # nodes below will be used as storage resources.  Each node's 'name' field should match their 'kubernetes.io/hostname' label.
     nodes:
       - name: "hasadna-rke2-critical1"
+        resources: {}
         devices: # specific devices to use for storage can be specified for each node
           - name: "sdb"
     #       - name: "nvme01" # multiple osds can be created on high performance devices
