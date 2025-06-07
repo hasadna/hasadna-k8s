@@ -31,8 +31,6 @@ spec:
         - name: host-modules
           hostPath:
             path: /lib/modules
-        - name: tmp
-          emptyDir: {}
       script:
         image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:latest
         imagePullPolicy: Always
@@ -62,11 +60,21 @@ spec:
             mountPath: /dev
           - name: host-modules
             mountPath: /lib/modules
-          - name: tmp
-            mountPath: /tmp
+        securityContext:
+          privileged: true
+          runAsUser: 0
+        command: [bash]
         source: |
           set -euo pipefail
           (
+            mkdir -p /etc/ceph
+            echo "[global]
+          mon_host = rook-ceph-mon-a:6789,rook-ceph-mon-b:6789,rook-ceph-mon-c:6789
+
+          [client.admin]
+          keyring = /etc/ceph/keyring" > /etc/ceph/ceph.conf
+            echo "[${ROOK_CEPH_USERNAME}]
+          key = ${ROOK_CEPH_KEYRING}" > /etc/ceph/keyring
             kopia repository connect s3 --bucket=$KOPIA_S3_BUCKET --region=$KOPIA_S3_REGION
           ) 2>&1 | tee /var/log.txt
           cat <<'EOF' > /var/exec_script.sh
