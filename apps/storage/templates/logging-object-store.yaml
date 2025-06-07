@@ -31,14 +31,3 @@ reclaimPolicy: Retain
 parameters:
   objectStoreName: logging
   objectStoreNamespace: rook-ceph
----
-{{- range (list "chunks" "ruler" "admin") }}
-apiVersion: objectbucket.io/v1alpha1
-kind: ObjectBucketClaim
-metadata:
-  name: ceph-logging-bucket-{{ . }}
-spec:
-  bucketName: {{ . }}
-  storageClassName: rook-ceph-logging-bucket
----
-{{- end }}
