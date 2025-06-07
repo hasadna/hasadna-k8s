@@ -21,3 +21,24 @@ spec:
   gateway:
     instances: 1
     port: 80
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+   name: rook-ceph-logging-bucket
+provisioner: rook-ceph.ceph.rook.io/bucket
+reclaimPolicy: Retain
+parameters:
+  objectStoreName: logging
+  objectStoreNamespace: rook-ceph
+---
+{{- range ["chunks", "ruler", "admin"]}}
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: ceph-logging-bucket-{{ . }}
+spec:
+  BucketName: {{ . }}
+  storageClassName: rook-ceph-logging-bucket
+---
+{{- end }}
