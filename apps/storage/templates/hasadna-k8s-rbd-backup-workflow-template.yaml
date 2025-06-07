@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: hasadna-k8s-rbd-backup
+spec:
+  entrypoint: dag
+  arguments:
+    parameters:
+      - name: namespace
+      - name: pvc
+  templates:
+    - name: dag
+      inputs:
+        parameters:
+          - name: namespace
+          - name: pvc
+      dag:
+        tasks:
+          - name: runner
+            templateRef:
+              name: runner
+              template: script
+            arguments:
+              parameters:
+                - name: exec_script
+                  value: |
+                    hasadna-k8s ceph rbd-backup "{{ "{{inputs.parameters.namespace}}" }}" "{{ "{{inputs.parameters.pvc}}" }}"
