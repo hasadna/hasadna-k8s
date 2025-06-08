@@ -1,3 +1,4 @@
+{{ if .Values.isRke2 }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -18,9 +19,10 @@ spec:
     targetRevision: main
   syncPolicy:
     {{ if .Values.allowAutoSync }}
-    #automated:
-    #  prune: true
-    #  selfHeal: true
+    automated:
+      prune: true
+      selfHeal: true
     {{ end }}
     syncOptions:
     - CreateNamespace=true
+{{ end }}
