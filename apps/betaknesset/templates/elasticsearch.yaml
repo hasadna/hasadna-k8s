@@ -12,8 +12,6 @@ spec:
   - name: default
     count: 1
     podTemplate:
-      metadata:
-        creationTimestamp: null
       spec:
         containers:
           - name: elasticsearch
