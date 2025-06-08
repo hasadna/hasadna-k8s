@@ -26,13 +26,13 @@ spec:
       - metadata:
           name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
         spec:
-          storageClassName: "local-storage"
+          storageClassName: "rook-ceph-block"
           accessModes:
-            - ReadWriteMany
+            - ReadWriteOnce
           resources:
             requests:
-              storage: 500Gi
+              storage: 15Gi
           selector:
             matchLabels:
-              app.kubernetes.io/name: betaknesset-elasticsearch
+              app.kubernetes.io/name: betaknesset-elasticsearch2
               app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage

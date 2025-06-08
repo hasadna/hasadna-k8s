@@ -33,6 +33,8 @@ spec:
           subPath: dbdata
       volumes:
       - name: data
-        nfs:
-          server: {{ .Values.postgres.nfsServer | quote }}
-          path: {{ $.Values.postgres.nfsPath | quote }}
+        persistentVolumeClaim:
+          claimName: postgres2
+#        nfs:
+#          server: {{ .Values.postgres.nfsServer | quote }}
+#          path: {{ $.Values.postgres.nfsPath | quote }}
