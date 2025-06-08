@@ -1,3 +1,4 @@
+{{- if false }}  # still running in old cluster
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -14,10 +15,11 @@ spec:
     repoURL: https://github.com/hasadna/migdar-k8s.git
     targetRevision: codex/upgrade-ingresses-to-v1
   syncPolicy:
-    {{ if .Values.allowAutoSync }}
-    automated:
-      prune: true
-      selfHeal: true
-    {{ end }}
+#    {{ if .Values.allowAutoSync }}
+#    automated:
+#      prune: true
+#      selfHeal: true
+#    {{ end }}
     syncOptions:
     - CreateNamespace=true
+{{- end }}

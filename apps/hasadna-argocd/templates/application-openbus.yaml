@@ -1,3 +1,4 @@
+{{- if false }}  # still running in old cluster
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -15,9 +16,10 @@ spec:
     targetRevision: master
   syncPolicy:
     #{{ if .Values.allowAutoSync }}
-    automated:
-      prune: true
-      selfHeal: true
+#    automated:
+#      prune: true
+#      selfHeal: true
     #{{ end }}
     syncOptions:
      - CreateNamespace=true
+{{- end }}
