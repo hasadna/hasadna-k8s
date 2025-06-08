@@ -28,7 +28,7 @@ discourse:
         memory: "1200Mi"
   persistence:
     enabled: true
-    existingClaim: "discourse"
+    existingClaim: "discourse2"
   ingress:
     enabled: true
     annotations:
@@ -50,7 +50,7 @@ discourse:
       database: discourse
     primary:
       persistence:
-        existingClaim: "postgres"
+        existingClaim: "postgres2"
       resources:
         requests:
           memory: 256Mi
@@ -63,7 +63,7 @@ discourse:
       enabled: false
     master:
       persistence:
-        existingClaim: "redis"
+        existingClaim: "redis2"
       resources:
         requests:
           cpu: "25m"
