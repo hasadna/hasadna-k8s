@@ -89,7 +89,9 @@ spec:
           secretName: {{ .Values.dbOps.secretName | default "ckan-db-backups" | quote }}
       {{ end }}
       - name: db
-        nfs:
-          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: /odata/postgresql-data
+        persistentVolumeClaim:
+          claimName: postgresql-data2
+#        nfs:
+#          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
+#          path: /odata/postgresql-data
 {{ end }}

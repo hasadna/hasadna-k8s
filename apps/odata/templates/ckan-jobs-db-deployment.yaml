@@ -33,8 +33,10 @@ spec:
           name: ckan-jobs-db
       volumes:
       - name: ckan-jobs-db
-        nfs:
-          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: /odata/ckan-jobs-db
+        persistentVolumeClaim:
+          claimName: ckan-jobs-db2
+#        nfs:
+#          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
+#          path: /odata/ckan-jobs-db
 {{ end }}
 {{ end }}

@@ -130,9 +130,11 @@ spec:
         configMap:
           name: ckan
       - name: pipelines
-        nfs:
-          server: {{ .Values.ckanDataNfsServer | quote }}
-          path: /odata/pipelines
+        persistentVolumeClaim:
+          claimName: pipelines2
+#        nfs:
+#          server: {{ .Values.ckanDataNfsServer | quote }}
+#          path: /odata/pipelines
       - name: ckan
         persistentVolumeClaim:
           claimName: ckan

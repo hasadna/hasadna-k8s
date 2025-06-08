@@ -94,8 +94,10 @@ spec:
         persistentVolumeClaim:
           claimName: ckan
       - name: pipelines
-        nfs:
-          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: /odata/pipelines
+        persistentVolumeClaim:
+          claimName: pipelines2
+#        nfs:
+#          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
+#          path: /odata/pipelines
 {{ end }}
 {{ end }}

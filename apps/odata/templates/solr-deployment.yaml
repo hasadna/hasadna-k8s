@@ -56,7 +56,9 @@ spec:
           mountPath: /opt/solr/server/solr/ckan/data
       volumes:
       - name: solr
-        nfs:
-          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: /odata/solr
+        persistentVolumeClaim:
+          claimName: solr2
+#        nfs:
+#          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
+#          path: /odata/solr
 {{ end }}
