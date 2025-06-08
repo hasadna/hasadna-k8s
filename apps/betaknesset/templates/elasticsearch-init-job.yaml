@@ -25,6 +25,6 @@ spec:
             - bash
             - -c
             - |
-              curl -u "elastic:${OLD_PASSWORD}" -X POST "https://1.2.3.4:9200/_security/user/elastic/_password" \
+              curl -ku "elastic:${OLD_PASSWORD}" -X POST "https://betaknesset-elasticsearch-es-internal-http:9200/_security/user/elastic/_password" \
                 -H 'Content-Type: application/json' \
                 -d '{"password": "'"${NEW_PASSWORD}"'"}'
