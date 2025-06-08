@@ -92,8 +92,10 @@ spec:
 
       volumes:
         - name: data
-          nfs:
-            server: {{ .Values.mapaliDbNfsServer | quote }}
-            path: {{ .Values.mapaliDbNfsPath | quote }}
+          persistentVolumeClaim:
+            claimName: mapali2
+#          nfs:
+#            server: {{ .Values.mapaliDbNfsServer | quote }}
+#            path: {{ .Values.mapaliDbNfsPath | quote }}
 
 {{ end }}

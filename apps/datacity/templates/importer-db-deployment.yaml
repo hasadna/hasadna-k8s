@@ -27,8 +27,10 @@ spec:
           subPath: postgres_data
       volumes:
       - name: data
-        nfs:
-          server: {{ .Values.importer.nfsServer | quote }}
-          path: {{ .Values.importer.nfsPath | quote }}
+        persistentVolumeClaim:
+          claimName: importer2
+#        nfs:
+#          server: {{ .Values.importer.nfsServer | quote }}
+#          path: {{ .Values.importer.nfsPath | quote }}
 
 {{ end }}

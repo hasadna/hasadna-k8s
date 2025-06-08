@@ -52,8 +52,10 @@ spec:
           value: "noreply@baserow.datacity.org.il"
       volumes:
         - name: data
-          nfs:
-            server: {{ .Values.baserowNfsServer | quote }}
-            path: {{ .Values.baserowNfsPath | quote }}
+          persistentVolumeClaim:
+            claimName: baserow2
+#          nfs:
+#            server: {{ .Values.baserowNfsServer | quote }}
+#            path: {{ .Values.baserowNfsPath | quote }}
 
 {{ end }}

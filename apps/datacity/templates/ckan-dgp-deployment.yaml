@@ -77,11 +77,15 @@ spec:
         - secretRef: {"name": "ckan-dgp-instances"}
       volumes:
         - name: data
-          nfs:
-            server: {{ .Values.ckanDgpDbNfsServer | quote }}
-            path: {{ .Values.ckanDgpDbNfsPath | quote }}
+          persistentVolumeClaim:
+            claimName: ckan-dgp-db2
+#          nfs:
+#            server: {{ .Values.ckanDgpDbNfsServer | quote }}
+#            path: {{ .Values.ckanDgpDbNfsPath | quote }}
         - name: logs
-          nfs:
-            server: {{ .Values.ckanDgpLogsNfsServer | quote }}
-            path: {{ .Values.ckanDgpLogsNfsPath | quote }}
+          persistentVolumeClaim:
+            claimName: ckan-dgp-logs2
+#          nfs:
+#            server: {{ .Values.ckanDgpLogsNfsServer | quote }}
+#            path: {{ .Values.ckanDgpLogsNfsPath | quote }}
 {{ end }}
