@@ -26,7 +26,7 @@ label-studio:
     persistence:
       config:
         volume:
-          existingClaim: "labelstudio"
+          existingClaim: "labelstudio2"
   app:
     extraEnvironmentVars:
       LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK: "true"
@@ -43,7 +43,7 @@ label-studio:
   postgresql:
     primary:
       persistence:
-        existingClaim: "labelstudio-postgres"
+        existingClaim: "labelstudio-postgres2"
 
 secrets:
   - name: kopia
