@@ -22,17 +22,10 @@ spec:
               limits:
                 memory: 4Gi
                 cpu: 2
-    volumeClaimTemplates:
-      - metadata:
-          name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
-        spec:
-          storageClassName: "rook-ceph-block"
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 15Gi
-          selector:
-            matchLabels:
-              app.kubernetes.io/name: betaknesset-elasticsearch2
-              app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
+            volumeMounts:
+              - name: existing-data
+                mountPath: /usr/share/elasticsearch/data
+        volumes:
+          - name: existing-data
+            persistentVolumeClaim:
+              claimName: elasticsearch2
