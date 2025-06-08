@@ -22,10 +22,3 @@ spec:
               limits:
                 memory: 4Gi
                 cpu: 2
-            volumeMounts:
-              - name: existing-data
-                mountPath: /usr/share/elasticsearch/data
-        volumes:
-          - name: existing-data
-            persistentVolumeClaim:
-              claimName: elasticsearch2
