@@ -29,6 +29,8 @@ spec:
           subPath: db
       volumes:
       - name: data
-        nfs:
-          server: {{ .Values.db.nfsServer | quote }}
-          path: {{ .Values.db.nfsPath | quote }}
+        persistentVolumeClaim:
+          claimName: db2
+#        nfs:
+#          server: {{ .Values.db.nfsServer | quote }}
+#          path: {{ .Values.db.nfsPath | quote }}

@@ -59,13 +59,15 @@ spec:
           mountPath: /etc/rsp
       volumes:
       - name: runtimedata
-        {{ if and .Values.nfsServer .Values.nfsPath }}
-        nfs:
-          server: {{ .Values.nfsServer | quote }}
-          path: {{ $.Values.nfsPath | quote }}
-        {{ else }}
-        emptyDir: {}
-        {{ end }}
+        persistentVolumeClaim:
+          claimName: proxy2
+#        {{ if and .Values.nfsServer .Values.nfsPath }}
+#        nfs:
+#          server: {{ .Values.nfsServer | quote }}
+#          path: {{ $.Values.nfsPath | quote }}
+#        {{ else }}
+#        emptyDir: {}
+#        {{ end }}
       - name: config
         secret:
           # SEE https://github.com/OriHoch/ResourceSaverProxy
