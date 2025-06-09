@@ -36,7 +36,9 @@ spec:
           mountPath: /opt/hasadna/data
       volumes:
       - name: legacy-openbus
-        nfs:
-          server: {{ .Values.nfsServer | quote }}
-          path: {{ .Values.legacy.nfsPath | quote }}
+        persistentVolumeClaim:
+          claimName: legacy2
+#        nfs:
+#          server: {{ .Values.nfsServer | quote }}
+#          path: {{ .Values.legacy.nfsPath | quote }}
 {{ end }}

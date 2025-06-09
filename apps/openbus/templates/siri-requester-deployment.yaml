@@ -55,9 +55,11 @@ spec:
               mountPath: /siri_requester_storage
       volumes:
         - name: sirirequester
-          nfs:
-            server: {{ .Values.nfsServer | quote }}
-            path: {{ .Values.siriRequesterNfsPath | quote }}
+          persistentVolumeClaim:
+            claimName: siri-requester2
+#          nfs:
+#            server: {{ .Values.nfsServer | quote }}
+#            path: {{ .Values.siriRequesterNfsPath | quote }}
         # - name: sshtunnelsecret
         #   secret:
         #     secretName: {{ .Values.sshTunnelSecretName }}

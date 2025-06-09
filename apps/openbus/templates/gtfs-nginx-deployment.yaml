@@ -32,11 +32,13 @@ spec:
         configMap:
           name: gtfs-nginx
       - name: gtfs
-        {{ if .Values.gtfsNginxPersistentVolumeClaimName }}
         persistentVolumeClaim:
-          claimName: {{ .Values.gtfsNginxPersistentVolumeClaimName | quote }}
-        {{ else }}
-        nfs:
-          server: {{ .Values.nfsServer | quote }}
-          path: {{ .Values.gtfsNfsPath | quote }}
-        {{ end }}
+          claimName: gtfs-nginx
+#        {{ if .Values.gtfsNginxPersistentVolumeClaimName }}
+#        persistentVolumeClaim:
+#          claimName: {{ .Values.gtfsNginxPersistentVolumeClaimName | quote }}
+#        {{ else }}
+#        nfs:
+#          server: {{ .Values.nfsServer | quote }}
+#          path: {{ .Values.gtfsNfsPath | quote }}
+#        {{ end }}
