@@ -63,13 +63,15 @@ spec:
             subPath: php.ini
       volumes:
         - name: data
-          {{ if and .nfsServer .nfsPath }}
-          nfs:
-            server: {{ .nfsServer | quote }}
-            path: {{ .nfsPath | quote }}
-          {{ else }}
-          emptyDir: {}
-          {{ end }}
+          persistentVolumeClaim:
+            claimName: {{ .pvcName }}
+#          {{ if and .nfsServer .nfsPath }}
+#          nfs:
+#            server: {{ .nfsServer | quote }}
+#            path: {{ .nfsPath | quote }}
+#          {{ else }}
+#          emptyDir: {}
+#          {{ end }}
         - name: php-ini
           configMap:
             name: php-ini-{{ .name }}
