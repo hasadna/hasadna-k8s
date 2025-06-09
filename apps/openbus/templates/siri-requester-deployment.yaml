@@ -21,7 +21,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: app
-          image: {{ .Values.siriRequesterImage }}
+          image: {{ .Values.siriRequesterImage | replace "docker.pkg.github.com" "ghcr.io" }}
           resources: {{ .Values.siriRequesterResources }}
           {{ if .Values.siriRequesterPauseForDebug }}
           command:
@@ -44,7 +44,7 @@ spec:
             # - name: sshtunnelsecret
             #   mountPath: /ssh_tunnel_private_key
         - name: health
-          image: {{ .Values.siriRequesterImage }}
+          image: {{ .Values.siriRequesterImage | replace "docker.pkg.github.com" "ghcr.io" }}
           resources: {{ .Values.siriRequesterHealthResources }}
           command: [open-bus-siri-requester, health-daemon-start]
           env:
