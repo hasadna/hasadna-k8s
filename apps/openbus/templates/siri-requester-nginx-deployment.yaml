@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: nginx
-          image: {{ .Values.siriRequesterNginxImage }}
+          image: {{ .Values.siriRequesterNginxImage | replace "docker.pkg.github.com" "ghcr.io" }}
           resources: {{ .Values.siriRequesterNginxResources }}
           env:
             - name: SIRI_REQUESTER_HEALTH_URL

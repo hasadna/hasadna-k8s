@@ -18,7 +18,7 @@ spec:
       terminationGracePeriodSeconds: 240
       containers:
         - name: process-new-snapshots
-          image: {{ .Values.siriEtlImage }}
+          image: {{ .Values.siriEtlImage | replace "docker.pkg.github.com" "ghcr.io" }}
           resources: {{ .Values.siriEtlProcessNewSnapshotsResources }}
           args:
             - start-process-new-snapshots-daemon
