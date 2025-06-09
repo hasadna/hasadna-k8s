@@ -17,6 +17,16 @@ ingresses:
       - host: www.otrain.org
         serviceName: redirector-nginx
         servicePort: 80
+  - name: datacity-redirect
+    rules:
+      - host: datacity.org.il
+        serviceName: redirector-nginx
+        servicePort: 80
+  - name: hasadna-site-redirect
+    rules:
+      - host: hasadna.org.il
+        serviceName: redirector-nginx
+        servicePort: 80
 
 label-studio:
   global:
