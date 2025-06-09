@@ -29,12 +29,14 @@ spec:
           subPath: reportit_scripts
       volumes:
       - name: data
-        {{ if .Values.botkit.persistentVolumeClaimName }}
         persistentVolumeClaim:
-          claimName: {{ .Values.botkit.persistentVolumeClaimName | quote }}
-        {{ else if .Values.botkit.nfsServer }}
-        nfs:
-          server: {{ .Values.botkit.nfsServer | quote }}
-          path: {{ .Values.botkit.nfsPath | quote }}
-        {{ end }}
+          claimName: botkit2
+#        {{ if .Values.botkit.persistentVolumeClaimName }}
+#        persistentVolumeClaim:
+#          claimName: {{ .Values.botkit.persistentVolumeClaimName | quote }}
+#        {{ else if .Values.botkit.nfsServer }}
+#        nfs:
+#          server: {{ .Values.botkit.nfsServer | quote }}
+#          path: {{ .Values.botkit.nfsPath | quote }}
+#        {{ end }}
 {{ end }}
