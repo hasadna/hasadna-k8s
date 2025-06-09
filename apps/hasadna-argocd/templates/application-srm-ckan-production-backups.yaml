@@ -12,7 +12,7 @@ spec:
     plugin:
       name: uumpa
     repoURL: https://github.com/hasadna/srm-devops.git
-    targetRevision: master
+    targetRevision: main
   syncPolicy:
     {{ if .Values.allowAutoSync }}
     automated:
