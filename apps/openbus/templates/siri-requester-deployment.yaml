@@ -15,9 +15,9 @@ spec:
       labels:
         app: siri-requester
     spec:
-      nodeSelector:
-        # This node label is updated by apps/openbus/bin/update_node_allowed_ips.py script
-        open-bus-allowed-ip: "true"
+#      nodeSelector:
+#         This node label is updated by apps/openbus/bin/update_node_allowed_ips.py script
+#        open-bus-allowed-ip: "true"
       terminationGracePeriodSeconds: 30
       containers:
         - name: app
