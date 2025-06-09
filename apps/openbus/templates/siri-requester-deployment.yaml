@@ -35,6 +35,10 @@ spec:
             # we connect to MOT directly from specific nodes whose IPs are allows in MOT, so we don't need the proxy
             # - name: OPEN_BUS_SSH_TUNNEL_PRIVATE_KEY_FILE
             #   value: "/ssh_tunnel_private_key/key"
+            - name: HTTP_PROXY
+              value: http://172.16.0.1:9999
+            - name: HTTPS_PROXY
+              value: http://172.16.0.1:9999
           envFrom:
             - secretRef:
                 name: {{ .Values.siriRequesterSecretName }}
