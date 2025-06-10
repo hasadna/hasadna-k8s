@@ -1,32 +1,24 @@
 enabled: true
 
-ingresses:
-  - name: kikar-redirect
-    rules:
-      - host: kikar.org
-        serviceName: redirector-nginx
-        servicePort: 80
-      - host: www.kikar.org
-        serviceName: redirector-nginx
-        servicePort: 80
-  - name: otrain-redirect
-    rules:
-      - host: otrain.org
-        serviceName: redirector-nginx
-        servicePort: 80
-      - host: www.otrain.org
-        serviceName: redirector-nginx
-        servicePort: 80
-  - name: datacity-redirect
-    rules:
-      - host: datacity.org.il
-        serviceName: redirector-nginx
-        servicePort: 80
-  - name: hasadna-site-redirect
-    rules:
-      - host: hasadna.org.il
-        serviceName: redirector-nginx
-        servicePort: 80
+redirects:
+  - name: kikar
+    hosts:
+      - kikar.org
+      - www.kikar.org
+    redirect: "https://www.hasadna.org.il/%D7%9B%D7%99%D7%9B%D7%A8-%D7%94%D7%9E%D7%93%D7%99%D7%A0%D7%94/"
+  - name: otrain
+    hosts:
+      - otrain.org
+      - www.otrain.org
+    redirect: "https://www.hasadna.org.il/%d7%94%d7%9e%d7%a2%d7%91%d7%93%d7%94-%d7%a9%d7%9c%d7%a0%d7%95/%d7%a8%d7%9b%d7%91%d7%aa-%d7%a4%d7%aa%d7%95%d7%97%d7%94/"
+  - name: datacity
+    hosts:
+      - datacity.org.il
+    redirect: "https://www.datacity.org.il/"
+  - name: hasadna-site
+    hosts:
+      - hasadna.org.il
+    redirect: "https://www.hasadna.org.il/"
 
 label-studio:
   global:
