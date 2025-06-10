@@ -17,12 +17,12 @@ spec:
     syncOptions:
     - CreateNamespace=true
   ignoreDifferences:
-    - group: v1
+    - group: '*'
       kind: Secret
       name: hasadna-ls-app-django-secret
       jsonPointers:
       - /data/key
-    - group: v1
+    - group: '*'
       kind: Secret
       name: hasadna-postgresql
       jsonPointers:
