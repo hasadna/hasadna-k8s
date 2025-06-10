@@ -2,11 +2,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: scheduler
+  name: worker
 spec:
   selector:
     matchLabels:
-      app: scheduler
+      app: worker
   replicas: 1
   revisionHistoryLimit: 2
   strategy:
@@ -14,14 +14,19 @@ spec:
   template:
     metadata:
       labels:
-        app: scheduler
+        app: worker
     spec:
       terminationGracePeriodSeconds: 10
       containers:
-      - name: scheduler
+      - name: worker
         image: {{ .Values.redashImage | quote }}
-        args: [scheduler]
-        resources: {{ toYaml .Values.scheduler.resources | nindent 10 }}
+        args: ["worker"]
+        resources: {{ toYaml .Values.worker.resources | nindent 10 }}
+        env:
+        - name: QUEUES
+          value: "periodic emails default"
+        - name: WORKERS_COUNT
+          value: "1"
         envFrom:
         - secretRef:
             name: redash

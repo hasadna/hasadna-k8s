@@ -1,5 +1,5 @@
 enabled: true
-redashImage: redash/redash:8.0.0.b32245
+redashImage: redash/redash:10.0.0.b50363
 redashInitialize: ""
 
 server:
@@ -10,6 +10,9 @@ scheduler:
   resources: {"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
 
 scheduledWorker:
+  resources: {"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
+
+worker:
   resources: {"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
 
 adhocWorker:
