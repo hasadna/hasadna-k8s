@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: terraform-state-db
-  replicas: 0  # moved to rke2 cluster
+  replicas: 1
   revisionHistoryLimit: 2
   strategy:
     type: Recreate
@@ -59,14 +59,14 @@ spec:
               mountPath: /opt/secured_ssl
       volumes:
         - name: data
-          {{ if .Values.terraformStateDb.nfsServer }}
-          nfs:
-            server: {{ .Values.terraformStateDb.nfsServer | quote }}
-            path: {{ .Values.terraformStateDb.nfsPath | quote }}
-          {{ else }}
           persistentVolumeClaim:
             claimName: terraformstatedb
-          {{ end }}
+#          {{ if .Values.terraformStateDb.nfsServer }}
+#          nfs:
+#            server: {{ .Values.terraformStateDb.nfsServer | quote }}
+#            path: {{ .Values.terraformStateDb.nfsPath | quote }}
+#          {{ else }}
+#          {{ end }}
         - name: ssl
           secret:
             secretName: terraform-state-db

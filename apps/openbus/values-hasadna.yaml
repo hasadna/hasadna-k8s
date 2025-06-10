@@ -36,7 +36,6 @@ airflowWebserver:
 airflowScheduler:
   resources: '{"requests": {"cpu": "2000m", "memory": "12000Mi"}, "limits": {"memory": "16000Mi"}}'
 
-  # TODO: uncomment on rke2
   # persistentVolumeClaimName: airflow-scheduler
 
 airflow:
@@ -54,7 +53,6 @@ backendResources: {"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"me
 
 gtfsNfsPath: "/openbus/gtfs"
 
-# TODO: uncomment on rke2
 #gtfsNginxPersistentVolumeClaimName: gtfs-nginx
 
 gtfsNginxResources: {"requests": {"cpu": "50m", "memory": "50Mi"}, "limits": {"memory": "200Mi"}}
