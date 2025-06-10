@@ -1,5 +1,5 @@
 enabled: true
-redashImage: redash/redash:10.0.0.b50363
+redashImage: redash/redash:25.1.0
 redashInitialize: ""
 
 server:
