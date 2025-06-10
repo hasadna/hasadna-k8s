@@ -7,7 +7,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
   rules:
-  - host: "argocd.~iac:rke2_catchall_hostname~"
+  - host: "argocd.hasadna.org.il"
     http:
       paths:
       - pathType: Prefix
@@ -19,5 +19,5 @@ spec:
               name: http
   tls:
   - hosts:
-    - "argocd.~iac:rke2_catchall_hostname~"
+    - "argocd.hasadna.org.il"
     secretName: argocd-server-https-cert
