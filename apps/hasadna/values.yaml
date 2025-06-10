@@ -19,6 +19,10 @@ redirects:
     hosts:
       - hasadna.org.il
     redirect: "https://www.hasadna.org.il/"
+  - name: argocd-rke2
+    hosts:
+      - argocd.rke2.hasadna.org.il
+    redirect: "https://argocd.hasadna.org.il"
 
 label-studio:
   global:
