@@ -15,11 +15,11 @@ spec:
     repoURL: https://github.com/hasadna/migdar-k8s.git
     targetRevision: master
   syncPolicy:
-    {{ if .Values.allowAutoSync }}
-    automated:
-      prune: true
-      selfHeal: true
-    {{ end }}
+#    {{ if .Values.allowAutoSync }}
+#    automated:
+#      prune: true
+#      selfHeal: true
+#    {{ end }}
     syncOptions:
     - CreateNamespace=true
 {{ end }}

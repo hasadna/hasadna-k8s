@@ -1,4 +1,4 @@
-ARG ARGOCD_VERSION=2.8.2
+ARG ARGOCD_VERSION=3.0.3
 FROM quay.io/argoproj/argocd:v$ARGOCD_VERSION
 USER root
 ADD https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz /opt/google-cloud-cli-linux-x86_64.tar.gz

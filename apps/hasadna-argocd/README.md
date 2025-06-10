@@ -84,22 +84,26 @@ kustomize build apps/hasadna-argocd/manifests | kubectl apply -n argocd -f -
 Deploy ingresses
 
 ```
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: argocd-server-https
   namespace: argocd
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-    kubernetes.io/ingress.class: nginx
+    
 spec:
   rules:
   - host: argocd.hasadna.org.il
     http:
       paths:
-      - backend:
-          serviceName: argocd-server
-          servicePort: http
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              name: http
   tls:
   - hosts:
     - argocd.hasadna.org.il
@@ -107,23 +111,26 @@ spec:
 ```
 
 ```
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: argocd-server-grpc
   namespace: argocd
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
 spec:
   rules:
   - host: argocd-grpc.hasadna.org.il
     http:
       paths:
-      - backend:
-          serviceName: argocd-server
-          servicePort: https
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              name: https
   tls:
   - hosts:
     - argocd-grpc.hasadna.org.il

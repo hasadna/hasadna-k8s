@@ -37,7 +37,6 @@ spec:
               mountPath: /opt/secured_ssl
             - name: data
               mountPath: /var/lib/postgresql/data
-              subPath: terraform_state_db_postgres
       containers:
         - name: postgres
           # pulled Jun 15, 2022
@@ -56,14 +55,18 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /var/lib/postgresql/data
-              subPath: terraform_state_db_postgres
             - name: secured-ssl
               mountPath: /opt/secured_ssl
       volumes:
         - name: data
+          {{ if .Values.terraformStateDb.nfsServer }}
           nfs:
             server: {{ .Values.terraformStateDb.nfsServer | quote }}
             path: {{ .Values.terraformStateDb.nfsPath | quote }}
+          {{ else }}
+          persistentVolumeClaim:
+            claimName: terraformstatedb
+          {{ end }}
         - name: ssl
           secret:
             secretName: terraform-state-db

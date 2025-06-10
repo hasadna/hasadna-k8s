@@ -1,11 +1,4 @@
 enabled: true
-adminerEnabled: false
-dockerDaemonConfig:
-  "log-driver": "json-file"
-  "log-opts":
-    "max-size": "100m"
-    "max-file": "5"
-    "compress": "true"
 
 terraformStateDb:
   nodePort: 32162
@@ -16,8 +9,8 @@ terraformStateDb:
     limits:
       memory: 500Mi
       cpu: 100m
-  nfsServer: "~iac:hasadna_nfs1_internal_ip~"
-  nfsPath: "/terraform/state_db"
+#  nfsServer: "~iac:hasadna_nfs1_internal_ip~"
+#  nfsPath: "/terraform/state_db"
 
 secrets:
   - name: terraform-state-db
@@ -27,6 +20,3 @@ secrets:
       #  -keyout server.key -subj "/CN=terraform-state-db.localhost"
       server.key: "~vault:Projects/k8s/terraform:state_db_server.key~"
       server.crt: "~vault:Projects/k8s/terraform:state_db_server.crt~"
-  - name: host-scripts
-    data:
-      scripts: "~vault:Projects/k8s/hostscripts:scripts~"

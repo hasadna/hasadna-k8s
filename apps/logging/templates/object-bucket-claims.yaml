@@ -1,0 +1,10 @@
+{{- range (list "chunks" "ruler" "lokiadmin") }}
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: bucket-{{ . }}
+spec:
+  bucketName: {{ . }}
+  storageClassName: rook-ceph-logging-bucket
+---
+{{- end }}
