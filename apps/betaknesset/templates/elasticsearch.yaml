@@ -18,17 +18,7 @@ spec:
             resources:
               requests:
                 memory: 3Gi
-                cpu: 1
+                cpu: '1'
               limits:
                 memory: 4Gi
-                cpu: 2
-    volumeClaimTemplates:
-      - metadata:
-          name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
-        spec:
-          storageClassName: "nfs-client"
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 50Gi
+                cpu: '2'

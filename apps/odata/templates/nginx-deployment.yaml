@@ -41,9 +41,8 @@ spec:
         - name: nginx-htpasswd
           mountPath: /etc/htpasswd
           readOnly: true
-        - name: ckan-data
+        - name: ckan
           mountPath: /var/lib/ckan
-          subPath: ckan
       volumes:
       - name: nginx-conf
         configMap:
@@ -55,16 +54,6 @@ spec:
         {{ else }}
         emptyDir: {}
         {{ end }}
-      - name: ckan-data
-        {{ if .Values.nginxPersistentVolumeClaimName }}
+      - name: ckan
         persistentVolumeClaim:
-          claimName: {{ .Values.nginxPersistentVolumeClaimName | quote }}
-        {{ else if .Values.hostPath }}
-        hostPath:
-          path: {{ .Values.hostPath | quote }}
-          type: DirectoryOrCreate
-        {{ else }}
-        nfs:
-          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
-        {{ end }}
+          claimName: ckan

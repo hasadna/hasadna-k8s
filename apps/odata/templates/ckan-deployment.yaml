@@ -56,8 +56,8 @@ spec:
         securityContext:
           runAsUser: 0
         volumeMounts:
-        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
-        - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
+        - {mountPath: /var/lib/ckan, name: ckan}
+        - {mountPath: /var/ckan/pipelines, name: pipelines}
         - name: ckan-conf-secrets
           mountPath: /etc/ckan-conf/secrets
       {{ if .Values.ckanSolrRebuild }}
@@ -74,14 +74,14 @@ spec:
         - name: GUNICORN_WORKERS
           value: {{ .Values.ckanGunicornWorkers | default "2" | quote }}
         volumeMounts:
-        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
+        - {mountPath: /var/lib/ckan, name: ckan}
         - name: ckan-conf-secrets
           mountPath: /etc/ckan-conf/secrets
           readOnly: true
         - name: ckan-conf-templates
           mountPath: /etc/ckan-conf/templates
           readOnly: true
-        - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
+        - {mountPath: /var/ckan/pipelines, name: pipelines}
       {{ end }}
       containers:
       - name: ckan
@@ -99,14 +99,14 @@ spec:
         - containerPort: 5000
         resources: {{ .Values.ckanResources }}
         volumeMounts:
-        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
+        - {mountPath: /var/lib/ckan, name: ckan}
         - name: ckan-conf-secrets
           mountPath: /etc/ckan-conf/secrets
           readOnly: true
         - name: ckan-conf-templates
           mountPath: /etc/ckan-conf/templates
           readOnly: true
-        - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
+        - {mountPath: /var/ckan/pipelines, name: pipelines}
         readinessProbe:
           httpGet:
             path: /
@@ -129,17 +129,13 @@ spec:
       - name: ckan-conf-templates
         configMap:
           name: ckan
-      - name: ckan-data
-        {{ if .Values.ckanPersistentVolumeClaimName }}
+      - name: pipelines
         persistentVolumeClaim:
-          claimName: {{ .Values.ckanPersistentVolumeClaimName | quote }}
-        {{ else if .Values.hostPath }}
-        hostPath:
-          path: {{ .Values.hostPath | quote }}
-          type: DirectoryOrCreate
-        {{ else }}
-        nfs:
-          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
-        {{ end }}
+          claimName: pipelines2
+#        nfs:
+#          server: {{ .Values.ckanDataNfsServer | quote }}
+#          path: /odata/pipelines
+      - name: ckan
+        persistentVolumeClaim:
+          claimName: ckan
 {{ end }}

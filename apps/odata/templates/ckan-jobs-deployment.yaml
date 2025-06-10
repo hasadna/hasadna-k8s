@@ -50,8 +50,8 @@ spec:
         securityContext:
           runAsUser: 0
         volumeMounts:
-        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
-        - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
+        - {mountPath: /var/lib/ckan, name: ckan}
+        - {mountPath: /var/ckan/pipelines, name: pipelines}
         - name: ckan-conf-secrets
           mountPath: /etc/ckan-conf/secrets
       {{ end }}
@@ -70,14 +70,14 @@ spec:
           value: {{ .Values.ckanGunicornWorkers | default "2" | quote }}
         resources: {{ .Values.ckanJobsResources }}
         volumeMounts:
-        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
+        - {mountPath: /var/lib/ckan, name: ckan}
         - name: ckan-conf-secrets
           mountPath: /etc/ckan-conf/secrets
           readOnly: true
         - name: ckan-conf-templates
           mountPath: /etc/ckan-conf/templates
           readOnly: true
-        - {mountPath: /var/ckan/pipelines, name: ckan-data, subPath: pipelines}
+        - {mountPath: /var/ckan/pipelines, name: pipelines}
       {{ if .Values.ckanJobsPortForward }}
       - name: port-forward
         image: orihoch/dataportal-kubectl:2
@@ -90,18 +90,14 @@ spec:
       - name: ckan-conf-templates
         configMap:
           name: ckan
-      - name: ckan-data
-        {{ if .Values.ckanJobsPersistentVolumeClaimName }}
+      - name: ckan
         persistentVolumeClaim:
-          claimName: {{ .Values.ckanJobsPersistentVolumeClaimName | quote }}
-        {{ else if .Values.hostPath }}
-        hostPath:
-          path: {{ .Values.hostPath | quote }}
-          type: DirectoryOrCreate
-        {{ else }}
-        nfs:
-          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
-        {{ end }}
+          claimName: ckan
+      - name: pipelines
+        persistentVolumeClaim:
+          claimName: pipelines2
+#        nfs:
+#          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
+#          path: /odata/pipelines
 {{ end }}
 {{ end }}

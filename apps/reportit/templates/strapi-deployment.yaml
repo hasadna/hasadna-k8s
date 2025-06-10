@@ -32,12 +32,14 @@ spec:
           value: 'postgres'
       volumes:
       - name: data
-        {{ if .Values.strapi.persistentVolumeClaimName }}
         persistentVolumeClaim:
-          claimName: {{ .Values.strapi.persistentVolumeClaimName | quote }}
-        {{ else if .Values.strapi.nfsServer }}
-        nfs:
-          server: {{ .Values.strapi.nfsServer | quote }}
-          path: {{ .Values.strapi.nfsPath | quote }}
-        {{ end }}
+          claimName: strapi2
+#        {{ if .Values.strapi.persistentVolumeClaimName }}
+#        persistentVolumeClaim:
+#          claimName: {{ .Values.strapi.persistentVolumeClaimName | quote }}
+#        {{ else if .Values.strapi.nfsServer }}
+#        nfs:
+#          server: {{ .Values.strapi.nfsServer | quote }}
+#          path: {{ .Values.strapi.nfsPath | quote }}
+#        {{ end }}
 {{ end }}

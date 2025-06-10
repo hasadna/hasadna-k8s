@@ -19,7 +19,7 @@ spec:
       terminationGracePeriodSeconds: 60
       containers:
       - name: db
-        image: "docker.pkg.github.com/hasadna/datacity-ckan-dgp/datacity-ckan-dgp-db:210085d803fd866c24f2d644920dd276527d74f1"
+        image: "ghcr.io/hasadna/datacity-ckan-dgp/datacity-ckan-dgp-db:210085d803fd866c24f2d644920dd276527d74f1"
         resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "2Gi"}}
         volumeMounts:
           - name: data
@@ -36,7 +36,7 @@ spec:
             fi
             exec docker-entrypoint.sh postgres
       - name: server
-        image: {{ .Values.mapaliImage | default "docker.pkg.github.com/hasadna/mapali/server" | quote }}
+        image: {{ .Values.mapaliImage | default "docker.pkg.github.com/hasadna/mapali/server" | replace "docker.pkg.github.com" "ghcr.io" | quote }}
         resources: {"requests": {"cpu": "250m", "memory": "2Gi"}, "limits": {"cpu": "1000m", "memory": "4Gi"}}
         securityContext:
           runAsGroup: 0
@@ -87,11 +87,15 @@ spec:
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"MAPALI_AWS_REGION"}}
         - name: DGP_APP_DEFAULT_ROLE
           value: "2"
+        - name: WEB_CONCURRENCY
+          value: "4"
 
       volumes:
         - name: data
-          nfs:
-            server: {{ .Values.mapaliDbNfsServer | quote }}
-            path: {{ .Values.mapaliDbNfsPath | quote }}
+          persistentVolumeClaim:
+            claimName: mapali2
+#          nfs:
+#            server: {{ .Values.mapaliDbNfsServer | quote }}
+#            path: {{ .Values.mapaliDbNfsPath | quote }}
 
 {{ end }}

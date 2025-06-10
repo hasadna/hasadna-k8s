@@ -18,7 +18,7 @@ spec:
       terminationGracePeriodSeconds: 240
       containers:
         - name: process-new-snapshots
-          image: {{ .Values.siriEtlImage }}
+          image: {{ .Values.siriEtlImage | replace "docker.pkg.github.com" "ghcr.io" }}
           resources: {{ .Values.siriEtlProcessNewSnapshotsResources }}
           args:
             - start-process-new-snapshots-daemon
@@ -36,6 +36,8 @@ spec:
               mountPath: /siri_requester_storage
       volumes:
         - name: sirirequester
-          nfs:
-            server: {{ .Values.nfsServer | quote }}
-            path: {{ .Values.siriRequesterNfsPath | quote }}
+          persistentVolumeClaim:
+            claimName: siri-requester2
+#          nfs:
+#            server: {{ .Values.nfsServer | quote }}
+#            path: {{ .Values.siriRequesterNfsPath | quote }}

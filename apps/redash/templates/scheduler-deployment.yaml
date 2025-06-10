@@ -22,11 +22,6 @@ spec:
         image: {{ .Values.redashImage | quote }}
         args: [scheduler]
         resources: {{ toYaml .Values.scheduler.resources | nindent 10 }}
-        env:
-        - name: QUEUES
-          value: celery
-        - name: WORKERS_COUNT
-          value: "1"
         envFrom:
         - secretRef:
             name: redash

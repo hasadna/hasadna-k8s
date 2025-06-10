@@ -2,8 +2,8 @@ enabled: true
 dbResources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "1699Mi"}}'
 dbNfsServer: "~iac:hasadna_nfs1_internal_ip~"
 dbNfsPath: "/openpension/db"
-dbNodeSelector: hasadna-worker2
-dbHostPort: 28431
+# dbNodeSelector: hasadna-worker2
+#dbHostPort: 28431
 
 vertical_pod_autoscalers:
 - apiVersion: apps/v1

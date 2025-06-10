@@ -3,8 +3,9 @@ deployments:
   - name: datacity
     image: wordpress@sha256:95668fadc012aa882a19ffc875e5e2164a0a2fc7e201c869d0bc20ac0fab41c1
     resources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "1543Mi"}}'
-    nfsServer: "~iac:hasadna_nfs1_internal_ip~"
-    nfsPath: "/wordpress/datacity"
+#    nfsServer: "~iac:hasadna_nfs1_internal_ip~"
+#    nfsPath: "/wordpress/datacity"
+    pvcName: datacity2
     dbName: datacity
     php_ini:
       # Maximum size of POST data that PHP will accept.
@@ -22,19 +23,6 @@ ingresses:
     proxy_body_size: "100m"
     rules:
       - host: www.datacity.org.il
-        serviceName: datacity
-        servicePort: 80
-  - name: datacity-redirect
-    permanentRedirect: https://www.datacity.org.il/
-    rules:
-      - host: datacity.org.il
-        serviceName: datacity
-        servicePort: 80
-  - name: hasadna-site-redirect
-    permanentRedirect: https://www.hasadna.org.il/
-    rules:
-      - host: hasadna.org.il
-        # serviceName is irrelevant because we have a redirect but it must be set
         serviceName: datacity
         servicePort: 80
 

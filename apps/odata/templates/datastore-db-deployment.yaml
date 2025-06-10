@@ -83,7 +83,6 @@ spec:
         volumeMounts:
         - name: db
           mountPath: /var/lib/postgresql/data
-          subPath: datastore-db-postgresql-data
         {{ if .Values.datastore.dbOps.enabled }}
         - name: backups
           mountPath: /db-backup
@@ -117,20 +116,8 @@ spec:
       {{ end }}
       volumes:
       - name: db
-        {{ if .Values.datastore.persistentDiskName }}
-        gcePersistentDisk:
-          pdName: {{ .Values.datastore.persistentDiskName | quote }}
-        {{ else }}
-        {{ if .Values.hostPath }}
-        hostPath:
-          path: {{ .Values.hostPath | quote }}
-          type: DirectoryOrCreate
-        {{ else }}
-        nfs:
-          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
-        {{ end }}
-        {{ end }}
+        persistentVolumeClaim:
+          claimName: datastore-db
       {{ if .Values.datastore.dbOps.enabled }}
       - name: backups
         emptyDir: {}

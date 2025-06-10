@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: nginx
-          image: {{ .Values.siriRequesterNginxImage }}
+          image: {{ .Values.siriRequesterNginxImage | replace "docker.pkg.github.com" "ghcr.io" }}
           resources: {{ .Values.siriRequesterNginxResources }}
           env:
             - name: SIRI_REQUESTER_HEALTH_URL
@@ -26,6 +26,8 @@ spec:
               mountPath: /srv
       volumes:
         - name: sirirequester
-          nfs:
-            server: {{ .Values.nfsServer | quote }}
-            path: {{ .Values.siriRequesterNfsPath | quote }}
+          persistentVolumeClaim:
+            claimName: siri-requester2
+#          nfs:
+#            server: {{ .Values.nfsServer | quote }}
+#            path: {{ .Values.siriRequesterNfsPath | quote }}

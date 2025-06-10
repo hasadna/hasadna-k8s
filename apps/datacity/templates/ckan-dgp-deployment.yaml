@@ -19,14 +19,14 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: db
-        image: "docker.pkg.github.com/hasadna/datacity-ckan-dgp/datacity-ckan-dgp-db:210085d803fd866c24f2d644920dd276527d74f1"
+        image: "ghcr.io/hasadna/datacity-ckan-dgp/datacity-ckan-dgp-db:210085d803fd866c24f2d644920dd276527d74f1"
         resources: {"requests": {"cpu": "125m", "memory": "256Mi"}, "limits": {"cpu": "250m", "memory": "2Gi"}}
         volumeMounts:
           - name: data
             mountPath: /var/lib/postgresql/data
             subPath: postgres_data2
       - name: server
-        image: {{ .Values.ckanDgpServerImage | default "docker.pkg.github.com/hasadna/datacity-ckan-dgp/server" | quote }}
+        image: {{ .Values.ckanDgpServerImage | default "docker.pkg.github.com/hasadna/datacity-ckan-dgp/server" | replace "docker.pkg.github.com" "ghcr.io" | quote }}
         resources: {"requests": {"cpu": "2500m", "memory": "2500Mi"}, "limits": {"cpu": "3000m", "memory": "4000Mi"}}
         command:
           - sh
@@ -77,11 +77,15 @@ spec:
         - secretRef: {"name": "ckan-dgp-instances"}
       volumes:
         - name: data
-          nfs:
-            server: {{ .Values.ckanDgpDbNfsServer | quote }}
-            path: {{ .Values.ckanDgpDbNfsPath | quote }}
+          persistentVolumeClaim:
+            claimName: ckan-dgp-db2
+#          nfs:
+#            server: {{ .Values.ckanDgpDbNfsServer | quote }}
+#            path: {{ .Values.ckanDgpDbNfsPath | quote }}
         - name: logs
-          nfs:
-            server: {{ .Values.ckanDgpLogsNfsServer | quote }}
-            path: {{ .Values.ckanDgpLogsNfsPath | quote }}
+          persistentVolumeClaim:
+            claimName: ckan-dgp-logs2
+#          nfs:
+#            server: {{ .Values.ckanDgpLogsNfsServer | quote }}
+#            path: {{ .Values.ckanDgpLogsNfsPath | quote }}
 {{ end }}

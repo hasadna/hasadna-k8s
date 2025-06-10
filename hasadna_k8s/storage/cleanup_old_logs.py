@@ -33,7 +33,7 @@ def find_log_paths(root_path, log_path_prefixes):
 def main(path, dry_run=True, log_path_prefixes=None):
     if not log_path_prefixes:
         log_path_prefixes = ['airflow-home/logs', 'ckan-dgp-logs/airflow-logs']  # example paths
-    cutoff_date = datetime.datetime.now() - datetime.timedelta(seconds=2)  # days=30)
+    cutoff_date = datetime.datetime.now() - datetime.timedelta(days=30)
     print(f'Cleaning up logs older than {cutoff_date}')
     for logs_path in find_log_paths(path, log_path_prefixes):
         print(f'Cleaning up logs in {logs_path}')

@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: terraform-state-db
-  replicas: 1
+  replicas: 0  # moved to rke2 cluster
   revisionHistoryLimit: 2
   strategy:
     type: Recreate

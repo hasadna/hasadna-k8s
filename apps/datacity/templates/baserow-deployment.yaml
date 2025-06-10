@@ -19,7 +19,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: server
-        image: {{ .Values.baserowImage | default "baserow/baserow:1.21.2" | quote }}
+        image: {{ .Values.baserowImage | default "baserow/baserow:1.21.2" | replace "docker.pkg.github.com" "ghcr.io" | quote }}
         # resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "2Gi"}}
         volumeMounts:
           - name: data
@@ -52,8 +52,10 @@ spec:
           value: "noreply@baserow.datacity.org.il"
       volumes:
         - name: data
-          nfs:
-            server: {{ .Values.baserowNfsServer | quote }}
-            path: {{ .Values.baserowNfsPath | quote }}
+          persistentVolumeClaim:
+            claimName: baserow2
+#          nfs:
+#            server: {{ .Values.baserowNfsServer | quote }}
+#            path: {{ .Values.baserowNfsPath | quote }}
 
 {{ end }}

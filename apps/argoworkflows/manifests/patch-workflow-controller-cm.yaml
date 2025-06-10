@@ -4,6 +4,10 @@ metadata:
   name: workflow-controller-configmap
   namespace: argo
 data:
+  nodeEvents: |
+    enabled: false
+#  workflowEvents: |
+#    enabled: false
   workflowDefaults: |
     spec:
       activeDeadlineSeconds: 432000  # 5 days - duration in seconds relative to the workflow start time which the workflow is allowed to run before the controller terminates
@@ -13,20 +17,39 @@ data:
         secondsAfterFailure: 86400  # 1 day
       podGC:
         strategy: OnWorkflowCompletion
-  # TODO: change domains after upgrade to RKE2
+      hooks:
+        exit:
+          templateRef:
+            name: global-exit-hook
+            template: global-exit-hook
+            clusterScope: true
   sso: |
-    issuer: https://argocd.rke2.hasadna.org.il/api/dex
+    issuer: https://argocd.hasadna.org.il/api/dex
     clientId:
       name: argo-workflows-sso
       key: client-id
     clientSecret:
       name: argo-workflows-sso
       key: client-secret
-    redirectUrl: https://argo.rke2.hasadna.org.il/oauth2/callback
+    redirectUrl: https://argo.hasadna.org.il/oauth2/callback
     scopes:
      - groups
      - email
      - profile
     rbac:
       enabled: true
-
+  persistence: |
+    nodeStatusOffLoad: true
+    archive: true
+    archiveTTL: 180d
+    postgresql:
+      host: argo-postgres
+      port: 5432
+      database: postgres
+      tableName: argo_workflows
+      userNameSecret:
+        name: argo-postgres
+        key: user
+      passwordSecret:
+        name: argo-postgres
+        key: password

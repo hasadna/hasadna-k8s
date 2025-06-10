@@ -17,7 +17,7 @@ spec:
       terminationGracePeriodSeconds: 2
       containers:
       - name: api
-        image: {{ .Values.apiImage | default "budgetkey/open-budget-data-api" | quote }}
+        image: {{ .Values.apiImage | default "budgetkey/open-budget-data-api" | replace "docker.pkg.github.com" "ghcr.io" | quote }}
         resources: {"requests": {"cpu": "25m", "memory": "309Mi"}, "limits": {"cpu": "78m", "memory": "1000Mi"}}
         env:
           - name: DATABASE_URL

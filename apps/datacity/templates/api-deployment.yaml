@@ -24,4 +24,6 @@ spec:
             value: postgresql://readonly:readonly@db.datacity.org.il/datasets
           - name: MAX_ROWS
             value: "25000"
+          - name: WEB_CONCURRENCY
+            value: "4"
 {{ end }}

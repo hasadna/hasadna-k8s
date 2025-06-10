@@ -1,10 +1,13 @@
 {{ if and .Values.enabled .Values.ingresses }}
 {{ range .Values.ingresses }}
-apiVersion: networking.k8s.io/v1
+apiVersion: {{ if (gt (atoi $.Capabilities.KubeVersion.Minor) 30) }}networking.k8s.io/v1{{ else }}extensions/v1beta1{{ end }}
 kind: Ingress
 metadata:
   name: {{ .name }}
   annotations:
+    {{- if not (gt (atoi $.Capabilities.KubeVersion.Minor) 30) }}
+    kubernetes.io/ingress.class: "nginx"
+    {{- end }}
   {{ if .proxy_body_size }}
     nginx.ingress.kubernetes.io/proxy-body-size: {{ .proxy_body_size | quote }}
   {{ end }}
@@ -25,6 +28,7 @@ spec:
   - host: {{ .host }}
     http:
       paths:
+      {{- if (gt (atoi $.Capabilities.KubeVersion.Minor) 30) }}
       - path: "/"
         pathType: Prefix
         backend:
@@ -32,6 +36,11 @@ spec:
             name: {{ .serviceName }}
             port:
               number: {{ .servicePort }}
+      {{- else }}
+      - backend:
+          serviceName: {{ .serviceName }}
+          servicePort: {{ .servicePort }}
+      {{- end }}
   {{ end }}
   {{ if .ssl }}
   tls:

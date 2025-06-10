@@ -1,5 +1,5 @@
 {{ if and .Values.enabled .Values.ingress.enabled }}
-apiVersion: networking.k8s.io/v1
+apiVersion: {{ if (gt (atoi $.Capabilities.KubeVersion.Minor) 30) }}networking.k8s.io/v1{{ else }}extensions/v1beta1{{ end }}
 kind: Ingress
 metadata:
   name: nginx
@@ -11,6 +11,7 @@ spec:
   - host: {{ . }}
     http:
       paths:
+      {{- if (gt (atoi $.Capabilities.KubeVersion.Minor) 30) }}
       - path: "/"
         pathType: Prefix
         backend:
@@ -18,5 +19,10 @@ spec:
             name: nginx
             port:
               number: 80
+      {{- else }}
+      - backend:
+          serviceName: nginx
+          servicePort: 80
+      {{- end }}
   {{ end }}
 {{ end }}

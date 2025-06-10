@@ -1,0 +1,12 @@
+{{ if .Values.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: landing
+spec:
+  selector:
+    app: landing
+  ports:
+  - name: "4000"
+    port: 4000
+{{ end }}

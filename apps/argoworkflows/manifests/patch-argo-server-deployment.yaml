@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: argo-server
-          command: ["argo", "server", "--secure=false", "--auth-mode=sso"]
+          command: ["argo", "server", "--secure=false", "--auth-mode=sso", "--auth-mode=client"]
           readinessProbe:
             httpGet:
               scheme: HTTP

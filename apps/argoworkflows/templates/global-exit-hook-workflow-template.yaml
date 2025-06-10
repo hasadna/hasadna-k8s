@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  name: global-exit-hook
+spec:
+  entrypoint: global-exit-hook
+  templates:
+    - name: global-exit-hook
+      container:
+        image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:32029424128a4e99811bf5f4aa67416584c3374f
+        args: ["workflows", "global-exit-hook"]
+        env:
+          # we need to embed the secrets here because the exit handler is global for all namespaces
+          - name: SLACK_WEBHOOK_URL_B64
+            value: "~vault:Projects/k8s/argo-workflows:slack_notifications_url~"
+          - name: ARGO_WORKFLOWS_TOKEN_B64
+            value: "~vault:Projects/k8s/argo-workflows:reader_automation_token~"
+          - name: ARGO_WORKFLOWS_URL
+            value: "http://argo-server.argo:2746"
+          - name: STATUS
+            value: '{{ "{{workflow.status}}" }}'
+          - name: FAILURES
+            value: '{{ "{{workflow.failures}}" }}'
+          - name: NAME
+            value: '{{ "{{workflow.name}}" }}'
+          - name: NAMESPACE
+            value: '{{ "{{workflow.namespace}}" }}'
+          - name: DURATION
+            value: '{{ "{{workflow.duration}}" }}'
+          - name: CREATION_TIMESTAMP
+            value: '{{ "{{workflow.creationTimestamp}}" }}'
+          - name: LABELS
+            value: '{{ "{{workflow.labels.json}}" }}'
+          - name: ANNOTATIONS
+            value: '{{ "{{workflow.annotations.json}}" }}'
+          - name: PARAMETERS
+            value: '{{ "{{workflow.parameters.json}}" }}'

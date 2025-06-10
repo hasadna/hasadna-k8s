@@ -15,13 +15,13 @@ spec:
       labels:
         app: siri-requester
     spec:
-      nodeSelector:
-        # This node label is updated by apps/openbus/bin/update_node_allowed_ips.py script
-        open-bus-allowed-ip: "true"
+#      nodeSelector:
+#         This node label is updated by apps/openbus/bin/update_node_allowed_ips.py script
+#        open-bus-allowed-ip: "true"
       terminationGracePeriodSeconds: 30
       containers:
         - name: app
-          image: {{ .Values.siriRequesterImage }}
+          image: {{ .Values.siriRequesterImage | replace "docker.pkg.github.com" "ghcr.io" }}
           resources: {{ .Values.siriRequesterResources }}
           {{ if .Values.siriRequesterPauseForDebug }}
           command:
@@ -36,6 +36,8 @@ spec:
             # - name: OPEN_BUS_SSH_TUNNEL_PRIVATE_KEY_FILE
             #   value: "/ssh_tunnel_private_key/key"
           envFrom:
+            - configMapRef:
+                name: hasadna-proxy1
             - secretRef:
                 name: {{ .Values.siriRequesterSecretName }}
           volumeMounts:
@@ -44,7 +46,7 @@ spec:
             # - name: sshtunnelsecret
             #   mountPath: /ssh_tunnel_private_key
         - name: health
-          image: {{ .Values.siriRequesterImage }}
+          image: {{ .Values.siriRequesterImage | replace "docker.pkg.github.com" "ghcr.io" }}
           resources: {{ .Values.siriRequesterHealthResources }}
           command: [open-bus-siri-requester, health-daemon-start]
           env:
@@ -55,9 +57,11 @@ spec:
               mountPath: /siri_requester_storage
       volumes:
         - name: sirirequester
-          nfs:
-            server: {{ .Values.nfsServer | quote }}
-            path: {{ .Values.siriRequesterNfsPath | quote }}
+          persistentVolumeClaim:
+            claimName: siri-requester2
+#          nfs:
+#            server: {{ .Values.nfsServer | quote }}
+#            path: {{ .Values.siriRequesterNfsPath | quote }}
         # - name: sshtunnelsecret
         #   secret:
         #     secretName: {{ .Values.sshTunnelSecretName }}

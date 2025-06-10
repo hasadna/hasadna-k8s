@@ -13,9 +13,22 @@ discourse:
     user: forum@hasadna.org.il
   discourse:
     skipInstall: true
+    resources:
+      requests:
+        cpu: "600m"
+        memory: "1400Mi"
+      limits:
+        memory: "2000Mi"
+  sidekiq:
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "800Mi"
+      limits:
+        memory: "1200Mi"
   persistence:
     enabled: true
-    storageClass: "nfs-client"
+    existingClaim: "discourse2"
   ingress:
     enabled: true
     annotations:
@@ -35,10 +48,28 @@ discourse:
     auth:
       existingSecret: discourse-passwords
       database: discourse
+    primary:
+      persistence:
+        existingClaim: "postgres2"
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 250m
+        limits:
+          memory: "500Mi"
   redis:
     kubeVersion: "1.19"
     auth:
       enabled: false
+    master:
+      persistence:
+        existingClaim: "redis2"
+      resources:
+        requests:
+          cpu: "25m"
+          memory: "100Mi"
+        limits:
+          memory: "300Mi"
 
 secrets:
   - name: discourse-passwords

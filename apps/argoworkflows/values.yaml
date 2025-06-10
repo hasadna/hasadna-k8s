@@ -4,7 +4,7 @@ ingresses:
   - name: argo
     ssl: true
     rules:
-      - host: "argo.hasadna.org.il"
+      - host: argo.hasadna.org.il
         serviceName: argo-server
         servicePort: 2746
 

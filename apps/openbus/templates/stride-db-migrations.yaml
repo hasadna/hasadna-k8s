@@ -18,7 +18,7 @@ spec:
       terminationGracePeriodSeconds: 10
       initContainers:
       - name: wait-for-db
-        image: {{ .Values.db.image | quote }}
+        image: {{ .Values.db.image | replace "docker.pkg.github.com" "ghcr.io" | quote }}
         env:
         - name: PGPASSWORD
           valueFrom: { "secretKeyRef": { "name": "db", "key": "POSTGRES_PASSWORD" } }
@@ -31,10 +31,10 @@ spec:
           done
           exit 1
       - name: migrations
-        image: {{ .Values.strideDbAppImage | quote }}
+        image: {{ .Values.strideDbAppImage | replace "docker.pkg.github.com" "ghcr.io" | quote }}
         env:
         - name: SQLALCHEMY_URL
           valueFrom: {"secretKeyRef":{"name":"db", "key":"SQLALCHEMY_URL"}}
       containers:
       - name: pause
-        image: gcr.io/google-containers/pause:2.0
+        image: registry.k8s.io/pause:3.9

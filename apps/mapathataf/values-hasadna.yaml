@@ -1,0 +1,21 @@
+enabled: true
+ingresses:
+  - name: landing
+    rules:
+      - host: mapathataf.whiletrue.industries
+        serviceName: landing
+        servicePort: 4000
+  - name: app
+    rules:
+      - host: mapathataf-app.whiletrue.industries
+        serviceName: app
+        servicePort: 4000
+  - name: admin
+    rules:
+      - host: mapathataf-admin.whiletrue.industries
+        serviceName: admin
+        servicePort: 4000
+vertical_pod_autoscalers:
+- apiVersion: apps/v1
+  kind: deployment
+  name: app

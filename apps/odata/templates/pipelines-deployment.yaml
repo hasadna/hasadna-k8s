@@ -58,9 +58,9 @@ spec:
         - {containerPort: 5050}
         resources: {{ .Values.pipelines.resources }}
         volumeMounts:
-        - {mountPath: /pipelines, name: ckan-data, subPath: pipelines}
-        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
-        - {mountPath: /var/redis, name: ckan-data, subPath: pipelines-redis}
+        - {mountPath: /pipelines, name: pipelines}
+        - {mountPath: /var/lib/ckan, name: ckan}
+        - {mountPath: /var/redis, name: pipelines-redis}
         livenessProbe:
           initialDelaySeconds: 3600
           timeoutSeconds: 30
@@ -177,19 +177,21 @@ spec:
             fi
           done
         volumeMounts:
-        - {mountPath: /var/lib/ckan, name: ckan-data, subPath: ckan}
+        - {mountPath: /var/lib/ckan, name: ckan}
       volumes:
-      - name: ckan-data
-        {{ if .Values.pipelinesPersistentVolumeClaimName }}
+      - name: ckan
         persistentVolumeClaim:
-          claimName: {{ .Values.pipelinesPersistentVolumeClaimName | quote }}
-        {{ else if .Values.hostPath }}
-        hostPath:
-          path: {{ .Values.hostPath | quote }}
-          type: DirectoryOrCreate
-        {{ else }}
-        nfs:
-          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
-          path: {{ $.Values.ckanDataNfsPath | default "/" | quote }}
-        {{ end }}
+          claimName: ckan
+      - name: pipelines
+        persistentVolumeClaim:
+          claimName: pipelines2
+#        nfs:
+#          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
+#          path: /odata/pipelines
+      - name: pipelines-redis
+        persistentVolumeClaim:
+          claimName: pipelines-redis2
+#        nfs:
+#          server: {{ .Values.ckanDataNfsServer | default "nfs" | quote }}
+#          path: /odata/pipelines-redis
 {{ end }}

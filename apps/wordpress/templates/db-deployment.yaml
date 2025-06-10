@@ -31,11 +31,13 @@ spec:
           mountPath: /var/lib/mysql
       volumes:
       - name: data
-        {{ if and .Values.dbNfsServer .Values.dbNfsPath }}
-        nfs:
-          server: {{ .Values.dbNfsServer | quote }}
-          path: {{ .Values.dbNfsPath | quote }}
-        {{ else }}
-        emptyDir: {}
-        {{ end }}
+        persistentVolumeClaim:
+          claimName: db2
+#        {{ if and .Values.dbNfsServer .Values.dbNfsPath }}
+#        nfs:
+#          server: {{ .Values.dbNfsServer | quote }}
+#          path: {{ .Values.dbNfsPath | quote }}
+#        {{ else }}
+#        emptyDir: {}
+#        {{ end }}
 {{ end }}

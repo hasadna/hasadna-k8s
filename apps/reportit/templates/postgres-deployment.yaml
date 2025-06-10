@@ -30,12 +30,14 @@ spec:
           subPath: reportit_strapi_db
       volumes:
       - name: data
-        {{ if .Values.postgres.persistentVolumeClaimName }}
         persistentVolumeClaim:
-          claimName: {{ .Values.postgres.persistentVolumeClaimName | quote }}
-        {{ else if .Values.postgres.nfsServer }}
-        nfs:
-          server: {{ .Values.postgres.nfsServer | quote }}
-          path: {{ .Values.postgres.nfsPath | quote }}
-        {{ end }}
+          claimName: postgres2
+#        {{ if .Values.postgres.persistentVolumeClaimName }}
+#        persistentVolumeClaim:
+#          claimName: {{ .Values.postgres.persistentVolumeClaimName | quote }}
+#        {{ else if .Values.postgres.nfsServer }}
+#        nfs:
+#          server: {{ .Values.postgres.nfsServer | quote }}
+#          path: {{ .Values.postgres.nfsPath | quote }}
+#        {{ end }}
 {{ end }}

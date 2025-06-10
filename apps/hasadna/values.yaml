@@ -2,7 +2,6 @@ enabled: true
 
 ingresses:
   - name: kikar-redirect
-    permanentRedirect: https://www.hasadna.org.il/%d7%9b%d7%99%d7%9b%d7%a8-%d7%94%d7%9e%d7%93%d7%99%d7%a0%d7%94/
     rules:
       - host: kikar.org
         serviceName: redirector-nginx
@@ -11,7 +10,6 @@ ingresses:
         serviceName: redirector-nginx
         servicePort: 80
   - name: otrain-redirect
-    permanentRedirect: https://www.hasadna.org.il/%d7%94%d7%9e%d7%a2%d7%91%d7%93%d7%94-%d7%a9%d7%9c%d7%a0%d7%95/%d7%a8%d7%9b%d7%91%d7%aa-%d7%a4%d7%aa%d7%95%d7%97%d7%94/
     rules:
       - host: otrain.org
         serviceName: redirector-nginx
@@ -19,8 +17,23 @@ ingresses:
       - host: www.otrain.org
         serviceName: redirector-nginx
         servicePort: 80
+  - name: datacity-redirect
+    rules:
+      - host: datacity.org.il
+        serviceName: redirector-nginx
+        servicePort: 80
+  - name: hasadna-site-redirect
+    rules:
+      - host: hasadna.org.il
+        serviceName: redirector-nginx
+        servicePort: 80
 
 label-studio:
+  global:
+    persistence:
+      config:
+        volume:
+          existingClaim: "labelstudio2"
   app:
     extraEnvironmentVars:
       LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK: "true"
@@ -34,3 +47,16 @@ label-studio:
         - hosts:
             - label-studio.k8s.hasadna.org.il
           secretName: label-studio-tls
+  postgresql:
+    primary:
+      persistence:
+        existingClaim: "labelstudio-postgres2"
+
+secrets:
+  - name: kopia
+    data:
+      aws_access_key_id: "~vault:Projects/iac/kopia:aws_access_key_id~"
+      aws_secret_access_key: "~vault:Projects/iac/kopia:aws_secret_access_key~"
+      bucket_name: "~vault:Projects/iac/kopia:bucket_name~"
+      bucket_region: "~vault:Projects/iac/kopia:bucket_region~"
+      password: "~vault:Projects/iac/kopia:password~"

@@ -17,6 +17,6 @@ spec:
       terminationGracePeriodSeconds: 2
       containers:
       - name: tabula
-        image: {{ .Values.tabulaImage | default "hasadna/tabula" | quote }}
+        image: {{ .Values.tabulaImage | default "hasadna/tabula" | replace "docker.pkg.github.com" "ghcr.io" | quote }}
         resources: {"requests": {"cpu": "25m", "memory": "256Mi"}}
 {{ end }}
