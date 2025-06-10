@@ -16,3 +16,14 @@ spec:
   syncPolicy:
     syncOptions:
     - CreateNamespace=true
+  ignoreDifferences:
+    - group: v1
+      kind: Secret
+      name: hasadna-ls-app-django-secret
+      jsonPointers:
+      - /data/key
+    - group: v1
+      kind: Secret
+      name: hasadna-postgresql
+      jsonPointers:
+      - /data/postgres-password
