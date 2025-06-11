@@ -18,7 +18,7 @@ deployments:
     image: wordpress@sha256:78f9132d3d5db7eb781cab58621867aba09d763cbaafab3e9a09ceae66cb1c17
     resources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "1543Mi"}}'
     pvcName: socialpro-social
-    dbName: socialpro.social
+    dbName: socialprosocial
     php_ini: {}
 
 dbResources: '{"requests": {"cpu": "50m", "memory": "309Mi"}, "limits": {"cpu": "150m", "memory": "2215Mi"}}'
