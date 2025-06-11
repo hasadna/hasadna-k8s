@@ -40,3 +40,8 @@ vertical_pod_autoscalers:
 - apiVersion: apps/v1
   kind: deployment
   name: datacity
+
+secrets:
+  - name: socialpro-social
+    data:
+      DB_PASSWORD: "~vault:Projects/wordpress/socialpro_social:db_password~"
