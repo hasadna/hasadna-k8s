@@ -16,7 +16,7 @@ deployments:
       max_file_uploads: "20"
   - name: socialpro-social
     image: wordpress@sha256:78f9132d3d5db7eb781cab58621867aba09d763cbaafab3e9a09ceae66cb1c17
-    resources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "1543Mi"}}'
+    resources: '{"requests": {"cpu": "500m", "memory": "1024Mi"}, "limits": {"cpu": "800m", "memory": "2048Mi"}}'
     pvcName: socialpro-social
     dbName: socialprosocial
     php_ini: {}
