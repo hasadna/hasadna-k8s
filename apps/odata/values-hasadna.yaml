@@ -11,7 +11,6 @@ nginxResources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu
 ckanDataNfsServer: "~iac:hasadna_nfs1_internal_ip~"
 ckanDataNfsPath: "/odata"
 
-# TODO: uncomment on rke2
 #nginxPersistentVolumeClaimName: pipelines
 #pipelinesPersistentVolumeClaimName: pipelines
 #ckanPersistentVolumeClaimName: ckan

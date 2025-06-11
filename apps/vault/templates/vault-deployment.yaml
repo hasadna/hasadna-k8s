@@ -36,6 +36,11 @@ spec:
             privileged: true
       volumes:
         - name: vaultdata
+          {{ if .Values.nfsServer }}
           nfs:
             server: {{ .Values.nfsServer | quote }}
             path: {{ .Values.nfsPath | quote }}
+          {{ else }}
+          persistentVolumeClaim:
+            claimName: vault
+          {{ end }}

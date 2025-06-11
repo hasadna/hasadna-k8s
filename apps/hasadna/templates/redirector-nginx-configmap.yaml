@@ -13,26 +13,10 @@ data:
       }
     }
     
+    {{ range .Values.redirects }}
     server {
       listen 80;
-      server_name kikar.org www.kikar.org;
-      return 301 https://www.hasadna.org.il/%D7%9B%D7%99%D7%9B%D7%A8-%D7%94%D7%9E%D7%93%D7%99%D7%A0%D7%94/;
+      server_name {{ .hosts | join " " }};
+      return 301 {{ .redirect }};
     }
-    
-    server {
-      listen 80;
-      server_name otrain.org www.otrain.org;
-      return 301 https://www.hasadna.org.il/%d7%94%d7%9e%d7%a2%d7%91%d7%93%d7%94-%d7%a9%d7%9c%d7%a0%d7%95/%d7%a8%d7%9b%d7%91%d7%aa-%d7%a4%d7%aa%d7%95%d7%97%d7%94/;
-    }
-    
-    server {
-      listen 80;
-      server_name datacity.org.il;
-      return 301 https://www.datacity.org.il/;
-    }
-
-    server {
-      listen 80;
-      server_name hasadna.org.il;
-      return 301 https://www.hasadna.org.il/;
-    }
+    {{ end }}

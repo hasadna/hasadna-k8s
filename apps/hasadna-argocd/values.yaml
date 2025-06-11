@@ -1,5 +1,4 @@
 allowAutoSync: true
-isRke2: false
 
 secrets:
   - name: argo-workflows-sso

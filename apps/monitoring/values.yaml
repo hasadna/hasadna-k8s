@@ -10,11 +10,17 @@ kube-prometheus-stack:
       storage:
         volumeClaimTemplate:
           spec:
-            storageClassName: nfs-client
-            accessModes: ["ReadWriteOnce"]
+            storageClassName: "local-storage"
+            accessModes:
+              - ReadWriteMany
             resources:
               requests:
-                storage: 50Gi
+                storage: 500Gi
+            selector:
+              matchLabels:
+                app.kubernetes.io/name: monitoring-alertmanager
+                app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
+
   grafana:
     resources:
       requests:
@@ -24,9 +30,22 @@ kube-prometheus-stack:
         memory: 800Mi
     persistence:
       enabled: true
-      storageClassName: nfs-client
+      existingClaim: "grafana"
+    admin:
+      existingSecret: "grafana-admin-password"
+    additionalDataSources:
+      - name: "Loki"
+        type: loki
+        url: "http://logging-loki-gateway.logging"
+        jsonData:
+          maxLines: 1000
+          timeout: 60
 
   prometheusOperator:
+    namespaces:
+      releaseNamespace: true
+      additional:
+        - "rook-ceph"
     resources:
       requests:
         cpu: 200m
@@ -36,10 +55,112 @@ kube-prometheus-stack:
 
   prometheus:
     prometheusSpec:
-      retention: 2d
+      serviceMonitorSelectorNilUsesHelmValues: false
+      podMonitorSelectorNilUsesHelmValues: false
+      retention: 7d
       resources:
         requests:
           cpu: 400m
           memory: 600Mi
         limits:
           memory: 1200Mi
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: "local-storage"
+            accessModes:
+              - ReadWriteMany
+            resources:
+              requests:
+                storage: 500Gi
+            selector:
+              matchLabels:
+                app.kubernetes.io/name: monitoring-prometheus
+                app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
+      additionalScrapeConfigs:
+        - job_name: node-exporter
+          honor_labels: true
+          scrape_interval: 5s
+          static_configs:
+            - targets: ['172.16.0.9:9796']
+              labels:
+                instance: '172.16.0.9:9796'
+
+  kubeEtcd:
+    enabled: false
+
+  kubeScheduler:
+    enabled: false
+
+  kubeControllerManager:
+    enabled: false
+
+  kubeProxy:
+    enabled: false
+
+  nodeExporter:
+    operatingSystems:
+      aix:
+        enabled: false
+      darwin:
+        enabled: false
+
+  prometheus-node-exporter:
+    extraArgs:
+      # defaults from kube-prometheus-stack/values.yaml
+      - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+      - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
+      # additional collectors for hasadna
+      - --collector.systemd
+      - --collector.mountstats
+      - --collector.systemd.unit-include=ufw.service|rke2-server.service|rke2-agent.service
+    tolerations:
+      - effect: NoExecute
+        operator: Exists
+    extraHostVolumeMounts:
+      - name: dbus
+        hostPath: /var/run/dbus
+        mountPath: /var/run/dbus
+        readOnly: true
+    podAnnotations:
+      container.apparmor.security.beta.kubernetes.io/node-exporter: unconfined
+
+ingresses:
+  - name: alertmanager
+    ssl: true
+    httpauth:
+      secretName: "alertmanager-http-auth"
+      message: "Alertmanager Authentication Required"
+    rules:
+      - host: "alertmanager.~iac:rke2_catchall_hostname~"
+        serviceName: alertmanager-operated
+        servicePort: 9093
+  - name: grafana
+    ssl: true
+    rules:
+      - host: "grafana.~iac:rke2_catchall_hostname~"
+        serviceName: monitoring-grafana
+        servicePort: 80
+  - name: prometheus
+    ssl: true
+    httpauth:
+      secretName: "prometheus-http-auth"
+      message: "Prometheus Authentication Required"
+    rules:
+      - host: "prometheus.~iac:rke2_catchall_hostname~"
+        serviceName: prometheus-operated
+        servicePort: 9090
+
+secrets:
+  - name: alertmanager-http-auth
+    data:
+      # htpasswd -nb username password
+      auth: "~vault:Projects/k8s/alertmanager:httpauth~"
+  - name: prometheus-http-auth
+    data:
+      # htpasswd -nb username password
+      auth: "~vault:Projects/k8s/prometheus:httpauth~"
+  - name: grafana-admin-password
+    data:
+      admin-user: "~vault:Projects/k8s/grafana-admin:admin-user~"
+      admin-password: "~vault:Projects/k8s/grafana-admin:admin-password~"

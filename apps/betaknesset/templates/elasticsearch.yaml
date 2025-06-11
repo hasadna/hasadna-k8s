@@ -2,6 +2,8 @@ apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
   name: betaknesset-elasticsearch
+  annotations:
+    argocd.argoproj.io/ignore-healthcheck: "true"
 spec:
   version: 8.1.2
   http:

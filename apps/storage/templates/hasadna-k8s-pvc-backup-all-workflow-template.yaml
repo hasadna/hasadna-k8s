@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: hasadna-k8s-pvc-backup-all
+spec:
+  entrypoint: dag
+  arguments:
+  templates:
+    - name: dag
+      dag:
+        tasks:
+          - name: runner
+            templateRef:
+              name: runner
+              template: script
+            arguments:
+              parameters:
+                - name: exec_script
+                  value: |
+                    hasadna-k8s ceph pvc-backup-all

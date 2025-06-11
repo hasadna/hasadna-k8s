@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: systemd-units-failed
+spec:
+  groups:
+    - name: systemd-units.rules
+      rules:
+        - alert: NodeSystemdUnitFailed
+          expr: |
+            sum by (instance) (node_systemd_unit_state{state="failed"}) > 0
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Systemd unit(s) failed on {{ "{{ $labels.instance }}" }}"
+            description: |
+              One or more systemd units are in a failed state on {{ "{{ $labels.instance }}" }}.

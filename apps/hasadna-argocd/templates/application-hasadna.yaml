@@ -1,4 +1,3 @@
-{{ if .Values.isRke2 }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -17,4 +16,14 @@ spec:
   syncPolicy:
     syncOptions:
     - CreateNamespace=true
-{{ end }}
+  ignoreDifferences:
+    - group: '*'
+      kind: Secret
+      name: hasadna-ls-app-django-secret
+      jsonPointers:
+      - /data/key
+    - group: '*'
+      kind: Secret
+      name: hasadna-postgresql
+      jsonPointers:
+      - /data/postgres-password
