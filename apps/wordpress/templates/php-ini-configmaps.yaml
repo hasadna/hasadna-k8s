@@ -700,7 +700,7 @@ data:
     ; Its value may be 0 to disable the limit. It is ignored if POST data reading
     ; is disabled through enable_post_data_reading.
     ; http://php.net/post-max-size
-    post_max_size = {{ .php_ini.post_max_size }}
+    post_max_size = {{ .php_ini.post_max_size | default "8M" }}
 
     ; Automatically add files before PHP document.
     ; http://php.net/auto-prepend-file
@@ -852,10 +852,10 @@ data:
 
     ; Maximum allowed size for uploaded files.
     ; http://php.net/upload-max-filesize
-    upload_max_filesize = {{ .php_ini.upload_max_filesize }}
+    upload_max_filesize = {{ .php_ini.upload_max_filesize | default "8M" }}
 
     ; Maximum number of files that can be uploaded via a single request
-    max_file_uploads = {{ .php_ini.max_file_uploads }}
+    max_file_uploads = {{ .php_ini.max_file_uploads | default "10" }}
 
     ;;;;;;;;;;;;;;;;;;
     ; Fopen wrappers ;
