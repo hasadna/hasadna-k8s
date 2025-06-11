@@ -14,9 +14,15 @@ deployments:
       upload_max_filesize: "100M"
       # Maximum number of files that can be uploaded via a single request
       max_file_uploads: "20"
+  - name: socialpro-social
+    image: wordpress@sha256:78f9132d3d5db7eb781cab58621867aba09d763cbaafab3e9a09ceae66cb1c17
+    resources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "1543Mi"}}'
+    pvcName: socialpro-social
+    dbName: socialpro.social
+
 dbResources: '{"requests": {"cpu": "50m", "memory": "309Mi"}, "limits": {"cpu": "150m", "memory": "2215Mi"}}'
-dbNfsServer: "~iac:hasadna_nfs1_internal_ip~"
-dbNfsPath: "/wordpress/db"
+#dbNfsServer: "~iac:hasadna_nfs1_internal_ip~"
+#dbNfsPath: "/wordpress/db"
 ingresses:
   - name: sites
     # maximum allowed size for uploaded files
