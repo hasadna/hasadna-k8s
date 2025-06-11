@@ -19,6 +19,7 @@ deployments:
     resources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "1543Mi"}}'
     pvcName: socialpro-social
     dbName: socialpro.social
+    php_ini: {}
 
 dbResources: '{"requests": {"cpu": "50m", "memory": "309Mi"}, "limits": {"cpu": "150m", "memory": "2215Mi"}}'
 #dbNfsServer: "~iac:hasadna_nfs1_internal_ip~"
