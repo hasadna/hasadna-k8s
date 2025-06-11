@@ -24,6 +24,7 @@ data:
     
     p, role:srm-admin, applications, *, srm/*, allow
     p, role:srm-admin, exec, create, srm/*, allow
+    p, role:srm-admin, logs, get, srm/*, allow
     
     g, hasadna:argocd-admins, role:admin
     g, hasadna:argocd-leafy-admins, role:leafy-admin
