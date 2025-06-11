@@ -32,6 +32,11 @@ ingresses:
       - host: www.datacity.org.il
         serviceName: datacity
         servicePort: 80
+  - name: socialpro-soial
+    rules:
+      - host: social.socialpro.org.il
+        serviceName: socialpro-social
+        servicePort: 80
 
 vertical_pod_autoscalers:
 - apiVersion: apps/v1
