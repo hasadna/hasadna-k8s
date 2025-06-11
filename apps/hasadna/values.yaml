@@ -23,6 +23,7 @@ redirects:
     hosts:
       - argocd.rke2.hasadna.org.il
     redirect: "https://argocd.hasadna.org.il"
+    ssl: true
 
 label-studio:
   global:
