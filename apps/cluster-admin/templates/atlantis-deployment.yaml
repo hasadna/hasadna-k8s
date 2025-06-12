@@ -36,3 +36,7 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /home/atlantis/.atlantis
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: atlantis-data
