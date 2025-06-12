@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: atlantis
+spec:
+  selector:
+    matchLabels:
+      app: atlantis
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: atlantis
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: atlantis
+          image: ghcr.io/runatlantis/atlantis:v0.34.0
+          resources: {{ toYaml .Values.atlantis.resources | nindent 12 }}
+          args:
+            - server
+            - --atlantis-url=https://atlantis.~iac:rke2_catchall_hostname~
+            - --gh-token=$(GITHUB_TOKEN)
+            - --gh-user=$(GITHUB_USER)
+            - --gh-webhook-secret=$(GITHUB_WEBHOOK_SECRET)
+            - --repo-allowlist=github.com/hasadna/*
+            - --web-basic-auth
+            - --web-username=$(WEB_USERNAME)
+            - ---web-password=$(WEB_PASSWORD)
+          envFrom:
+            - secretRef:
+                name: atlantis-env
+          volumeMounts:
+            - name: data
+              mountPath: /home/atlantis/.atlantis
