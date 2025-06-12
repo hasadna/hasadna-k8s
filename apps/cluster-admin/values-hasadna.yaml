@@ -12,6 +12,10 @@ terraformStateDb:
 #  nfsServer: "~iac:hasadna_nfs1_internal_ip~"
 #  nfsPath: "/terraform/state_db"
 
+atlantis:
+  atlantisUrl: "atlantis.~iac:rke2_catchall_hostname~"
+  orgAllowlist: "github.com/hasadna/*"
+
 secrets:
   - name: terraform-state-db
     data:
