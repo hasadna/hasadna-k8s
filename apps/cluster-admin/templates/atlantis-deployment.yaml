@@ -16,6 +16,8 @@ spec:
         app: atlantis
     spec:
       terminationGracePeriodSeconds: 10
+      securityContext:
+        fsGroup: 1000
       containers:
         - name: atlantis
           image: ghcr.io/runatlantis/atlantis:v0.34.0
@@ -37,8 +39,6 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /home/atlantis/.atlantis
-          securityContext:
-            fsGroup: 1000
       volumes:
         - name: data
           persistentVolumeClaim:
