@@ -28,7 +28,7 @@ secrets:
     data:
       GITHUB_TOKEN: "~vault:Projects/iac/github:atlantis_terraform_repo_token~"
       GITHUB_USER: "~vault:Projects/iac/github:username~"
-      GITHUB_WEBHOOK_SECRET: "~vault:Projects/iac/github:atlantis_webhook_secret~"
+      GITHUB_WEBHOOK_SECRET: "~vault:Projects/iac/atlantis:webhook_secret~"
       WEB_USERNAME: "~vault:Projects/iac/atlantis:web_username~"
       WEB_PASSWORD: "~vault:Projects/iac/atlantis:web_password~"
 
