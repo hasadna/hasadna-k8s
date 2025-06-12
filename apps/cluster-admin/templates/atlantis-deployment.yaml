@@ -29,7 +29,7 @@ spec:
             - --repo-allowlist=github.com/hasadna/*
             - --web-basic-auth
             - --web-username=$(WEB_USERNAME)
-            - ---web-password=$(WEB_PASSWORD)
+            - --web-password=$(WEB_PASSWORD)
           envFrom:
             - secretRef:
                 name: atlantis-env
