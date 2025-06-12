@@ -24,7 +24,7 @@ spec:
           resources: {{ toYaml .Values.atlantis.resources | nindent 12 }}
           args:
             - server
-            - --atlantis-url=https://atlantis.~iac:rke2_catchall_hostname~
+            - --atlantis-url=https://atlantis.hasadna.org.il
             - --gh-token=$(GITHUB_TOKEN)
             - --gh-user=$(GITHUB_USER)
             - --gh-webhook-secret=$(GITHUB_WEBHOOK_SECRET)

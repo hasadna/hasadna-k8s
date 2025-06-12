@@ -35,6 +35,6 @@ secrets:
 ingresses:
   - name: atlantis
     rules:
-      - host: atlantis.~iac:rke2_catchall_hostname~
+      - host: atlantis.hasadna.org.il
         serviceName: atlantis
         servicePort: 4141
