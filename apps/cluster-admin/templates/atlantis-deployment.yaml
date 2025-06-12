@@ -30,6 +30,7 @@ spec:
             - --web-basic-auth
             - --web-username=$(WEB_USERNAME)
             - --web-password=$(WEB_PASSWORD)
+            - --port=4141
           envFrom:
             - secretRef:
                 name: atlantis-env
