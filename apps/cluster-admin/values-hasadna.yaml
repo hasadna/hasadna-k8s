@@ -31,6 +31,9 @@ secrets:
       GITHUB_WEBHOOK_SECRET: "~vault:Projects/iac/atlantis:webhook_secret~"
       WEB_USERNAME: "~vault:Projects/iac/atlantis:web_username~"
       WEB_PASSWORD: "~vault:Projects/iac/atlantis:web_password~"
+      VAULT_ROLE_ID:
+      VAULT_SECRET_ID:
+      VAULT_ADDR:
 
 ingresses:
   - name: atlantis

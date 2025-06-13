@@ -35,6 +35,22 @@ spec:
             - --web-password=$(WEB_PASSWORD)
             - --port=4141
             - --repo-config=/home/atlantis/config/repos.yaml
+          env:
+            - name: VAULT_ADDR
+              valueFrom:
+                secretKeyRef:
+                  name: atlantis-vault-creds
+                  key: ADDR
+            - name: VAULT_ROLE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: atlantis-vault-creds
+                  key: ROLE_ID
+            - name: VAULT_SECRET_ID
+              valueFrom:
+                secretKeyRef:
+                  name: atlantis-vault-creds
+                  key: SECRET_ID
           envFrom:
             - secretRef:
                 name: atlantis-env
