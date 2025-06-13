@@ -24,5 +24,7 @@ spec:
           image: {{ .Values.strideApiImage }}
           resources: {{ toYaml .Values.strideApiResources | nindent 12 }}
           env:
+            - name: WEB_CONCURRENCY
+              value: "4"
             - name: SQLALCHEMY_URL
               valueFrom: {"secretKeyRef":{"name":"db", "key":"SQLALCHEMY_URL"}}
