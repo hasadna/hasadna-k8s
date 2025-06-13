@@ -20,7 +20,8 @@ spec:
         fsGroup: 1000
       containers:
         - name: atlantis
-          image: ghcr.io/runatlantis/atlantis:v0.34.0
+          image: ghcr.io/hasadna/hasadna-iac/atlantis:latest
+          imagePullPolicy: Always
           resources: {{ toYaml .Values.atlantis.resources | nindent 12 }}
           args:
             - server
@@ -33,13 +34,19 @@ spec:
             - --web-username=$(WEB_USERNAME)
             - --web-password=$(WEB_PASSWORD)
             - --port=4141
+            - --repo-config=/home/atlantis/config/repos.yaml
           envFrom:
             - secretRef:
                 name: atlantis-env
           volumeMounts:
             - name: data
               mountPath: /home/atlantis/.atlantis
+            - name: config
+              mountPath: /home/atlantis/config
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: atlantis-data
+        - name: config
+          configMap:
+            name: atlantis
