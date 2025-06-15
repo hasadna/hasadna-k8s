@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atlantis
+data:
+  repos.yaml: |
+    repos:
+      - id: github.com/hasadna/hasadna-iac-atlantis
+        branch: main
+        allowed_overrides: [workflow]
+        allow_custom_workflows: true
