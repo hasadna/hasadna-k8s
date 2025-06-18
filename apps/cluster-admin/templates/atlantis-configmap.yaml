@@ -6,6 +6,6 @@ data:
   repos.yaml: |
     repos:
       - id: github.com/hasadna/hasadna-iac-atlantis
-        branch: main
+        branch: /main/
         allowed_overrides: [workflow]
         allow_custom_workflows: true
