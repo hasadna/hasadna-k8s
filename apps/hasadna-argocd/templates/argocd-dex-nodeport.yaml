@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: argocd-dex-nodeport
+  namespace: argocd
+spec:
+  type: NodePort
+  ports:
+  - port: 5556
+    nodePort: 30692
+  selector:
+      app.kubernetes.io/name: argocd-dex-server
