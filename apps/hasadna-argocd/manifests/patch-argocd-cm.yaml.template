@@ -6,13 +6,18 @@ data:
   url: "https://argocd.hasadna.org.il"
   exec.enabled: "true"
   dex.config: |
-    # Setting staticClients allows Argo Workflows to use Argo CD's Dex installation for authentication
     staticClients:
       - id: argo-workflows-sso
         name: Argo Workflow
         redirectURIs:
           - https://argo.hasadna.org.il/oauth2/callback
         secretEnv: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
+      - id: kubectl
+        name: "kubectl oidc-login"
+        redirectURIs:
+          - "http://localhost:8000"
+          - "urn:ietf:wg:oauth:2.0:oob"
+        secretEnv: KUBECTL_SSO_CLIENT_SECRET
     connectors:
       - type: github
         id: github
