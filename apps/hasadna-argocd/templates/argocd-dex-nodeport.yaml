@@ -5,12 +5,9 @@ metadata:
   namespace: argocd
 spec:
   type: NodePort
-  ports:
-    - name: http
-      protocol: TCP
-      appProtocol: TCP
-      port: 5556
-      targetPort: 5556
-      nodePort: 30692
   selector:
-      app.kubernetes.io/name: argocd-dex-server
+    app.kubernetes.io/name: argocd-dex-server
+  ports:
+    - name: "5556"
+      port: 5556
+      nodePort: 30635
