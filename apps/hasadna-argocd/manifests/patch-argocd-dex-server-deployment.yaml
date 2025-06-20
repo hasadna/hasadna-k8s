@@ -13,8 +13,3 @@ spec:
                 secretKeyRef:
                   name: argo-workflows-sso
                   key: client-secret
-            - name: KUBECTL_SSO_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: kubectl-sso
-                  key: client-secret

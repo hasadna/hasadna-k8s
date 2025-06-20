@@ -14,10 +14,10 @@ data:
         secretEnv: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
       - id: kubectl
         name: "kubectl oidc-login"
+        public: true
         redirectURIs:
-          - "http://localhost:8000"
+          - "http://127.0.0.1:18000/callback"
           - "urn:ietf:wg:oauth:2.0:oob"
-        secretEnv: KUBECTL_SSO_CLIENT_SECRET
     connectors:
       - type: github
         id: github
