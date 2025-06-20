@@ -16,7 +16,7 @@ spec:
           service:
             name: argocd-dex-server
             port:
-              name: 5556
+              number: 5556
   tls:
   - hosts:
     - "argocd-dex.rke2.hasadna.org.il"
