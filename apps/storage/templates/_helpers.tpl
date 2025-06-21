@@ -70,14 +70,3 @@ key = ${ROOK_CEPH_KEYRING}" > /etc/ceph/keyring
 kopia repository connect s3 --bucket=$KOPIA_S3_BUCKET --region=$KOPIA_S3_REGION
 ) 2>&1 | tee /tmp/log.txt
 {{- end }}
-
-{{- define "runner.workflowTemplateScriptSource" }}
-source: |
-  {{ include "runner.script" . | indent 2 }}
-  cat <<'EOF' > /tmp/exec_script.sh
-  {{ "{{inputs.parameters.exec_script}}" }}
-  EOF
-  chmod +x /tmp/exec_script.sh
-  /tmp/exec_script.sh 2>&1 | tee /tmp/log.txt
-  echo "Execution completed successfully" 2>&1 | tee /tmp/log.txt
-{{- end }}

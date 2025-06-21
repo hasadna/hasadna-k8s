@@ -25,11 +25,19 @@ spec:
         parameters:
           - name: exec_script
       volumes: {{ include "runner.volumes" . | nindent 8 }}
-      script: {{ include "runner.container" . | nindent 8 }}
-        {{ include "runner.workflowTemplateScriptSource" . | indent 8 }}
+      script:
+        source: |
+          {{ include "runner.script" . | indent 10 }}
+          cat <<'EOF' > /tmp/exec_script.sh
+          {{ "{{inputs.parameters.exec_script}}" }}
+          EOF
+          chmod +x /tmp/exec_script.sh
+          /tmp/exec_script.sh 2>&1 | tee /tmp/log.txt
+          echo "Execution completed successfully" 2>&1 | tee /tmp/log.txt
         securityContext:
           privileged: true
           runAsUser: 0
+        {{ include "runner.container" . | indent 8 }}
       outputs:
         parameters:
           - name: log
