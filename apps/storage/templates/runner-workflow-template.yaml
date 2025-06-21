@@ -26,7 +26,7 @@ spec:
           - name: exec_script
       volumes: {{ include "runner.volumes" . | nindent 8 }}
       script:
-        source: {{ include "runner.script" . | nindent 10 }}
+        source: {{ include "runner.script" . | nindent 8 }}
           cat <<'EOF' > /tmp/exec_script.sh
           {{ "{{inputs.parameters.exec_script}}" }}
           EOF
