@@ -24,7 +24,7 @@ spec:
       inputs:
         parameters:
           - name: exec_script
-      volumes: {{ include "runner.volumes" | nindent 8 }}
+      volumes: {{ include "runner.volumes" . | nindent 8 }}
       script:
         image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:latest
         imagePullPolicy: Always
