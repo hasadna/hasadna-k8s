@@ -17,4 +17,4 @@ spec:
               parameters:
                 - name: exec_script
                   value: |
-                    hasadna-k8s ceph pvc-backup-all
+                    CEPH_BACKUPS_HEARTBEAT_URL="~iac:ceph_backups_heartbeat_url~" hasadna-k8s ceph pvc-backup-all

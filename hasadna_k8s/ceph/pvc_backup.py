@@ -1,7 +1,11 @@
+import os
 import time
 import json
 import datetime
 import subprocess
+
+
+CEPH_BACKUPS_HEARTBEAT_URL = os.getenv('CEPH_BACKUPS_HEARTBEAT_URL')
 
 
 def main_block(namespace, pvc_name, pv):
@@ -83,6 +87,7 @@ def main_pvc(namespace, pvc_name, pvc):
 
 def main_all():
     print('Fetching all PVCs eligible for backup in all namespaces...')
+    backup_log = []
     for pvc in json.loads(subprocess.check_output([
         'kubectl', 'get', 'pvc', '--all-namespaces', '-l', 'app.kubernetes.io/managed-by=terraform-hasadna-rke2-storage', '-o', 'json'
     ]))['items']:
@@ -93,10 +98,20 @@ def main_all():
         if phase == 'Bound':
             if storage_class_name in ['rook-cephfs-shared', 'rook-ceph-block']:
                 main_pvc(namespace, pvc_name, pvc)
+                backup_log.append(f'{namespace}/{pvc_name}: Backup completed successfully.')
             else:
                 print(f'Skipping PVC {pvc_name} in namespace {namespace} with storage class {storage_class_name}. Only rook-cephfs-shared and rook-ceph-block are eligible for backup.')
+                backup_log.append(f'{namespace}/{pvc_name}: Skipped due to unsupported storage class {storage_class_name}.')
         else:
             print(f'Skipping PVC {pvc_name} in namespace {namespace} with phase {phase}. Only Bound PVCs are eligible for backup.')
+            backup_log.append(f'{namespace}/{pvc_name}: Skipped due to phase {phase}. Only Bound PVCs are eligible for backup.')
+    print("Great Success! Backup log:")
+    print('\n'.join(backup_log))
+    if CEPH_BACKUPS_HEARTBEAT_URL:
+        print(f'Sending heartbeat to {CEPH_BACKUPS_HEARTBEAT_URL}...')
+        subprocess.check_call(['curl', CEPH_BACKUPS_HEARTBEAT_URL])
+    else:
+        raise Exception('CEPH_BACKUPS_HEARTBEAT_URL is not set, cannot send heartbeat.')
 
 
 def main(namespace, pvc_name):
