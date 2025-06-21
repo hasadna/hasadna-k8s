@@ -13,10 +13,15 @@ def main_block(namespace, pvc_name, pv):
     print(f'Backup name: {backup_name}')
     subprocess.check_call(['rbd', 'snap', 'create', f'{pool}/{image_name}@{backup_name}'])
     subprocess.check_call(['rbd', 'snap', 'protect', f'{pool}/{image_name}@{backup_name}'])
-    device = subprocess.check_output(['rbd-nbd', 'map', f'{pool}/{image_name}@{backup_name}']).decode().strip()
+    clone_name = f'hasadna-k8s-pvc-backup-{backup_name}'
+    print(f'Clone name: {clone_name}')
+    subprocess.check_call(['rbd', 'clone', f'{pool}/{image_name}@{backup_name}', f'{pool}/{clone_name}'])
+    device = subprocess.check_output(['rbd-nbd', 'map', f'{pool}/{clone_name}']).decode().strip()
     print(f'Device: {device}')
+    if subprocess.call(['e2fsck', '-yf', device]) != 0:
+        print(f"WARNING! e2fsck fixed some errors on namespace '{namespace}', pvc '{pvc_name}'")
     subprocess.check_call(['mkdir', '-p', f'/tmp{device}'])
-    subprocess.check_call(['mount', '-t', 'ext4', '-o', 'ro,noload', device, f'/tmp{device}'])
+    subprocess.check_call(['mount', '-t', 'ext4', '-o', 'ro', device, f'/tmp{device}'])
     kopia_snapshot_source = f'ceph@{namespace}:{pvc_name}'
     print(f'Creating Kopia snapshot with source {kopia_snapshot_source}...')
     subprocess.check_call(['kopia', 'snapshot', 'create', f'/tmp{device}', '--override-source', kopia_snapshot_source])
@@ -24,6 +29,7 @@ def main_block(namespace, pvc_name, pv):
     print('Unmounting and cleaning up...')
     subprocess.check_call(['umount', f'/tmp{device}'])
     subprocess.check_call(['rbd-nbd', 'unmap', device])
+    subprocess.check_call(['rbd', 'rm', f'{pool}/{clone_name}'])
     subprocess.check_call(['rbd', 'snap', 'unprotect', f'{pool}/{image_name}@{backup_name}'])
     subprocess.check_call(['rbd', 'snap', 'rm', f'{pool}/{image_name}@{backup_name}'])
     print('Backup completed successfully.')
