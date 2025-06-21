@@ -3,7 +3,7 @@ kind: CronWorkflow
 metadata:
   name: hasadna-k8s-pvc-backup-all-daily
 spec:
-  schedule: "1 47 * * *"
+  schedule: "47 1 * * *"
   concurrencyPolicy: Forbid
   workflowSpec:
     workflowTemplateRef:
