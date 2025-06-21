@@ -25,12 +25,7 @@ spec:
         parameters:
           - name: exec_script
       volumes:
-        - name: host-dev
-          hostPath:
-            path: /dev
-        - name: host-modules
-          hostPath:
-            path: /lib/modules
+        {{- template "runner.volumes" }}
       script:
         image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:latest
         imagePullPolicy: Always
