@@ -1,4 +1,3 @@
-{{ if false }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,4 +15,4 @@ spec:
       volumes: {{ include "runner.volumes" . | nindent 8 }}
       containers:
         - name: toolbox
-{{ end }}
+          {{ include "runner.container" . | indent 10 }}
