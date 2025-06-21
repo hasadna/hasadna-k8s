@@ -13,9 +13,6 @@ spec:
         app: rook-ceph-toolbox
     spec:
       volumes: {{ include "runner.volumes" . | nindent 8 }}
-      securityContext:
-        privileged: true
-        runAsUser: 0
       containers:
         - name: toolbox
           {{ include "runner.container" . | indent 10 }}
@@ -23,3 +20,6 @@ spec:
             - -c
             - {{ include "runner.script" . | nindent 12 }}
               while true; do sleep 86400; done
+          securityContext:
+            privileged: true
+            runAsUser: 0
