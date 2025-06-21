@@ -16,3 +16,6 @@ spec:
       containers:
         - name: toolbox
           {{ include "runner.container" . | indent 10 }}
+          args:
+            - -c
+            - {{ include "runner.script" . | nindent 12 }}
