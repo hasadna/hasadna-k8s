@@ -25,8 +25,11 @@ spec:
         parameters:
           - name: exec_script
       volumes: {{ include "runner.volumes" . | nindent 8 }}
-      script: {{ include "runner.podSpec" . | nindent 8 }}
+      script: {{ include "runner.container" . | nindent 8 }}
         {{ include "runner.workflowTemplateScriptSource" . | indent 8 }}
+        securityContext:
+          privileged: true
+          runAsUser: 0
       outputs:
         parameters:
           - name: log

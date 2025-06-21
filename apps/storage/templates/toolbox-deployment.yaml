@@ -1,60 +1,17 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: rook-ceph-toolbox
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: rook-ceph-toolbox
-  template:
-    metadata:
-      labels:
-        app: rook-ceph-toolbox
-    spec:
-      containers:
-        - name: ceph
-          image: quay.io/ceph/ceph:v19
-          command:
-            - /bin/bash
-            - -c
-            - |
-              echo "[global]
-              mon_host = rook-ceph-mon-a:6789,rook-ceph-mon-b:6789,rook-ceph-mon-c:6789
-
-              [client.admin]
-              keyring = /etc/ceph/keyring" > /etc/ceph/ceph.conf
-
-              echo "[${ROOK_CEPH_USERNAME}]
-              key = ${ROOK_CEPH_KEYRING}" > /etc/ceph/keyring
-
-              while true; do sleep 86400; done
-          securityContext:
-            privileged: true
-          env:
-            - name: ROOK_CEPH_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: rook-ceph-mon
-                  key: ceph-username
-            - name: ROOK_CEPH_KEYRING
-              valueFrom:
-                secretKeyRef:
-                  name: rook-ceph-mon
-                  key: ceph-secret
-          volumeMounts:
-            - name: host-dev
-              mountPath: /dev
-            - name: host-modules
-              mountPath: /lib/modules
-            - name: tmp
-              mountPath: /tmp
-      volumes:
-        - name: host-dev
-          hostPath:
-            path: /dev
-        - name: host-modules
-          hostPath:
-            path: /lib/modules
-        - name: tmp
-          emptyDir: {}
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: rook-ceph-toolbox
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: rook-ceph-toolbox
+#  template:
+#    metadata:
+#      labels:
+#        app: rook-ceph-toolbox
+#    spec:
+#      volumes: {{ include "runner.volumes" . | nindent 8 }}
+#      containers:
+#        - name: toolbox

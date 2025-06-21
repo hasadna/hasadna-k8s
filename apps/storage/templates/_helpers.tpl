@@ -7,7 +7,7 @@
     path: /lib/modules
 {{- end }}
 
-{{- define "runner.podSpec" }}
+{{- define "runner.container" }}
 image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:latest
 imagePullPolicy: Always
 env:
@@ -53,9 +53,6 @@ volumeMounts:
     mountPath: /dev
   - name: host-modules
     mountPath: /lib/modules
-securityContext:
-  privileged: true
-  runAsUser: 0
 command: [bash]
 {{- end }}
 
