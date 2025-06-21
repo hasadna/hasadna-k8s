@@ -19,3 +19,4 @@ spec:
           args:
             - -c
             - {{ include "runner.script" . | nindent 12 }}
+              while true; do sleep 86400; done
