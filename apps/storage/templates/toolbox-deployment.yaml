@@ -1,17 +1,19 @@
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  name: rook-ceph-toolbox
-#spec:
-#  replicas: 1
-#  selector:
-#    matchLabels:
-#      app: rook-ceph-toolbox
-#  template:
-#    metadata:
-#      labels:
-#        app: rook-ceph-toolbox
-#    spec:
-#      volumes: {{ include "runner.volumes" . | nindent 8 }}
-#      containers:
-#        - name: toolbox
+{{ if false }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rook-ceph-toolbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rook-ceph-toolbox
+  template:
+    metadata:
+      labels:
+        app: rook-ceph-toolbox
+    spec:
+      volumes: {{ include "runner.volumes" . | nindent 8 }}
+      containers:
+        - name: toolbox
+{{ end }}
