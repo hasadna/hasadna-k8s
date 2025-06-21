@@ -57,16 +57,17 @@ command: [bash]
 {{- end }}
 
 {{- define "runner.script" }}
-set -euo pipefail
-(
-  mkdir -p /etc/ceph
-  echo "[global]
-mon_host = rook-ceph-mon-a:6789,rook-ceph-mon-b:6789,rook-ceph-mon-c:6789
+|
+  set -euo pipefail
+  (
+    mkdir -p /etc/ceph
+    echo "[global]
+  mon_host = rook-ceph-mon-a:6789,rook-ceph-mon-b:6789,rook-ceph-mon-c:6789
 
-[client.admin]
-keyring = /etc/ceph/keyring" > /etc/ceph/ceph.conf
-echo "[${ROOK_CEPH_USERNAME}]
-key = ${ROOK_CEPH_KEYRING}" > /etc/ceph/keyring
-kopia repository connect s3 --bucket=$KOPIA_S3_BUCKET --region=$KOPIA_S3_REGION
-) 2>&1 | tee /tmp/log.txt
+  [client.admin]
+  keyring = /etc/ceph/keyring" > /etc/ceph/ceph.conf
+  echo "[${ROOK_CEPH_USERNAME}]
+  key = ${ROOK_CEPH_KEYRING}" > /etc/ceph/keyring
+  kopia repository connect s3 --bucket=$KOPIA_S3_BUCKET --region=$KOPIA_S3_REGION
+  ) 2>&1 | tee /tmp/log.txt
 {{- end }}
