@@ -13,6 +13,9 @@ spec:
         app: rook-ceph-toolbox
     spec:
       volumes: {{ include "runner.volumes" . | nindent 8 }}
+      securityContext:
+        privileged: true
+        runAsUser: 0
       containers:
         - name: toolbox
           {{ include "runner.container" . | indent 10 }}
