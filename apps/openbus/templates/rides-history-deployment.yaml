@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rides-history
+spec:
+  selector:
+    matchLabels:
+      app: rides-history
+  replicas: 1
+  revisionHistoryLimit: 5
+  template:
+    metadata:
+      labels:
+        app: rides-history
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: rides-history
+          image: {{ .Values.ridesHistoryImage }}
+          resources: {{ toYaml .Values.ridesHistoryResources | nindent 12 }}

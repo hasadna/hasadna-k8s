@@ -51,6 +51,8 @@ strideApiResources: {"requests": {"cpu": "1000m", "memory": "1000Mi"}, "limits":
 
 backendResources: {"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}
 
+ridesHistoryResources: {"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}
+
 gtfsNfsPath: "/openbus/gtfs"
 
 #gtfsNginxPersistentVolumeClaimName: gtfs-nginx
@@ -148,4 +150,10 @@ ingresses:
     rules:
       - host: "~iac:ingress-open-bus-map-search~"
         serviceName: map-search
+        servicePort: 80
+  - name: rides-history
+    ssl: true
+    rules:
+      - host: "~iac:ingress-open-bus-rides-history~"
+        serviceName: rides-history
         servicePort: 80
