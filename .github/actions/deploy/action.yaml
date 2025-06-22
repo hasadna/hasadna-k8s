@@ -1,0 +1,42 @@
+name: "Hasadna K8S Deploy"
+description: "Update values yaml to trigger deployment in hasadna-k8s repo"
+inputs:
+  app:
+    description: 'App name under apps-directory'
+    required: true
+  repo:
+    description: 'Repo to update'
+    default: hasadna/hasadna-k8s
+  main_branch:
+    description: 'Main branch of hasadna-k8s repo'
+    default: master
+  deploy_key_env_var:
+    description: 'Environment variable containing the deploy key'
+    default: HASADNA_K8S_DEPLOY_KEY
+  values_file:
+    description: 'Values file to update under the app directory'
+    default: values-hasadna-auto-updated.yaml
+  apps_dir:
+    description: 'Directory containing the apps'
+    default: apps
+  updates:
+    description: 'comma-separated list of key-value pairs to update in the values file, e.g. "key1=value1,key2=value2" can use dots for nested keys, e.g. "key1.subkey=value1"'
+runs:
+  using: 'docker'
+  image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:latest
+  args:
+    - github-actions
+    - deploy
+    - --app
+    - "${{ inputs.app }}"
+    - --repo
+    - "${{ inputs.repo }}"
+    - --main-branch
+    - "${{ inputs.main_branch }}"
+    - --deploy-key-env-var
+    - "${{ inputs.deploy_key_env_var }}"
+    - --values-file
+    - "${{ inputs.values_file }}"
+    - --apps-dir
+    - "${{ inputs.apps_dir }}"
+    - "${{ inputs.updates }}"

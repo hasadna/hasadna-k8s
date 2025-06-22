@@ -16,5 +16,6 @@ for submodule in [
     'storage',
     'workflows',
     'ceph',
+    'github_actions',
 ]:
     main.add_command(getattr(importlib.import_module(f'.{submodule}.cli', __package__), 'main'), name=submodule.replace('_', '-'))
