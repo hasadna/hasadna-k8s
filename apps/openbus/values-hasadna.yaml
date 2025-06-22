@@ -34,7 +34,7 @@ airflowDb:
 airflowWebserver:
   resources: '{"requests": {"cpu": "400m", "memory": "1000Mi"}, "limits": {"memory": "2000Mi"}}'
 airflowScheduler:
-  resources: '{"requests": {"cpu": "2000m", "memory": "12000Mi"}, "limits": {"memory": "16000Mi"}}'
+  resources: '{"requests": {"cpu": "2000m", "memory": "20000Mi"}, "limits": {"memory": "25000Mi"}}'
 
   # persistentVolumeClaimName: airflow-scheduler
 
