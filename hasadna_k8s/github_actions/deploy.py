@@ -32,8 +32,8 @@ def main(app, repo, deploy_key_env_var, values_file, apps_dir, updates, main_bra
         if update_yaml(os.path.join(tmpdir, 'repo', apps_dir, app, values_file), updates):
             source = os.getenv('GITHUB_REPOSITORY') or 'unknown'
             source_name = source.replace('/', '-')
-            subprocess.check_call(['git', 'config', '--global', 'user.name', source_name])
-            subprocess.check_call(['git', 'config', '--global', 'user.email', f'{source_name}@localhost'])
+            subprocess.check_call(['git', 'config', 'user.name', source_name], cwd=os.path.join(tmpdir, 'repo'))
+            subprocess.check_call(['git', 'config', 'user.email', f'{source_name}@localhost'], cwd=os.path.join(tmpdir, 'repo'))
             subprocess.check_call(['git', 'add', os.path.join(apps_dir, app, values_file)], cwd=os.path.join(tmpdir, 'repo'))
             subprocess.check_call(['git', 'commit', '-m', f'automatic update of {app} from {source}'], cwd=os.path.join(tmpdir, 'repo'))
             subprocess.check_call(['git', 'push', 'origin', main_branch], cwd=os.path.join(tmpdir, 'repo'), env=git_env)
