@@ -8,7 +8,7 @@ def update_yaml(file_path, updates):
     assert os.path.exists(file_path)
     data = benedict.from_yaml(file_path)
     changed = False
-    for update in [u.strip() for u in ','.split(updates) if u.strip() and '=' in u]:
+    for update in [u.strip() for u in updates.split(',') if u.strip() and '=' in u]:
         key, value = update.split('=', 1)
         if data.get(key) != value:
             data[key] = value
