@@ -2,17 +2,17 @@ enabled: true
 ingresses:
   - name: landing
     rules:
-      - host: mapathataf.whiletrue.industries
+      - host: www.tafmap.org.il
         serviceName: landing
         servicePort: 4000
   - name: app
     rules:
-      - host: mapathataf-app.whiletrue.industries
+      - host: app.tafmap.org.il
         serviceName: app
         servicePort: 4000
   - name: admin
     rules:
-      - host: mapathataf-admin.whiletrue.industries
+      - host: admin.tafmap.org.il
         serviceName: admin
         servicePort: 4000
 vertical_pod_autoscalers:
