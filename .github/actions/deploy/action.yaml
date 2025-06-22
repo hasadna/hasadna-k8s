@@ -23,7 +23,7 @@ inputs:
     description: 'comma-separated list of key-value pairs to update in the values file, e.g. "key1=value1,key2=value2" can use dots for nested keys, e.g. "key1.subkey=value1"'
 runs:
   using: 'docker'
-  image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:latest
+  image: docker://ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:latest
   args:
     - github-actions
     - deploy
