@@ -3,7 +3,7 @@
 Infrastructure as code for The Public Knowledge Workshop
 
 See [docs/argocd.md](docs/argocd.md) for defining deployed apps and continuous deployment.
-
+c
 ## Python CLI Local Developmentab
 
 Prerequisites:
