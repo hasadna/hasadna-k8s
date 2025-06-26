@@ -26,6 +26,7 @@ spec:
               metadata:
                 generateName: github-pusher-
               spec:
+                serviceAccountName: operate-workflows
                 entrypoint: dag
                 templates:
                   - name: dag
