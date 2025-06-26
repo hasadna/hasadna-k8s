@@ -13,7 +13,7 @@ spec:
     - template:
         name: argo-workflow
         argoWorkflow:
-          operation: Submit
+          operation: submit
           parameters:
             - src:
                 dependencyName: github
