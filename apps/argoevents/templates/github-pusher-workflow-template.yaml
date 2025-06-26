@@ -9,15 +9,15 @@ spec:
     parameters:
       - name: body
         value: ""
-  volumes:
-    - name: github-pusher-config
-      configMap:
-        name: github-pusher-config
   templates:
     - name: github-pusher
       inputs:
         parameters:
           - name: body
+      volumes:
+        - name: github-pusher-config
+          configMap:
+            name: github-pusher-config
       container:
         image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:74c5a7aed9416eeafffed3f0e05f15ac98255ab1
         args: [github-pusher, run, --env, BODY]
