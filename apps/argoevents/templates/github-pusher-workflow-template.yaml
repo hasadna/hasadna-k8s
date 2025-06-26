@@ -3,6 +3,7 @@ kind: WorkflowTemplate
 metadata:
   name: github-pusher
 spec:
+  serviceAccountName: operate-workflows
   entrypoint: github-pusher
   arguments:
     parameters:
@@ -14,7 +15,6 @@ spec:
         name: github-pusher-config
   templates:
     - name: github-pusher
-      serviceAccountName: operate-workflows
       inputs:
         parameters:
           - name: body
