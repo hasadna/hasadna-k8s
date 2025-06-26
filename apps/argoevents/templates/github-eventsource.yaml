@@ -19,6 +19,7 @@ spec:
       filter:
         # https://expr-lang.org/
         expression: |
+          body["X-GitHub-Event"] == "push" &&
           body.repository.full_name in {{ .Values.githubPusher.allowedRepos | toJson }} &&
           body.ref in {{ .Values.githubPusher.allowedRefs | toJson }}
       webhookSecret:

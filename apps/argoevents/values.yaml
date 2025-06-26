@@ -7,6 +7,7 @@ githubPusher:
   allowedRefs:
     - "refs/heads/master"
     - "refs/heads/main"
+    - "refs/heads/test"
 
 ingresses:
   - name: argoevents-github-eventsource
