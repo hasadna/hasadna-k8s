@@ -3,8 +3,6 @@ kind: Sensor
 metadata:
   name: github-argo-workflows
 spec:
-  template:
-    serviceAccountName: operate-workflows
   dependencies:
     - name: github
       eventSourceName: github
@@ -13,7 +11,6 @@ spec:
     - template:
         name: argo-workflow
         argoWorkflow:
-          operation: submit
           parameters:
             - src:
                 dependencyName: github
@@ -27,6 +24,7 @@ spec:
                 generateName: github-pusher-
               spec:
                 entrypoint: main
+                serviceAccountName: operate-workflows
                 arguments:
                   parameters:
                     - name: body
