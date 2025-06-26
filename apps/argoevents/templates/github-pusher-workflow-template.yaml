@@ -14,6 +14,7 @@ spec:
       inputs:
         parameters:
           - name: body
+      serviceAccountName: operate-workflows
       volumes:
         - name: github-pusher-config
           configMap:
