@@ -26,3 +26,4 @@ uv run pytest
 ## Deleted code
 
 See this commit for some old deleted code which might be useful in the future https://github.com/hasadna/hasadna-k8s/tree/6cf0d6b0d88170dadc85f16790caa9087b051a14
+
