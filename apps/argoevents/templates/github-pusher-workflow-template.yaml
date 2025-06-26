@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: github-pusher
+spec:
+  entrypoint: github-pusher
+  arguments:
+    parameters:
+      - name: body
+        value: ""
+  volumes:
+    - name: github-pusher-config
+      configMap:
+        name: github-pusher-config
+  templates:
+    - name: github-pusher
+      serviceAccountName: operate-workflows
+      inputs:
+        parameters:
+          - name: body
+      container:
+        image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:74c5a7aed9416eeafffed3f0e05f15ac98255ab1
+        args: [github-pusher, run, --env, BODY]
+        env:
+          - name: BODY
+            value: "{{`{{inputs.parameters.body}}`}}"
+          - name: GITHUB_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: github
+                key: app_id
+          - name: GITHUB_APP_INSTALLATION_ID
+            valueFrom:
+              secretKeyRef:
+                name: github
+                key: app_installation_id
+          - name: GITHUB_APP_PRIVATE_KEY_B64
+            valueFrom:
+              secretKeyRef:
+                name: github
+                key: app_private_key_b64
+          - name: GITHUB_PUSHER_CONFIG_YAML_PATH
+            value: /etc/github-pusher/config.yaml
+        volumeMounts:
+          - name: github-pusher-config
+            mountPath: /etc/github-pusher
+            readOnly: true
