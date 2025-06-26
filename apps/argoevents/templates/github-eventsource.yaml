@@ -15,9 +15,12 @@ spec:
         method: POST
         port: "13000"
         url: "https://argo-events-github.k8s.hasadna.org.il/push"
+      organizations:
+        - hasadna
+        - kolzchut
       filter:
         # https://expr-lang.org/
-        expression: "body.repository.full_name == 'hasadna/datacity-k8s'"
+        expression: "body.repository.full_name in ['kolzchut/srm-devops']"
       webhookSecret:
         name: github
         key: webhooksecret
