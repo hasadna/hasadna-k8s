@@ -8,6 +8,7 @@ See [docs/argocd.md](docs/argocd.md) for defining deployed apps and continuous d
 
 Prerequisites:
 
+
 * Python 3.12
 * [uv](https://docs.astral.sh/uv/)
 
