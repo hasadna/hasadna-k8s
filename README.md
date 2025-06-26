@@ -6,7 +6,7 @@ See [docs/argocd.md](docs/argocd.md) for defining deployed apps and continuous d
 c
 ## Python CLI Local Developmentabcdefgc
 
-Prerequisites:
+Prerequisites:ccc
 
 
 * Python 3.12
