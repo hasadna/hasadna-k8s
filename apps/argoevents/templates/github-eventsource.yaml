@@ -15,10 +15,10 @@ spec:
         method: POST
         port: "13000"
         url: "https://argo-events-github.k8s.hasadna.org.il/push"
-      organizations: ["_"]
+      organizations: ["_"]  # this is required but is not actually used because we create the webhooks in Terraform
       filter:
         # https://expr-lang.org/
-        expression: "body.repository.full_name in ['kolzchut/srm-devops']"
+        expression: "body.repository.full_name in ['kolzchut/srm-devops', 'hasadna/hasadna-k8s']"
       webhookSecret:
         name: github
         key: webhooksecret
