@@ -3,11 +3,8 @@ enabled: true
 githubPusher:
   allowedRepos:
     - "kolzchut/srm-devops"
-    - "hasadna/hasadna-k8s"
   allowedRefs:
-    - "refs/heads/master"
     - "refs/heads/main"
-    - "refs/heads/test"
 
 ingresses:
   - name: argoevents-github-eventsource
