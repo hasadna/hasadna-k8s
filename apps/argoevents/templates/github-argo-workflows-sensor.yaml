@@ -3,6 +3,8 @@ kind: Sensor
 metadata:
   name: github-argo-workflows
 spec:
+  template:
+    serviceAccountName: operate-workflows
   dependencies:
     - name: github
       eventSourceName: github
