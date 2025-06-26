@@ -18,7 +18,9 @@ spec:
       organizations: ["_"]  # this is required but is not actually used because we create the webhooks in Terraform
       filter:
         # https://expr-lang.org/
-        expression: "body.repository.full_name in ['kolzchut/srm-devops', 'hasadna/hasadna-k8s']"
+        expression: |
+          body.repository.full_name in {{ .Values.githubPusher.allowedRepos | toJson }} &&
+          body.ref in {{ .Values.githubPusher.allowedRefs | toJson }}
       webhookSecret:
         name: github
         key: webhooksecret

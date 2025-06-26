@@ -1,5 +1,12 @@
 enabled: true
 
+githubPusher:
+  allowedRepos:
+    - "kolzchut/srm-devops"
+  allowedRefs:
+    - "refs/heads/master"
+    - "refs/heads/main"
+
 ingresses:
   - name: argoevents-github-eventsource
     ssl: true
