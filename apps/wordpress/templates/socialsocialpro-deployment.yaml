@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: socialsocialpro
+spec:
+  selector:
+    matchLabels:
+      app: socialsocialpro
+  replicas: 1
+  revisionHistoryLimit: 5
+  template:
+    metadata:
+      labels:
+        app: socialsocialpro
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: socialsocialpro
+          image: {{ .Values.socialsocialproImage }}
+          resources: {"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}
