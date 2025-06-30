@@ -35,7 +35,7 @@ ingresses:
   - name: socialpro-soial
     rules:
       - host: social.socialpro.org.il
-        serviceName: socialpro-social
+        serviceName: socialsocialpro
         servicePort: 80
 
 vertical_pod_autoscalers:
