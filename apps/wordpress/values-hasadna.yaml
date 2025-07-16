@@ -14,12 +14,13 @@ deployments:
       upload_max_filesize: "100M"
       # Maximum number of files that can be uploaded via a single request
       max_file_uploads: "20"
-  - name: socialpro-social
-    image: wordpress@sha256:78f9132d3d5db7eb781cab58621867aba09d763cbaafab3e9a09ceae66cb1c17
-    resources: '{"requests": {"cpu": "500m", "memory": "1024Mi"}, "limits": {"cpu": "800m", "memory": "2048Mi"}}'
-    pvcName: socialpro-social
-    dbName: socialprosocial
-    php_ini: {}
+# we use a static export of this wordpress site
+#  - name: socialpro-social
+#    image: wordpress@sha256:78f9132d3d5db7eb781cab58621867aba09d763cbaafab3e9a09ceae66cb1c17
+#    resources: '{"requests": {"cpu": "500m", "memory": "1024Mi"}, "limits": {"cpu": "800m", "memory": "2048Mi"}}'
+#    pvcName: socialpro-social
+#    dbName: socialprosocial
+#    php_ini: {}
 
 dbResources: '{"requests": {"cpu": "50m", "memory": "309Mi"}, "limits": {"cpu": "150m", "memory": "2215Mi"}}'
 #dbNfsServer: "~iac:hasadna_nfs1_internal_ip~"
@@ -35,7 +36,7 @@ ingresses:
   - name: socialpro-soial
     rules:
       - host: social.socialpro.org.il
-        serviceName: socialpro-social
+        serviceName: socialsocialpro
         servicePort: 80
 
 vertical_pod_autoscalers:
@@ -46,7 +47,7 @@ vertical_pod_autoscalers:
   kind: deployment
   name: datacity
 
-secrets:
-  - name: socialpro-social
-    data:
-      DB_PASSWORD: "~vault:Projects/wordpress/socialpro_social:db_password~"
+secrets: []
+#  - name: socialpro-social
+#    data:
+#      DB_PASSWORD: "~vault:Projects/wordpress/socialpro_social:db_password~"
