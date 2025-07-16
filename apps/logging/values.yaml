@@ -61,6 +61,9 @@ loki:
           index:
             prefix: loki_index_
             period: 24h
+    compactor:
+      retention_enabled: true
+      delete_request_store: s3
     ingester:
       chunk_encoding: snappy
     querier:
@@ -71,6 +74,7 @@ loki:
     limits_config:
       allow_structured_metadata: true
       volume_enabled: true
+      retention_period: 120h
   ingester:
     replicas: 3
     zoneAwareReplication:
