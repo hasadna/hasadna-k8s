@@ -30,6 +30,13 @@ RUN cd /tmp &&\
     mv kopia-${KOPIA_VERSION}-linux-x64/kopia /usr/local/bin/ &&\
     chmod +x /usr/local/bin/kopia &&\
     rm -rf kopia-${KOPIA_VERSION}-linux-x64 kopia.tar.gz
+ARG S5CMD_VERSION=2.3.0
+ADD https://github.com/peak/s5cmd/releases/download/v${S5CMD_VERSION}/s5cmd_${S5CMD_VERSION}_Linux-64bit.tar.gz /tmp/s5cmd.tar.gz
+RUN cd /tmp &&\
+    tar -xzvf s5cmd.tar.gz &&\
+    mv s5cmd /usr/local/bin/ &&\
+    chmod +x /usr/local/bin/s5cmd &&\
+    rm -rf s5cmd.tar.gz
 RUN useradd -m -s /bin/bash hasadna
 RUN mkdir /home/hasadna/app
 WORKDIR /home/hasadna/app
