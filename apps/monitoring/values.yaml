@@ -10,6 +10,7 @@ kube-prometheus-stack:
         - api_url_file: /etc/alertmanager/secrets/alertmanager-slack-api-url/api-url
           channel: "#cluster-rke2-notifications"
     alertmanagerSpec:
+      externalUrl: "https://alertmanager.~iac:rke2_catchall_hostname~"
       secrets:
         - alertmanager-slack-api-url
       resources:
@@ -66,6 +67,7 @@ kube-prometheus-stack:
 
   prometheus:
     prometheusSpec:
+      externalUrl: "https://prometheus.~iac:rke2_catchall_hostname~"
       serviceMonitorSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
       retention: 7d
