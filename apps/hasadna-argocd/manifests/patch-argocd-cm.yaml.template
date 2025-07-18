@@ -49,7 +49,7 @@ data:
           orgs:
           - name: hasadna
             teams:
-            - argocd-admins
+            - kubectl-readonly-admins
   configManagementPlugins: |
     - name: argocd-vault-plugin-helm-with-args
       init:
