@@ -18,6 +18,7 @@ patches:
   - path: patch-argocd-dex-server-deployment.yaml
   - path: patch-argocd-application-controller-statefulset.yaml
   - path: patch-argocd-server-deployment.yaml
+  - path: patch-argocd-dex-server-role.yaml
   - target: {kind: Deployment, name: "argocd-repo-server"}
     patch: '[{"op": "remove", "path": "/spec/template/spec/containers/1/securityContext/seccompProfile"}]'
 

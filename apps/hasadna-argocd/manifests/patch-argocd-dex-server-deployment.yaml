@@ -7,6 +7,17 @@ spec:
     spec:
       containers:
         - name: dex
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo '#!/bin/sh' > /tmp/dex
+              echo 'sed -i 's/^storage:/x-storage:/' /tmp/dex.yaml' >> /tmp/dex
+              echo "echo \"storage: {\\\"type\\\": \\\"kubernetes\\\", \\\"config\\\":{\\\"inCluster\\\": true}}\" >> /tmp/dex.yaml" >> /tmp/dex
+              echo 'exec /usr/local/bin/dex serve /tmp/dex.yaml' >> /tmp/dex
+              chmod +x /tmp/dex
+              export PATH=/tmp:$PATH
+              exec /shared/argocd-dex rundex
           env:
             - name: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
               valueFrom:
