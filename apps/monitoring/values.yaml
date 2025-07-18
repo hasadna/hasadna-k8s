@@ -1,5 +1,16 @@
 kube-prometheus-stack:
   alertmanager:
+    tplConfig: true
+    stringConfig: |
+      global:
+        resolve_timeout: 5m
+      route:
+        receiver: slack
+      receivers:
+      - name: slack
+        slack_configs:
+        - api_url: {{ "~vault:Projects/iac/outputs/hasadna_argoevents:github_webhook_secret~" | b64dec | quote }}
+          channel: "#k8s-alerts"
     alertmanagerSpec:
       resources:
         requests:
