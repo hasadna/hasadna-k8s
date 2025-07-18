@@ -7,6 +7,7 @@ resources:
 - argocd-repo-server-rbac.yaml
 - application-hasadna-argocd-apps.yaml
 - github-secret.yaml
+- argocd-dex-server-rbac.yaml
 
 patches:
   - path: patch-argocd-cm.yaml
@@ -18,7 +19,6 @@ patches:
   - path: patch-argocd-dex-server-deployment.yaml
   - path: patch-argocd-application-controller-statefulset.yaml
   - path: patch-argocd-server-deployment.yaml
-  - path: patch-argocd-dex-server-role.yaml
   - target: {kind: Deployment, name: "argocd-repo-server"}
     patch: '[{"op": "remove", "path": "/spec/template/spec/containers/1/securityContext/seccompProfile"}]'
 
