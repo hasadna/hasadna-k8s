@@ -88,14 +88,6 @@ kube-prometheus-stack:
               matchLabels:
                 app.kubernetes.io/name: monitoring-prometheus
                 app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
-      additionalScrapeConfigs:
-        - job_name: node-exporter
-          honor_labels: true
-          scrape_interval: 5s
-          static_configs:
-            - targets: ['172.16.0.9:9796']
-              labels:
-                instance: '172.16.0.9:9796'
 
   kubeEtcd:
     enabled: false
