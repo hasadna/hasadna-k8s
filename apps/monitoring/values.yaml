@@ -7,9 +7,11 @@ kube-prometheus-stack:
       receivers:
       - name: slack
         slack_configs:
-        - api_url: "~vault:Projects/iac/monitoring:slack-webhook-cluster-rke2-notifications~"
-          channel: "#k8s-alerts"
+        - api_url_file: /etc/alertmanager/secrets/alertmanager-slack-api-url/api-url
+          channel: "#cluster-rke2-notifications"
     alertmanagerSpec:
+      secrets:
+        - alertmanager-slack-api-url
       resources:
         requests:
           cpu: 400m
@@ -173,3 +175,6 @@ secrets:
     data:
       admin-user: "~vault:Projects/k8s/grafana-admin:admin-user~"
       admin-password: "~vault:Projects/k8s/grafana-admin:admin-password~"
+  - name: alertmanager-slack-api-url
+    data:
+      api-url: "~vault:Projects/iac/monitoring:slack-webhook-cluster-rke2-notifications~"
