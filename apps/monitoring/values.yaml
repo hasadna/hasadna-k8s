@@ -9,7 +9,7 @@ kube-prometheus-stack:
       receivers:
       - name: slack
         slack_configs:
-        - api_url: {{ "~vault:Projects/iac/outputs/hasadna_argoevents:github_webhook_secret~" | b64dec | quote }}
+        - api_url: {{ "~vault:Projects/iac/monitoring:slack-webhook-cluster-rke2-notifications~" | b64dec | quote }}
           channel: "#k8s-alerts"
     alertmanagerSpec:
       resources:
