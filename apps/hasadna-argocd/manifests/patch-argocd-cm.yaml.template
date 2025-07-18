@@ -42,7 +42,7 @@ data:
             - argocd-srm-admins
       - type: github
         id: github-kubectl-readonly
-        name: GitHub Admins Kubectl Readonly (use only for pinniped login to kubectl)
+        name: Readonly GitHub for Kubectl - use this only if you need read only access via kubectl
         config:
           clientID: "__dex.config.connectors.github.clientID__"
           clientSecret: "__dex.config.connectors.github.clientSecret__"
