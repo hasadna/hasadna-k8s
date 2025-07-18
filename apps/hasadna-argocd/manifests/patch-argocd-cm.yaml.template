@@ -36,6 +36,16 @@ data:
             - argocd-openlaw-admins
             - argocd-openbus-admins
             - argocd-srm-admins
+      - type: github
+        id: github-admins-readonly
+        name: GitHub Admins Readonly - for kubectl pinniped access only
+        config:
+          clientID: "__dex.config.connectors.github.clientID__"
+          clientSecret: "__dex.config.connectors.github.clientSecret__"
+          orgs:
+          - name: hasadna
+            teams:
+            - argocd-admins
   configManagementPlugins: |
     - name: argocd-vault-plugin-helm-with-args
       init:
