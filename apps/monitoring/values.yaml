@@ -2,8 +2,6 @@ kube-prometheus-stack:
   alertmanager:
     tplConfig: true
     stringConfig: |
-      global:
-        resolve_timeout: 5m
       route:
         receiver: slack
       receivers:
