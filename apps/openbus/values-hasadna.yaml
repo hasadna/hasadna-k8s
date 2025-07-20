@@ -139,12 +139,6 @@ ingresses:
       - host: "~iac:ingress-open-bus-gtfs-data~"
         serviceName: gtfs-nginx
         servicePort: 80
-  - name: webmon
-    ssl: true
-    rules:
-      - host: "~iac:ingress-open-bus-webmon~"
-        serviceName: webmon
-        servicePort: 8901
   - name: map-search
     ssl: true
     rules:
