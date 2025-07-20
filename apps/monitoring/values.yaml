@@ -1,27 +1,27 @@
 kube-prometheus-stack:
   alertmanager:
-#    tplConfig: true
-#    stringConfig: |
-#      route:
-#        receiver: slack
-#        routes:
-#          - matchers:
-#              - alertname="Watchdog"
-#            receiver: statuscake
-#            repeat_interval: 1h
-#      receivers:
-#        - name: slack
-#          slack_configs:
-#          - api_url_file: /etc/alertmanager/secrets/alertmanager-slack-api-url/api-url
-#            channel: "#cluster-rke2-notifications"
-#        - name: statuscake
-#          webhook_configs:
-#            - url_file: /etc/alertmanager/secrets/statuscake-webhook-url/url
-#              send_resolved: false
+    config:
+      route:
+        receiver: slack
+        routes:
+          - matchers:
+              - alertname = "Watchdog"
+            receiver: 'statuscake'
+            repeat_interval: 10m
+      receivers:
+        - name: slack
+          slack_configs:
+          - api_url_file: /etc/alertmanager/secrets/alertmanager-slack-api-url/api-url
+            channel: "#cluster-rke2-notifications"
+        - name: statuscake
+          webhook_configs:
+            - url_file: /etc/alertmanager/secrets/statuscake-webhook-url/url
+              send_resolved: false
     alertmanagerSpec:
       externalUrl: "https://alertmanager.~iac:rke2_catchall_hostname~"
       secrets:
         - alertmanager-slack-api-url
+        - statuscake-webhook-url
       resources:
         requests:
           cpu: 400m
@@ -181,6 +181,6 @@ secrets:
   - name: alertmanager-slack-api-url
     data:
       api-url: "~vault:Projects/iac/monitoring:slack-webhook-cluster-rke2-notifications~"
-#  - name: statuscake-webhook-url
-#    data:
-#      url: "~vault:Projects/iac/monitoring-statuscake-watchdog:webhook-url~"
+  - name: statuscake-webhook-url
+    data:
+      url: "~vault:Projects/iac/monitoring-statuscake-watchdog:webhook-url~"
