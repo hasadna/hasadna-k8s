@@ -181,6 +181,6 @@ secrets:
   - name: alertmanager-slack-api-url
     data:
       api-url: "~vault:Projects/iac/monitoring:slack-webhook-cluster-rke2-notifications~"
-  - name: statuscake-webhook-url
-    data:
-      url: "~vault:Projects/iac/monitoring-statuscake-watchdog:webhook-url~"
+#  - name: statuscake-webhook-url
+#    data:
+#      url: "~vault:Projects/iac/monitoring-statuscake-watchdog:webhook-url~"
