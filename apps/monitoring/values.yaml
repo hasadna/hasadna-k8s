@@ -13,6 +13,17 @@ kube-prometheus-stack:
           slack_configs:
           - api_url_file: /etc/alertmanager/secrets/alertmanager-slack-api-url/api-url
             channel: "#cluster-rke2-notifications"
+            send_resolved: true
+            text: |
+              {{ range .Alerts }}
+              {{ .Labels.alertname }} | {{ .Status }}
+              {{ range $k, $v := .Labels }}  - {{$k}}: {{$v}}
+              {{ end }}
+              {{ range $k, $v := .Annotations }}  - {{$k}}: {{$v}}
+              {{ end }}
+              *StartsAt:* {{ .StartsAt }}
+              *GeneratorURL:* {{ .GeneratorURL }}
+              {{ end }}
         - name: statuscake
           webhook_configs:
             - url_file: /etc/alertmanager/secrets/statuscake-webhook-url/url
