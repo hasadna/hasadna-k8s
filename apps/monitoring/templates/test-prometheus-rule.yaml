@@ -15,4 +15,4 @@ spec:
           expr: vector(1)
           for: 1m
           labels:
-            severity: warning
+            severity: critical

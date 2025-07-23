@@ -15,14 +15,12 @@ kube-prometheus-stack:
             channel: "#cluster-rke2-notifications"
             send_resolved: true
             text: |
-              {{ range .Alerts }}
-              {{ .Labels.alertname }} | {{ .Status }}
+              {{ len .Alerts }} alerts for namespace "{{ .CommonLabels.namespace }}"
+              {{ range $i, $alert := .Alerts }}
+              *Alert #{{$i}}* | {{ .Labels.alertname }} | {{ .Status }} | {{ .StartsAt }}
               {{ range $k, $v := .Labels }}  - {{$k}}: {{$v}}
-              {{ end }}
-              {{ range $k, $v := .Annotations }}  - {{$k}}: {{$v}}
-              {{ end }}
-              *StartsAt:* {{ .StartsAt }}
-              *GeneratorURL:* {{ .GeneratorURL }}
+              {{ end }}{{ range $k, $v := .Annotations }}  - {{$k}}: {{$v}}
+              {{ end }}<{{ .GeneratorURL }}|View in Prometheus>
               {{ end }}
         - name: statuscake
           webhook_configs:
