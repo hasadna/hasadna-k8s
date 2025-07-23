@@ -20,7 +20,7 @@ spec:
       containers:
       - name: server
         image: {{ .Values.baserowImage | default "baserow/baserow:1.21.2" | replace "docker.pkg.github.com" "ghcr.io" | quote }}
-        # resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "2Gi"}}
+        resources: {"requests": {"cpu": "150m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "2Gi"}}
         volumeMounts:
           - name: data
             mountPath: /baserow/data

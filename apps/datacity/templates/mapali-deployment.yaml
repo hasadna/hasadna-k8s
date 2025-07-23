@@ -20,7 +20,7 @@ spec:
       containers:
       - name: db
         image: "ghcr.io/hasadna/datacity-ckan-dgp/datacity-ckan-dgp-db:210085d803fd866c24f2d644920dd276527d74f1"
-        resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "2Gi"}}
+        resources: {"requests": {"cpu": "150m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "2Gi"}}
         volumeMounts:
           - name: data
             mountPath: /var/lib/postgresql/data
