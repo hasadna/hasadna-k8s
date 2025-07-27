@@ -1,4 +1,4 @@
-{{ if .Values.enabled }}
+{{ if false }}
 apiVersion: v1
 kind: Service
 metadata:

@@ -15,6 +15,10 @@ redirects:
     hosts:
       - datacity.org.il
     redirect: "https://www.datacity.org.il/"
+  - name: www-datacity
+    hosts:
+      - www.datacity.org.il
+    redirect: "https://data-city.my.canva.site/"
   - name: hasadna-site
     hosts:
       - hasadna.org.il
