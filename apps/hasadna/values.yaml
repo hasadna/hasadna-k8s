@@ -25,30 +25,6 @@ redirects:
     redirect: "https://argocd.hasadna.org.il"
     ssl: true
 
-label-studio:
-  global:
-    persistence:
-      config:
-        volume:
-          existingClaim: "labelstudio2"
-  app:
-    extraEnvironmentVars:
-      LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK: "true"
-    ingress:
-      enabled: true
-      className: nginx
-      host: label-studio.k8s.hasadna.org.il
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
-      tls:
-        - hosts:
-            - label-studio.k8s.hasadna.org.il
-          secretName: label-studio-tls
-  postgresql:
-    primary:
-      persistence:
-        existingClaim: "labelstudio-postgres2"
-
 secrets:
   - name: kopia
     data:

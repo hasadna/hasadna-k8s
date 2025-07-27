@@ -1,6 +1,0 @@
-dependencies:
-- name: label-studio
-  repository: https://charts.heartex.com/
-  version: 1.3.3
-digest: sha256:8fe145f2378d39afd29d759fa89de86d4d541e1f38b26bb0f411d21ff51bc9ce
-generated: "2024-01-12T08:02:33.276194316+02:00"
