@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: gtfs-nginx
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 2
   template:
     metadata:
@@ -33,7 +33,7 @@ spec:
           name: gtfs-nginx
       - name: gtfs
         persistentVolumeClaim:
-          claimName: gtfs-nginx
+          claimName: gtfs2
 #        {{ if .Values.gtfsNginxPersistentVolumeClaimName }}
 #        persistentVolumeClaim:
 #          claimName: {{ .Values.gtfsNginxPersistentVolumeClaimName | quote }}

@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: airflow-scheduler
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 5
   strategy:
     type: Recreate
@@ -88,7 +88,7 @@ spec:
 #          {{ end }}
         - name: gtfs
           persistentVolumeClaim:
-            claimName: airflow-scheduler
+            claimName: gtfs3
 #          {{ if .Values.airflowScheduler.persistentVolumeClaimName }}
 #          persistentVolumeClaim:
 #            claimName: {{ .Values.airflowScheduler.persistentVolumeClaimName | quote }}
