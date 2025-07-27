@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: airflow-scheduler
-  replicas: 1
+  replicas: 0
   revisionHistoryLimit: 5
   strategy:
     type: Recreate
