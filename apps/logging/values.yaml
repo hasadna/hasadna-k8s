@@ -207,5 +207,5 @@ alloy:
         // systemd //
         
         loki.source.journal "read"  {
-          forward_to    = [loki.write.endpoint.receiver]
+          forward_to    = [loki.write.default.receiver]
         }
