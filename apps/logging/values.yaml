@@ -220,6 +220,7 @@ alloy:
         }
         
         loki.source.journal "journal"  {
+          path          = "/var/log/journal"
           forward_to    = [loki.write.default.receiver]
           relabel_rules = loki.relabel.journal.rules
           labels        = {service_name = "systemd"}
