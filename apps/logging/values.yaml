@@ -143,6 +143,10 @@ alloy:
           }
         }
         
+        logging {
+          level = "debug"
+        }
+        
         // pods //
         
         discovery.kubernetes "pod" {
