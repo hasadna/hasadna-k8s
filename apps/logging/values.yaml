@@ -133,6 +133,9 @@ alloy:
             url = "http://logging-loki-gateway/loki/api/v1/push"
           }
         }
+        
+        // pod logs //
+        
         discovery.kubernetes "pod" {
           role = "pod"
         }
@@ -177,4 +180,36 @@ alloy:
         loki.source.file "pod" {
           targets    = local.file_match.pod.targets
           forward_to = [loki.write.default.receiver]
+        }
+        
+        // kubelet logs //
+        
+        local.file_match "kubelet" {
+          path_targets = [
+            {
+              __path__ = "/var/lib/rancher/rke2/agent/logs/kubelet.log"
+              node_name = "${HOSTNAME}"
+            }
+          ]
+        }
+        
+        loki.source.file "kubelet" {
+          targets    = local.file_match.kubelet.targets
+          forward_to = [loki.write.default.receiver]
+        }
+        
+        // systemd logs //
+        
+        local.journal_match "default" {
+          matches = []
+        }
+        
+        loki.source.journal "systemd" {
+          forward_to = [loki.write.default.receiver]
+          journal_config {
+            path = "/var/log/journal"
+          }
+          match {
+            journal_targets = local.journal_match.default.targets
+          }
         }
