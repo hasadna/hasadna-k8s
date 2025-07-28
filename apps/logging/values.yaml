@@ -188,7 +188,7 @@ alloy:
           path_targets = [
             {
               __path__ = "/var/lib/rancher/rke2/agent/logs/kubelet.log",
-              node_name = "${HOSTNAME}"
+              node_name = sys.env("HOSTNAME")
             }
           ]
         }
