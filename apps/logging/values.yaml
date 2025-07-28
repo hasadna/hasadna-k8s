@@ -123,9 +123,18 @@ alloy:
       - key: "CriticalAddonsOnly"
         operator: "Exists"
         effect: "NoExecute"
+    volumes:
+      extra:
+        - name: varlibrancher
+          hostPath:
+            path: /var/lib/rancher
   alloy:
     mounts:
       varlog: true
+      extra:
+        - name: varlibrancher
+          mountPath: /var/lib/rancher
+          readOnly: true
     configMap:
       content: |
         loki.write "default" {
