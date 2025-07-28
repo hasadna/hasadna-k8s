@@ -186,7 +186,7 @@ alloy:
         
         loki.source.file "kubelet" {
           targets    = [
-            {__path__ = "/var/lib/rancher/rke2/agent/logs/kubelet.log", "node_name" = sys.env("HOSTNAME")}
+            {__path__ = "/var/lib/rancher/rke2/agent/logs/kubelet.log", "node_name" = sys.env("HOSTNAME")},
           ]
           forward_to = [loki.write.default.receiver]
         }
