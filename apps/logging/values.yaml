@@ -143,7 +143,7 @@ alloy:
           }
         }
         
-        // pod logs //
+        // pods //
         
         discovery.kubernetes "pod" {
           role = "pod"
@@ -191,7 +191,7 @@ alloy:
           forward_to = [loki.write.default.receiver]
         }
         
-        // kubelet logs //
+        // kubelet //
         
         loki.source.file "kubelet" {
           targets    = [
@@ -202,4 +202,10 @@ alloy:
             },
           ]
           forward_to = [loki.write.default.receiver]
+        }
+
+        // systemd //
+        
+        loki.source.journal "read"  {
+          forward_to    = [loki.write.endpoint.receiver]
         }
