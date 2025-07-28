@@ -187,7 +187,7 @@ alloy:
         local.file_match "kubelet" {
           path_targets = [
             {
-              __path__ = "/var/lib/rancher/rke2/agent/logs/kubelet.log"
+              __path__ = "/var/lib/rancher/rke2/agent/logs/kubelet.log",
               node_name = "${HOSTNAME}"
             }
           ]
