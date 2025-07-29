@@ -1,19 +1,19 @@
 enabled: true
-deployments: []
-#  - name: datacity
-#    image: wordpress@sha256:95668fadc012aa882a19ffc875e5e2164a0a2fc7e201c869d0bc20ac0fab41c1
-#    resources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "1543Mi"}}'
+deployments:
+  - name: datacity
+    image: wordpress@sha256:95668fadc012aa882a19ffc875e5e2164a0a2fc7e201c869d0bc20ac0fab41c1
+    resources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "1543Mi"}}'
 #    nfsServer: "~iac:hasadna_nfs1_internal_ip~"
 #    nfsPath: "/wordpress/datacity"
-#    pvcName: datacity2
-#    dbName: datacity
-#    php_ini:
-      # Maximum size of POST data that PHP will accept.
-#      post_max_size: "100M"
-      # Maximum allowed size for uploaded files.
-#      upload_max_filesize: "100M"
-      # Maximum number of files that can be uploaded via a single request
-#      max_file_uploads: "20"
+    pvcName: datacity2
+    dbName: datacity
+    php_ini:
+#       Maximum size of POST data that PHP will accept.
+      post_max_size: "100M"
+#       Maximum allowed size for uploaded files.
+      upload_max_filesize: "100M"
+#       Maximum number of files that can be uploaded via a single request
+      max_file_uploads: "20"
 # we use a static export of this wordpress site
 #  - name: socialpro-social
 #    image: wordpress@sha256:78f9132d3d5db7eb781cab58621867aba09d763cbaafab3e9a09ceae66cb1c17
@@ -26,13 +26,13 @@ deployments: []
 #dbNfsServer: "~iac:hasadna_nfs1_internal_ip~"
 #dbNfsPath: "/wordpress/db"
 ingresses:
-#  - name: sites
+  - name: sites
     # maximum allowed size for uploaded files
-#    proxy_body_size: "100m"
-#    rules:
-#      - host: www.datacity.org.il
-#        serviceName: datacity
-#        servicePort: 80
+    proxy_body_size: "100m"
+    rules:
+      - host: www.datacity.org.il
+        serviceName: datacity
+        servicePort: 80
   - name: socialpro-soial
     rules:
       - host: social.socialpro.org.il
