@@ -52,10 +52,17 @@ def main_shared(namespace, pvc_name, pv):
     subprocess.check_call(['ceph', 'fs', 'subvolume', 'snapshot', 'create', fs_name, sub_volume_name, backup_name, 'csi'])
     subprocess.check_call(['ceph', 'fs', 'subvolume', 'snapshot', 'clone', fs_name, sub_volume_name, backup_name, clone_name, pool, 'csi'])
     i = 0
-    while json.loads(subprocess.check_output(['ceph', 'fs', 'clone', 'status', fs_name, clone_name])).get('status', {}).get('state', '') != 'complete':
-        assert i < 3600, f'Clone {clone_name} did not complete within 1 hour.'
-        time.sleep(1)
+    while True:
+        time.sleep(60)
         i += 1
+        status, output = subprocess.getstatusoutput(f'ceph fs clone status {fs_name} {clone_name}')
+        if status == 0:
+            if json.loads(output).get('status', {}).get('state', '') == 'complete':
+                print(output)
+                break
+        else:
+            print(f'Error checking clone status (exit code {status}): {output}')
+        assert i < 120, f'Clone {clone_name} did not complete within 2 hours.'
     backup_path = subprocess.check_output(['ceph', 'fs', 'subvolume', 'getpath', fs_name, clone_name]).decode().strip()
     print(f'Backup path: {backup_path}')
     subprocess.check_call(['mkdir', '-p', f'/tmp{backup_path}'])
