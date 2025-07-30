@@ -3,6 +3,7 @@ import time
 import json
 import datetime
 import subprocess
+from glob import iglob
 
 
 CEPH_BACKUPS_HEARTBEAT_URL = os.getenv('CEPH_BACKUPS_HEARTBEAT_URL')
@@ -43,39 +44,32 @@ def main_shared(namespace, pvc_name, pv):
     pool = pv['spec']['csi']['volumeAttributes']['pool']
     fs_name = pv['spec']['csi']['volumeAttributes']['fsName']
     sub_volume_name = pv['spec']['csi']['volumeAttributes']['subvolumeName']
+    sub_volume_path = pv['spec']['csi']['volumeAttributes']['subvolumePath']
+    group_name = 'csi'
+    print(f'Pool: {pool}, Filesystem name: {fs_name}, Subvolume name: {sub_volume_name}, Group name: {group_name}')
+    print(f'Subvolume path: {sub_volume_path}')
     backup_datestr = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
     backup_name = f'hasadna-k8s-pvc-backup-{backup_datestr}'
-    clone_name = f'hasadna-k8s-pvc-backup-{sub_volume_name}-{backup_datestr}'
-    print(f'Pool: {pool}, Filesystem name: {fs_name}, Subvolume name: {sub_volume_name}')
     print(f'Backup name: {backup_name}')
-    print(f'Clone name: {clone_name}')
     subprocess.check_call(['ceph', 'fs', 'subvolume', 'snapshot', 'create', fs_name, sub_volume_name, backup_name, 'csi'])
-    subprocess.check_call(['ceph', 'fs', 'subvolume', 'snapshot', 'clone', fs_name, sub_volume_name, backup_name, clone_name, pool, 'csi'])
-    i = 0
-    while True:
-        time.sleep(60)
-        i += 1
-        status, output = subprocess.getstatusoutput(f'ceph fs clone status {fs_name} {clone_name}')
-        if status == 0:
-            if json.loads(output).get('status', {}).get('state', '') == 'complete':
-                print(output)
-                break
-        else:
-            print(f'Error checking clone status (exit code {status}): {output}')
-        assert i < 120, f'Clone {clone_name} did not complete within 2 hours.'
-    backup_path = subprocess.check_output(['ceph', 'fs', 'subvolume', 'getpath', fs_name, clone_name]).decode().strip()
-    print(f'Backup path: {backup_path}')
-    subprocess.check_call(['mkdir', '-p', f'/tmp{backup_path}'])
-    subprocess.check_call(['ceph-fuse', f'/tmp{backup_path}', '--client-mountpoint', backup_path])
-    kopia_snapshot_source = f'ceph@{namespace}:{pvc_name}'
-    print(f'Creating Kopia snapshot with source {kopia_snapshot_source}...')
-    subprocess.check_call(['kopia', 'snapshot', 'create', f'/tmp{backup_path}', '--override-source', kopia_snapshot_source])
-    print("Kopia snapshot created successfully.")
-    print('Unmounting and cleaning up...')
-    subprocess.check_call(['umount', f'/tmp{backup_path}'])
-    subprocess.check_call(['ceph', 'fs', 'subvolume', 'rm', fs_name, clone_name])
-    subprocess.check_call(['ceph', 'fs', 'subvolume', 'snapshot', 'rm', fs_name, sub_volume_name, backup_name, 'csi'])
-    print('Backup completed successfully.')
+    try:
+        os.mkdir('/mnt/ceph')
+        subprocess.check_call(['ceph-fuse', '/mnt/ceph'])
+        try:
+            paths = [path for path in iglob(os.path.join('/mnt/ceph', sub_volume_path, '.snap/*')) if backup_name in os.path.basename(path)]
+            assert len(paths) == 1, f"Expected exactly one snapshot path for {backup_name}, found {len(paths)}"
+            path = paths[0]
+            print(f'snapshot path: {path}')
+            kopia_snapshot_source = f'ceph@{namespace}:{pvc_name}'
+            print(f'Creating Kopia snapshot with source {kopia_snapshot_source}...')
+            subprocess.check_call(['kopia', 'snapshot', 'create', path, '--override-source', kopia_snapshot_source])
+            print("Kopia snapshot created successfully.")
+        finally:
+            if subprocess.call(['umount', '/mnt/ceph']) != 0:
+                print(f"ERROR! Failed to unmount /mnt/ceph after creating snapshot {backup_name} for namespace '{namespace}', pvc '{pvc_name}'")
+    finally:
+        if subprocess.call(['ceph', 'fs', 'subvolume', 'snapshot', 'rm', fs_name, sub_volume_name, backup_name, 'csi']) != 0:
+            print(f"ERROR! Failed to remove snapshot {backup_name} for namespace '{namespace}', pvc '{pvc_name}'")
 
 
 def main_pvc(namespace, pvc_name, pvc):
