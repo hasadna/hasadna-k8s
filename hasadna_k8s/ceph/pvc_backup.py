@@ -44,10 +44,8 @@ def main_shared(namespace, pvc_name, pv):
     pool = pv['spec']['csi']['volumeAttributes']['pool']
     fs_name = pv['spec']['csi']['volumeAttributes']['fsName']
     sub_volume_name = pv['spec']['csi']['volumeAttributes']['subvolumeName']
-    sub_volume_path = pv['spec']['csi']['volumeAttributes']['subvolumePath']
     group_name = 'csi'
     print(f'Pool: {pool}, Filesystem name: {fs_name}, Subvolume name: {sub_volume_name}, Group name: {group_name}')
-    print(f'Subvolume path: {sub_volume_path}')
     backup_datestr = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
     backup_name = f'hasadna-k8s-pvc-backup-{backup_datestr}'
     print(f'Backup name: {backup_name}')
@@ -56,7 +54,7 @@ def main_shared(namespace, pvc_name, pv):
         os.mkdir('/mnt/ceph')
         subprocess.check_call(['ceph-fuse', '/mnt/ceph'])
         try:
-            paths = [path for path in iglob(os.path.join('/mnt/ceph', sub_volume_path, '.snap/*')) if backup_name in os.path.basename(path)]
+            paths = [path for path in iglob(os.path.join('/mnt/ceph/volumes', group_name, sub_volume_name, '.snap', backup_name)) if os.path.isdir(path)]
             assert len(paths) == 1, f"Expected exactly one snapshot path for {backup_name}, found {len(paths)}"
             path = paths[0]
             print(f'snapshot path: {path}')
