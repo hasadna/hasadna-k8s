@@ -4,6 +4,7 @@ metadata:
   name: hasadna-k8s-pvc-backup-all-daily
 spec:
   schedule: "47 1 * * *"
+  suspend: false
   concurrencyPolicy: Forbid
   workflowSpec:
     workflowTemplateRef:
