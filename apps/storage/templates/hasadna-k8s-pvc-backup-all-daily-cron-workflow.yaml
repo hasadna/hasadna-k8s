@@ -4,7 +4,6 @@ metadata:
   name: hasadna-k8s-pvc-backup-all-daily
 spec:
   schedule: "47 1 * * *"
-  suspend: true  # temporary, until I fix the backup of large data to be more efficient, should be done tomorrow
   concurrencyPolicy: Forbid
   workflowSpec:
     workflowTemplateRef:
