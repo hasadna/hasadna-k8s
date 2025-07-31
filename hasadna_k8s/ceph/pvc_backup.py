@@ -17,27 +17,40 @@ def main_block(namespace, pvc_name, pv):
     backup_name = f'hasadna-k8s-pvc-backup-{backup_datestr}'
     print(f'Backup name: {backup_name}')
     subprocess.check_call(['rbd', 'snap', 'create', f'{pool}/{image_name}@{backup_name}'])
-    subprocess.check_call(['rbd', 'snap', 'protect', f'{pool}/{image_name}@{backup_name}'])
-    clone_name = f'hasadna-k8s-pvc-backup-{backup_name}'
-    print(f'Clone name: {clone_name}')
-    subprocess.check_call(['rbd', 'clone', f'{pool}/{image_name}@{backup_name}', f'{pool}/{clone_name}'])
-    device = subprocess.check_output(['rbd-nbd', 'map', f'{pool}/{clone_name}']).decode().strip()
-    print(f'Device: {device}')
-    if subprocess.call(['e2fsck', '-yf', device]) != 0:
-        print(f"WARNING! e2fsck fixed some errors on namespace '{namespace}', pvc '{pvc_name}'")
-    subprocess.check_call(['mkdir', '-p', f'/tmp{device}'])
-    subprocess.check_call(['mount', '-t', 'ext4', '-o', 'ro', device, f'/tmp{device}'])
-    kopia_snapshot_source = f'ceph@{namespace}:{pvc_name}'
-    print(f'Creating Kopia snapshot with source {kopia_snapshot_source}...')
-    subprocess.check_call(['kopia', 'snapshot', 'create', f'/tmp{device}', '--override-source', kopia_snapshot_source])
-    print("Kopia snapshot created successfully.")
-    print('Unmounting and cleaning up...')
-    subprocess.check_call(['umount', f'/tmp{device}'])
-    subprocess.check_call(['rbd-nbd', 'unmap', device])
-    subprocess.check_call(['rbd', 'rm', f'{pool}/{clone_name}'])
-    subprocess.check_call(['rbd', 'snap', 'unprotect', f'{pool}/{image_name}@{backup_name}'])
-    subprocess.check_call(['rbd', 'snap', 'rm', f'{pool}/{image_name}@{backup_name}'])
-    print('Backup completed successfully.')
+    try:
+        subprocess.check_call(['rbd', 'snap', 'protect', f'{pool}/{image_name}@{backup_name}'])
+        try:
+            clone_name = f'hasadna-k8s-pvc-backup-{backup_name}'
+            print(f'Clone name: {clone_name}')
+            subprocess.check_call(['rbd', 'clone', f'{pool}/{image_name}@{backup_name}', f'{pool}/{clone_name}'])
+            try:
+                device = subprocess.check_output(['rbd-nbd', 'map', f'{pool}/{clone_name}']).decode().strip()
+                print(f'Device: {device}')
+                try:
+                    if subprocess.call(['e2fsck', '-yf', device]) != 0:
+                        print(f"WARNING! e2fsck fixed some errors on namespace '{namespace}', pvc '{pvc_name}'")
+                    subprocess.check_call(['mkdir', '-p', f'/tmp{device}'])
+                    subprocess.check_call(['mount', '-t', 'ext4', '-o', 'ro', device, f'/tmp{device}'])
+                    try:
+                        kopia_snapshot_source = f'ceph@{namespace}:{pvc_name}'
+                        print(f'Creating Kopia snapshot with source {kopia_snapshot_source}...')
+                        subprocess.check_call(['kopia', 'snapshot', 'create', f'/tmp{device}', '--override-source', kopia_snapshot_source])
+                        print("Kopia snapshot created successfully.")
+                    finally:
+                        if subprocess.call(['umount', f'/tmp{device}']) != 0:
+                            print(f"ERROR! Failed to unmount device {device} for namespace '{namespace}', pvc '{pvc_name}'")
+                finally:
+                    if subprocess.call(['rbd-nbd', 'unmap', device]) != 0:
+                        print(f"ERROR! Failed to unmap device {device} for namespace '{namespace}', pvc '{pvc_name}'")
+            finally:
+                if subprocess.call(['rbd', 'rm', f'{pool}/{clone_name}']) != 0:
+                    print(f"ERROR! Failed to remove clone {clone_name} for namespace '{namespace}', pvc '{pvc_name}'")
+        finally:
+            if subprocess.call(['rbd', 'snap', 'unprotect', f'{pool}/{image_name}@{backup_name}']) != 0:
+                print(f"ERROR! Failed to unprotect snapshot {backup_name} for namespace '{namespace}', pvc '{pvc_name}'")
+    finally:
+        if subprocess.call(['rbd', 'snap', 'rm', f'{pool}/{image_name}@{backup_name}']) != 0:
+            print(f"ERROR! Failed to remove snapshot {backup_name} for namespace '{namespace}', pvc '{pvc_name}'")
 
 
 def main_shared(namespace, pvc_name, pv):
