@@ -64,7 +64,7 @@ def main_shared(namespace, pvc_name, pv):
     print(f'Backup name: {backup_name}')
     subprocess.check_call(['ceph', 'fs', 'subvolume', 'snapshot', 'create', fs_name, sub_volume_name, backup_name, 'csi'])
     try:
-        os.mkdir('/mnt/ceph')
+        os.makedirs('/mnt/ceph', exist_ok=True)
         subprocess.check_call(['ceph-fuse', '/mnt/ceph'])
         try:
             paths = [path for path in iglob(os.path.join('/mnt/ceph/volumes', group_name, sub_volume_name, '.snap', backup_name)) if os.path.isdir(path)]
