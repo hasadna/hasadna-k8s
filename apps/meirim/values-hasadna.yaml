@@ -16,6 +16,9 @@ ingresses:
         servicePort: 80
 
 secrets:
+  - name: mariadb-auth
+    data:
+      mariadb-root-password: "~vault:Projects/meirim/k8s-mariadb:root-password~"
   - name: meirim-server-env
     data:
       AWS_ACCESS_KEY_ID: "~vault:Projects/meirim/server-env:AWS_ACCESS_KEY_ID~"
