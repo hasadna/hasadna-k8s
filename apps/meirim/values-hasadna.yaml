@@ -14,15 +14,15 @@ ingresses:
       - host: "api.meirim.org"
         serviceName: server
         servicePort: 80
-#  - name: meirim-client
-#    ssl: true
-#    rules:
-#      - host: "meirim.org"
-#        serviceName: client
-#        servicePort: 80
-#      - host: "www.meirim.org"
-#        serviceName: client
-#        servicePort: 80
+  - name: meirim-client
+    ssl: true
+    rules:
+      - host: "meirim.org"
+        serviceName: client
+        servicePort: 80
+      - host: "www.meirim.org"
+        serviceName: client
+        servicePort: 80
 
 secrets:
   - name: mariadb-auth
