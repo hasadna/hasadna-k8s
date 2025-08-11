@@ -14,6 +14,12 @@ ingresses:
       - host: "meirim-server.~iac:rke2_catchall_hostname~"
         serviceName: server
         servicePort: 80
+  - name: meirim-client
+    ssl: true
+    rules:
+      - host: "meirim-client.~iac:rke2_catchall_hostname~"
+        serviceName: client
+        servicePort: 80
 
 secrets:
   - name: mariadb-auth
