@@ -12,6 +12,19 @@ spec:
       labels:
         app: server
     spec:
+      # these node external IPs are allowed connection to mysql
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: "kubernetes.io/hostname"
+                    operator: In
+                    values:
+                      - "worker1"
+                      - "worker2"
+                      - "worker3"
+                      - "worker4"
       containers:
       - name: server
         image: ghcr.io/hasadna/meirim/meirim-server:2d6981b429b7d950483d393bc3cc5e7e609d80b5
