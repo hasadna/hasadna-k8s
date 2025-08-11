@@ -1,0 +1,82 @@
+# TODO: add the following cron workflows:
+#
+# bin_fetch_tree_permit
+#   Cron expression
+#20 8,20 ? * 1-5 *
+# {
+#  "containerOverrides": [{
+#    "name": "meirim",
+#    "command": [
+#      "bin/fetch_tree_permit"
+#    ],
+#    "environment": [{
+#      "name": "SERVER_CORALOGIX_SERVICE_NAME",
+#      "value": "fetch_tree_permit"
+#    }]
+#  }]
+#}
+
+# bin_iplan
+# Cron expression
+#0 8-20 ? * 1-5 *
+# {
+#  "containerOverrides": [{
+#    "name": "meirim",
+#    "command": [
+#      "bin/iplan"
+#    ],
+#    "environment": [{
+#      "name": "SERVER_CORALOGIX_SERVICE_NAME",
+#      "value": "iplan"
+#    }]
+#  }]
+#}
+
+# bin_send_emails
+# Cron expression
+# 0 * ? * 1-5 *
+# {
+#  "containerOverrides": [{
+#    "name": "meirim",
+#    "command": [
+#      "bin/send_emails"
+#    ],
+#    "environment": [{
+#      "name": "SERVER_CORALOGIX_SERVICE_NAME",
+#      "value": "send_emails"
+#    }]
+#  }]
+#}
+
+# bin_send_emails_trees
+# Cron expression
+#0 * ? * 1-5 *
+# {
+#  "containerOverrides": [{
+#    "name": "meirim",
+#    "command": [
+#      "bin/send_emails_trees"
+#    ],
+#    "environment": [{
+#      "name": "SERVER_CORALOGIX_SERVICE_NAME",
+#      "value": "send_emails_trees"
+#    }]
+#  }]
+#}
+
+# mavat_backfill
+# Fixed rate of
+#7 day
+# {
+#  "containerOverrides": [{
+#    "name": "meirim",
+#    "command": [
+#      "node",
+#      "bin/complete_mavat_data.js"
+#    ],
+#    "environment": [{
+#      "name": "SERVER_CORALOGIX_SERVICE_NAME",
+#      "value": "mavat_backfill"
+#    }]
+#  }]
+#}
