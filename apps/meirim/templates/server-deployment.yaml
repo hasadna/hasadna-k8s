@@ -35,6 +35,9 @@ spec:
           limits:
             cpu: "1000m"
             memory: "2048Mi"
+        environment:
+          - name: SERVER_DATABASE_HOST
+            value: "meirim-mariadb"
         envFrom:
           - secretRef:
               name: meirim-server-env
