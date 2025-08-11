@@ -11,10 +11,10 @@ spec:
     metadata:
       labels:
         app: mysql-client
-      spec:
-        containers:
-          - name: mysql-client
-            image: mariadb:10.11
-            command: ["/bin/sh", "-c"]
-            args:
-              - while true; do sleep 30; done;
+    spec:
+      containers:
+        - name: mysql-client
+          image: mariadb:10.11
+          command: ["/bin/sh", "-c"]
+          args:
+            - while true; do sleep 30; done;
