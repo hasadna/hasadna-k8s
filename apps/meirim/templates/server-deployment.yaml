@@ -30,7 +30,7 @@ spec:
         image: ghcr.io/hasadna/meirim/meirim-server:2d6981b429b7d950483d393bc3cc5e7e609d80b5
         resources:
           requests:
-            cpu: "0.5"
+            cpu: "500m"
             memory: "1Gi"
           limits:
             cpu: "1"
