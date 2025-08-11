@@ -35,7 +35,7 @@ spec:
           limits:
             cpu: "1"
             memory: "2Gi"
-        environment:
+        env:
           - name: SERVER_DATABASE_HOST
             value: "meirim-mariadb"
         envFrom:
