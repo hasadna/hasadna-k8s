@@ -5,7 +5,7 @@ mariadb:
     existingSecret: mariadb-auth
   primary:
     persistence:
-      existingClaim: "mariadb"
+      existingClaim: "db"
 
 ingresses:
   - name: meirim-server
