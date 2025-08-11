@@ -3,6 +3,9 @@ enabled: true
 mariadb:
   auth:
     existingSecret: mariadb-auth
+  primary:
+    persistence:
+      existingClaim: "mariadb"
 
 ingresses:
   - name: meirim-server
