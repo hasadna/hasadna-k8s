@@ -13,11 +13,6 @@ ingresses:
         servicePort: 80
 
 secrets:
-  - name: mariadb-auth
-    data:
-      MARIADB_ROOT_PASSWORD: "~vault:Projects/meirim/mariadb-auth:MARIADB_ROOT_PASSWORD~"
-      MARIADB_USER: "~vault:Projects/meirim/mariadb-auth:MARIADB_USER~"
-      MARIADB_PASSWORD: "~vault:Projects/meirim/mariadb-auth:MARIADB_PASSWORD~"
   - name: meirim-server-env
     data:
       AWS_ACCESS_KEY_ID: "~vault:Projects/meirim/server-env:AWS_ACCESS_KEY_ID~"
