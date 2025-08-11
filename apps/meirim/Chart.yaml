@@ -2,8 +2,8 @@ apiVersion: v2
 name: meirim
 version: v0.0.0
 
-dependencies:
-  - name: mariadb
-    repository: https://charts.bitnami.com/bitnami
-    version: 14.0.2
+#dependencies:
+#  - name: mariadb
+#    repository: https://charts.bitnami.com/bitnami
+#    version: 14.0.2
 
