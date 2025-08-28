@@ -70,6 +70,10 @@ kube-prometheus-stack:
         jsonData:
           maxLines: 1000
           timeout: 60
+    "grafana.ini":
+      explore:
+        enabled: true
+        allow_viewer_explore: true
 
   prometheusOperator:
     namespaces:
