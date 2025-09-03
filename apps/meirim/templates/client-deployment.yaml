@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: ghcr.io/hasadna/meirim/meirim-client:253037b0f1a98945974866914cdbac35f80be497
+        image: ghcr.io/hasadna/meirim/meirim-client:278531db0b39310dc16021d23cba211f57969491
         resources:
           requests:
             cpu: "250m"
