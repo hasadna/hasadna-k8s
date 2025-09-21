@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ScrapeConfig
+metadata:
+  name: stride-db-scrape-configs
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  jobName: stride-db-node
+  staticConfigs:
+    - targets:
+        - 172.16.0.16:9797
+      labels:
+        app: stride-db-node
