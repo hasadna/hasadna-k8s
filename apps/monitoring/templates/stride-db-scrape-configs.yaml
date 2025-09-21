@@ -2,7 +2,6 @@ apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
   name: stride-db-scrape-configs
-  namespace: monitoring
   labels:
     release: monitoring
 spec:
