@@ -1,7 +1,7 @@
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
-  name: stride-db-note-postgres
+  name: stride-db-node-postgres
   labels:
     release: monitoring
 spec:
@@ -15,7 +15,7 @@ spec:
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
-  name: stride-db-note
+  name: stride-db-node
   labels:
     release: monitoring
 spec:
