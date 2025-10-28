@@ -80,3 +80,25 @@
 #    }]
 #  }]
 #}
+
+# haifa-trees-target
+# cron(25 9,19 ? * 1,2,3,4,5 *)
+# https://github.com/hasadna/meirim-haifa-tree-felling-permits
+# "image": "tomersha/haifa-tree-felling-permits:latest",
+#       "environment": [
+#        {
+#          "name": "SCRAPINGBEE_API_KEY",
+#          "value": "~vault:Projects/meirim/haifa-trees:SCRAPINGBEE_API_KEY~"
+#        }
+#      ],
+#       "command": [
+#        "--download",
+#        "--upload",
+#        "--s3-bucket",
+#        "stg-service-tree-6b3da185",
+#        "--s3-path",
+#        "haifa",
+#        "--proxy-country",
+#        "il"
+#      ],
+
