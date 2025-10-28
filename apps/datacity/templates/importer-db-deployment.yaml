@@ -20,7 +20,7 @@ spec:
       containers:
       - name: importer-db
         image: {{ .Values.dgpAppDbImage | default "akariv/dgp-app-db" | replace "docker.pkg.github.com" "ghcr.io" | quote }}
-        resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "2Gi"}}
+        resources: {"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "512Mi"}}
         volumeMounts:
         - name: data
           mountPath: /var/lib/postgresql/data
