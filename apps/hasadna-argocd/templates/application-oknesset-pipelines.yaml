@@ -14,5 +14,10 @@ spec:
     repoURL: https://github.com/OriHoch/knesset-data-k8s.git
     targetRevision: master
   syncPolicy:
+    {{ if .Values.allowAutoSync }}
+    automated:
+      prune: true
+      selfHeal: true
+    {{ end }}
     syncOptions:
     - CreateNamespace=true
