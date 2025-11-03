@@ -12,10 +12,10 @@ cronWorkflows:
     command: bin/fetch_tree_permit
     coralogixServiceName: "fetch_tree_permit"
     schedule: "20 8,20 ? * 7-4"
-  - name: iplan
-    command: bin/iplan
-    coralogixServiceName: "iplan"
-    schedule: "0 8-20 ? * 7-4"
+#  - name: iplan
+#    command: bin/iplan
+#    coralogixServiceName: "iplan"
+#    schedule: "0 8-20 ? * 7-4"
   - name: send-emails
     command: bin/send_emails
     coralogixServiceName: "send_emails"
