@@ -8,7 +8,8 @@ mariadb:
       existingClaim: "db"
 
 cronWorkflows:
-  - name: fetch_tree_permit
+  - name: fetch-tree-permit
+    command: fetch_tree_permit
     schedule: "0 6 * * *"
 
 

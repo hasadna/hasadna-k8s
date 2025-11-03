@@ -20,9 +20,9 @@ spec:
             arguments:
               parameters:
                 - name: command
-                  value: {{ $task.name | quote }}
+                  value: {{ $task.command | quote }}
                 - name: coralogix_service_name
-                  value: {{ $task.name | quote }}
+                  value: {{ $task.command | quote }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: CronWorkflow
