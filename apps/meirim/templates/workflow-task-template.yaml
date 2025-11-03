@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: task-runner
+spec:
+  entrypoint: task-runner
+  templates:
+    - name: task-runner
+      serviceAccountName: task-runner
+      inputs:
+        parameters:
+          - name: command
+          - name: coralogix_service_name
+      container:
+        {{ include "runner.container" . | indent 8 }}
+        - name: SERVER_CORALOGIX_SERVICE_NAME
+          value: "{{ '{{inputs.parameters.coralogix_service_name}}' }}"
+        command: ["bash", "-c"]
+        args:
+          - |
+            set -euo pipefail
+            bin/{{ "{{inputs.parameters.command}}" }} 2>&1 | tee /tmp/log.txt
+            echo "Execution completed successfully" 2>&1 | tee /tmp/log.txt
+      outputs:
+        parameters:
+          - name: log
+            valueFrom:
+              path: /tmp/log.txt

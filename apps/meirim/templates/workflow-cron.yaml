@@ -1,3 +1,43 @@
+{{- range $task := .Values.cronWorkflows }}
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: {{ $task.name | quote }}
+spec:
+  entrypoint: task
+  synchronization:
+    semaphore:
+      configMapKeyRef:
+        name: argo-workflows
+        key: tasks-concurrency
+  templates:
+    - name: task
+      steps:
+        - - name: call-template
+            templateRef:
+              name: task-runner
+              template: task-runner
+            arguments:
+              parameters:
+                - name: command
+                  value: {{ $task.name | quote }}
+                - name: coralogix_service_name
+                  value: {{ $task.name | quote }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: {{ $task.name | quote }}
+spec:
+  schedule: {{ $task.schedule | quote }}
+  concurrencyPolicy: Forbid
+  workflowSpec:
+    workflowTemplateRef:
+      name: {{ $task.name | quote }}
+---
+{{- end }}
+
+
 # TODO: add the following cron workflows:
 #
 # bin_fetch_tree_permit
