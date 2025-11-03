@@ -37,7 +37,7 @@ spec:
 ---
 {{- end }}
 
-
+{{ if false }}
 # TODO: add the following cron workflows:
 #
 # bin_fetch_tree_permit
@@ -141,4 +141,4 @@ spec:
 #        "--proxy-country",
 #        "il"
 #      ],
-
+{{ end }}
