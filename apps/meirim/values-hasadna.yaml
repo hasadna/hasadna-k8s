@@ -11,7 +11,7 @@ cronWorkflows:
   - name: fetch-tree-permit
     command: bin/fetch_tree_permit
     coralogixServiceName: "fetch_tree_permit"
-    schedule: "20 8,20 ? * 1-5"
+    schedule: "20 8,20 ? * 7-5"
   - name: iplan
     command: bin/iplan
     coralogixServiceName: "iplan"
