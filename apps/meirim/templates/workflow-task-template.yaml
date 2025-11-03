@@ -12,7 +12,7 @@ spec:
           - name: command
           - name: coralogix_service_name
       container:
-        {{ include "runner.container" . | indent 8 }}
+        {{ include "server.container" . | indent 8 }}
         - name: SERVER_CORALOGIX_SERVICE_NAME
           value: {{ "{{ inputs.parameters.coralogix_service_name }}" | quote }}
         command: ["bash", "-c"]
