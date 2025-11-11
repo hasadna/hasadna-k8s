@@ -40,6 +40,7 @@ data:
             - argocd-openlaw-admins
             - argocd-openbus-admins
             - argocd-srm-admins
+            - argocd-meirim-admins
       - type: github
         id: github-kubectl-readonly
         name: Readonly GitHub for Kubectl - use this only if you need read only access via kubectl

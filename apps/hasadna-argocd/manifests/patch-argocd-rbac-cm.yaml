@@ -26,6 +26,10 @@ data:
     p, role:srm-admin, exec, create, srm/*, allow
     p, role:srm-admin, logs, get, srm/*, allow
     
+    p, role:meirim-admin, applications, *, meirim/*, allow
+    p, role:meirim-admin, exec, create, meirim/*, allow
+    p, role:meirim-admin, logs, get, meirim/*, allow
+    
     g, hasadna:argocd-admins, role:admin
     g, hasadna:argocd-leafy-admins, role:leafy-admin
     g, hasadna:argocd-dear-diary-admins, role:dear-diary-admin
@@ -33,3 +37,4 @@ data:
     g, hasadna:argocd-openlaw-admins, role:openlaw-admin
     g, hasadna:argocd-openbus-admins, role:openbus-admin
     g, hasadna:argocd-srm-admins, role:srm-admin
+    g, hasadna:argocd-meirim-admins, role:meirim-admin
