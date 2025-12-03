@@ -16,6 +16,7 @@ metadata:
   {{ if .permanentRedirect }}
     nginx.ingress.kubernetes.io/permanent-redirect: {{ .permanentRedirect | quote }}
   {{ end }}
+    nginx.ingress.kubernetes.io/proxy-body-size: "500m"
 spec:
   rules:
   {{ range .rules }}
