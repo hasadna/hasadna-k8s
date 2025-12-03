@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rgw-static-podcasts
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/app-root: /podcasts/index.html
+spec:
+  tls:
+    - hosts:
+        - "podcasts.~iac:rke2_catchall_hostname~"
+      secretName: rgw-static-podcasts-cert
+  rules:
+  - host: "podcasts.~iac:rke2_catchall_hostname~"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: rook-ceph-rgw-hasadna
+            port:
+              number: 80
