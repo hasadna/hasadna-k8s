@@ -9,6 +9,12 @@ ingresses:
       - host: "ceph.~iac:rke2_catchall_hostname~"
         serviceName: rook-ceph-mgr-dashboard
         servicePort: 7000
+  - name: rgw
+    ssl: true
+    rules:
+      - host: "rgw.~iac:rke2_catchall_hostname~"
+        serviceName: rook-ceph-rgw-hasadna
+        servicePort: 80
 
 secrets:
   - name: kopia
