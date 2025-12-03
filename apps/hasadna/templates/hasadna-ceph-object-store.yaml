@@ -7,12 +7,10 @@ spec:
     failureDomain: host
     replicated:
       size: 1
-      requireSafeReplicaSize: false
   dataPool:
     failureDomain: host
     replicated:
       size: 1
-      requireSafeReplicaSize: false
   preservePoolsOnDelete: true
   gateway:
     instances: 1
