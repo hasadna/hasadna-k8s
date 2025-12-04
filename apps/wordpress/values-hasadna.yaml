@@ -57,7 +57,10 @@ ingresses:
 #  kind: deployment
 #  name: datacity
 
-secrets: []
+secrets:
 #  - name: socialpro-social
 #    data:
 #      DB_PASSWORD: "~vault:Projects/wordpress/socialpro_social:db_password~"
+  - name: budgetism
+    data:
+      DB_PASSWORD: "~vault:Projects/wordpress/budgetism:db_password~"
