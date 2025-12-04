@@ -1,6 +1,7 @@
 enabled: true
 deployments:
   - name: datacity
+    enabled: true
     image: wordpress@sha256:95668fadc012aa882a19ffc875e5e2164a0a2fc7e201c869d0bc20ac0fab41c1
     resources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "1543Mi"}}'
 #    nfsServer: "~iac:hasadna_nfs1_internal_ip~"
@@ -22,6 +23,7 @@ deployments:
 #    dbName: socialprosocial
 #    php_ini: {}
   - name: budgetism
+    enabled: false
     # Pulled Dec 4, 2025
     image: wordpress@sha256:635f8cbcbff8a382cfea64fd53c13430b1b89195b02e3b3efe6a0073a75b9e59
     resources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "1543Mi"}}'

@@ -1,5 +1,6 @@
 {{ if and .Values.enabled .Values.deployments }}
 {{ range .Values.deployments }}
+{{ if .enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -76,5 +77,6 @@ spec:
           configMap:
             name: php-ini-{{ .name }}
 ---
+{{ end }}
 {{ end }}
 {{ end }}
