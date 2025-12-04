@@ -45,6 +45,9 @@ ingresses:
       - host: www.datacity.org.il
         serviceName: datacity
         servicePort: 80
+      - host: act.obudget.org
+        serviceName: budgetism
+        servicePort: 80
   - name: socialpro-soial
     rules:
       - host: social.socialpro.org.il
