@@ -25,7 +25,7 @@ deployments:
   - name: budgetism
     enabled: true
     # Pulled Dec 4, 2025
-    image: wordpress@sha256:635f8cbcbff8a382cfea64fd53c13430b1b89195b02e3b3efe6a0073a75b9e59
+    image: wordpress:php7.4-apache
     resources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "1543Mi"}}'
     pvcName: budgetism
     dbName: budgetism
