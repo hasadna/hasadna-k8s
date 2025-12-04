@@ -23,7 +23,7 @@ deployments:
 #    dbName: socialprosocial
 #    php_ini: {}
   - name: budgetism
-    enabled: false
+    enabled: true
     # Pulled Dec 4, 2025
     image: wordpress@sha256:635f8cbcbff8a382cfea64fd53c13430b1b89195b02e3b3efe6a0073a75b9e59
     resources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "1543Mi"}}'
