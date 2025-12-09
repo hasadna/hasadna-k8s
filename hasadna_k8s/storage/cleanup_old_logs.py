@@ -15,19 +15,37 @@ def delete_old_files(root_path, cutoff_date, dry_run=True):
                 if dry_run:
                     print(f'remove: {file_path}')
                 else:
-                    os.remove(file_path)
+                    try:
+                        os.remove(file_path)
+                    except:
+                        print(f'WARNING: could not remove file {file_path}')
         if not os.listdir(root) and root != root_path:
             if dry_run:
                 print(f'rmtree: {root}')
             else:
-                shutil.rmtree(root)
+                try:
+                    shutil.rmtree(root)
+                except:
+                    print(f'WARNING: could not remove directory {root}')
+
+
+def find_log_paths_airflow_logs(root):
+    if os.path.basename(root) == 'logs':
+        parent = os.path.dirname(root)
+        if os.path.exists(f'{parent}/airflow.cfg'):
+            return True
+    return False
 
 
 def find_log_paths(root_path, log_path_prefixes):
     for root, dirs, files in os.walk(root_path):
         for log_path_prefix in log_path_prefixes:
-            if root.endswith(log_path_prefix):
-                yield root
+            if log_path_prefix == 'airflow:logs':
+                if find_log_paths_airflow_logs(root):
+                    yield root
+            else:
+                if root.endswith(log_path_prefix):
+                    yield root
 
 
 def main(path, dry_run=True, log_path_prefixes=None):
