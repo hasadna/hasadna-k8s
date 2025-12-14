@@ -12,4 +12,5 @@ metadata:
   name: digital-forest-cards-site-user
 spec:
   store: hasadna
+  clusterNamespace: rook-ceph
   displayName: digital-forest-cards-site-user
