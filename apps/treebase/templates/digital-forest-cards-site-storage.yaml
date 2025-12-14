@@ -20,7 +20,8 @@ spec:
                       "s3:PutObject",
                       "s3:DeleteObject",
                       "s3:ListBucket",
-                      "s3:ListObject"
+                      "s3:ListObject",
+                      "s3:GetBucketLocation"
                   ],
                   "Resource": [
                       "arn:aws:s3:::digital-forest-cards-site",
