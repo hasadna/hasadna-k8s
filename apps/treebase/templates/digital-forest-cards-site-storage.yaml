@@ -9,8 +9,7 @@ spec:
 apiVersion: ceph.rook.io/v1
 kind: CephObjectStoreUser
 metadata:
-  name: digital-forest-cards-site-user
+  name: digital-forest-cards-site-deployer
 spec:
   store: hasadna
   clusterNamespace: rook-ceph
-  displayName: digital-forest-cards-site-user
