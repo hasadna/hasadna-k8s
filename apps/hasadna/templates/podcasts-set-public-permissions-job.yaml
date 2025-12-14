@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+Kind: Job
+metadata:
+  name: podcasts-set-public-permissions
+spec:
+  template:
+    spec:
+      containers:
+      - name: set-public-permissions
+        image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:latest
+        env:
+          - name: S3_ENDPOINT_URL
+            value: "http://rook-ceph-rgw-hasadna.rook-ceph"
+        envFrom:
+          - secretRef:
+              name: podcasts
+        command: ["sleep", "86400"]
+      restartPolicy: Never
