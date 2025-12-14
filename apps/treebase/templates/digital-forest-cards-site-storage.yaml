@@ -5,6 +5,25 @@ metadata:
 spec:
   bucketName: digital-forest-cards-site
   storageClassName: rook-ceph-hasadna-bucket
+  additionalConfig:
+    bucketPolicy: |
+      {
+          "Version": "2012-10-17",
+          "Statement": [
+              {
+                  "Effect": "Allow",
+                  "Principal": {
+                      "AWS": "arn:aws:iam:::user/digital-forest-cards-site-user"
+                  },
+                  "Action": [
+                      "s3:PutObject"
+                  ],
+                  "Resource": [
+                      "arn:aws:s3:::digital-forest-cards-site/*"
+                  ]
+              }
+          ]
+      }
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephObjectStoreUser
