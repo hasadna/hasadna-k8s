@@ -1,0 +1,15 @@
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: digital-forest-cards-site
+spec:
+  bucketName: digital-forest-cards-site
+  storageClassName: rook-ceph-hasadna-bucket
+---
+apiVersion: ceph.rook.io/v1
+kind: CephObjectStoreUser
+metadata:
+  name: digital-forest-cards-site-user
+spec:
+  store: hasadna
+  displayName: digital-forest-cards-site-user
