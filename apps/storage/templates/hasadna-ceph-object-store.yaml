@@ -12,7 +12,8 @@ spec:
     replicated:
       size: 1
   preservePoolsOnDelete: true
-  allowUsersInNamespaces: "*"
+  allowUsersInNamespaces:
+    - "*"
   gateway:
     instances: 1
     port: 80
