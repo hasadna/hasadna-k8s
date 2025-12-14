@@ -8,7 +8,8 @@ spec:
       restartPolicy: Never
       containers:
       - name: set-public-permissions
-        image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:latest
+        # Pulled Dec 14, 2025
+        image: quay.io/minio/aistor/mc:latest@sha256:a7f519f02a1d149ca9a04a0ef3cfb42fd9fea68a0077667b0594c71300dce7b8
         command: ["sleep", "86400"]
         env:
           - name: S3_ENDPOINT_URL
