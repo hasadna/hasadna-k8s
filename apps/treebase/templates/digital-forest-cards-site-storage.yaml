@@ -42,6 +42,12 @@ spec:
               "Statement": [
                 {
                   "Effect": "Allow",
+                  "Principal": "*",
+                  "Action": "s3:GetObject",
+                  "Resource": "arn:aws:s3:::digital-forest-cards-site/*"
+                },
+                {
+                  "Effect": "Allow",
                   "Principal": {
                     "AWS": "arn:aws:iam:::user/digital-forest-cards-site-deployer"
                   },
