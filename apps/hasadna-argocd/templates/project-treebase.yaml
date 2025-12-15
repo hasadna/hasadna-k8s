@@ -10,5 +10,8 @@ spec:
   - name: '*'
     namespace: treebase
     server: https://kubernetes.default.svc
+  - name: '*'
+    namespace: rook-ceph  # needed for ingress to ceph object store
+    server: https://kubernetes.default.svc
   sourceRepos:
   - https://github.com/hasadna/hasadna-k8s.git
