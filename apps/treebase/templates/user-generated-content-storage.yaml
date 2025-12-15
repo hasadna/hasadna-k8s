@@ -1,5 +1,5 @@
 {{- $obcAdditionalConfig := dict
-  "maxObjects" "10"
+  "maxObjects" "11"
   "maxSize" "1Gi"
 -}}
 apiVersion: objectbucket.io/v1alpha1
