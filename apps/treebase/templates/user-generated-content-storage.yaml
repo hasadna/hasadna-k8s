@@ -7,7 +7,7 @@ spec:
   storageClassName: rook-ceph-hasadna-bucket
   additionalConfig:
     maxObjects: "5"
-    maxSize: "4K"
+    maxSize: "1024B"
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephObjectStoreUser
