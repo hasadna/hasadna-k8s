@@ -1,5 +1,5 @@
 {{- $obcAdditionalConfig := dict
-  "maxObjects" "11"
+  "maxObjects" "12"
   "maxSize" "1Gi"
 -}}
 apiVersion: objectbucket.io/v1alpha1
@@ -34,10 +34,12 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-options: Force=true
     argocd.argoproj.io/sync-wave: "999"
-    # need to reapply if bucket config changes
-    obchash: {{ toJson $obcAdditionalConfig | sha256sum | quote }}
 spec:
   template:
+    metadata:
+      annotations:
+        # need to reapply if bucket config changes
+        obchash: {{ toJson $obcAdditionalConfig | sha256sum | quote }}
     spec:
       restartPolicy: OnFailure
       containers:
