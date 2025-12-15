@@ -1,6 +1,6 @@
 {{- $obcAdditionalConfig := dict
-  "maxObjects" "12"
-  "maxSize" "1Gi"
+  "maxObjects" "10000"
+  "maxSize" "5Gi"
 -}}
 apiVersion: objectbucket.io/v1alpha1
 kind: ObjectBucketClaim
@@ -58,7 +58,6 @@ spec:
             aws s3api put-bucket-policy \
               --endpoint-url http://rook-ceph-rgw-hasadna.rook-ceph \
               --bucket digital-forest-ugc \
-              --debug \
               --policy "$(cat <<'EOF'
             {
               "Version": "2012-10-17",
