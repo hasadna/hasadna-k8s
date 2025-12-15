@@ -1,0 +1,96 @@
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: digital-forest-ugc
+spec:
+  bucketName: digital-forest-ugc
+  storageClassName: rook-ceph-hasadna-bucket
+  additionalConfig:
+    maxObjects: "5"
+    maxSize: "4K"
+---
+apiVersion: ceph.rook.io/v1
+kind: CephObjectStoreUser
+metadata:
+  name: digital-forest-ugc-uploader
+spec:
+  store: hasadna
+  clusterNamespace: rook-ceph
+---
+apiVersion: ceph.rook.io/v1
+kind: CephObjectStoreUser
+metadata:
+  name: digital-forest-ugc-object-admin
+spec:
+  store: hasadna
+  clusterNamespace: rook-ceph
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: digital-forest-ugc-bucket-policy
+  annotations:
+    argocd.argoproj.io/sync-options: Force=true
+    argocd.argoproj.io/sync-wave: "999"
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: apply-policy
+        image: amazon/aws-cli:latest
+        envFrom:
+          - secretRef:
+              name: digital-forest-ugc
+        command:
+          - bash
+          - -c
+          - |
+            aws s3api put-bucket-policy --endpoint-url http://rook-ceph-rgw-hasadna.rook-ceph --bucket digital-forest-ugc \
+              --policy "$(cat <<'EOF'
+            {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Principal": "*",
+                  "Action": "s3:GetObject",
+                  "Resource": "arn:aws:s3:::digital-forest-ugc/*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Principal": {
+                    "AWS": "arn:aws:iam:::user/digital-forest-ugc-uploader"
+                  },
+                  "Action": [
+                    "s3:GetBucketLocation",
+                    "s3:ListBucket",
+                    "s3:GetObject",
+                    "s3:PutObject"
+                  ],
+                  "Resource": [
+                    "arn:aws:s3:::digital-forest-ugc",
+                    "arn:aws:s3:::digital-forest-ugc/*"
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Principal": {
+                    "AWS": "arn:aws:iam:::user/digital-forest-ugc-object-admin"
+                  },
+                  "Action": [
+                    "s3:GetBucketLocation",
+                    "s3:ListBucket",
+                    "s3:GetObject",
+                    "s3:PutObject",
+                    "s3:DeleteObject"
+                  ],
+                  "Resource": [
+                    "arn:aws:s3:::digital-forest-ugc",
+                    "arn:aws:s3:::digital-forest-ugc/*"
+                  ]
+                }
+              ]
+            }
+            EOF
+            )"
