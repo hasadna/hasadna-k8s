@@ -23,6 +23,9 @@ metadata:
     argocd.argoproj.io/sync-wave: "999"
 spec:
   template:
+    metadata:
+      labels:
+        app: digital-forest-cards-site-bucket-policy
     spec:
       restartPolicy: OnFailure
       containers:
