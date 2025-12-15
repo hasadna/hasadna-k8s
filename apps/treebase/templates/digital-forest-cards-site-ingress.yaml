@@ -9,6 +9,7 @@ metadata:
       rewrite ^/$ /digital-forest-cards-site/index.html break;
       rewrite ^/(.*)$ /digital-forest-cards-site/$1 break;
       proxy_intercept_errors on;
+      error_page 403 = /digital-forest-cards-site/index.html;
 spec:
   rules:
   - host: cards.digital-forest.org.il
