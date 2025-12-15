@@ -48,6 +48,9 @@ spec:
         envFrom:
           - secretRef:
               name: digital-forest-ugc
+        env:
+          - name: AWS_EC2_METADATA_DISABLED
+            value: "true"
         command:
           - bash
           - -c
