@@ -19,16 +19,10 @@ kind: Job
 metadata:
   name: digital-forest-cards-site-bucket-policy
   annotations:
-    argocd.argoproj.io/sync-options: Replace=true
+    argocd.argoproj.io/sync-options: Force=true
     argocd.argoproj.io/sync-wave: "999"
 spec:
-  selector:
-    matchLabels:
-      app: digital-forest-cards-site-bucket-policy
   template:
-    metadata:
-      labels:
-        app: digital-forest-cards-site-bucket-policy
     spec:
       restartPolicy: OnFailure
       containers:
