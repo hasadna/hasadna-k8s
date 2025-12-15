@@ -22,6 +22,9 @@ metadata:
     argocd.argoproj.io/sync-options: Replace=true
     argocd.argoproj.io/sync-wave: "999"
 spec:
+  selector:
+    matchLabels:
+      app: digital-forest-cards-site-bucket-policy
   template:
     metadata:
       labels:
