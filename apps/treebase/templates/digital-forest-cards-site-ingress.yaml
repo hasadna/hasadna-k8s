@@ -7,6 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/configuration-snippet: |
       rewrite ^/$ /digital-forest-cards-site/index.html break;
       rewrite ^/(.*)$ /digital-forest-cards-site/$1 break;
+      proxy_intercept_errors on;
 spec:
   rules:
   - host: cards.digital-forest.org.il
