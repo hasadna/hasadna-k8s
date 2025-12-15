@@ -6,8 +6,8 @@ spec:
   bucketName: digital-forest-ugc
   storageClassName: rook-ceph-hasadna-bucket
   additionalConfig:
-    maxObjects: "5"
-    maxSize: "9999"
+    maxObjects: "10"
+    maxSize: "1Gi"
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephObjectStoreUser
