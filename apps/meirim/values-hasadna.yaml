@@ -11,7 +11,7 @@ cronWorkflows:
   - name: fetch-tree-permit
     command: bin/fetch_tree_permit
     coralogixServiceName: "fetch_tree_permit"
-    schedule: "20 8,20 ? * 7-4"
+    schedule: "10 8,20 * * 0-4"
 #  - name: iplan
 #    command: bin/iplan
 #    coralogixServiceName: "iplan"
@@ -20,14 +20,14 @@ cronWorkflows:
 #    command: bin/send_emails
 #    coralogixServiceName: "send_emails"
 #    schedule: "0 * ? * 7-4"
-#  - name: send-emails-trees
-#    command: bin/send_emails_trees
-#    coralogixServiceName: "send_emails_trees"
-#    schedule: "0 * ? * 7-4"
-  - name: mavat-backfill
-    command: "node bin/complete_mavat_data.js"
-    coralogixServiceName: "mavat_backfill"
-    schedule: "0 0 ? * 5"
+ - name: send-emails-trees
+   command: bin/send_emails_trees
+   coralogixServiceName: "send_emails_trees"
+   schedule: "0/5 8-20 * * 0-5"
+  # - name: mavat-backfill
+  #   command: "node bin/complete_mavat_data.js"
+  #   coralogixServiceName: "mavat_backfill"
+  #   schedule: "0 0 ? * 5"
 
 ingresses:
   - name: meirim-server
