@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: haadna-mutating-webhook
+  namespace: argocd
+subjects:
+  - kind: ServiceAccount
+    name: hasadna-mutating-webhook
+    namespace: hasadna-mutating-webhook
+roleRef:
+  kind: Role
+  name: hasadna-mutating-webhook
+  apiGroup: rbac.authorization.k8s.io
