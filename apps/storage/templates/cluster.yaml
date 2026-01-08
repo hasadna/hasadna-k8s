@@ -43,7 +43,7 @@ spec:
   mon:
     # Single MON for single-node Ceph deployment (OSD only on critical1).
     # With only one storage node, multiple MONs add complexity without real HA benefit.
-    count: 1
+    count: 3
     # Allow MON on the same node as other daemons (required for single-node setup)
     allowMultiplePerNode: true
   mgr:
