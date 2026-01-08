@@ -41,18 +41,17 @@ spec:
   # Default is false.
 #  upgradeOSDRequiresHealthyPGs: false
   mon:
-    # Set the number of mons to be started. Generally recommended to be 3.
-    # For highest availability, an odd number of mons should be specified.
-    count: 3
-    # The mons should be on unique nodes. For production, at least 3 nodes are recommended for this reason.
-    # Mons should only be allowed on the same node for test environments where data loss is acceptable.
-#    allowMultiplePerNode: false
+    # Single MON for single-node Ceph deployment (OSD only on critical1).
+    # With only one storage node, multiple MONs add complexity without real HA benefit.
+    count: 1
+    # Allow MON on the same node as other daemons (required for single-node setup)
+    allowMultiplePerNode: true
   mgr:
-    # When higher availability of the mgr is needed, increase the count to 2.
-    # In that case, one mgr will be active and one in standby. When Ceph updates which
-    # mgr is active, Rook will update the mgr services to match the active mgr.
-    count: 2
-#    allowMultiplePerNode: false
+    # Single MGR for single-node Ceph deployment.
+    # Standby MGR provides no benefit when all daemons are on the same node.
+    count: 1
+    # Allow MGR on the same node as other daemons (required for single-node setup)
+    allowMultiplePerNode: true
     modules:
       # List of modules to optionally enable or disable.
       # Note the "dashboard" and "monitoring" modules are already configured by other settings in the cluster CR.
@@ -170,22 +169,20 @@ spec:
   # tolerate taints with a key of 'storage-node'.
   placement:
     all:
-  #     nodeAffinity:
-  #       requiredDuringSchedulingIgnoredDuringExecution:
-  #         nodeSelectorTerms:
-  #         - matchExpressions:
-  #           - key: role
-  #             operator: In
-  #             values:
-  #             - storage-node
-  #     podAffinity:
-  #     podAntiAffinity:
-  #     topologySpreadConstraints:
+      # Pin all Ceph daemons (MON, MGR, OSD, MDS, RGW) to the critical1 node.
+      # This matches our single-node Ceph architecture where the OSD disk resides on critical1.
+      # Benefits: co-located with data, isolated from app workloads, predictable placement.
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - critical1
       tolerations:
         - key: CriticalAddonsOnly
           operator: Exists
-  #     - key: storage-node
-  #       operator: Exists
   # The above placement information can also be specified for mon, osd, and mgr components
   #   mon:
   # Monitor deployments may contain an anti-affinity rule for avoiding monitor
