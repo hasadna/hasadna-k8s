@@ -1,4 +1,4 @@
-backendImage: ghcr.io/hasadna/open-bus-backend/open-bus-backend:5af3687fe8de55cbc50e6c722bf5554276e8ac95
+backendImage: ghcr.io/hasadna/open-bus-backend/open-bus-backend:edb472d8cf05aa5e05eb1e6784d02c4a382c50f0
 mapSearchImage: ghcr.io/hasadna/open-bus-map-search/open-bus-map-search:f95a19ae8b8d405f22233ee1698fd06e55886c09
 pipelinesImage: ghcr.io/hasadna/open-bus-pipelines/open-bus-pipelines:745eba437990893ec5c28a8a0a4f31f29c562829
 ridesHistoryImage: ghcr.io/hasadna/open-bus-rides-history:0e3f80e056ec3d08c19e913f8764490a8347cb13
