@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: get-kamatera-usage
+spec:
+    schedule: "0 1 * * *"
+    jobTemplate:
+        spec:
+          template:
+              spec:
+                containers:
+                - name: atlantis
+                  image: ghcr.io/hasadna/hasadna-iac/atlantis:latest
+                  imagePullPolicy: Always
+                  command:
+                  - bash
+                  - -c
+                  - |
+                    cd /home/atlantis/hasadna-iac
+                    python bin/get_kamatera_usage.py
+                  volumeMounts:
+                    - mountPath: /var/google/credentials.json
+                      name: creds
+                      subPath: credentials.json
+                  env:
+                    - name: KAMATERA_API_CLIENT_ID
+                      valueFrom:
+                        secretKeyRef:
+                          name: get-kamatera-usage
+                          key: KAMATERA_API_CLIENT_ID
+                    - name: KAMATERA_API_SECRET
+                      valueFrom:
+                        secretKeyRef:
+                          name: get-kamatera-usage
+                          key: KAMATERA_API_SECRET
+                    - name: GOOGLE_APPLICATION_CREDENTIALS
+                      value: /var/google/credentials.json
+                    - name: GOOGLE_DRIVE_FOLDER_ID
+                      valueFrom:
+                        secretKeyRef:
+                          name: get-kamatera-usage
+                          key: GOOGLE_DRIVE_FOLDER_ID
+                restartPolicy: OnFailure
+                volumes:
+                  - name: creds
+                    secret:
+                      secretName: get-kamatera-usage
