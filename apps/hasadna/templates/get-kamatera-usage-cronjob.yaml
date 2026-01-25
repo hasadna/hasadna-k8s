@@ -17,6 +17,7 @@ spec:
                   - -c
                   - |
                     cd /home/atlantis/hasadna-iac
+                    . /home/atlantis/.bash_env
                     python bin/get_kamatera_usage.py
                   volumeMounts:
                     - mountPath: /var/google/credentials.json
