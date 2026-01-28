@@ -26,6 +26,8 @@ metadata:
   {{ end }}
     nginx.ingress.kubernetes.io/configuration-snippet: |
       ~iac:openbus-ingress-nginx-configuration-snippet~
+    nginx.ingress.kubernetes.io/denylist-source-range: |
+      ~iac:openbus-ingress-nginx-denylist-source-range~
 spec:
   rules:
   {{ range .rules }}
