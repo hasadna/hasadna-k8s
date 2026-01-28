@@ -24,8 +24,7 @@ metadata:
     {{ if .proxyTimeouts.read }}nginx.ingress.kubernetes.io/proxy-read-timeout: {{ .proxyTimeouts.read | quote }}{{ end }}
     {{ if .proxyTimeouts.send }}nginx.ingress.kubernetes.io/proxy-send-timeout: {{ .proxyTimeouts.send | quote }}{{ end }}
   {{ end }}
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      ~iac:openbus-ingress-nginx-configuration-snippet~
+    nginx.ingress.kubernetes.io/configuration-snippet: "~iac:openbus-ingress-nginx-configuration-snippet~"
 spec:
   rules:
   {{ range .rules }}
