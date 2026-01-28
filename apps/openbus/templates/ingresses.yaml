@@ -25,9 +25,7 @@ metadata:
     {{ if .proxyTimeouts.send }}nginx.ingress.kubernetes.io/proxy-send-timeout: {{ .proxyTimeouts.send | quote }}{{ end }}
   {{ end }}
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      if (~iac:openbus-ingress-nginx-configuration-snippet~) {
-        return 403;
-      }
+      ~iac:openbus-ingress-nginx-configuration-snippet~
 spec:
   rules:
   {{ range .rules }}
