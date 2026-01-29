@@ -31,6 +31,8 @@ spec:
         - name: pgbouncer
           # built from hasadna-k8s/docker/pgbouncer
           image: ghcr.io/hasadna/hasadna-k8s-pgbouncer:f3773d52f51170d5449d6ca014d6d43e4b22ba27
+          args:
+            - /etc/pgbouncer/pgbouncer.ini
           resources: {{ toYaml .Values.strideApiPgbouncerResources | nindent 12 }}
           volumeMounts:
             - name: pgbouncer-config
