@@ -4,6 +4,7 @@ metadata:
   name: stride-api-pgbouncer
 data:
   pgbouncer.ini: |
+    [pgbouncer]
     logfile = /dev/stdout
     listen_addr = *
     listen_port = 6432
