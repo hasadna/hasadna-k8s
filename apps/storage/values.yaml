@@ -1,6 +1,7 @@
 rook-ceph:
   monitoring:
     enabled: true
+  obcAllowAdditionalConfigFields: "maxObjects,maxSize,bucketPolicy"
 
 ingresses:
   - name: ceph
