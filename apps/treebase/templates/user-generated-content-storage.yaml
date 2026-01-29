@@ -9,7 +9,55 @@ metadata:
 spec:
   bucketName: digital-forest-ugc
   storageClassName: rook-ceph-hasadna-bucket
-  additionalConfig: {{ toYaml $obcAdditionalConfig | nindent 4 }}
+{{/*  additionalConfig: {{ toYaml $obcAdditionalConfig | nindent 4 }}*/}}
+  additionalConfig:
+    maxObjects: "10000"
+    maxSize: "5Gi"
+    bucketPolicy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::digital-forest-ugc/*"
+          },
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam:::user/digital-forest-ugc-uploader"
+            },
+            "Action": [
+              "s3:GetBucketLocation",
+              "s3:ListBucket",
+              "s3:GetObject",
+              "s3:PutObject"
+            ],
+            "Resource": [
+              "arn:aws:s3:::digital-forest-ugc",
+              "arn:aws:s3:::digital-forest-ugc/*"
+            ]
+          },
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam:::user/digital-forest-ugc-object-admin"
+            },
+            "Action": [
+              "s3:GetBucketLocation",
+              "s3:ListBucket",
+              "s3:GetObject",
+              "s3:PutObject",
+              "s3:DeleteObject"
+            ],
+            "Resource": [
+              "arn:aws:s3:::digital-forest-ugc",
+              "arn:aws:s3:::digital-forest-ugc/*"
+            ]
+          }
+        ]
+      }
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephObjectStoreUser
@@ -27,6 +75,7 @@ spec:
   store: hasadna
   clusterNamespace: rook-ceph
 ---
+{{ if false }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -105,3 +154,4 @@ spec:
             }
             EOF
             )"
+{{ end }}
