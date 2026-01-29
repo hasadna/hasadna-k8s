@@ -27,7 +27,8 @@ spec:
             - name: WEB_CONCURRENCY
               value: "4"
             - name: SQLALCHEMY_URL
-              valueFrom: {"secretKeyRef":{"name":"db", "key":"SQLALCHEMY_URL"}}
+              value: "postgresql://redash:@localhost:6432/stride"
+              # valueFrom: {"secretKeyRef":{"name":"db", "key":"SQLALCHEMY_URL"}}
         - name: pgbouncer
           # built from hasadna-k8s/docker/pgbouncer
           image: ghcr.io/hasadna/hasadna-k8s-pgbouncer:7929da99217fbd76517e40ef828d62526bf69bce
