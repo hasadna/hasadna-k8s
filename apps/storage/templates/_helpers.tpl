@@ -62,7 +62,7 @@ command: [bash]
   (
     mkdir -p /etc/ceph
     echo "[global]
-  mon_host = rook-ceph-mon-a:6789,rook-ceph-mon-b:6789,rook-ceph-mon-c:6789
+  mon_host = rook-ceph-mon-a:6789,rook-ceph-mon-d:6789,rook-ceph-mon-e:6789
 
   [client.admin]
   keyring = /etc/ceph/keyring" > /etc/ceph/ceph.conf
