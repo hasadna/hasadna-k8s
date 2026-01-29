@@ -12,7 +12,7 @@ data:
     auth_file = /etc/pgbouncer/auth_file
 
     [databases]
-    dbname=postgres host=172.16.0.16 port=5432 user=redash
+    stride = dbname=postgres host=172.16.0.16 port=5432 user=redash
 
     [users]
     redash =
