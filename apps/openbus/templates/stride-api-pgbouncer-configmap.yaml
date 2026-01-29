@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stride-api-pgbouncer
+data:
+  pgbouncer.ini: |
+    logfile = /dev/stdout
+    listen_addr = *
+    listen_port = 6432
+    auth_type = trust
+    auth_file = /etc/pgbouncer/auth_file
+
+    [databases]
+    dbname=postgres host=172.16.0.16 port=5432 user=redash
+
+    [users]
+    redash =

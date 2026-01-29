@@ -28,3 +28,21 @@ spec:
               value: "4"
             - name: SQLALCHEMY_URL
               valueFrom: {"secretKeyRef":{"name":"db", "key":"SQLALCHEMY_URL"}}
+        - name: pgbouncer
+          # built from hasadna-k8s/docker/pgbouncer
+          image: ghcr.io/hasadna/hasadna-k8s-pgbouncer:f3773d52f51170d5449d6ca014d6d43e4b22ba27
+          resources: {{ toYaml .Values.strideApiPgbouncerResources | nindent 12 }}
+          volumeMounts:
+            - name: pgbouncer-config
+              mountPath: /etc/pgbouncer/pgbouncer.ini
+              subPath: pgbouncer.ini
+            - name: pgbouncer-auth
+              mountPath: /etc/pgbouncer/auth_file
+              subPath: auth_file
+      volumes:
+        - name: pgbouncer-config
+          configMap:
+            name: stride-api-pgbouncer
+        - name: pgbouncer-auth
+          secret:
+            secretName: pgbouncer-auth
