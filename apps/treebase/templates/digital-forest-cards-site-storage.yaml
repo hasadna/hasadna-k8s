@@ -5,6 +5,36 @@ metadata:
 spec:
   bucketName: digital-forest-cards-site
   storageClassName: rook-ceph-hasadna-bucket
+  additionalConfig:
+    bucketPolicy: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::digital-forest-cards-site/*"
+          },
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam:::user/digital-forest-cards-site-deployer"
+            },
+            "Action": [
+              "s3:GetBucketLocation",
+              "s3:ListBucket",
+              "s3:GetObject",
+              "s3:PutObject",
+              "s3:DeleteObject"
+            ],
+            "Resource": [
+              "arn:aws:s3:::digital-forest-cards-site",
+              "arn:aws:s3:::digital-forest-cards-site/*"
+            ]
+          }
+        ]
+      }
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephObjectStoreUser
@@ -13,57 +43,3 @@ metadata:
 spec:
   store: hasadna
   clusterNamespace: rook-ceph
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: digital-forest-cards-site-bucket-policy
-  annotations:
-    argocd.argoproj.io/sync-options: Force=true
-    argocd.argoproj.io/sync-wave: "999"
-spec:
-  template:
-    spec:
-      restartPolicy: OnFailure
-      containers:
-      - name: apply-policy
-        image: amazon/aws-cli:latest
-        envFrom:
-          - secretRef:
-              name: digital-forest-cards-site
-        command:
-          - bash
-          - -c
-          - |
-            aws s3api put-bucket-policy --endpoint-url http://rook-ceph-rgw-hasadna.rook-ceph --bucket digital-forest-cards-site \
-              --policy "$(cat <<'EOF'
-            {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Principal": "*",
-                  "Action": "s3:GetObject",
-                  "Resource": "arn:aws:s3:::digital-forest-cards-site/*"
-                },
-                {
-                  "Effect": "Allow",
-                  "Principal": {
-                    "AWS": "arn:aws:iam:::user/digital-forest-cards-site-deployer"
-                  },
-                  "Action": [
-                    "s3:GetBucketLocation",
-                    "s3:ListBucket",
-                    "s3:GetObject",
-                    "s3:PutObject",
-                    "s3:DeleteObject"
-                  ],
-                  "Resource": [
-                    "arn:aws:s3:::digital-forest-cards-site",
-                    "arn:aws:s3:::digital-forest-cards-site/*"
-                  ]
-                }
-              ]
-            }
-            EOF
-            )"
