@@ -34,8 +34,12 @@ spec:
       - name: pipelines
         image: orihoch/datapackage-pipelines-ckanext:v0.0.4
         {{ if not .Values.pipelines.manual }}
-        args:
-        - "server"
+        command:
+          - bash
+          - -c
+          - |
+            pip install --upgrade --src /usr/local/lib/python3.6/src pip
+            exec /entrypoint.sh server
         {{ end }}
         env:
         - name: CKAN_API_KEY
