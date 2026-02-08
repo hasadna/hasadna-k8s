@@ -20,13 +20,13 @@ ckanSecretName: ckan-secrets-2
 envVarsSecretName: env-vars
 #  dbNfsEnabled: true
 #  ckanDbNfsServer: 10.104.143.63
-replicas: 2
+replicas: 4
 ckanJobsEnabled: true
 # ckanJobsPortForward: true
-ckanJobsDbResources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "339Mi"}}'
+ckanJobsDbResources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"memory": "339Mi"}}'
 # ckanJobsDbTerminationGracePeriodSeconds: 1
 ckanServiceAccountName: odata-ckan-kubectl
-ckanJobsResources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "1699Mi"}}'
+ckanJobsResources: '{"requests": {"cpu": "500m", "memory": "256Mi"}, "limits": {"memory": "1699Mi"}}'
 # kubectl create secret generic --from-literal=secret-nginx-htpasswd="$(htpasswd -nb username password)"
 nginxHtpasswdSecretName: nginx-htpasswd
 fixPermissions: false
@@ -46,7 +46,7 @@ datastore:
   opsImage: orihoch/data4dappl-db-ops:v0.2.15
   # image: orihoch/hasadna-k8s-odata-db:12
   # opsImage: orihoch/hasadna-k8s-odata-db-ops:11
-  resources: '{"requests": {"cpu": "500m", "memory": "500Mi"}, "limits": {"cpu": "1000m", "memory": "1500Mi"}}'
+  resources: '{"requests": {"cpu": "1500m", "memory": "1000Mi"}, "limits": {"memory": "2500Mi"}}'
 #    persistentDiskName: odata-datastore-db
 #    dbNodeSelector: 'kubernetes.io/hostname: gke-hasadna-cluster-more-cpu-da25b37e-1dmn'
   # see https://github.com/OriHoch/kube-ip-dns-updater
