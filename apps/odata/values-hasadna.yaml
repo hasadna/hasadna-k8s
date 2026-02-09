@@ -3,7 +3,7 @@
 enabled: true
 ckanDeploymentEnabled: true
 ckanResources: '{"requests": {"cpu": "2000m", "memory": "1500Mi"}, "limits": {"cpu": "3000m", "memory": "3000Mi"}}'
-dbResources: '{"requests": {"cpu": "1500m", "memory": "1500Mi"}, "limits": {"cpu": "3000m", "memory": "3000Mi"}}'
+dbResources: '{"requests": {"cpu": "3000m", "memory": "3000Mi"}, "limits": {"memory": "5000Mi"}}'
 solrResources: '{"requests": {"cpu": "1000m", "memory": "1000Mi"}, "limits": {"cpu": "2000m", "memory": "2000Mi"}}'
 redisResources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "200m", "memory": "256Mi"}}'
 nginxResources: '{"requests": {"cpu": "200m", "memory": "256Mi"}, "limits": {"cpu": "400m", "memory": "256Mi"}}'
