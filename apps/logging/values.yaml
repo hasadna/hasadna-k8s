@@ -176,15 +176,9 @@ alloy:
             target_label  = "service_name"
           }
           rule {
-            source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_name", "__meta_kubernetes_pod_uid"]
-            target_label  = "__log_pods_subpath"
-            separator     = "_"
-          }
-          rule {
-            source_labels = ["__log_pods_subpath", "__meta_kubernetes_pod_container_name"]
+            source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_name", "__meta_kubernetes_pod_container_name"]
             target_label  = "__path__"
-            separator     = "/"
-            replacement   = "/var/log/pods/$1/*.log"
+            replacement   = "/var/log/pods/$1_$2_*/$3/*.log"
           }
         }
         local.file_match "pod" {
