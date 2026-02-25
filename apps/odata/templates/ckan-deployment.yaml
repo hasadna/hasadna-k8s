@@ -107,22 +107,23 @@ spec:
           mountPath: /etc/ckan-conf/templates
           readOnly: true
         - {mountPath: /var/ckan/pipelines, name: pipelines}
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 5000
-          initialDelaySeconds: 3
-          periodSeconds: 5
-          timeoutSeconds: 30
-          failureThreshold: 5
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 5000
-          initialDelaySeconds: 20
-          periodSeconds: 60
-          timeoutSeconds: 30
-          failureThreshold: 5
+# there are problems with the probes, need to investigate further or revamp them when we upgrade CKAN
+#        readinessProbe:
+#          httpGet:
+#            path: /
+#            port: 5000
+#          initialDelaySeconds: 3
+#          periodSeconds: 5
+#          timeoutSeconds: 30
+#          failureThreshold: 5
+#        livenessProbe:
+#          httpGet:
+#            path: /
+#            port: 5000
+#          initialDelaySeconds: 20
+#          periodSeconds: 60
+#          timeoutSeconds: 30
+#          failureThreshold: 5
       volumes:
       - name: ckan-conf-secrets
         emptyDir: {}
