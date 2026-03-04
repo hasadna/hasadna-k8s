@@ -187,7 +187,7 @@ alloy:
           rule {
             source_labels = ["__log_pods_subpath"]
             target_label = "__log_pods_subpath_star"
-            replacement = "$1_*"
+            replacement = "${1}_*"
           }
           rule {
             source_labels = ["__log_pods_subpath_star", "__meta_kubernetes_pod_container_name"]
