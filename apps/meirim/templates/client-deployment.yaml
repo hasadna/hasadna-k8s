@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: ghcr.io/hasadna/meirim/meirim-client:f3e4f7140920dc6a9fa96718a7ec6794be51f720
+        image: {{ .Values.clientImage | quote }}
         resources:
           requests:
             cpu: "250m"
