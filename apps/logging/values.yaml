@@ -167,6 +167,10 @@ alloy:
             target_label  = "container_name"
           }
           rule {
+            action = "labelmap"
+            regex  = "__meta_kubernetes_pod_label_(k8s_app|app|jobLabel|app_kubernetes_io_name|component|workflows_argoproj_io_workflow|job_name)"
+          }
+          rule {
             source_labels = ["__meta_kubernetes_pod_node_name"]
             target_label  = "node_name"
           }
