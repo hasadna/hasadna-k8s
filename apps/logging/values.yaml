@@ -183,10 +183,14 @@ alloy:
             source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_name"]
             target_label  = "__log_pods_subpath"
             separator     = "_"
-            replacement   = "$1_*"
           }
           rule {
-            source_labels = ["__log_pods_subpath", "__meta_kubernetes_pod_container_name"]
+            source_labels = ["__log_pods_subpath"]
+            target_label = "__log_pods_subpath_star"
+            replacement = "$1_*"
+          }
+          rule {
+            source_labels = ["__log_pods_subpath_star", "__meta_kubernetes_pod_container_name"]
             separator     = "/"
             target_label  = "__path__"
             replacement   = "/var/log/pods/$1/*.log"
