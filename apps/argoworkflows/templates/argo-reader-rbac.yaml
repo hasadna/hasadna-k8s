@@ -51,3 +51,11 @@ subjects:
 - kind: ServiceAccount
   name: argo-reader
   namespace: argo
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argo-reader.service-account-token
+  annotations:
+    kubernetes.io/service-account.name: argo-reader
+type: kubernetes.io/service-account-token
