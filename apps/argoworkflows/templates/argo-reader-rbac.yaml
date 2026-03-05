@@ -1,38 +1,41 @@
+{{ range $name, $group := .Values.argoworkflowAdminGroups }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: argo-meirim-admin
+  name: argo-{{ $name }}-admin
   annotations:
-    workflows.argoproj.io/rbac-rule: "'hasadna:argocd-meirim-admins' in groups"
+    workflows.argoproj.io/rbac-rule: {{ $group.rbacRule | quote }}
 ---
+{{ range $namespace := $group.namespaces }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: argo-meirim-admin
-  namespace: meirim
+  name: argo-{{ $name }}-admin
+  namespace: {{ $namespace }}
 rules:
-  - verbs: [get, list]
+  - verbs: [get, list, watch, create, update, delete, patch]
     apiGroups: ["argoproj.io"]
     resources: ["*"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: argo-meirim-admin
-  namespace: meirim
+  name: argo-{{ $name }}-admin
+  namespace: {{ $namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: argo-meirim-admin
+  name: argo-{{ $name }}-admin
 subjects:
 - kind: ServiceAccount
-  name: argo-meirim-admin
+  name: argo-{{ $name }}-admin
   namespace: argo
 ---
+{{ end }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: argo-meirim-admin
+  name: argo-{{ $name }}-admin
 rules:
   - verbs: [list, watch]
     apiGroups: ["argoproj.io"]
@@ -41,20 +44,22 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: argo-meirim-admin
+  name: argo-{{ $name }}-admin
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: argo-meirim-admin
+  name: argo-{{ $name }}-admin
 subjects:
 - kind: ServiceAccount
-  name: argo-meirim-admin
+  name: argo-{{ $name }}-admin
   namespace: argo
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: argo-meirim-admin.service-account-token
+  name: argo-{{ $name }}-admin.service-account-token
   annotations:
-    kubernetes.io/service-account.name: argo-meirim-admin
+    kubernetes.io/service-account.name: argo-{{ $name }}-admin
 type: kubernetes.io/service-account-token
+---
+{{ end }}
