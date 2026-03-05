@@ -34,9 +34,9 @@ kind: ClusterRole
 metadata:
   name: argo-meirim-admin
 rules:
-  - verbs: [list]
+  - verbs: [list, watch]
     apiGroups: ["argoproj.io"]
-    resources: ["workflows", "workflowtemplates", "cronworkflows"]
+    resources: ["workflows", "workflowtemplates", "cronworkflows", "workflowevents"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
