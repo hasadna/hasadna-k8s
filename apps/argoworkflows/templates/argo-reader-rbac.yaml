@@ -29,6 +29,28 @@ subjects:
   name: argo-meirim-admin
   namespace: argo
 ---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argo-meirim-admin
+rules:
+  - verbs: [list]
+    apiGroups: ["argoproj.io"]
+    resources: ["workflows", "workflowtemplates", "cronworkflows"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argo-meirim-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: argo-meirim-admin
+subjects:
+- kind: ServiceAccount
+  name: argo-meirim-admin
+  namespace: argo
+---
 apiVersion: v1
 kind: Secret
 metadata:
