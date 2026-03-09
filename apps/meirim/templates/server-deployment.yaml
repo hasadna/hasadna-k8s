@@ -28,3 +28,5 @@ spec:
         envFrom:
           - secretRef:
               name: meirim-server-env
+          - configMapRef:
+              name: hasadna-proxy1

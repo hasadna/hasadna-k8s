@@ -11,6 +11,8 @@ resources:
 envFrom:
   - secretRef:
       name: meirim-server-env
+  - configMapRef:
+      name: hasadna-proxy1
 env:
   - name: SERVER_DATABASE_HOST
     value: "meirim-mariadb"
