@@ -58,6 +58,7 @@ discourse:
         limits:
           memory: "500Mi"
   redis:
+    image: bitnami/redis:latest
     kubeVersion: "1.19"
     auth:
       enabled: false
