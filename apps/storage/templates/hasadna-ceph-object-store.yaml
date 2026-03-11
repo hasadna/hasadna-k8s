@@ -6,11 +6,11 @@ spec:
   metadataPool:
     failureDomain: host
     replicated:
-      size: 1
+      size: 2
   dataPool:
     failureDomain: host
     replicated:
-      size: 1
+      size: 2
   preservePoolsOnDelete: true
   allowUsersInNamespaces:
     - "*"
