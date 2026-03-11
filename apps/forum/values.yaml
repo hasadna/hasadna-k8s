@@ -63,7 +63,7 @@ discourse:
       enabled: false
     master:
       persistence:
-        existingClaim: "redis2"
+        existingClaim: "redis3"
       resources:
         requests:
           cpu: "25m"
