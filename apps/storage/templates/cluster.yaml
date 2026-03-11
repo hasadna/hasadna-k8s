@@ -41,15 +41,11 @@ spec:
   # Default is false.
 #  upgradeOSDRequiresHealthyPGs: false
   mon:
-    # Single MON for single-node Ceph deployment (OSD only on critical1).
-    # With only one storage node, multiple MONs add complexity without real HA benefit.
     count: 3
     # Allow MON on the same node as other daemons (required for single-node setup)
     allowMultiplePerNode: true
   mgr:
-    # Single MGR for single-node Ceph deployment.
-    # Standby MGR provides no benefit when all daemons are on the same node.
-    count: 1
+    count: 2
     # Allow MGR on the same node as other daemons (required for single-node setup)
     allowMultiplePerNode: true
     modules:
@@ -169,9 +165,6 @@ spec:
   # tolerate taints with a key of 'storage-node'.
   placement:
     all:
-      # Pin all Ceph daemons (MON, MGR, OSD, MDS, RGW) to the critical1 node.
-      # This matches our single-node Ceph architecture where the OSD disk resides on critical1.
-      # Benefits: co-located with data, isolated from app workloads, predictable placement.
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
@@ -180,6 +173,7 @@ spec:
                   operator: In
                   values:
                     - critical1
+                    - critical2
       tolerations:
         - key: CriticalAddonsOnly
           operator: Exists
@@ -272,6 +266,10 @@ spec:
       - name: "critical1"
         resources: {}
         devices: # specific devices to use for storage can be specified for each node
+          - name: "sdb"
+      - name: "critical2"
+        resources: {}
+        devices:
           - name: "sdb"
     #       - name: "nvme01" # multiple osds can be created on high performance devices
     #         config:
