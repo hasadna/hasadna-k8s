@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: haadna-mutating-webhook
+  namespace: hasadna-mutating-webhook
+spec:
+  selector:
+    app: haadna-mutating-webhook
+  ports:
+    - port: 443
+      targetPort: webhook
+      protocol: TCP
+      name: https
