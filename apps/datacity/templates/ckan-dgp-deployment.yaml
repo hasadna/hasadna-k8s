@@ -17,7 +17,7 @@ spec:
         app: ckan-dgp
     spec:
       terminationGracePeriodSeconds: 10
-      hostAliases:
+      hostAliases:  # this is used to bypass cloudflare for ckan sites
         - ip: "~iac:datacity_ckan_load_balancer_ip~"
           hostnames: ~iac:datacity_ckan_all_hostnames_json~
       containers:
@@ -76,6 +76,8 @@ spec:
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"AWS_REGION"}}
         - name: S3_ENDPOINT_URL
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"S3_ENDPOINT_URL"}}
+        - name: CKAN_VERIFY_SSL
+          value: "no"  # this is needed because we use host aliases to bypass cloudflare
         envFrom:
         - secretRef: {"name": "ckan-dgp-instances"}
       volumes:
