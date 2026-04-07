@@ -1,19 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: hasadna-k8s-pvc-backup
+  name: hasadna-k8s-pvc-maintenance
 spec:
   entrypoint: dag
   arguments:
-    parameters:
-      - name: namespace
-      - name: pvc
   templates:
     - name: dag
-      inputs:
-        parameters:
-          - name: namespace
-          - name: pvc
       dag:
         tasks:
           - name: runner
@@ -24,4 +17,4 @@ spec:
               parameters:
                 - name: exec_script
                   value: |
-                    hasadna-k8s ceph pvc-backup "{{ "{{inputs.parameters.namespace}}" }}" "{{ "{{inputs.parameters.pvc}}" }}"
+                    hasadna-k8s ceph maintenance

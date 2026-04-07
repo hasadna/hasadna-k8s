@@ -11,7 +11,7 @@ spec:
         tasks:
           - name: runner
             templateRef:
-              name: runner
+              name: kopia-runner
               template: script
             arguments:
               parameters:
