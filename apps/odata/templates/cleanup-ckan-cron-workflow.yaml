@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: cleanup-ckan
+spec:
+  schedule: "11 2 * * 3"
+  suspend: false
+  concurrencyPolicy: Forbid
+  workflowSpec:
+    entrypoint: cleanup-ckan
+    templates:
+      - name: cleanup-ckan
+        container:
+          image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:latest
+          pullPolicy: Always
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              hasadna-k8s storage cleanup-odata-ckan --allow-delete
