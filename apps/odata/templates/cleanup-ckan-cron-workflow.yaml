@@ -29,8 +29,8 @@ kind: Role
 metadata:
   name: cleanup-ckan-cron-workflow
 rules:
-- apiGroups: [""]
-  resources: ["pods"]
+- apiGroups: ["", "apps"]
+  resources: ["pods", "deployments"]
   verbs: ["list", "get"]
 - apiGroups: [""]
   resources: ["pods/exec"]
