@@ -22,6 +22,13 @@ def cleanup_old_logs(path, log_path_prefixes, no_dry_run):
 
 
 @main.command()
+@click.option("--allow-delete", is_flag=True)
+def cleanup_odata_ckan(**kwargs):
+    from .cleanup_ckan import main_odata
+    main_odata(**kwargs)
+
+
+@main.command()
 @click.argument('SEARCH_TERM', required=False)
 def find_volumes(search_term):
     for volume in json.loads(subprocess.check_output([
@@ -43,5 +50,3 @@ def find_volumes(search_term):
                 spec,
                 f"{volume['spec']['claimRef']['namespace']}/{volume['spec']['claimRef']['name']}",
             )
-
-
