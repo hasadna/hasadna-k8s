@@ -3,9 +3,6 @@ kind: WorkflowTemplate
 metadata:
   name: kopia-runner
 spec:
-  synchronization:
-    mutexes:
-      - name: kopia-runner-mutex
   arguments:
     parameters:
       - name: exec_script
@@ -23,6 +20,10 @@ spec:
                   value: |
                     {{ "{{workflow.parameters.exec_script}}" }}
     - name: script
+      # we can only have a single script running at a time because they use a shared home directory which cannot be shared
+      synchronization:
+        mutexes:
+          - name: kopia-runner-script
       serviceAccountName: workflow-runner
       inputs:
         parameters:
