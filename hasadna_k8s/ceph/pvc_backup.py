@@ -83,21 +83,42 @@ def main_shared(namespace, pvc_name, pv):
             print(f"ERROR! Failed to remove snapshot {backup_name} for namespace '{namespace}', pvc '{pvc_name}'")
 
 
-def main_pvc(namespace, pvc_name, pvc):
-    print(f'Creating backup for PVC {pvc_name} in namespace {namespace}...')
-    storage_class_name = pvc['spec']['storageClassName']
-    volume_name = pvc['spec']['volumeName']
-    print(f'Volume name: {volume_name}')
-    pv = json.loads(subprocess.check_output(['kubectl', 'get', 'pv', volume_name, '-o', 'json']))
-    if storage_class_name == 'rook-cephfs-shared':
-        main_shared(namespace, pvc_name, pv)
-    elif storage_class_name == 'rook-ceph-block':
-        main_block(namespace, pvc_name, pv)
+def is_pvc_eligible_for_backup(namespace, pvc_name, pvc):
+    not_eligible_msg = None
+    if pvc['metadata']['labels'].get('hasadna/no-backup') == 'yes':
+        not_eligible_msg = 'has label hasadna/no-backup=yes'
+    if not_eligible_msg is None:
+        return True
     else:
-        raise Exception(f'Unexpected storage class name: {storage_class_name}')
+        print(f'PVC {namespace}/{pvc_name} not eligible for backup: {not_eligible_msg}')
+        return False
 
 
-def main_all():
+def main_pvc(namespace, pvc_name, pvc, with_weekly):
+    backup_freq = pvc.get('metadata', {}).get('labels', {}).get('hasadna/iac-storage-backup-freq') or "weekly"
+    assert backup_freq in ["none", "daily", "weekly"], f'Invalid backup frequency "{backup_freq}" for PVC {namespace}/{pvc_name}. Must be one of "none", "daily", "weekly".'
+    if backup_freq == "daily" or (backup_freq == "weekly" and with_weekly):
+        print(f'Creating backup for PVC {pvc_name} in namespace {namespace}...')
+        storage_class_name = pvc['spec']['storageClassName']
+        volume_name = pvc['spec']['volumeName']
+        print(f'Volume name: {volume_name}')
+        pv = json.loads(subprocess.check_output(['kubectl', 'get', 'pv', volume_name, '-o', 'json']))
+        if storage_class_name == 'rook-cephfs-shared':
+            main_shared(namespace, pvc_name, pv)
+        elif storage_class_name == 'rook-ceph-block':
+            main_block(namespace, pvc_name, pv)
+        else:
+            raise Exception(f'Unexpected storage class name: {storage_class_name}')
+        return True
+    else:
+        print(f"Skipping backup for PVC {namespace}/{pvc_name} due to backup frequency '{backup_freq}' (with_weekly={with_weekly})")
+        return False
+
+
+def main_all(with_weekly=False, with_weekly_on_saturday=False):
+    if with_weekly_on_saturday and datetime.datetime.now().weekday() == 5:
+        print("Saturday - setting with_weekly = True")
+        with_weekly = True
     print('Fetching all PVCs eligible for backup in all namespaces...')
     backup_log = []
     for pvc in json.loads(subprocess.check_output([
@@ -109,7 +130,7 @@ def main_all():
         storage_class_name = pvc['spec']['storageClassName']
         if phase == 'Bound':
             if storage_class_name in ['rook-cephfs-shared', 'rook-ceph-block']:
-                main_pvc(namespace, pvc_name, pvc)
+                main_pvc(namespace, pvc_name, pvc, with_weekly)
                 backup_log.append(f'{namespace}/{pvc_name}: Backup completed successfully.')
             else:
                 print(f'Skipping PVC {pvc_name} in namespace {namespace} with storage class {storage_class_name}. Only rook-cephfs-shared and rook-ceph-block are eligible for backup.')
@@ -126,9 +147,9 @@ def main_all():
         raise Exception('CEPH_BACKUPS_HEARTBEAT_URL is not set, cannot send heartbeat.')
 
 
-def main(namespace, pvc_name):
+def main(namespace, pvc_name, with_weekly=False):
     print(f'Fetching PVC {pvc_name} in namespace {namespace}...')
     pvc = json.loads(subprocess.check_output([
         'kubectl', '-n', namespace, 'get', 'pvc', pvc_name, '-o', 'json'
     ]))
-    main_pvc(namespace, pvc_name, pvc)
+    assert main_pvc(namespace, pvc_name, pvc, with_weekly)
