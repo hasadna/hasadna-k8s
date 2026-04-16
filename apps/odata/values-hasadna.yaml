@@ -27,7 +27,9 @@ ckanJobsDbResources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits":
 # ckanJobsDbTerminationGracePeriodSeconds: 1
 ckanServiceAccountName: odata-ckan-kubectl
 ckanJobsResources: '{"requests": {"cpu": "500m", "memory": "256Mi"}, "limits": {"memory": "1699Mi"}}'
-# kubectl create secret generic --from-literal=secret-nginx-htpasswd="$(htpasswd -nb username password)"
+# kubectl create secret generic \
+#    --from-literal=secret-nginx-htpasswd="$(htpasswd -nb username password)"
+#    --from-literal=user-registration-htpasswd="$(htpasswd -nb username password)"
 nginxHtpasswdSecretName: nginx-htpasswd
 fixPermissions: false
 

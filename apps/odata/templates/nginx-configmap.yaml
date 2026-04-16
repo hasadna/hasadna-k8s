@@ -17,6 +17,22 @@ data:
         listen 80;
         server_name www.odata.org.il;
         client_max_body_size 300M;
+        location /user/register {
+            proxy_pass http://ckan:5000;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header Host www.odata.org.il;
+            proxy_set_header X-Forwarded-Proto https;
+            proxy_cache cache;
+            proxy_cache_bypass $cookie_auth_tkt;
+            proxy_no_cache $cookie_auth_tkt;
+            proxy_cache_valid 30m;
+            proxy_cache_key $request_uri;
+            # In emergency comment out line to force caching
+            # proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
+            add_header Access-Control-Allow-Origin "*";
+            auth_basic "בשביל למנוע ספאם יש להזין את הפרטים הבאים בשביל להירשם. שם משתמש: odata סיסמה: מידעלעם (עם המקלדת בשפה האנגלית)";
+            auth_basic_user_file /etc/htpasswd/user-registration-htpasswd;
+        }
         location / {
             proxy_pass http://ckan:5000;
             proxy_set_header X-Forwarded-For $remote_addr;
