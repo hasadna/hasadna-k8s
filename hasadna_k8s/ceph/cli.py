@@ -1,6 +1,7 @@
 import os
 import json
 import traceback
+import subprocess
 
 import click
 
@@ -31,7 +32,7 @@ def maintenance(**kwargs):
 @click.option('--with-weekly', is_flag=True)
 @click.option('--with-weekly-on-saturday', is_flag=True)
 def pvc_backup_all(with_full_maintenance, **kwargs):
-    from .pvc_backup import main_all
+    from .pvc_backup import main_all, CEPH_BACKUPS_HEARTBEAT_URL
     pvc_backup_failed = False
     try:
         main_all(**kwargs)
@@ -45,3 +46,8 @@ def pvc_backup_all(with_full_maintenance, **kwargs):
         from .kopia import maintenance
         maintenance(full=True)
         assert not pvc_backup_failed
+    if CEPH_BACKUPS_HEARTBEAT_URL:
+        print(f'Sending heartbeat to {CEPH_BACKUPS_HEARTBEAT_URL}...')
+        subprocess.check_call(['curl', CEPH_BACKUPS_HEARTBEAT_URL])
+    else:
+        raise Exception('CEPH_BACKUPS_HEARTBEAT_URL is not set, cannot send heartbeat.')
