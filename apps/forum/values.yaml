@@ -58,12 +58,14 @@ discourse:
         limits:
           memory: "500Mi"
   redis:
+    image:
+      tag: latest
     kubeVersion: "1.19"
     auth:
       enabled: false
     master:
       persistence:
-        existingClaim: "redis2"
+        existingClaim: "redis3"
       resources:
         requests:
           cpu: "25m"

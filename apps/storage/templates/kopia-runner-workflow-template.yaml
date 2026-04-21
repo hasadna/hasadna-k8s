@@ -1,12 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: runner
+  name: kopia-runner
 spec:
   arguments:
     parameters:
       - name: exec_script
-        default: "ceph status"
+        default: "kopia repository status"
   entrypoint: dag
   templates:
     - name: dag
@@ -20,16 +20,22 @@ spec:
                   value: |
                     {{ "{{workflow.parameters.exec_script}}" }}
     - name: script
+      # we can only have a single script running at a time because they use a shared home directory which cannot be shared
+      synchronization:
+        mutexes:
+          - name: kopia-runner-script
       serviceAccountName: workflow-runner
       inputs:
         parameters:
           - name: exec_script
       volumes: {{ include "runner.volumes" . | nindent 8 }}
         - name: home
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: kopia-home
       script:
         source: {{ include "runner.script" . | nindent 8 }}
           cat <<'EOF' > /tmp/exec_script.sh
+          kopia repository connect s3 --bucket=$KOPIA_S3_BUCKET --region=$KOPIA_S3_REGION
           {{ "{{inputs.parameters.exec_script}}" }}
           EOF
           chmod +x /tmp/exec_script.sh

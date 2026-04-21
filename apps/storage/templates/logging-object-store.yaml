@@ -6,17 +6,11 @@ spec:
   metadataPool:
     failureDomain: host
     replicated:
-      size: 1
-      requireSafeReplicaSize: false
+      size: 2
   dataPool:
     failureDomain: host
     replicated:
-      size: 1
-      requireSafeReplicaSize: false
-    # For production it is recommended to use more chunks, such as 4+2 or 8+4
-#    erasureCoded:
-#      dataChunks: 2
-#      codingChunks: 1
+      size: 2
   preservePoolsOnDelete: true
   gateway:
     instances: 1

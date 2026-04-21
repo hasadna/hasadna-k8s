@@ -1,0 +1,11 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: hasadna-k8s-pvc-maintenance-hourly
+spec:
+  schedule: "11 * * * *"
+  suspend: false
+  concurrencyPolicy: Forbid
+  workflowSpec:
+    workflowTemplateRef:
+      name: hasadna-k8s-pvc-maintenance

@@ -167,6 +167,10 @@ alloy:
             target_label  = "container_name"
           }
           rule {
+            action = "labelmap"
+            regex  = "__meta_kubernetes_pod_label_(k8s_app|app|jobLabel|app_kubernetes_io_name|component|workflows_argoproj_io_workflow|job_name)"
+          }
+          rule {
             source_labels = ["__meta_kubernetes_pod_node_name"]
             target_label  = "node_name"
           }
@@ -179,10 +183,14 @@ alloy:
             source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_name"]
             target_label  = "__log_pods_subpath"
             separator     = "_"
-            replacement   = "$1_*"
           }
           rule {
-            source_labels = ["__log_pods_subpath", "__meta_kubernetes_pod_container_name"]
+            source_labels = ["__log_pods_subpath"]
+            target_label = "__log_pods_subpath_star"
+            replacement = "${1}_*"
+          }
+          rule {
+            source_labels = ["__log_pods_subpath_star", "__meta_kubernetes_pod_container_name"]
             separator     = "/"
             target_label  = "__path__"
             replacement   = "/var/log/pods/$1/*.log"

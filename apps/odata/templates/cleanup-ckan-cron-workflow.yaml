@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: cleanup-ckan
+spec:
+  schedule: "11 2 * * 3"
+  suspend: false
+  concurrencyPolicy: Forbid
+  workflowSpec:
+    entrypoint: cleanup-ckan
+    serviceAccountName: cleanup-ckan-cron-workflow
+    templates:
+      - name: cleanup-ckan
+        container:
+          image: ghcr.io/hasadna/hasadna-k8s/hasadna-k8s:latest
+          pullPolicy: Always
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              hasadna-k8s storage cleanup-odata-ckan --allow-delete
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cleanup-ckan-cron-workflow
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cleanup-ckan-cron-workflow
+rules:
+- apiGroups: ["", "apps"]
+  resources: ["pods", "deployments"]
+  verbs: ["list", "get"]
+- apiGroups: [""]
+  resources: ["pods/exec"]
+  verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cleanup-ckan-cron-workflow
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cleanup-ckan-cron-workflow
+subjects:
+- kind: ServiceAccount
+  name: cleanup-ckan-cron-workflow
+#  namespace: odata

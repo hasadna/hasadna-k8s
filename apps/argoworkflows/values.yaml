@@ -1,5 +1,11 @@
 enabled: true
 
+argoworkflowAdminGroups:
+  meirim:
+    rbacRule: "'hasadna:argocd-meirim-admins' in groups"
+    namespaces:
+      - meirim
+
 ingresses:
   - name: argo
     ssl: true

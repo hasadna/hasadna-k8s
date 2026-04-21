@@ -17,6 +17,9 @@ spec:
         app: ckan-dgp
     spec:
       terminationGracePeriodSeconds: 10
+      hostAliases:  # this is used to bypass cloudflare for ckan sites
+        - ip: "~iac:datacity_ckan_load_balancer_ip~"
+          hostnames: ~iac:datacity_ckan_all_hostnames_json~
       containers:
       - name: db
         image: "ghcr.io/hasadna/datacity-ckan-dgp/datacity-ckan-dgp-db:210085d803fd866c24f2d644920dd276527d74f1"
@@ -27,7 +30,7 @@ spec:
             subPath: postgres_data2
       - name: server
         image: {{ .Values.ckanDgpServerImage | default "docker.pkg.github.com/hasadna/datacity-ckan-dgp/server" | replace "docker.pkg.github.com" "ghcr.io" | quote }}
-        resources: {"requests": {"cpu": "2500m", "memory": "2500Mi"}, "limits": {"cpu": "3000m", "memory": "4000Mi"}}
+        resources: {"requests": {"cpu": "2500m", "memory": "5000Mi"}, "limits": {"cpu": "3000m", "memory": "7000Mi"}}
         command:
           - sh
           - -c
@@ -73,6 +76,8 @@ spec:
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"AWS_REGION"}}
         - name: S3_ENDPOINT_URL
           valueFrom: {"secretKeyRef":{"name":"datacity", "key":"S3_ENDPOINT_URL"}}
+        - name: CKAN_VERIFY_SSL
+          value: "no"  # this is needed because we use host aliases to bypass cloudflare
         envFrom:
         - secretRef: {"name": "ckan-dgp-instances"}
       volumes:

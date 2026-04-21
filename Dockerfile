@@ -53,5 +53,6 @@ RUN echo "version = '$VERSION'" > hasadna_k8s/version.py &&\
     echo "exec hasadna-k8s \"\$@\"" >> entrypoint.sh &&\
     chmod +x entrypoint.sh
 ENV BASH_ENV=/home/hasadna/.bash_env
+ENV PYTHONUNBUFFERED=1
 USER hasadna
 ENTRYPOINT ["/home/hasadna/app/entrypoint.sh"]

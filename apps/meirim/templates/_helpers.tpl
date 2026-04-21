@@ -1,6 +1,6 @@
 {{- define "server.container" }}
 name: server
-image: ghcr.io/hasadna/meirim/meirim-server:2d6981b429b7d950483d393bc3cc5e7e609d80b5
+image: {{ .Values.serverImage | quote }}
 resources:
   requests:
     cpu: "500m"
@@ -11,6 +11,8 @@ resources:
 envFrom:
   - secretRef:
       name: meirim-server-env
+  - configMapRef:
+      name: hasadna-proxy1
 env:
   - name: SERVER_DATABASE_HOST
     value: "meirim-mariadb"

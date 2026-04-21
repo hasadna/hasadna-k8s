@@ -53,6 +53,8 @@ volumeMounts:
     mountPath: /dev
   - name: host-modules
     mountPath: /lib/modules
+  - name: home
+    mountPath: /root
 command: [bash]
 {{- end }}
 
@@ -68,6 +70,5 @@ command: [bash]
   keyring = /etc/ceph/keyring" > /etc/ceph/ceph.conf
   echo "[${ROOK_CEPH_USERNAME}]
   key = ${ROOK_CEPH_KEYRING}" > /etc/ceph/keyring
-  kopia repository connect s3 --bucket=$KOPIA_S3_BUCKET --region=$KOPIA_S3_REGION
   ) 2>&1 | tee /tmp/log.txt
 {{- end }}

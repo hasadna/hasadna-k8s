@@ -14,7 +14,9 @@ spec:
           - name: SLACK_WEBHOOK_URL_B64
             value: "~vault:Projects/k8s/argo-workflows:slack_notifications_url~"
           - name: ARGO_WORKFLOWS_TOKEN_B64
-            value: "~vault:Projects/k8s/argo-workflows:reader_automation_token~"
+            # this is the token from argo-global-exit-hook service account
+            # it needs to be specified this way because the exit handler is global and can't reference secrets in a specific namespace
+            value: "~vault:Projects/k8s/argo-workflows:global_exit_hook_token~"
           - name: ARGO_WORKFLOWS_URL
             value: "http://argo-server.argo:2746"
           - name: STATUS

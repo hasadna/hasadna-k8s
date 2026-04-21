@@ -152,6 +152,10 @@ kube-prometheus-stack:
     podAnnotations:
       container.apparmor.security.beta.kubernetes.io/node-exporter: unconfined
 
+  customRules:
+    KubePodNotReady:
+      for: 60m
+
 ingresses:
   - name: alertmanager
     ssl: true
