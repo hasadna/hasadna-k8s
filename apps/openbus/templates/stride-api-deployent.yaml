@@ -27,7 +27,7 @@ spec:
             - name: WEB_CONCURRENCY
               value: "4"
             - name: SQLALCHEMY_URL
-              value: "postgresql://redash:@localhost:6432/stride"
+              value: "postgresql://api:@localhost:6432/stride"
               # valueFrom: {"secretKeyRef":{"name":"db", "key":"SQLALCHEMY_URL"}}
             - name: SQLALCHEMY_POOLCLASS_NULLPOOL
               value: "yes"

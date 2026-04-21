@@ -108,7 +108,7 @@ secrets:
       S3_COMPLAINTS_AWS_SECRET_ACCESS_KEY: "~vault:Projects/OBus/backend-secrets:S3_COMPLAINTS_AWS_SECRET_ACCESS_KEY~"
   - name: pgbouncer-auth
     data:
-      auth_file: "~vault:Projects/OBus/pgbouncer:auth_file~"
+      auth_file: "~vault:Projects/OBus/stride-db-roles:api-pgbouncer-auth-file~"
 
 ingresses:
   - name: siri-requester
