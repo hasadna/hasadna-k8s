@@ -16,12 +16,12 @@ ingresses:
       - host: "rgw.~iac:rke2_catchall_hostname~"
         serviceName: rook-ceph-rgw-hasadna
         servicePort: 80
-  - name: cube-backup
-    ssl: true
-    rules:
-      - host: "cube-backup.~iac:rke2_catchall_hostname~"
-        serviceName: cube-backup
-        servicePort: 80
+#  - name: cube-backup
+#    ssl: true
+#    rules:
+#      - host: "cube-backup.~iac:rke2_catchall_hostname~"
+#        serviceName: cube-backup
+#        servicePort: 80
 
 secrets:
   - name: kopia
