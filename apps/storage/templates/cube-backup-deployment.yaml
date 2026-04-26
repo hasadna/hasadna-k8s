@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cube-backup
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: cube-backup
+  template:
+    metadata:
+      labels:
+        app: cube-backup
+    spec:
+      containers:
+        - name: cube-backup
+          image: cubebackup/workspace@sha256:200ea532c5f1ea38cb3930bd1e9494218f6c70125df0a31bc70aabfce58a5ad9
+          volumeMounts:
+            - name: cube-backup-meta
+              mountPath: /cubebackup_index
+              subPath: index
+            - name: cube-backup-meta
+              mountPath: /opt/cubebackup/etc
+              subPath: config
+            - name: cube-backup-meta
+              mountPath: /opt/cubebackup/db
+              subPath: db
+            - name: cube-backup-meta
+              mountPath: /opt/cubebackup/log
+              subPath: log
+      volumes:
+        - name: cube-backup-meta
+          persistentVolumeClaim:
+            claimName: cube-backup-meta
