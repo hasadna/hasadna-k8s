@@ -100,3 +100,4 @@ ENV/
 get_helm.sh
 .dfs-checkpoints
 .rancher.kubeconfig
+.AGENTS.sh.completed
