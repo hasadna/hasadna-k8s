@@ -1,2 +1,2 @@
 clientImage: ghcr.io/hasadna/meirim/meirim-client:56ee2a8b4106b70dd5d4d529c0fca53e4d0a7b4e
-serverImage: ghcr.io/hasadna/meirim/meirim-server:56ee2a8b4106b70dd5d4d529c0fca53e4d0a7b4e
+serverImage: ghcr.io/hasadna/meirim/meirim-server:38b3fc41acd22dfe9db1c9ac7914e027867c4025
