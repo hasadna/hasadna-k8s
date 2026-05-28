@@ -16,6 +16,8 @@ kured:
     useRebootSentinelHostPath: false
     # Reboot if uptime exceeds 30 days - this is good for general maintenance but also to renew certificates
     rebootSentinelCommand: "/bin/sh -c '[ $(cut -d. -f1 /proc/uptime) -ge 2592000 ]'"
+    # check for reboot every 12 hours, this limits the number of reboots that can happen consecutively
+    period: "12h"
     # Interpret the reboot window using Israel local time.
     timeZone: Asia/Jerusalem
     # Only start reboots after 02:00 local time.
