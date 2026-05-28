@@ -1,0 +1,43 @@
+kured:
+  configuration:
+    # Add kured annotations to nodes during reboot operations for visibility.
+    annotateNodes: true
+    # Reboot at most one node at a time to preserve cluster availability.
+    concurrency: 1
+    # Abort draining a node if pods do not evict within 30 minutes.
+    drainTimeout: "30m"
+    # Emit structured logs for easier querying in Loki.
+    logFormat: json
+    # Taint a node while it is pending reboot to avoid scheduling new pods there.
+    preferNoScheduleTaint: weave.works/kured-node-reboot
+    # Check Prometheus for active alerts before rebooting nodes.
+    prometheusUrl: http://monitoring-kube-prometheus-prometheus.monitoring:9090
+    # Use a command instead of /var/run/reboot-required so reboots are schedule-driven.
+    useRebootSentinelHostPath: false
+    # Reboot if uptime exceeds 30 days - this is good for general maintenance but also to renew certificates
+    rebootSentinelCommand: "/bin/sh -c '[ $(cut -d. -f1 /proc/uptime) -ge 2592000 ]'"
+    # Interpret the reboot window using Israel local time.
+    timeZone: Asia/Jerusalem
+    # Only start reboots after 02:00 local time.
+    startTime: "02:00"
+    # Stop starting new reboots after 06:00 local time.
+    endTime: "06:00"
+
+  metrics:
+    create: true
+    namespace: monitoring
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      memory: 128Mi
+
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+    - key: node-role.kubernetes.io/master
+      operator: Exists
+      effect: NoSchedule
