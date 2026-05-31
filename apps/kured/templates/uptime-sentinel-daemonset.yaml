@@ -26,6 +26,9 @@ spec:
         - key: node-role.kubernetes.io/master
           operator: Exists
           effect: NoSchedule
+        - key: CriticalAddonsOnly
+          operator: Exists
+          effect: NoExecute
       containers:
         - name: uptime-sentinel
           image: {{ .Values.uptimeSentinel.image | quote }}
