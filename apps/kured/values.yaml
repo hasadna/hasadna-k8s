@@ -48,5 +48,5 @@ kured:
 uptimeSentinel:
   enabled: true
   image: busybox:1.36
-  checkIntervalSeconds: 21600  # 6 hours
-  rebootRequiredUptimeSeconds: 2592000  # 30 days
+  checkIntervalSeconds: "21600"  # 6 hours
+  rebootRequiredUptimeSeconds: "2592000"  # 30 days
