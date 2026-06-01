@@ -11,7 +11,7 @@ kured:
     # Taint a node while it is pending reboot to avoid scheduling new pods there.
     preferNoScheduleTaint: weave.works/kured-node-reboot
     # Check Prometheus for active alerts before rebooting nodes.
-    prometheusUrl: http://monitoring-kube-prometheus-prometheus.monitoring:9090
+    # prometheusUrl: http://monitoring-kube-prometheus-prometheus.monitoring:9090
     # Use a host file managed by the uptime sentinel DaemonSet to avoid noisy command checks.
     useRebootSentinelHostPath: true
     rebootSentinel: /var/run/kured-reboot-required
