@@ -1,6 +1,14 @@
 enabled: true
 
 mariadb:
+  image:
+    repository: bitnamilegacy/mariadb
+  volumePermissions:
+    image:
+      repository: bitnamilegacy/os-shell
+  metrics:
+    image:
+      repository: bitnamilegacy/mysqld-exporter
   auth:
     existingSecret: mariadb-auth
   primary:

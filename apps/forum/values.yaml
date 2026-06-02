@@ -1,5 +1,10 @@
 discourse:
   kubeVersion: "1.19"
+  image:
+    repository: bitnamilegacy/discourse
+  volumePermissions:
+    image:
+      repository: bitnamilegacy/bitnami-shell
   auth:
     username: devops
     email: devops@hasadna.org.il
