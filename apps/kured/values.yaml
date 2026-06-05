@@ -6,6 +6,8 @@ kured:
     concurrency: 1
     # Abort draining a node if pods do not evict within 30 minutes.
     drainTimeout: "30m"
+    # force a reboot even if the drain fails or times out
+    forceReboot: true
     # Emit structured logs for easier querying in Loki.
     logFormat: json
     # Taint a node while it is pending reboot to avoid scheduling new pods there.
