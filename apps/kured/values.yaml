@@ -17,8 +17,8 @@ kured:
     # Use a host file managed by the uptime sentinel DaemonSet to avoid noisy command checks.
     useRebootSentinelHostPath: true
     rebootSentinel: /var/run/kured-reboot-required
-    # Check for reboot every 12 hours, this limits the number of reboots that can happen consecutively.
-    period: "12h"
+    # Check for reboot every 1 hour
+    period: "1h"
     # Force-clear stale reboot locks if a kured pod exits before releasing them.
     lockTtl: "6h"
     # Interpret the reboot window using Israel local time.
@@ -27,6 +27,8 @@ kured:
     startTime: "02:00"
     # Stop starting new reboots after 06:00 local time.
     endTime: "06:00"
+    # after a node is rebooted, wait until another node can be rebooted
+    lockReleaseDelay: "12h"
 
   metrics:
     create: true
