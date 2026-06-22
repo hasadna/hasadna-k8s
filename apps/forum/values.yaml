@@ -49,6 +49,8 @@ discourse:
 #  volumePermissions:
 #    enabled: true
   postgresql:
+    image:
+      repository: bitnamilegacy/postgresql
     kubeVersion: "1.19"
     auth:
       existingSecret: discourse-passwords
