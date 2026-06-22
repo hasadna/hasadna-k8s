@@ -18,7 +18,7 @@ spec:
       containers:
       - name: importer
         image: {{ .Values.dgpAppImage | default "hasadna/treebase-importer" | replace "docker.pkg.github.com" "ghcr.io" | quote }}
-        resources: {"requests": {"cpu": "250m", "memory": "2000Mi"}, "limits": {"cpu": "2000m", "memory": "6000Mi"}}
+        resources: {"requests": {"cpu": "50m", "memory": "512Mi"}, "limits": {"memory": "3000Mi"}}
         ports:
         - containerPort: 5000
         volumeMounts:

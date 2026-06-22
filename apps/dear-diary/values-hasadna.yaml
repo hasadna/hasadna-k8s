@@ -7,41 +7,37 @@ db:
   nfsPath: "/dear-diary/db"
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 10m
+      memory: 100Mi
     limits:
-      cpu: 200m
       memory: 512Mi
 
 web:
   concurrency: "2"
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 10m
+      memory: 128Mi
     limits:
-      cpu: 200m
       memory: 512Mi
 
 qcluster:
   settingsJson: '{"workers": 1}'
   resources:
     requests:
-      cpu: 100m
-      memory: 512Mi
+      cpu: 10m
+      memory: 128Mi
     limits:
-      cpu: 200m
-      memory: 1024Mi
+      memory: 512Mi
 
 nginx:
   workerProcesses: 2
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 10m
+      memory: 10Mi
     limits:
-      cpu: 200m
-      memory: 512Mi
+      memory: 100Mi
 
 secrets:
   - name: app

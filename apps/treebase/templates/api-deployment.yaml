@@ -18,7 +18,7 @@ spec:
       containers:
       - name: api
         image: {{ .Values.apiImage | default "budgetkey/open-budget-data-api" | replace "docker.pkg.github.com" "ghcr.io" | quote }}
-        resources: {"requests": {"cpu": "25m", "memory": "309Mi"}, "limits": {"cpu": "78m", "memory": "1000Mi"}}
+        resources: {"requests": {"cpu": "25m", "memory": "128Mi"}, "limits": {"memory": "512Mi"}}
         env:
           - name: DATABASE_URL
             value: postgresql://readonly:readonly@db/datasets

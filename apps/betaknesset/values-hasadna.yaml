@@ -1,11 +1,10 @@
 postgres:
   resources:
     requests:
-      cpu: "500m"
-      memory: "1500Mi"
+      cpu: "25m"
+      memory: "150Mi"
     limits:
-      cpu: "750m"
-      memory: "2000Mi"
+      memory: "250Mi"
   nfsServer: "~iac:hasadna_nfs1_internal_ip~"
   nfsPath: "/betaknesset/postgres"
   nodePort: 30636

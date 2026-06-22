@@ -18,5 +18,5 @@ spec:
       containers:
       - name: web
         image: {{ .Values.webImage | default "ghcr.io/whiletrue-industries/treecat" | quote }}
-        resources: {"requests": {"cpu": "25m", "memory": "309Mi"}, "limits": {"cpu": "78m", "memory": "1000Mi"}}
+        resources: {"requests": {"cpu": "25m", "memory": "128Mi"}, "limits": {"memory": "512Mi"}}
 {{ end }}

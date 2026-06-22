@@ -9,7 +9,7 @@ botkit:
   # persistentVolumeSize: 1G
   nfsServer: "~iac:hasadna_nfs1_internal_ip~"
   nfsPath: "/reportit/botkit"
-  resources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "339Mi"}}'
+  resources: '{"requests": {"cpu": "25m", "memory": "128Mi"}, "limits": {"memory": "339Mi"}}'
 strapi:
   enabled: true
   # persistent volume claim and disk names must be unique across all projects in the cluster
@@ -20,7 +20,7 @@ strapi:
   # persistentVolumeSize: 500G
   nfsServer: "~iac:hasadna_nfs1_internal_ip~"
   nfsPath: "/reportit/strapi"
-  resources: '{"requests": {"cpu": "93m", "memory": "256Mi"}, "limits": {"cpu": "163m", "memory": "1119Mi"}}'
+  resources: '{"requests": {"cpu": "25m", "memory": "128Mi"}, "limits": {"memory": "512Mi"}}'
 postgres:
   enabled: true
   # persistent volume claim and disk names must be unique across all projects in the cluster
@@ -31,7 +31,7 @@ postgres:
   # persistentVolumeSize: 5G
   nfsServer: "~iac:hasadna_nfs1_internal_ip~"
   nfsPath: "/reportit/postgres"
-  resources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "339Mi"}}'
+  resources: '{"requests": {"cpu": "50m", "memory": "256Mi"}, "limits": {"memory": "339Mi"}}'
 ingresses:
   - name: botkit
     rules:

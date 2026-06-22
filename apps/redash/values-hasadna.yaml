@@ -3,24 +3,24 @@ redashImage: redash/redash:25.1.0
 redashInitialize: ""
 
 server:
-  resources: {"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "2000Mi"}}
+  resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"memory": "1500Mi"}}
   REDASH_WEB_WORKERS: "4"
 
 scheduler:
-  resources: {"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
+  resources: {"requests": {"cpu": "25m", "memory": "128Mi"}, "limits": {"memory": "512Mi"}}
 
 scheduledWorker:
-  resources: {"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
+  resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"memory": "1000Mi"}}
 
 worker:
-  resources: {"requests": {"cpu": "200m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
+  resources: {"requests": {"cpu": "50m", "memory": "256Mi"}, "limits": {"memory": "1000Mi"}}
 
 adhocWorker:
-  resources: {"requests": {"cpu": "200m", "memory": "1000Mi"}, "limits": {"memory": "4000Mi"}}
+  resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"memory": "1000Mi"}}
   WORKERS_COUNT: 4
 
 redis:
-  resources: {"requests": {"cpu": "50m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
+  resources: {"requests": {"cpu": "25m", "memory": "128Mi"}, "limits": {"memory": "512Mi"}}
 
 postgres:
   resources: {"requests": {"cpu": "50m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
@@ -28,7 +28,7 @@ postgres:
   nfsPath: "/redash/postgres"
 
 nginx:
-  resources: {"requests": {"cpu": "50m", "memory": "500Mi"}, "limits": {"memory": "1000Mi"}}
+  resources: {"requests": {"cpu": "10m", "memory": "64Mi"}, "limits": {"memory": "256Mi"}}
 
 ingresses:
   - name: nginx

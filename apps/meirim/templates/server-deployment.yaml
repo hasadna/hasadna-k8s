@@ -17,11 +17,10 @@ spec:
         image: {{ .Values.serverImage | quote }}
         resources:
           requests:
-            cpu: "500m"
-            memory: "1Gi"
+            cpu: "25m"
+            memory: "128Mi"
           limits:
-            cpu: "1"
-            memory: "2Gi"
+            memory: "512Mi"
         env:
           - name: SERVER_DATABASE_HOST
             value: "meirim-mariadb"

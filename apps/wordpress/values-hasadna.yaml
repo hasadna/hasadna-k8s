@@ -26,7 +26,7 @@ deployments:
     enabled: true
     # Pulled Dec 4, 2025
     image: wordpress:php7.4-apache
-    resources: '{"requests": {"cpu": "100m", "memory": "256Mi"}, "limits": {"cpu": "300m", "memory": "1543Mi"}}'
+    resources: '{"requests": {"cpu": "25m", "memory": "128Mi"}, "limits": {"memory": "768Mi"}}'
     pvcName: budgetism
     dbName: budgetism
     php_ini:

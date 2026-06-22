@@ -7,38 +7,34 @@ db:
   nfsPath: "/leafy/db"
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 10m
+      memory: 50Mi
     limits:
-      cpu: 200m
-      memory: 512Mi
+      memory: 100Mi
 
 web:
   resources:
     requests:
-      cpu: 100m
+      cpu: 10m
       memory: 512Mi
     limits:
-      cpu: 200m
       memory: 1024Mi
 
 bot:
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 10m
+      memory: 50Mi
     limits:
-      cpu: 200m
-      memory: 512Mi
+      memory: 150Mi
 
 nginx:
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 10m
+      memory: 20Mi
     limits:
-      cpu: 200m
-      memory: 512Mi
+      memory: 150Mi
 
 secrets:
   - name: app

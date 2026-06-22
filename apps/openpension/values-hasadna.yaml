@@ -1,5 +1,5 @@
 enabled: true
-dbResources: '{"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"cpu": "78m", "memory": "1699Mi"}}'
+dbResources: '{"requests": {"cpu": "50m", "memory": "256Mi"}, "limits": {"memory": "1024Mi"}}'
 dbNfsServer: "~iac:hasadna_nfs1_internal_ip~"
 dbNfsPath: "/openpension/db"
 # dbNodeSelector: hasadna-worker2
@@ -19,20 +19,18 @@ ngDb:
   nodePort: 30215
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 10m
+      memory: 100Mi
     limits:
-      cpu: 200m
-      memory: 512Mi
+      memory: 200Mi
 
 ngWeb:
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 10m
+      memory: 100Mi
     limits:
-      cpu: 200m
-      memory: 512Mi
+      memory: 200Mi
 
 #qcluster:
 #  settingsJson: '{"workers": 1}'
@@ -47,11 +45,10 @@ ngWeb:
 ngNginx:
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 10m
+      memory: 20Mi
     limits:
-      cpu: 200m
-      memory: 512Mi
+      memory: 100Mi
 
 secrets:
   - name: ng-app

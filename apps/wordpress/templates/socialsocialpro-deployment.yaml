@@ -17,4 +17,4 @@ spec:
       containers:
         - name: socialsocialpro
           image: {{ .Values.socialsocialproImage }}
-          resources: {"requests": {"cpu": "50m", "memory": "100Mi"}, "limits": {"memory": "200Mi"}}
+          resources: {"requests": {"cpu": "10m", "memory": "64Mi"}, "limits": {"memory": "200Mi"}}

@@ -391,11 +391,10 @@ spec:
           value: elastic-webhook-server-cert
         resources:
           limits:
-            cpu: 1
-            memory: 1Gi
-          requests:
-            cpu: 100m
             memory: 150Mi
+          requests:
+            cpu: 10M
+            memory: 50Mi
         ports:
         - containerPort: 9443
           name: https-webhook
@@ -635,4 +634,3 @@ webhooks:
     - UPDATE
     resources:
     - kibanas
-

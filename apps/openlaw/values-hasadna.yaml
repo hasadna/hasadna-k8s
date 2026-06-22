@@ -7,21 +7,19 @@ archiveDb:
   nfsPath: "/openlaw/archive_db"
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 10m
+      memory: 50Mi
     limits:
-      cpu: 200m
-      memory: 512Mi
+      memory: 100Mi
 
 archiveWeb:
   concurrency: "2"
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 10m
+      memory: 128Mi
     limits:
-      cpu: 200m
-      memory: 512Mi
+      memory: 200Mi
 
 #qcluster:
 #  settingsJson: '{"workers": 1}'
@@ -37,11 +35,10 @@ archiveNginx:
   workerProcesses: 2
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 10m
+      memory: 15Mi
     limits:
-      cpu: 200m
-      memory: 512Mi
+      memory: 100Mi
 
 secrets:
   - name: archive-app
