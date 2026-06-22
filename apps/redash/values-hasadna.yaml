@@ -10,13 +10,13 @@ scheduler:
   resources: {"requests": {"cpu": "25m", "memory": "128Mi"}, "limits": {"memory": "512Mi"}}
 
 scheduledWorker:
-  resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"memory": "1000Mi"}}
+  resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"memory": "1500Mi"}}
 
 worker:
-  resources: {"requests": {"cpu": "50m", "memory": "256Mi"}, "limits": {"memory": "1000Mi"}}
+  resources: {"requests": {"cpu": "50m", "memory": "256Mi"}, "limits": {"memory": "1500Mi"}}
 
 adhocWorker:
-  resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"memory": "1000Mi"}}
+  resources: {"requests": {"cpu": "25m", "memory": "256Mi"}, "limits": {"memory": "1500Mi"}}
   WORKERS_COUNT: 4
 
 redis:
