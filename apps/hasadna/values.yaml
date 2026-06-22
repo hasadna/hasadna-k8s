@@ -25,6 +25,18 @@ redirects:
     redirect: "https://argocd.hasadna.org.il"
     ssl: true
 
+outOfOrder:
+  - name: dear-diary
+    host: "~iac:ingress-dear-diary-webapp~"
+    title: "Dear Diary"
+    info: |
+      We parse Excel (and other) files that contain calendar / diary data from public officials, and display them as an online calendar.
+      You can look at what your civic servants are doing, and ensure they're keeping busy serving the public.
+    links:
+      - title: github
+        url: https://github.com/hasadna/dear-diary/
+
+
 secrets:
   - name: kopia
     data:
