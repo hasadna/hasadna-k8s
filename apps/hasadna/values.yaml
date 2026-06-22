@@ -42,6 +42,13 @@ outOfOrder:
     links:
       - title: github
         url: https://github.com/hasadna/leafy
+  - name: open-pension
+    host: "~iac:ingress-open-pension-ng-webapp~"
+    title: "Open Pension"
+    info: ""
+    links:
+      - title: github
+        url: https://github.com/hasadna/open-pension-ng
 
 secrets:
   - name: kopia
