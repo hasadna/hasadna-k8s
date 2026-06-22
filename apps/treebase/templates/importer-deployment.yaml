@@ -9,6 +9,8 @@ spec:
       app: importer
   replicas: 1
   revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
