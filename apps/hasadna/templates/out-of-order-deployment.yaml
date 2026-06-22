@@ -20,7 +20,7 @@ spec:
             - -c
             - |
               import json
-              sites = json.loads({{ .Values.outOfOrder | toJson }})
+              sites = {{ .Values.outOfOrder | toJson }}
 {{ .Files.Get "files/out_of_order_init.py" | indent 14 }}
           volumeMounts:
             - name: confd
