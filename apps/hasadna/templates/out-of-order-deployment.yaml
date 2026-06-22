@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: out-of-order
@@ -21,7 +21,7 @@ spec:
             - |
               import json
               sites = json.loads({{ .Values.outOfOrder | toJson }})
-              {{ .Files.Get "files/out_of_order_init.py" | indent 14 }}
+{{ .Files.Get "files/out_of_order_init.py" | indent 14 }}
           volumeMounts:
             - name: confd
               mountPath: /etc/nginx/conf.d
