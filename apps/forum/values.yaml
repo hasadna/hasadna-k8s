@@ -1,5 +1,7 @@
 discourse:
   kubeVersion: "1.19"
+  updateStrategy:
+    type: Recreate
   image:
     repository: bitnamilegacy/discourse
   volumePermissions:
