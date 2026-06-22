@@ -35,7 +35,13 @@ outOfOrder:
     links:
       - title: github
         url: https://github.com/hasadna/dear-diary/
-
+  - name: leafy
+    host: "~iac:ingress-leafy-webapp~"
+    title: "Leafy"
+    info: ""
+    links:
+      - title: github
+        url: https://github.com/hasadna/leafy
 
 secrets:
   - name: kopia
