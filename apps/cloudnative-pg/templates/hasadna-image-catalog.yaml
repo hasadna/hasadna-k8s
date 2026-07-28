@@ -1,0 +1,9 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ImageCatalog
+metadata:
+  name: hasadna
+spec:
+  images:
+    - major: 18
+      # Updated Jul 28, 2026 from https://raw.githubusercontent.com/cloudnative-pg/postgres-containers/main/Debian/ClusterImageCatalog-bookworm.yaml
+      image: ghcr.io/cloudnative-pg/postgresql:18.4-202607270910-system-bookworm@sha256:41c9b4423bcf9d9be5994bb3bab91d21d994505e1551bbcdfcada3cda51b2ba3

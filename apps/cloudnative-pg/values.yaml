@@ -5,8 +5,13 @@ cloudnative-pg:
       memory: 100Mi
     limits:
       memory: 200Mi
-
   monitoring:
     podMonitorEnabled: true
     grafanaDashboard:
       create: true
+
+secrets:
+  - name: hasadna-postgres-superuser
+    data:
+      username: "~vault:Projects/k8s/cloudnative-pg-hasadna:superuser-username~"
+      password: "~vault:Projects/k8s/cloudnative-pg-hasadna:superuser-password~"

@@ -1,0 +1,18 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: hasadna
+spec:
+  imageCatalogRef:
+    apiGroup: postgresql.cnpg.io
+    kind: ImageCatalog
+    name: hasadna
+    major: 18
+  instances: 1
+  storage:
+    size: 5Gi
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: hasadna-postgres-superuser
+  monitoring:
+    enablePodMonitor: true
