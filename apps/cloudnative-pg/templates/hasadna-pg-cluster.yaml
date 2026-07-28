@@ -10,7 +10,17 @@ spec:
     major: 18
   instances: 1
   storage:
-    size: 5Gi
+    pvcTemplate:
+      storageClassName: ""
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 5Gi
+      selector:
+        matchLabels:
+          app.kubernetes.io/name: hasadna-pv-cloudnative-pg-hasadna-pg-cluster
+          app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
   enableSuperuserAccess: true
   superuserSecret:
     name: hasadna-postgres-superuser
