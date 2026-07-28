@@ -102,7 +102,7 @@ def main_pvc(namespace, pvc_name, pvc, with_weekly):
         return f"Skipping backup for PVC {namespace}/{pvc_name} due to backup frequency '{backup_freq}' (with_weekly={with_weekly})"
 
 
-def main_all(with_weekly=False, with_weekly_on_saturday=False):
+def main_all(with_weekly=False, with_weekly_on_saturday=False, persistent_state_dir=None):
     if with_weekly_on_saturday and datetime.datetime.now().weekday() == 5:
         print("Saturday - setting with_weekly = True")
         with_weekly = True
@@ -128,6 +128,17 @@ def main_all(with_weekly=False, with_weekly_on_saturday=False):
             backup_log.append(f'{namespace}/{pvc_name}: Skipped due to phase {phase}. Only Bound PVCs are eligible for backup.')
     print("Great Success! Backup log:")
     print('\n'.join(backup_log))
+    if persistent_state_dir:
+        os.makedirs(persistent_state_dir, exist_ok=True)
+        backup_log_names = ["daily"]
+        if with_weekly:
+            backup_log_names.append("weekly")
+        for backup_log_name in backup_log_names:
+            backup_log_path = os.path.join(persistent_state_dir, f'last_{backup_log_name}_backup_log.txt')
+            with open(backup_log_path, 'w') as f:
+                f.write('\n'.join(backup_log))
+            with open(f'{backup_log_path}.timestamp', 'w') as f:
+                f.write(datetime.datetime.now().isoformat())
 
 
 def main(namespace, pvc_name, with_weekly=False):
