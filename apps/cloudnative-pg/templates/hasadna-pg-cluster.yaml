@@ -12,6 +12,7 @@ spec:
   storage:
     pvcTemplate:
       storageClassName: ""
+      volumeMode: Filesystem
       accessModes:
         - ReadWriteOnce
       resources:
