@@ -1,7 +1,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: hasadna
+  name: talpihack
 spec:
   imageCatalogRef:
     apiGroup: postgresql.cnpg.io
@@ -17,13 +17,13 @@ spec:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 5Gi
+          storage: 15Gi
       selector:
         matchLabels:
-          app.kubernetes.io/name: hasadna-pv-cloudnative-pg-hasadna-pg-cluster
+          app.kubernetes.io/name: hasadna-pv-cloudnative-pg-talpihack-pg-cluster
           app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
   enableSuperuserAccess: true
   superuserSecret:
-    name: hasadna-postgres-superuser
+    name: talpihack-postgres-superuser
   monitoring:
     enablePodMonitor: true
