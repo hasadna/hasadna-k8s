@@ -24,6 +24,6 @@ spec:
           app.kubernetes.io/managed-by: terraform-hasadna-rke2-storage
   enableSuperuserAccess: true
   superuserSecret:
-    name: talpihack-postgres-superuser
+    name: hasadna-postgres-superuser
   monitoring:
     enablePodMonitor: true
