@@ -64,7 +64,7 @@ command: [bash]
   (
     mkdir -p /etc/ceph
     echo "[global]
-  mon_host = rook-ceph-mon-a:6789,rook-ceph-mon-d:6789,rook-ceph-mon-e:6789
+  mon_host = $(env | awk -F= '/^ROOK_CEPH_MON_.*_SERVICE_HOST=/ {print $2 ":6789"}' | paste -sd, -)
 
   [client.admin]
   keyring = /etc/ceph/keyring" > /etc/ceph/ceph.conf
