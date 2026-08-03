@@ -1,5 +1,9 @@
 loki:
   global:
+    tolerations:
+      - key: "HighPriorityWorkloads"
+        operator: "Exists"
+        effect: "NoSchedule"
     extraArgs:
       - -config.expand-env=true
       - -ruler.storage.s3.access-key-id=$(GRAFANA_LOKI_S3_ACCESSKEYID_RULER)
