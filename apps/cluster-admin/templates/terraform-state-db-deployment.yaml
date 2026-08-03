@@ -57,6 +57,10 @@ spec:
               mountPath: /var/lib/postgresql/data
             - name: secured-ssl
               mountPath: /opt/secured_ssl
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
       volumes:
         - name: data
           persistentVolumeClaim:

@@ -67,6 +67,10 @@ discourse:
   redis:
     image:
       tag: latest
+    tolerations:
+      - key: "HighPriorityWorkloads"
+        operator: "Exists"
+        effect: "NoSchedule"
     kubeVersion: "1.19"
     auth:
       enabled: false

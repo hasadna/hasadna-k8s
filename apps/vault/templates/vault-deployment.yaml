@@ -34,6 +34,10 @@ spec:
               subPath: vaultdata
           securityContext:
             privileged: true
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
       volumes:
         - name: vaultdata
           {{ if .Values.nfsServer }}

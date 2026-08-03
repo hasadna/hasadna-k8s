@@ -1,4 +1,4 @@
-# globalTolerations: '[{key:"project",value:"odata",effect:"NoSchedule"}]'
+globalTolerations: '[{"key":"HighPriorityWorkloads","operator":"Exists","effect":"NoSchedule"}]'
 
 enabled: true
 ckanDeploymentEnabled: true
