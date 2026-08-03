@@ -37,6 +37,10 @@ kube-prometheus-stack:
           memory: 300Mi
         limits:
           memory: 500Mi
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
       storage:
         volumeClaimTemplate:
           spec:
@@ -58,6 +62,10 @@ kube-prometheus-stack:
         memory: 400Mi
       limits:
         memory: 800Mi
+    tolerations:
+      - key: "HighPriorityWorkloads"
+        operator: "Exists"
+        effect: "NoSchedule"
     persistence:
       enabled: true
       existingClaim: "grafana"
@@ -86,6 +94,10 @@ kube-prometheus-stack:
         memory: 200Mi
       limits:
         memory: 400Mi
+    tolerations:
+      - key: "HighPriorityWorkloads"
+        operator: "Exists"
+        effect: "NoSchedule"
 
   prometheus:
     prometheusSpec:
@@ -99,6 +111,10 @@ kube-prometheus-stack:
           memory: 600Mi
         limits:
           memory: 1200Mi
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
       storageSpec:
         volumeClaimTemplate:
           spec:
