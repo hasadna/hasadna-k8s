@@ -77,30 +77,30 @@ loki:
       retention_period: 120h
   ingester:
     replicas: 3
-    tolerations: [key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"]
+    tolerations: [{key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"}]
     zoneAwareReplication:
        enabled: false
   querier:
     replicas: 3
-    tolerations: [key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"]
+    tolerations: [{key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"}]
     maxUnavailable: 2
   queryFrontend:
     replicas: 2
-    tolerations: [key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"]
+    tolerations: [{key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"}]
     maxUnavailable: 1
   queryScheduler:
     replicas: 2
-    tolerations: [key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"]
+    tolerations: [{key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"}]
   distributor:
     replicas: 3
-    tolerations: [key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"]
+    tolerations: [{key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"}]
     maxUnavailable: 2
   compactor:
     replicas: 1
-    tolerations: [key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"]
+    tolerations: [{key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"}]
   indexGateway:
     replicas: 2
-    tolerations: [key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"]
+    tolerations: [{key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"}]
     maxUnavailable: 1
   bloomPlanner:
     replicas: 0
