@@ -160,6 +160,8 @@ kube-prometheus-stack:
     tolerations:
       - effect: NoExecute
         operator: Exists
+      - effect: NoSchedule
+        operator: Exists
     extraHostVolumeMounts:
       - name: dbus
         hostPath: /var/run/dbus
