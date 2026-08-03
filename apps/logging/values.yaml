@@ -1,9 +1,5 @@
 loki:
   global:
-    tolerations:
-      - key: "HighPriorityWorkloads"
-        operator: "Exists"
-        effect: "NoSchedule"
     extraArgs:
       - -config.expand-env=true
       - -ruler.storage.s3.access-key-id=$(GRAFANA_LOKI_S3_ACCESSKEYID_RULER)
@@ -81,23 +77,30 @@ loki:
       retention_period: 120h
   ingester:
     replicas: 3
+    tolerations: [key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"]
     zoneAwareReplication:
        enabled: false
   querier:
     replicas: 3
+    tolerations: [key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"]
     maxUnavailable: 2
   queryFrontend:
     replicas: 2
+    tolerations: [key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"]
     maxUnavailable: 1
   queryScheduler:
     replicas: 2
+    tolerations: [key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"]
   distributor:
     replicas: 3
+    tolerations: [key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"]
     maxUnavailable: 2
   compactor:
     replicas: 1
+    tolerations: [key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"]
   indexGateway:
     replicas: 2
+    tolerations: [key: "HighPriorityWorkloads", operator: "Exists", effect: "NoSchedule"]
     maxUnavailable: 1
   bloomPlanner:
     replicas: 0
@@ -127,6 +130,9 @@ alloy:
       - key: "CriticalAddonsOnly"
         operator: "Exists"
         effect: "NoExecute"
+      - key: "HighPriorityWorkloads"
+        operator: "Exists"
+        effect: "NoSchedule"
     volumes:
       extra:
         - name: varlibrancher
