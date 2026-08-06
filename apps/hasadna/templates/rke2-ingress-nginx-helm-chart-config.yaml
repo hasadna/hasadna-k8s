@@ -9,3 +9,7 @@ spec:
       config:
         allow-snippet-annotations: "true"
         annotations-risk-level: "Critical"
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
