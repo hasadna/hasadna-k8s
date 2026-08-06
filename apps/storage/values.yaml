@@ -2,6 +2,24 @@ rook-ceph:
   monitoring:
     enabled: true
   obcAllowAdditionalConfigFields: "maxObjects,maxSize,bucketPolicy"
+  tolerations:
+    - key: "HighPriorityWorkloads"
+      operator: "Exists"
+      effect: "NoSchedule"
+  csi:
+    provisionerTolerations:
+      - key: "HighPriorityWorkloads"
+        operator: "Exists"
+        effect: "NoSchedule"
+    pluginTolerations:
+      - key: "HighPriorityWorkloads"
+        operator: "Exists"
+        effect: "NoSchedule"
+  discover:
+    tolerations:
+      - key: "HighPriorityWorkloads"
+        operator: "Exists"
+        effect: "NoSchedule"
 
 ingresses:
   - name: ceph
