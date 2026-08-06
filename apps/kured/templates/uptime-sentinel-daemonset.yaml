@@ -29,6 +29,9 @@ spec:
         - key: CriticalAddonsOnly
           operator: Exists
           effect: NoExecute
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
         - name: uptime-sentinel
           image: {{ .Values.uptimeSentinel.image | quote }}
