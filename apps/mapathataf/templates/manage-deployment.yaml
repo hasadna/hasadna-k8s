@@ -1,0 +1,22 @@
+{{ if .Values.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: manage
+spec:
+  selector:
+    matchLabels:
+      app: manage
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: manage
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: manage
+        image: {{ .Values.manageImage | default "ghcr.io/whiletrue-industries/mapathataf-manage" | quote }}
+        resources: {"requests": {"cpu": "25m", "memory": "128Mi"}, "limits": {"memory": "512Mi"}}
+{{ end }}
