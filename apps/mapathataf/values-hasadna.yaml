@@ -15,6 +15,11 @@ ingresses:
       - host: admin.tafmap.org.il
         serviceName: admin
         servicePort: 4000
+  - name: manage
+    rules:
+      - host: manage.tafmap.org.il
+        serviceName: manage
+        servicePort: 4000
 vertical_pod_autoscalers:
 - apiVersion: apps/v1
   kind: deployment
