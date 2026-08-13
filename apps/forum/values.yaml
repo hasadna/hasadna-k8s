@@ -24,6 +24,10 @@ discourse:
         memory: "512Mi"
       limits:
         memory: "1500Mi"
+    tolerations:
+      - key: "HighPriorityWorkloads"
+        operator: "Exists"
+        effect: "NoSchedule"
   sidekiq:
     resources:
       requests:
@@ -31,6 +35,10 @@ discourse:
         memory: "256Mi"
       limits:
         memory: "1000Mi"
+    tolerations:
+      - key: "HighPriorityWorkloads"
+        operator: "Exists"
+        effect: "NoSchedule"
   persistence:
     enabled: true
     existingClaim: "discourse2"
@@ -64,6 +72,10 @@ discourse:
           cpu: 50m
         limits:
           memory: "500Mi"
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
   redis:
     image:
       tag: latest
