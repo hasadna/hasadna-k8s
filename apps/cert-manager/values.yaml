@@ -1,3 +1,7 @@
 cert-manager:
   crds:
     enabled: true
+  tolerations:
+    - key: "HighPriorityWorkloads"
+      operator: "Exists"
+      effect: "NoSchedule"
