@@ -19,6 +19,10 @@ spec:
 #         This node label is updated by apps/openbus/bin/update_node_allowed_ips.py script
 #        open-bus-allowed-ip: "true"
       terminationGracePeriodSeconds: 30
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
         - name: app
           image: {{ .Values.siriRequesterImage | replace "docker.pkg.github.com" "ghcr.io" }}
