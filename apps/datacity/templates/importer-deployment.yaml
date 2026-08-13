@@ -15,6 +15,10 @@ spec:
         app: importer
     spec:
       terminationGracePeriodSeconds: 10
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
       - name: importer
         image: {{ .Values.dgpAppImage | default "hasadna/datacity-dgp-importer" | replace "docker.pkg.github.com" "ghcr.io" | quote }}

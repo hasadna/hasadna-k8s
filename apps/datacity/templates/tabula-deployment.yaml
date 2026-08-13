@@ -15,6 +15,10 @@ spec:
         app: tabula
     spec:
       terminationGracePeriodSeconds: 2
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
       - name: tabula
         image: {{ .Values.tabulaImage | default "hasadna/tabula" | replace "docker.pkg.github.com" "ghcr.io" | quote }}

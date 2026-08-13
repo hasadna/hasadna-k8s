@@ -17,6 +17,10 @@ spec:
         app: importer-db
     spec:
       terminationGracePeriodSeconds: 60
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
       - name: importer-db
         image: {{ .Values.dgpAppDbImage | default "akariv/dgp-app-db" | replace "docker.pkg.github.com" "ghcr.io" | quote }}

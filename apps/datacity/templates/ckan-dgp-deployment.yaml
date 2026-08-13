@@ -17,6 +17,10 @@ spec:
         app: ckan-dgp
     spec:
       terminationGracePeriodSeconds: 10
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
       hostAliases:  # this is used to bypass cloudflare for ckan sites
         - ip: "~iac:datacity_ckan_load_balancer_ip~"
           hostnames: ~iac:datacity_ckan_all_hostnames_json~

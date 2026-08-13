@@ -17,6 +17,10 @@ spec:
         app: baserow
     spec:
       terminationGracePeriodSeconds: 10
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
       - name: server
         image: {{ .Values.baserowImage | default "baserow/baserow:1.21.2" | replace "docker.pkg.github.com" "ghcr.io" | quote }}
