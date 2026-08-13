@@ -15,6 +15,10 @@ spec:
         app: admin
     spec:
       terminationGracePeriodSeconds: 2
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
       - name: admin
         image: {{ .Values.adminImage | default "ghcr.io/whiletrue-industries/mapathataf-admin" | quote }}
