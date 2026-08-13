@@ -10,3 +10,4 @@ resources:
 patchesStrategicMerge:
 - patch-argo-server-deployment.yaml
 - patch-workflow-controller-cm.yaml
+- patch-workflow-controller-deployment.yaml
