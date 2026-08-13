@@ -6,6 +6,10 @@ metadata:
 spec:
   template:
     spec:
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
         - name: argo-server
           command: ["argo", "server", "--secure=false", "--auth-mode=sso", "--auth-mode=client"]
