@@ -41,6 +41,10 @@ spec:
             valueFrom: {"secretKeyRef":{"name":"db", "key":"MYSQL_ROOT_PASSWORD"}}
           - name: DB_PASSWORD
             valueFrom: {"secretKeyRef":{"name":"{{ .name }}", "key":"DB_PASSWORD"}}
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
       - name: wordpress
         image: {{ .image | quote }}

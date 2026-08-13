@@ -18,3 +18,7 @@ spec:
         - name: socialsocialpro
           image: {{ .Values.socialsocialproImage }}
           resources: {"requests": {"cpu": "10m", "memory": "64Mi"}, "limits": {"memory": "200Mi"}}
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
