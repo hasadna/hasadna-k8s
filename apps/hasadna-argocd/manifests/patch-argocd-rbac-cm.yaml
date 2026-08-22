@@ -26,6 +26,10 @@ data:
     p, role:meirim-admin, exec, create, meirim/*, allow
     p, role:meirim-admin, logs, get, meirim/*, allow
     
+    p, role:knesset-mk-tracking-admin, applications, *, knesset-mk-tracking/*, allow
+    p, role:knesset-mk-tracking-admin, exec, create, knesset-mk-tracking/*, allow
+    p, role:knesset-mk-tracking-admin, logs, get, knesset-mk-tracking/*, allow
+    
     g, hasadna:argocd-admins, role:admin
     g, hasadna:argocd-leafy-admins, role:leafy-admin
     g, hasadna:argocd-dear-diary-admins, role:dear-diary-admin
@@ -33,3 +37,4 @@ data:
     g, hasadna:argocd-openlaw-admins, role:openlaw-admin
     g, hasadna:argocd-openbus-admins, role:openbus-admin
     g, hasadna:argocd-meirim-admins, role:meirim-admin
+    g, hasadna:argocd-knesset-mk-tracking-admins, role:knesset-mk-tracking-admin
