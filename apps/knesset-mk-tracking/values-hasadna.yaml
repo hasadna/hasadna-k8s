@@ -1,5 +1,0 @@
-secrets:
-  - name: db-superuser
-    data:
-      username: "~vault:Projects/knesset-mk-tracking/db-admin:username~"
-      password: "~vault:Projects/knesset-mk-tracking/db-admin:password~"
