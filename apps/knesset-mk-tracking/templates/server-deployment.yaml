@@ -1,3 +1,4 @@
+{{ if .Values.server.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,11 +22,10 @@ spec:
             memory: "128Mi"
           limits:
             memory: "512Mi"
-{{/*        env:*/}}
-{{/*          - name: SERVER_DATABASE_HOST*/}}
-{{/*            value: "meirim-mariadb"*/}}
-{{/*        envFrom:*/}}
-{{/*          - secretRef:*/}}
-{{/*              name: meirim-server-env*/}}
-{{/*          - configMapRef:*/}}
-{{/*              name: hasadna-proxy1*/}}
+        env:
+          - name: DB_URI
+            valueFrom:
+              secretKeyRef:
+                name: db-app
+                key: uri
+{{ end }}

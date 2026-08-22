@@ -1,3 +1,6 @@
+server:
+  enabled: false  # server is crashlooping
+
 ingresses:
   - name: server
     ssl: true
