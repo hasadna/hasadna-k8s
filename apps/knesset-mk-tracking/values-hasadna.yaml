@@ -1,0 +1,7 @@
+ingresses:
+  - name: server
+    ssl: true
+    rules:
+      - host: "knesset-mk-tracking.hasadna.org.il"
+        serviceName: server
+        servicePort: 80

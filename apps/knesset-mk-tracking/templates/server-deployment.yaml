@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+spec:
+  selector:
+    matchLabels:
+      app: server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      containers:
+      - name: server
+        image: {{ .Values.serverImage | quote }}
+        resources:
+          requests:
+            cpu: "25m"
+            memory: "128Mi"
+          limits:
+            memory: "512Mi"
+{{/*        env:*/}}
+{{/*          - name: SERVER_DATABASE_HOST*/}}
+{{/*            value: "meirim-mariadb"*/}}
+{{/*        envFrom:*/}}
+{{/*          - secretRef:*/}}
+{{/*              name: meirim-server-env*/}}
+{{/*          - configMapRef:*/}}
+{{/*              name: hasadna-proxy1*/}}
