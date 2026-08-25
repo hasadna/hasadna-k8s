@@ -1,5 +1,5 @@
 server:
-  enabled: false  # server is crashlooping
+  enabled: true
 
 ingresses:
   - name: server
