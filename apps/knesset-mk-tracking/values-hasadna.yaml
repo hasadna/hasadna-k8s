@@ -7,4 +7,4 @@ ingresses:
     rules:
       - host: "knesset-mk-tracking.hasadna.org.il"
         serviceName: server
-        servicePort: 80
+        servicePort: 8080
