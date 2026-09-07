@@ -27,6 +27,10 @@ spec:
               values:
               - rook-ceph-rgw
           topologyKey: kubernetes.io/hostname
+      tolerations:
+        - key: "HighPriorityWorkloads"
+          operator: "Exists"
+          effect: "NoSchedule"
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
