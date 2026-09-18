@@ -1,4 +1,4 @@
-adminImage: ghcr.io/whiletrue-industries/mapathataf-admin:2a3c4d6870f80e5e7cb7d04089a79ddce7ddc5db
-appImage: ghcr.io/whiletrue-industries/mapathataf-app:2a3c4d6870f80e5e7cb7d04089a79ddce7ddc5db
-landingImage: ghcr.io/whiletrue-industries/mapathataf-landing:2a3c4d6870f80e5e7cb7d04089a79ddce7ddc5db
-manageImage: ghcr.io/whiletrue-industries/mapathataf-manage:2a3c4d6870f80e5e7cb7d04089a79ddce7ddc5db
+adminImage: ghcr.io/whiletrue-industries/mapathataf-admin:f8e737c491429d190fb30e2bfce493a7124ce4ee
+appImage: ghcr.io/whiletrue-industries/mapathataf-app:f8e737c491429d190fb30e2bfce493a7124ce4ee
+landingImage: ghcr.io/whiletrue-industries/mapathataf-landing:f8e737c491429d190fb30e2bfce493a7124ce4ee
+manageImage: ghcr.io/whiletrue-industries/mapathataf-manage:f8e737c491429d190fb30e2bfce493a7124ce4ee
