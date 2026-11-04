@@ -1,5 +1,5 @@
 backendImage: ghcr.io/hasadna/open-bus-backend/open-bus-backend:29241f0f5e185362d1874476ee18412067adadad
-mapSearchImage: ghcr.io/hasadna/open-bus-map-search/open-bus-map-search:8541e8f6f2a03fd9cf37a6432f196b19ce960a2a
+mapSearchImage: ghcr.io/hasadna/open-bus-map-search/open-bus-map-search:efbbb3b56ad36c7360c2077fa428cb390df5b6f7
 pipelinesImage: ghcr.io/hasadna/open-bus-pipelines/open-bus-pipelines:947b176a040c918590fcfd33f9e3b2a27b58ad6c
 ridesHistoryImage: ghcr.io/hasadna/open-bus-rides-history:0e3f80e056ec3d08c19e913f8764490a8347cb13
 siriEtlImage: docker.pkg.github.com/hasadna/open-bus-siri-etl/open-bus-siri-etl:3f1a0c70f024e93a882ebe36f3f42ffb2bca7818
