@@ -12,6 +12,10 @@ terraformStateDb:
 #  nfsServer: "~iac:hasadna_nfs1_internal_ip~"
 #  nfsPath: "/terraform/state_db"
 
+atlantis:
+  atlantisUrl: "atlantis.~iac:rke2_catchall_hostname~"
+  orgAllowlist: "github.com/hasadna/*"
+
 secrets:
   - name: terraform-state-db
     data:
@@ -20,3 +24,17 @@ secrets:
       #  -keyout server.key -subj "/CN=terraform-state-db.localhost"
       server.key: "~vault:Projects/k8s/terraform:state_db_server.key~"
       server.crt: "~vault:Projects/k8s/terraform:state_db_server.crt~"
+  - name: atlantis-env
+    data:
+      GITHUB_TOKEN: "~vault:Projects/iac/github:atlantis_terraform_repo_token~"
+      GITHUB_USER: "~vault:Projects/iac/github:username~"
+      GITHUB_WEBHOOK_SECRET: "~vault:Projects/iac/atlantis:webhook_secret~"
+      WEB_USERNAME: "~vault:Projects/iac/atlantis:web_username~"
+      WEB_PASSWORD: "~vault:Projects/iac/atlantis:web_password~"
+
+ingresses:
+  - name: atlantis
+    rules:
+      - host: atlantis.hasadna.org.il
+        serviceName: atlantis
+        servicePort: 4141

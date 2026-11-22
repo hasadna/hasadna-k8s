@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: atlantis
+spec:
+  selector:
+    matchLabels:
+      app: atlantis
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: atlantis
+    spec:
+      terminationGracePeriodSeconds: 10
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: atlantis
+          image: ghcr.io/hasadna/hasadna-iac/atlantis:latest
+          imagePullPolicy: Always
+          resources: {{ toYaml .Values.atlantis.resources | nindent 12 }}
+          args:
+            - server
+            - --atlantis-url=https://atlantis.hasadna.org.il
+            - --gh-token=$(GITHUB_TOKEN)
+            - --gh-user=$(GITHUB_USER)
+            - --gh-webhook-secret=$(GITHUB_WEBHOOK_SECRET)
+            - --repo-allowlist=github.com/hasadna/hasadna-iac-atlantis
+            - --web-basic-auth
+            - --web-username=$(WEB_USERNAME)
+            - --web-password=$(WEB_PASSWORD)
+            - --port=4141
+            - --repo-config=/home/atlantis/config/repos.yaml
+          env:
+            - name: VAULT_ADDR
+              valueFrom:
+                secretKeyRef:
+                  name: atlantis-vault-creds
+                  key: ADDR
+            - name: VAULT_ROLE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: atlantis-vault-creds
+                  key: ROLE_ID
+            - name: VAULT_SECRET_ID
+              valueFrom:
+                secretKeyRef:
+                  name: atlantis-vault-creds
+                  key: SECRET_ID
+          envFrom:
+            - secretRef:
+                name: atlantis-env
+          volumeMounts:
+            - name: data
+              mountPath: /home/atlantis/.atlantis
+            - name: config
+              mountPath: /home/atlantis/config
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: atlantis-data
+        - name: config
+          configMap:
+            name: atlantis
