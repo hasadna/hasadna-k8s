@@ -1,0 +1,23 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: haadna-mutating-webhook
+  annotations:
+    cert-manager.io/inject-ca-from: hasadna-mutating-webhook/hasadna-mutating-webhook-tls
+webhooks:
+  - name: placeholders.haadna.org
+    admissionReviewVersions: ["v1", "v1beta1"]
+    sideEffects: None
+    clientConfig:
+      service:
+        name: hasadna-mutating-webhook
+        namespace: hasadna-mutating-webhook
+        path: /mutate-placeholders
+        port: 443
+    rules:
+      - operations: ["CREATE", "UPDATE"]
+        apiGroups: ["*"]
+        apiVersions: ["*"]
+        resources: ["*/*"]
+    failurePolicy: Ignore
+    namespaceSelector: {}

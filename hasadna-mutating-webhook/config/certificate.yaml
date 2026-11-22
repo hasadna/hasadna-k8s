@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: haadna-mutating-webhook-tls
+  namespace: hasadna-mutating-webhook
+spec:
+  dnsNames:
+    - hasadna-mutating-webhook.hasadna-mutating-webhook.svc
+    - hasadna-mutating-webhook.hasadna-mutating-webhook.svc.cluster.local
+  secretName: hasadna-mutating-webhook-tls
+  issuerRef:
+    name: ca-issuer
+    kind: ClusterIssuer

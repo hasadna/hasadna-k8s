@@ -1,0 +1,30 @@
+name: haadna_mutating_webhook_tests
+on:
+  push:
+    paths:
+      - .github/workflows/hasadna_mutating_webhook_tests.yaml
+      - hasadna-mutating-webhook/**
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-go@v5
+      with:
+        go-version-file: hasadna-mutating-webhook/go.mod
+    - run: |
+        wget https://releases.hashicorp.com/terraform/1.12.1/terraform_1.12.1_linux_amd64.zip
+        unzip terraform_1.12.1_linux_amd64.zip -d /usr/local/bin
+        rm terraform_1.12.1_linux_amd64.zip /usr/local/bin/LICENSE.txt
+        chmod +x /usr/local/bin/terraform
+    - run: |
+        wget https://releases.hashicorp.com/vault/1.19.4/vault_1.19.4_linux_amd64.zip
+        unzip vault_1.19.4_linux_amd64.zip -d /usr/local/bin
+        rm vault_1.19.4_linux_amd64.zip /usr/local/bin/LICENSE.txt
+        chmod +x /usr/local/bin/vault
+    - run: |
+        cd hasadna-mutating-webhook
+        go fmt
+        git diff --exit-code
+        go vet
+        go test
