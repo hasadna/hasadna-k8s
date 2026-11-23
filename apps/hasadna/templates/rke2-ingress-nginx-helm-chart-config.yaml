@@ -9,6 +9,12 @@ spec:
       config:
         allow-snippet-annotations: "true"
         annotations-risk-level: "Critical"
+        use-gzip: "true"
+        gzip-level: "6"
+        gzip-min-length: "256"
+        enable-brotli: "true"
+        brotli-level: "6"
+        brotli-min-length: "256"
       tolerations:
         - key: "HighPriorityWorkloads"
           operator: "Exists"
